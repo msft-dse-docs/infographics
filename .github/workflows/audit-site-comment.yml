@@ -1,0 +1,170 @@
+name: Audit Site (comment)
+
+# Companion to audit-site.yml. Runs in the base-repo context via
+# workflow_run, which means it has a write-capable GITHUB_TOKEN even
+# when the PR came from a fork. Downloads the audit-reports artifact
+# produced by the audit job and posts (or updates) a sticky PR comment.
+#
+# Why it's split: workflows triggered by `pull_request` from a fork get
+# a read-only token (GitHub security model). workflow_run is the
+# supported pattern for "run untrusted PR code, then comment with base-
+# repo permissions." Nothing here executes PR code; we only read JSON
+# reports the PR-triggered job produced.
+
+on:
+  workflow_run:
+    workflows: ["Audit Site"]
+    types: [completed]
+
+permissions:
+  contents: read
+  pull-requests: write
+  actions: read
+
+concurrency:
+  group: audit-site-comment-${{ github.event.workflow_run.id }}
+  cancel-in-progress: false
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # Only act on PR-triggered audit runs. Pushes to main (and other
+    # non-PR events) produce reports but no PR to comment on.
+    if: github.event.workflow_run.event == 'pull_request'
+    steps:
+      - name: Download audit artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: audit-reports
+          path: reports
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      - name: Post sticky audit comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require("fs");
+
+            const STICKY_MARKER = "<!-- audit-site-summary v1 -->";
+
+            // The audit job wrote the PR number to reports/pr-number.txt
+            // so we can find the PR from this workflow_run event.
+            let prNumber = null;
+            try {
+              const raw = fs.readFileSync("reports/pr-number.txt", "utf8").trim();
+              const n = Number.parseInt(raw, 10);
+              if (Number.isInteger(n) && n > 0) prNumber = n;
+            } catch (err) {
+              core.info(`Could not read pr-number.txt (${err.message}).`);
+            }
+            if (!prNumber) {
+              core.info("No PR number recorded; nothing to comment on.");
+              return;
+            }
+
+            function readJson(p) {
+              try {
+                return JSON.parse(fs.readFileSync(p, "utf8"));
+              } catch (err) {
+                return null;
+              }
+            }
+
+            const links = readJson("reports/link-health.json");
+            const terms = readJson("reports/deprecated-terms.json");
+            const a11y = readJson("reports/a11y.json");
+            const audit = readJson("reports/audit.json");
+
+            const brokenLinks = (links && links.broken) || [];
+            const termFiles = (terms && terms.files) || {};
+            const termCount = Object.values(termFiles)
+              .reduce((n, arr) => n + (Array.isArray(arr) ? arr.length : 0), 0);
+            const a11yCount = (a11y && a11y.summary && a11y.summary.total_issues) || 0;
+            const totalPages = (audit && audit.summary && audit.summary.total_pages) || 0;
+
+            const lines = [STICKY_MARKER, "", "## 🔍 Audit summary", ""];
+            lines.push(`- **Pages scanned:** ${totalPages}`);
+            lines.push(`- **Broken external links:** ${brokenLinks.length}`);
+            lines.push(`- **Deprecated-term occurrences:** ${termCount}`);
+            lines.push(`- **Accessibility findings:** ${a11yCount}`);
+            lines.push("");
+
+            if (brokenLinks.length) {
+              lines.push("<details><summary>Broken links</summary>", "");
+              for (const item of brokenLinks.slice(0, 25)) {
+                const refs = (item.referenced_in || []).slice(0, 3).join(", ");
+                lines.push(`- \`${item.url}\` — status \`${item.status}\`${refs ? ` (in ${refs})` : ""}`);
+              }
+              if (brokenLinks.length > 25) {
+                lines.push(`- _… and ${brokenLinks.length - 25} more; see the \`audit-reports\` artifact._`);
+              }
+              lines.push("", "</details>", "");
+            }
+
+            if (termCount) {
+              lines.push("<details><summary>Deprecated terminology</summary>", "");
+              let shown = 0;
+              for (const [file, items] of Object.entries(termFiles)) {
+                if (!Array.isArray(items) || !items.length) continue;
+                lines.push(`- \`${file}\` — ${items.length} occurrence(s):`);
+                for (const it of items.slice(0, 5)) {
+                  lines.push(`  - **${it.rule_id}** (\`${it.severity}\`, line ${it.line}): \`${it.match}\` → \`${it.replacement}\``);
+                  shown++;
+                  if (shown >= 25) break;
+                }
+                if (shown >= 25) {
+                  lines.push(`- _… more omitted; see artifact._`);
+                  break;
+                }
+              }
+              lines.push("", "</details>", "");
+            }
+
+            if (a11yCount && a11y && Array.isArray(a11y.issues) && a11y.issues.length) {
+              lines.push("<details><summary>Accessibility findings</summary>", "");
+              for (const issue of a11y.issues.slice(0, 25)) {
+                lines.push(`- \`${issue.path}\` — **${issue.rule}**: ${issue.message}`);
+              }
+              if (a11y.issues.length > 25) {
+                lines.push(`- _… and ${a11y.issues.length - 25} more; see artifact._`);
+              }
+              lines.push("", "</details>", "");
+            }
+
+            if (!brokenLinks.length && !termCount && !a11yCount) {
+              lines.push("✅ No findings. Everything looks clean.");
+              lines.push("");
+            }
+
+            const runUrl = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${context.payload.workflow_run.id}`;
+            lines.push(`_Full JSON reports: [\`audit-reports\` artifact](${runUrl})._`);
+
+            const body = lines.join("\n");
+
+            // Find an existing sticky comment to update, else create.
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              per_page: 100,
+            });
+            const existing = comments.find(c => c.body && c.body.includes(STICKY_MARKER));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+              core.info(`Updated sticky audit comment #${existing.id} on PR #${prNumber}.`);
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body,
+              });
+              core.info(`Created sticky audit comment on PR #${prNumber}.`);
+            }

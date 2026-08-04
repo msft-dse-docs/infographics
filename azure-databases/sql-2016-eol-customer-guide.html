@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL Server 2016 End of Support — Your Complete Guide</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; color: #1a1a1a; background: #f5f5f5; line-height: 1.65; overflow-x: hidden; }
+  a { color: #0078d4; text-decoration: none; } a:hover { text-decoration: underline; }
+
+  /* NAV */
+  .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(255,255,255,.94); backdrop-filter: blur(14px); border-bottom: 1px solid #e0e0e0; display: flex; align-items: center; height: 56px; padding: 0 2rem; transition: box-shadow .3s; }
+  .nav.scrolled { box-shadow: 0 2px 16px rgba(0,0,0,.08); }
+  .nav-logo { font-weight: 700; font-size: .95rem; color: #0078d4; white-space: nowrap; margin-right: 2rem; display: flex; align-items: center; gap: .5rem; }
+  .nav-logo svg { width: 20px; height: 20px; }
+  .nav-links { display: flex; gap: .2rem; overflow-x: auto; scrollbar-width: none; }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a { padding: .4rem .7rem; border-radius: 6px; font-size: .78rem; white-space: nowrap; color: #555; transition: all .2s; }
+  .nav-links a:hover, .nav-links a.active { background: #e8f4fd; color: #0078d4; text-decoration: none; }
+  .progress-bar { position: fixed; top: 56px; left: 0; height: 3px; background: linear-gradient(90deg,#0078d4,#50e6ff); z-index: 999; width: 0; transition: width .1s; }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 6rem 2rem 4rem; background: linear-gradient(135deg, #0078d4 0%, #005a9e 35%, #002050 100%); color: #fff; position: relative; overflow: hidden; }
+  .hero::before { content:''; position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 80%, rgba(80,230,255,.08) 0%, transparent 55%), radial-gradient(ellipse at 75% 20%, rgba(255,255,255,.04) 0%, transparent 50%); }
+  .hero-badge { display: inline-block; padding: .35rem 1rem; border-radius: 20px; background: rgba(255,255,255,.12); font-size: .85rem; margin-bottom: 1.5rem; backdrop-filter: blur(4px); animation: fadeDown .7s ease-out; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 700; max-width: 820px; animation: fadeDown .7s ease-out .1s both; line-height: 1.2; }
+  .hero p { font-size: clamp(1rem, 2vw, 1.2rem); max-width: 620px; margin-top: 1rem; opacity: .9; animation: fadeDown .7s ease-out .2s both; }
+  .countdown { display: flex; gap: 1.25rem; margin-top: 2.5rem; animation: fadeDown .7s ease-out .35s both; flex-wrap: wrap; justify-content: center; }
+  .cd-item { background: rgba(255,255,255,.1); backdrop-filter: blur(8px); border-radius: 14px; padding: 1.1rem 1.4rem; min-width: 85px; text-align: center; border: 1px solid rgba(255,255,255,.13); }
+  .cd-num { font-size: 2.4rem; font-weight: 700; line-height: 1; }
+  .cd-lbl { font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; opacity: .8; margin-top: .2rem; }
+  .hero-cta { margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; animation: fadeDown .7s ease-out .5s both; }
+  .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .75rem 1.75rem; border-radius: 8px; font-size: .95rem; font-weight: 600; transition: transform .2s, box-shadow .2s; cursor: pointer; border: none; }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.2); text-decoration: none; }
+  .btn-primary { background: #fff; color: #0078d4; }
+  .btn-outline { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.45); }
+
+  /* SECTIONS */
+  section { padding: 5rem 2rem; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-label { display: inline-block; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: #0078d4; margin-bottom: .5rem; }
+  .section-title { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700; margin-bottom: .75rem; }
+  .section-sub { font-size: 1.05rem; color: #555; max-width: 700px; margin-bottom: 2.5rem; }
+
+  /* REVEAL */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .65s ease-out, transform .65s ease-out; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* EOL BANNER */
+  .eol-banner { background: linear-gradient(135deg, #d13438 0%, #a4262c 100%); color: #fff; border-radius: 16px; padding: 2.5rem; text-align: center; margin-bottom: 2rem; }
+  .eol-banner h3 { font-size: 1.4rem; margin-bottom: .5rem; }
+  .eol-banner .date { font-size: 2.5rem; font-weight: 800; }
+  .sev-table { width: 100%; border-collapse: separate; border-spacing: 0; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.05); }
+  .sev-table th { background: #f0f0f0; padding: 1rem; text-align: left; font-size: .82rem; text-transform: uppercase; letter-spacing: .05em; }
+  .sev-table td { padding: 1rem; border-top: 1px solid #eee; font-size: .9rem; }
+  .sev-tag { display: inline-block; padding: .2rem .6rem; border-radius: 6px; font-size: .8rem; font-weight: 600; }
+  .sev-crit { background: #fde7e9; color: #a4262c; }
+  .sev-imp { background: #fff4ce; color: #8a6914; }
+
+  /* THREE OPTIONS */
+  .opts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+  .opt-card { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.05); transition: transform .3s, box-shadow .3s; display: flex; flex-direction: column; }
+  .opt-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,.1); }
+  .opt-hdr { padding: 1.5rem 1.5rem 1rem; }
+  .opt-num { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; font-weight: 700; font-size: .9rem; margin-bottom: .75rem; }
+  .o1 .opt-num { background: #e8f4fd; color: #0078d4; } .o1 .opt-hdr { border-bottom: 3px solid #0078d4; }
+  .o2 .opt-num { background: #dff6dd; color: #107c10; } .o2 .opt-hdr { border-bottom: 3px solid #107c10; }
+  .o3 .opt-num { background: #fff4ce; color: #8a6914; } .o3 .opt-hdr { border-bottom: 3px solid #d29200; }
+  .opt-hdr h3 { font-size: 1.1rem; }
+  .opt-body { padding: 1.5rem; flex: 1; }
+  .opt-body ul { list-style: none; }
+  .opt-body li { padding: .45rem 0 .45rem 1.4rem; position: relative; font-size: .9rem; color: #444; }
+  .opt-body li::before { content:''; position: absolute; left: 0; top: .8rem; width: 8px; height: 8px; border-radius: 50%; }
+  .o1 .opt-body li::before { background: #0078d4; }
+  .o2 .opt-body li::before { background: #107c10; }
+  .o3 .opt-body li::before { background: #d29200; }
+
+  /* FEATURE GRID */
+  .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+  .feat { background: #fff; border-radius: 14px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,.04); transition: transform .3s; border-top: 3px solid transparent; }
+  .feat:hover { transform: translateY(-3px); }
+  .feat:nth-child(1) { border-top-color: #0078d4; } .feat:nth-child(2) { border-top-color: #107c10; }
+  .feat:nth-child(3) { border-top-color: #d29200; } .feat:nth-child(4) { border-top-color: #8661c5; }
+  .feat:nth-child(5) { border-top-color: #008575; } .feat:nth-child(6) { border-top-color: #d13438; }
+  .feat .ico { font-size: 1.8rem; margin-bottom: .75rem; }
+  .feat h4 { font-size: 1rem; margin-bottom: .35rem; }
+  .feat p { font-size: .85rem; color: #555; }
+
+  /* COMPARISON TABLE */
+  .cmp-wrap { background: #fff; border-radius: 16px; padding: 2rem; box-shadow: 0 2px 12px rgba(0,0,0,.05); margin: 2.5rem 0; overflow-x: auto; }
+  .cmp-tbl { width: 100%; border-collapse: collapse; min-width: 580px; }
+  .cmp-tbl th { padding: .8rem 1rem; text-align: left; font-size: .82rem; background: #f5f5f5; border-bottom: 2px solid #ddd; }
+  .cmp-tbl th:last-child { color: #0078d4; }
+  .cmp-tbl td { padding: .7rem 1rem; border-bottom: 1px solid #eee; font-size: .9rem; }
+  .cmp-tbl tr:hover td { background: #f9fbfd; }
+  .imp { display: inline-block; background: #dff6dd; color: #107c10; padding: .1rem .5rem; border-radius: 4px; font-size: .78rem; font-weight: 600; margin-left: .4rem; }
+
+  /* COST BARS */
+  .cost-bars { display: flex; flex-direction: column; gap: 1.2rem; margin: 2rem 0; }
+  .cb-item { display: flex; align-items: center; gap: 1rem; }
+  .cb-label { flex: 0 0 200px; font-size: .88rem; font-weight: 600; text-align: right; }
+  .cb-track { flex: 1; background: #eee; border-radius: 8px; height: 40px; position: relative; overflow: hidden; }
+  .cb-fill { height: 100%; border-radius: 8px; display: flex; align-items: center; padding: 0 1rem; color: #fff; font-weight: 700; font-size: .88rem; transition: width 1.4s ease-out; width: 0; }
+  .cb-fill.no-ahb { background: linear-gradient(90deg, #8661c5, #a88ad4); }
+  .cb-fill.ahb { background: linear-gradient(90deg, #107c10, #3cb03c); }
+  .cb-fill.nextgen { background: linear-gradient(90deg, #0078d4, #50a0e8); }
+  .save-badge { position: absolute; right: .75rem; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,.15); padding: .12rem .45rem; border-radius: 4px; font-size: .72rem; font-weight: 600; color: #fff; }
+
+  /* SAVINGS GRID */
+  .sav-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; margin: 2rem 0; }
+  .sav-card { background: #fff; border-radius: 14px; padding: 1.5rem; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+  .sav-card h4 { font-size: .88rem; color: #555; margin-bottom: .4rem; }
+  .sav-card .amt { font-size: 1.8rem; font-weight: 700; }
+  .sav-card .amt.blue { color: #0078d4; }
+  .sav-card .amt.green { color: #107c10; }
+  .sav-card .det { font-size: .78rem; color: #888; margin-top: .2rem; }
+
+  /* SAVINGS PLAN VISUAL */
+  .sp-visual { background: #fff; border-radius: 16px; padding: 2rem; box-shadow: 0 2px 12px rgba(0,0,0,.05); margin: 2rem 0; }
+  .sp-visual h3 { font-size: 1.1rem; margin-bottom: .5rem; }
+  .sp-visual p { font-size: .9rem; color: #555; margin-bottom: 1.25rem; }
+  .sp-bars { display: flex; gap: .5rem; align-items: flex-end; height: 120px; padding: 0 2rem; }
+  .sp-bar { flex: 1; border-radius: 6px 6px 0 0; position: relative; transition: height 1s ease-out; }
+  .sp-bar-label { position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%); font-size: .7rem; color: #888; white-space: nowrap; }
+  .sp-bar .plan { background: #0078d4; border-radius: 6px 6px 0 0; }
+  .sp-bar .overage { background: #e0e0e0; border-radius: 6px 6px 0 0; }
+  .sp-line { position: absolute; top: 0; left: -10%; right: -10%; border-top: 2px dashed #d29200; }
+  .sp-line-label { position: absolute; right: -10%; top: -18px; font-size: .7rem; color: #d29200; font-weight: 600; }
+
+  /* CUSTOMER STORIES */
+  .stories { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+  .story { background: #fff; border-radius: 16px; padding: 2rem; box-shadow: 0 2px 12px rgba(0,0,0,.05); display: flex; flex-direction: column; }
+  .story h4 { font-size: 1.05rem; margin-bottom: .5rem; color: #0078d4; }
+  .story .tag { display: inline-block; background: #e8f4fd; color: #004578; padding: .2rem .6rem; border-radius: 6px; font-size: .78rem; font-weight: 600; margin-bottom: .75rem; }
+  .story .quote { font-style: italic; font-size: .88rem; color: #444; border-left: 3px solid #0078d4; padding-left: 1rem; margin-top: auto; }
+  .story .attr { font-size: .8rem; color: #777; margin-top: .4rem; font-style: normal; }
+
+  /* MIGRATION TOOLS */
+  .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; }
+  .tool-card { background: #fff; border-radius: 14px; padding: 1.5rem; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,.04); transition: transform .3s; }
+  .tool-card:hover { transform: translateY(-3px); }
+  .tool-ico { width: 52px; height: 52px; border-radius: 14px; margin: 0 auto .75rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+  .tool-card:nth-child(1) .tool-ico { background: #e8f4fd; }
+  .tool-card:nth-child(2) .tool-ico { background: #dff6dd; }
+  .tool-card:nth-child(3) .tool-ico { background: #fff4ce; }
+  .tool-card:nth-child(4) .tool-ico { background: #f3e8fd; }
+  .tool-card h4 { font-size: .95rem; margin-bottom: .3rem; }
+  .tool-card p { font-size: .82rem; color: #555; }
+
+  /* ARC ASSESSMENT */
+  .arc-box { background: linear-gradient(135deg, #0078d4, #005a9e); border-radius: 16px; padding: 2.5rem; color: #fff; margin: 2rem 0; position: relative; overflow: hidden; }
+  .arc-box::before { content:''; position: absolute; right: -40px; top: -40px; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,255,255,.06); }
+  .arc-box h3 { font-size: 1.3rem; margin-bottom: .75rem; }
+  .arc-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem; }
+  .arc-feat { background: rgba(255,255,255,.12); border-radius: 10px; padding: 1rem; backdrop-filter: blur(4px); }
+  .arc-feat strong { display: block; font-size: .85rem; margin-bottom: .25rem; }
+  .arc-feat p { font-size: .82rem; opacity: .9; }
+  .arc-free { display: inline-block; background: rgba(255,255,255,.2); padding: .25rem .75rem; border-radius: 6px; font-size: .82rem; font-weight: 600; margin-top: .75rem; }
+
+  /* ESU */
+  .esu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; }
+  .esu-item { background: #fff; border-radius: 12px; padding: 1.2rem; box-shadow: 0 2px 8px rgba(0,0,0,.04); display: flex; gap: 1rem; align-items: flex-start; }
+  .esu-item .dot { width: 10px; height: 10px; border-radius: 50%; background: #0078d4; margin-top: .35rem; flex-shrink: 0; }
+  .esu-item p { font-size: .88rem; color: #333; }
+  .price-card { background: #fff; border-radius: 16px; padding: 2rem; margin: 2rem 0; box-shadow: 0 2px 12px rgba(0,0,0,.05); overflow-x: auto; }
+  .price-tbl { width: 100%; border-collapse: collapse; min-width: 500px; }
+  .price-tbl th { padding: .7rem 1rem; text-align: left; background: #f5f5f5; font-size: .82rem; border-bottom: 2px solid #ddd; }
+  .price-tbl td { padding: .6rem 1rem; border-bottom: 1px solid #eee; font-size: .88rem; }
+  .tag-paid { background: #fff4ce; color: #8a6914; padding: .15rem .5rem; border-radius: 4px; font-size: .78rem; font-weight: 600; }
+  .tag-free { background: #dff6dd; color: #107c10; padding: .15rem .5rem; border-radius: 4px; font-size: .78rem; font-weight: 600; }
+
+  /* ARC FEATURES TABLE */
+  .arc-tbl-wrap { background: #fff; border-radius: 16px; padding: 2rem; box-shadow: 0 2px 12px rgba(0,0,0,.05); margin: 2rem 0; overflow-x: auto; }
+  .arc-tbl { width: 100%; border-collapse: collapse; min-width: 550px; }
+  .arc-tbl th { padding: .7rem .8rem; text-align: left; background: #f5f5f5; font-size: .82rem; border-bottom: 2px solid #ddd; }
+  .arc-tbl td { padding: .55rem .8rem; border-bottom: 1px solid #eee; font-size: .85rem; }
+  .check { color: #107c10; font-weight: 700; font-size: 1.1rem; }
+  .dash { color: #ccc; }
+
+  /* SQL 2025 */
+  .reasons-list { display: flex; flex-direction: column; gap: 1.25rem; counter-reset: reason; }
+  .reason-item { counter-increment: reason; background: #fff; border-radius: 14px; padding: 1.5rem 1.5rem 1.5rem 4.5rem; box-shadow: 0 2px 10px rgba(0,0,0,.04); position: relative; transition: transform .3s; }
+  .reason-item:hover { transform: translateX(4px); }
+  .reason-item::before { content: counter(reason); position: absolute; left: 1.2rem; top: 1.2rem; width: 36px; height: 36px; border-radius: 50%; background: #0078d4; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+  .reason-item h4 { font-size: 1.05rem; margin-bottom: .3rem; }
+  .reason-item p { font-size: .9rem; color: #555; }
+
+  /* DECISION TREE */
+  .dt-wrap { max-width: 800px; margin: 0 auto; }
+  .dt-node { background: #fff; border-radius: 14px; padding: 1.5rem; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,.06); margin-bottom: 1rem; border: 2px solid #e0e0e0; cursor: pointer; transition: all .3s; }
+  .dt-node:hover { border-color: #0078d4; box-shadow: 0 4px 20px rgba(0,120,212,.15); }
+  .dt-node.question { border-color: #0078d4; background: #f0f8ff; }
+  .dt-node h4 { font-size: 1rem; margin-bottom: .5rem; }
+  .dt-choices { display: flex; gap: .75rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
+  .dt-choice { padding: .55rem 1.3rem; border-radius: 8px; font-weight: 600; font-size: .88rem; cursor: pointer; border: 2px solid #0078d4; color: #0078d4; background: #f0f8ff; transition: all .2s; }
+  .dt-choice:hover { background: #0078d4; color: #fff; }
+  .dt-result { padding: 1.5rem; border-radius: 14px; text-align: center; margin-top: 1rem; animation: fadeDown .4s ease-out; }
+  .dt-result.green { background: #dff6dd; border: 2px solid #107c10; color: #0b5e0b; }
+  .dt-result.blue { background: #e8f4fd; border: 2px solid #0078d4; color: #004578; }
+  .dt-result.yellow { background: #fff4ce; border: 2px solid #d29200; color: #6b4d00; }
+  .dt-result h4 { font-size: 1.1rem; margin-bottom: .3rem; }
+  .dt-result p { font-size: .88rem; }
+  .dt-restart { margin-top: 1rem; padding: .5rem 1.2rem; border-radius: 6px; background: #0078d4; color: #fff; border: none; cursor: pointer; font-size: .82rem; font-weight: 600; }
+
+  /* FAQ */
+  .accordion { max-width: 800px; margin: 0 auto; }
+  .acc-item { background: #fff; border-radius: 12px; margin-bottom: .7rem; box-shadow: 0 2px 8px rgba(0,0,0,.04); overflow: hidden; }
+  .acc-hdr { padding: 1rem 1.2rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: .93rem; transition: background .2s; }
+  .acc-hdr:hover { background: #f9f9f9; }
+  .acc-hdr .chev { transition: transform .3s; font-size: .8rem; color: #888; }
+  .acc-item.open .acc-hdr .chev { transform: rotate(180deg); }
+  .acc-body { max-height: 0; overflow: hidden; transition: max-height .4s ease-out; }
+  .acc-inner { padding: 0 1.2rem 1rem; font-size: .88rem; color: #555; line-height: 1.75; }
+
+  /* FOOTER */
+  footer { background: #1a1a1a; color: #aaa; padding: 3rem 2rem; text-align: center; font-size: .82rem; }
+  footer strong { color: #fff; }
+
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-18px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .cb-label { flex: 0 0 90px; font-size: .78rem; }
+    section { padding: 3.5rem 1.25rem; }
+  }
+</style>
+<script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
+<!-- smec-meta v1 -->
+<meta name="description" content="SQL Server 2016 End of Support — Your Complete Guide — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:title" content="SQL Server 2016 End of Support — Your Complete Guide">
+<meta property="og:description" content="SQL Server 2016 End of Support — Your Complete Guide — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sme-c-infographics.github.io/azure-databases/sql-2016-eol-customer-guide.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SQL Server 2016 End of Support — Your Complete Guide">
+<meta name="twitter:description" content="SQL Server 2016 End of Support — Your Complete Guide — an interactive infographic from the SME&amp;C Infographic Hub.">
+<!-- smec-favicon v1 -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<!-- smec-accuracy v1 -->
+<meta name="smec:last-accuracy-check" content="2026-07-16">
+<style>/* smec-back-btn v2 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  box-sizing: border-box;
+  display: inline-flex; align-items: center; justify-content: flex-start;
+  gap: 8px; height: 40px; padding: 0 16px 0 12px; border-radius: 20px;
+  background: rgba(0, 120, 212, 0.92) !important; color: #fff !important;
+  text-decoration: none !important;
+  font: 600 14px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  transition:
+    padding 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto; display: inline-block;
+  width: 18px; height: 18px; }
+.smec-back-btn__label { display: inline-block; flex: 0 0 auto;
+  font: inherit; color: inherit; }
+.smec-back-btn__more { display: inline-block; max-width: 0; opacity: 0;
+  overflow: hidden; vertical-align: bottom;
+  font: inherit; color: inherit;
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.05s; }
+
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  background: rgba(0, 90, 158, 0.96) !important; color: #fff !important;
+  text-decoration: none !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22); }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__more,
+.smec-back-btn:focus-visible .smec-back-btn__more {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.25s ease 0.2s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn__more { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__more,
+  .smec-back-btn:hover .smec-back-btn__more,
+  .smec-back-btn:focus-visible .smec-back-btn__more {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<!-- smec-submitter v1 -->
+<meta name="smec:submitter" content="copilot-swe-agent[bot]">
+</head>
+<body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v2" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
+
+<!-- Nav -->
+<nav class="nav" id="nav">
+  <div class="nav-logo">
+    <svg viewBox="0 0 23 23"><rect width="11" height="11" fill="#f25022"/><rect x="12" width="11" height="11" fill="#7fba00"/><rect y="12" width="11" height="11" fill="#00a4ef"/><rect x="12" y="12" width="11" height="11" fill="#ffb900"/></svg>
+    SQL 2016 EOL Guide
+  </div>
+  <div class="nav-links">
+    <a href="#eol">End of Life</a>
+    <a href="#options">Your Options</a>
+    <a href="#mi">Azure SQL MI</a>
+    <a href="#costs">Cost Savings</a>
+    <a href="#stories">Customer Stories</a>
+    <a href="#migrate">Migration</a>
+    <a href="#esu">ESU</a>
+    <a href="#arc">Azure Arc</a>
+    <a href="#sql2025">SQL 2025</a>
+    <a href="#decide">Decision Guide</a>
+  </div>
+</nav>
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">Microsoft Azure &bull; SQL Server</div>
+  <h1>SQL Server 2016 Is Reaching<br>End of Support</h1>
+  <p>Do you know your options? Security updates end <strong>July 14, 2026</strong>. Plan your path forward&mdash;modernize, upgrade, or extend.</p>
+  <div class="countdown" id="countdown">
+    <div class="cd-item"><div class="cd-num" id="cd-d">--</div><div class="cd-lbl">Days</div></div>
+    <div class="cd-item"><div class="cd-num" id="cd-h">--</div><div class="cd-lbl">Hours</div></div>
+    <div class="cd-item"><div class="cd-num" id="cd-m">--</div><div class="cd-lbl">Minutes</div></div>
+    <div class="cd-item"><div class="cd-num" id="cd-s">--</div><div class="cd-lbl">Seconds</div></div>
+  </div>
+  <div class="hero-cta">
+    <a href="#options" class="btn btn-primary">See Your Options</a>
+    <a href="#decide" class="btn btn-outline">Interactive Decision Guide</a>
+  </div>
+</section>
+
+<!-- What is EOL -->
+<section id="eol" style="background:#fff;">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">End of Support</span>
+      <h2 class="section-title">What Does End of Support Mean?</h2>
+      <p class="section-sub">After the end-of-support date, Microsoft will no longer provide security updates for SQL Server 2016&mdash;leaving your databases exposed to unpatched vulnerabilities.</p>
+    </div>
+    <div class="eol-banner reveal">
+      <h3>End of Support Date</h3>
+      <div class="date">July 14, 2026</div>
+      <p style="margin-top:.5rem;opacity:.9;">No more critical or important security patches after this date</p>
+    </div>
+    <div class="reveal" style="transition-delay:.15s">
+      <h3 style="font-size:1.05rem;margin-bottom:1rem;">Security Updates You Will Lose</h3>
+      <table class="sev-table">
+        <thead><tr><th>Rating</th><th>What It Means</th></tr></thead>
+        <tbody>
+          <tr><td><span class="sev-tag sev-crit">Critical</span></td><td>Vulnerabilities that allow malware to spread without user action&mdash;including from browsing a web page or opening email.</td></tr>
+          <tr><td><span class="sev-tag sev-imp">Important</span></td><td>Vulnerabilities that could compromise the confidentiality, integrity, or availability of your data and processing resources.</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:.75rem;font-size:.85rem;color:#777;">Find lifecycle support deadlines at <a href="https://support.microsoft.com/lifecycle" target="_blank">support.microsoft.com/lifecycle</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- Three Options -->
+<section id="options">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Your Options</span>
+      <h2 class="section-title">Three Paths Forward</h2>
+      <p class="section-sub">Every SQL Server 2016 customer has three clear choices. Pick the one that fits your business needs and timeline.</p>
+    </div>
+    <div class="opts-grid">
+      <div class="opt-card o1 reveal" style="transition-delay:.05s">
+        <div class="opt-hdr"><div class="opt-num">1</div><h3>Modernize on Azure PaaS</h3></div>
+        <div class="opt-body"><ul>
+          <li>Always up-to-date SQL instance in the cloud</li>
+          <li>Enterprise-grade performance and security</li>
+          <li>Fast to migrate, with the best commercials and delivery</li>
+          <li>No end-of-support worries&mdash;ever</li>
+        </ul></div>
+      </div>
+      <div class="opt-card o2 reveal" style="transition-delay:.15s">
+        <div class="opt-hdr"><div class="opt-num">2</div><h3>Upgrade to SQL Server 2025</h3></div>
+        <div class="opt-body"><ul>
+          <li>Built-in vector capabilities for semantic search</li>
+          <li>Streamlined developer workflows for modern data apps</li>
+          <li>Frictionless analytics through Microsoft Fabric</li>
+          <li>Available in Azure or on-premises</li>
+        </ul></div>
+      </div>
+      <div class="opt-card o3 reveal" style="transition-delay:.25s">
+        <div class="opt-hdr"><div class="opt-num">3</div><h3>Extended Security Updates</h3></div>
+        <div class="opt-body"><ul>
+          <li>Maintain protection and meet compliance needs</li>
+          <li>Extend runway while planning modernization</li>
+          <li>Flexible billing across on-premises and cloud</li>
+          <li>Optimize costs with pay-as-you-go via Azure Arc</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Azure SQL MI -->
+<section id="mi" style="background:#fff;">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Option 1: Deep Dive</span>
+      <h2 class="section-title">Azure SQL Managed Instance</h2>
+      <p class="section-sub">Modernize SQL Server data at scale to a fully managed database-as-a-service.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat reveal"><div class="ico">&#9889;</div><h4>Optimized Performance</h4><p>Latest compute and storage technologies, tuned by ML-based optimization.</p></div>
+      <div class="feat reveal" style="transition-delay:.04s"><div class="ico">&#128736;</div><h4>DBA Productivity</h4><p>Fully managed, always up-to-date. Handles time-consuming tasks for you.</p></div>
+      <div class="feat reveal" style="transition-delay:.08s"><div class="ico">&#128737;</div><h4>Advanced Security</h4><p>Multi-layered protection with built-in high availability and compliance.</p></div>
+      <div class="feat reveal" style="transition-delay:.12s"><div class="ico">&#128176;</div><h4>Best Total Cost</h4><p>Up to 93% less than the competition with built-in cost advantages.</p></div>
+      <div class="feat reveal" style="transition-delay:.16s"><div class="ico">&#128260;</div><h4>Hybrid Flexibility</h4><p>Cloud connectivity on-prem. Migrate to Azure on your terms.</p></div>
+      <div class="feat reveal" style="transition-delay:.2s"><div class="ico">&#129302;</div><h4>Built-In AI &amp; 99.99% SLA</h4><p>AI-optimized performance with industry-leading availability.</p></div>
+    </div>
+
+    <!-- Next-Gen GP -->
+    <div class="cmp-wrap reveal" style="transition-delay:.1s">
+      <h3 style="font-size:1.15rem;margin-bottom:.4rem;">Next-Gen General Purpose: A Major Leap</h3>
+      <p style="font-size:.88rem;color:#555;margin-bottom:1.5rem;">Elastic SAN replaces page blobs&mdash;delivering dramatically better performance and scale for OLTP and analytical workloads.</p>
+      <table class="cmp-tbl">
+        <thead><tr><th>Metric</th><th>GP (Current)</th><th>GP Next-Gen</th></tr></thead>
+        <tbody>
+          <tr><td>Avg I/O Latency</td><td>5&ndash;10 ms</td><td>3&ndash;5 ms <span class="imp">~2x faster</span></td></tr>
+          <tr><td>Max Data IOPS</td><td>30&ndash;50k</td><td>80k <span class="imp">~2x</span></td></tr>
+          <tr><td>Max Log Rate</td><td>120 MB/s</td><td>192 MB/s <span class="imp">+60%</span></td></tr>
+          <tr><td>Max Storage</td><td>16 TB</td><td>32 TB <span class="imp">2x</span></td></tr>
+          <tr><td>Max DBs / Instance</td><td>100</td><td>500 <span class="imp">5x density</span></td></tr>
+          <tr><td>Max vCores</td><td>80</td><td>128 <span class="imp">+60%</span></td></tr>
+          <tr><td>Max Files</td><td>280 / instance</td><td>4,096 / database <span class="imp">15x</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Cost Savings -->
+<section id="costs">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Cost Optimization</span>
+      <h2 class="section-title">Real Savings, Real Numbers</h2>
+      <p class="section-sub">See how Azure Hybrid Benefit and Next-Gen GP dramatically reduce your costs. Based on 96 vCores, SQL EE license.</p>
+    </div>
+
+    <!-- AHB Impact -->
+    <div class="reveal"><h3 style="font-size:1.05rem;margin-bottom:1.25rem;">Azure Hybrid Benefit Impact (Business Critical Tier)</h3></div>
+    <div class="cost-bars reveal" style="transition-delay:.08s">
+      <div class="cb-item"><div class="cb-label">Without AHB</div><div class="cb-track"><div class="cb-fill no-ahb" data-width="100">$121,658/mo</div></div></div>
+      <div class="cb-item"><div class="cb-label">With AHB</div><div class="cb-track"><div class="cb-fill ahb" data-width="57"><span>$69,098/mo</span><span class="save-badge">Save 43%</span></div></div></div>
+    </div>
+
+    <!-- BC vs Next-Gen -->
+    <div class="reveal" style="margin-top:2.5rem;"><h3 style="font-size:1.05rem;margin-bottom:1.25rem;">Business Critical vs. Next-Gen GP (Both with AHB)</h3></div>
+    <div class="cost-bars reveal" style="transition-delay:.08s">
+      <div class="cb-item"><div class="cb-label">Business Critical</div><div class="cb-track"><div class="cb-fill ahb" data-width="100">$69,098/mo</div></div></div>
+      <div class="cb-item"><div class="cb-label">Next-Gen GP</div><div class="cb-track"><div class="cb-fill nextgen" data-width="50"><span>$34,479/mo</span><span class="save-badge">Save 50%</span></div></div></div>
+    </div>
+
+    <!-- Savings levers -->
+    <div class="sav-grid reveal" style="margin-top:2.5rem;">
+      <div class="sav-card"><h4>Azure Hybrid Benefit</h4><div class="amt blue">Up to 55%</div><div class="det">with existing SQL licenses</div></div>
+      <div class="sav-card"><h4>Reserved Capacity</h4><div class="amt green">Up to 33%</div><div class="det">with 1- or 3-year commitment</div></div>
+      <div class="sav-card"><h4>AHB + Reserved</h4><div class="amt blue">Up to 82%</div><div class="det">maximum combined savings</div></div>
+      <div class="sav-card"><h4>Dev/Test Pricing</h4><div class="amt green">Up to 55%</div><div class="det">with Visual Studio subscription</div></div>
+      <div class="sav-card"><h4>License-Free Standby</h4><div class="amt blue">Free</div><div class="det">secondary DR deployment</div></div>
+    </div>
+
+    <!-- Savings Plan -->
+    <div class="sp-visual reveal" style="margin-top:2rem;">
+      <h3>Savings Plan for Databases</h3>
+      <p>A flexible way to save up to <strong>35%</strong> by committing to a fixed hourly spend across database services globally for 1 year. Usage within your commitment gets lower prices; anything above is billed at standard pay-as-you-go rates. No cancellation required.</p>
+      <div style="display:flex;gap:2rem;flex-wrap:wrap;margin-top:1rem;">
+        <div style="flex:1;min-width:200px;background:#f5f5f5;border-radius:10px;padding:1rem;text-align:center;">
+          <div style="font-size:1.6rem;font-weight:700;color:#0078d4;">Up to 35%</div>
+          <div style="font-size:.82rem;color:#555;">savings vs. pay-as-you-go</div>
+        </div>
+        <div style="flex:1;min-width:200px;background:#f5f5f5;border-radius:10px;padding:1rem;text-align:center;">
+          <div style="font-size:1.6rem;font-weight:700;color:#107c10;">Global</div>
+          <div style="font-size:.82rem;color:#555;">applies across regions &amp; services</div>
+        </div>
+        <div style="flex:1;min-width:200px;background:#f5f5f5;border-radius:10px;padding:1rem;text-align:center;">
+          <div style="font-size:1.6rem;font-weight:700;color:#d29200;">1 Year</div>
+          <div style="font-size:.82rem;color:#555;">commitment term</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Customer Stories (from visible slide 18 only) -->
+<section id="stories" style="background:#fff;">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Customer Success</span>
+      <h2 class="section-title">Real Customers, Real Results</h2>
+      <p class="section-sub">Organizations across industries have modernized to Azure SQL Managed Instance.</p>
+    </div>
+    <div class="stories">
+      <div class="story reveal">
+        <h4>Komatsu</h4>
+        <div class="tag">Efficient operations</div>
+        <p style="font-size:.88rem;color:#444;margin-bottom:.75rem;">Modernized to the cloud for efficient business operations, consolidating construction and machine data into a single source of truth.</p>
+        <div class="quote">"We determined Azure SQL Managed Instance was the best choice for us in terms of scalability, cost, and performance. We've seen a 49 percent cost reduction and 25 to 30 percent performance gains."<div class="attr">&mdash; Nipun Sharma, Analytics Architect</div></div>
+      </div>
+      <div class="story reveal" style="transition-delay:.07s">
+        <h4>Trane Technologies</h4>
+        <div class="tag">Cloud scale &amp; reliability</div>
+        <p style="font-size:.88rem;color:#444;margin-bottom:.75rem;">Enabled cloud-scale reliability for data storage and high-volume transaction processing.</p>
+        <div class="quote">"Azure SQL Managed Instance was the only data store that could hold our data and process the number of transactions that we have."<div class="attr">&mdash; Minh Duong, Customer Hub Senior Manager</div></div>
+      </div>
+      <div class="story reveal" style="transition-delay:.14s">
+        <h4>Costco</h4>
+        <div class="tag">IaaS to PaaS migration</div>
+        <p style="font-size:.88rem;color:#444;margin-bottom:.75rem;">Migrated from IaaS to PaaS, unlocking cost savings through automated infrastructure maintenance, upgrades, and application management.</p>
+        <div class="quote">"We're reconfiguring our environment to move from IaaS to a PaaS model, so that we can really take advantage of cost savings around infrastructure maintenance, upgrades, and app installs&mdash;all now automated."<div class="attr">&mdash; Kristina Wilson, IT Manager, Client Applications</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Migration Tools -->
+<section id="migrate">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Migration &amp; Assessment</span>
+      <h2 class="section-title">Where to Get Started</h2>
+      <p class="section-sub">Multiple entry points for discovering, assessing, and migrating your SQL workloads to Azure.</p>
+    </div>
+    <div class="tools-grid">
+      <div class="tool-card reveal"><div class="tool-ico">&#128270;</div><h4>Azure Arc</h4><p>Discover and assess SQL workloads at scale. Free for all editions, SQL Server 2012+.</p></div>
+      <div class="tool-card reveal" style="transition-delay:.05s"><div class="tool-ico">&#128506;</div><h4>Azure Migrate</h4><p>Central hub for datacenter migration with end-to-end tracking and insights.</p></div>
+      <div class="tool-card reveal" style="transition-delay:.1s"><div class="tool-ico">&#128259;</div><h4>Azure DMS</h4><p>Database Migration Service for seamless, connected migration to Azure.</p></div>
+      <div class="tool-card reveal" style="transition-delay:.15s"><div class="tool-ico">&#128187;</div><h4>SSMS 21</h4><p>New extension to assess and migrate to Azure SQL VM directly from SSMS.</p></div>
+    </div>
+
+    <!-- Arc Assessment -->
+    <div class="arc-box reveal" style="margin-top:2rem;">
+      <h3>SQL Migration Assessment with Azure Arc</h3>
+      <p style="font-size:.92rem;opacity:.9;">Assessment is baked in when you enable SQL Server with Azure Arc&mdash;comprehensive, actionable, and always up to date.</p>
+      <div class="arc-features">
+        <div class="arc-feat"><strong>Enabled by Default</strong><p>Assessment runs automatically when you Arc-enable SQL Server.</p></div>
+        <div class="arc-feat"><strong>Comprehensive &amp; Actionable</strong><p>Evaluate readiness for Azure SQL, identify risks with mitigation actions.</p></div>
+        <div class="arc-feat"><strong>Best-Fit Recommendations</strong><p>Guidance on IaaS vs. PaaS, service tier, sizing, and migration tooling.</p></div>
+        <div class="arc-feat"><strong>Continuous Reporting</strong><p>Discovery and readiness reports are instant, automatic, and ongoing.</p></div>
+      </div>
+      <div class="arc-free">Free for all customers &bull; All SQL editions &bull; SQL Server 2012+</div>
+    </div>
+
+    <!-- Azure Migrate Hub -->
+    <div class="cmp-wrap reveal" style="margin-top:2rem;">
+      <h3 style="font-size:1.1rem;margin-bottom:.75rem;">Azure Migrate: Central Hub for Datacenter Migration</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;">
+        <div><h4 style="font-size:.92rem;color:#0078d4;margin-bottom:.3rem;">Assess &amp; Migrate SQL</h4><p style="font-size:.85rem;color:#555;">Assess on-premises databases and get a full report with best-fit Azure SQL platform recommendations.</p></div>
+        <div><h4 style="font-size:.92rem;color:#107c10;margin-bottom:.3rem;">Multiple Scenarios</h4><p style="font-size:.85rem;color:#555;">Migrate Windows/Linux servers, databases, data, web apps, and virtual desktops.</p></div>
+        <div><h4 style="font-size:.92rem;color:#d29200;margin-bottom:.3rem;">Diverse Capabilities</h4><p style="font-size:.85rem;color:#555;">Comprehensive discovery, assessment, and migration powered by Azure and third-party tools.</p></div>
+        <div><h4 style="font-size:.92rem;color:#8661c5;margin-bottom:.3rem;">Centralized Visibility</h4><p style="font-size:.85rem;color:#555;">Centralized migration repository with end-to-end tracking and insights.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ESU -->
+<section id="esu" style="background:#fff;">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Extended Security Updates</span>
+      <h2 class="section-title">ESU: A Secure Bridge While You Modernize</h2>
+      <p class="section-sub">Unified management for all end-of-support SQL workloads in the Azure Portal.</p>
+    </div>
+    <div class="esu-grid reveal">
+      <div class="esu-item"><div class="dot"></div><p><strong>Pay-as-you-go billing</strong>&mdash;no upfront commitment</p></div>
+      <div class="esu-item"><div class="dot"></div><p><strong>Stop paying when done</strong>&mdash;charges end immediately when disabled</p></div>
+      <div class="esu-item"><div class="dot"></div><p><strong>Ideal for short-term needs</strong>&mdash;migrations, refactoring, decommissioning</p></div>
+      <div class="esu-item"><div class="dot"></div><p><strong>Centralized visibility</strong>&mdash;ESU status across all servers</p></div>
+      <div class="esu-item"><div class="dot"></div><p><strong>Policy-based enablement</strong>&mdash;reduces manual overhead at scale</p></div>
+      <div class="esu-item"><div class="dot"></div><p><strong>Future-ready foundation</strong>&mdash;security, governance &amp; modernization</p></div>
+    </div>
+    <div class="price-card reveal" style="transition-delay:.1s">
+      <h3 style="font-size:1.1rem;margin-bottom:.75rem;">ESU Pricing</h3>
+      <p style="font-size:.88rem;color:#555;margin-bottom:1rem;">Consistent pricing at 100% of full annual license price. Per 2-core pack (minimum 4 cores). No price increase from SQL 2014 ESUs.</p>
+      <table class="price-tbl">
+        <thead><tr><th>Environment</th><th>SQL 2014 ESU</th><th>SQL 2016 ESU</th></tr></thead>
+        <tbody>
+          <tr><td>On-premises</td><td><span class="tag-paid">Paid</span></td><td><span class="tag-paid">Paid</span></td></tr>
+          <tr><td>Multi-cloud</td><td><span class="tag-paid">Paid</span></td><td><span class="tag-paid">Paid</span></td></tr>
+          <tr><td>Azure VMs / Dedicated Host</td><td><span class="tag-free">Free</span></td><td><span class="tag-paid">Paid</span></td></tr>
+          <tr><td>Azure Local</td><td><span class="tag-free">Free</span></td><td><span class="tag-paid">Paid</span></td></tr>
+          <tr><td>Azure VMware / Nutanix</td><td><span class="tag-free">Free</span></td><td><span class="tag-paid">Paid</span></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:1rem;padding:.75rem;background:#fff4ce;border-radius:8px;font-size:.85rem;">
+        <strong>Key change:</strong> SQL 2016 ESUs are now paid across all environments, including Azure VMs&mdash;creating consistent pricing.
+        <br>List price: <strong>Standard $3,353/yr</strong> &middot; <strong>Enterprise $12,854/yr</strong> &middot; Same price across all 3 years.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Arc-Enabled SQL -->
+<section id="arc">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Azure Arc</span>
+      <h2 class="section-title">Arc-Enabled SQL Server</h2>
+      <p class="section-sub">Extend Azure management and security to your SQL Server instances anywhere&mdash;on-premises, multi-cloud, or in Azure.</p>
+    </div>
+    <div class="arc-tbl-wrap reveal">
+      <table class="arc-tbl">
+        <thead><tr><th>Capability</th><th>SQL Server (standalone)</th><th>Arc-Enabled SQL Server</th><th>SQL Server on Azure VM</th></tr></thead>
+        <tbody>
+          <tr><td>Pay-as-you-go billing</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+          <tr><td>Microsoft Entra ID auth</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+          <tr><td>Best practices assessment</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+          <tr><td>Inventory management</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+          <tr><td>Auto patching</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+          <tr><td>Auto backup</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+          <tr><td>Monitoring</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+          <tr><td>Defender for SQL Server</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+          <tr><td>TDE with Azure Key Vault</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+          <tr><td>HA/DR inventory management</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+          <tr><td>License compliance management</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+          <tr><td>Cluster-aware patching</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+          <tr><td>Purview Premium</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+          <tr><td>Point-in-time restore</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+          <tr><td>Backup LTR to Azure</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- SQL Server 2025 -->
+<section id="sql2025" style="background:#fff;">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Option 2: Upgrade</span>
+      <h2 class="section-title">Top 5 Reasons to Upgrade to SQL Server 2025</h2>
+      <p class="section-sub">The most secure, performant, and AI-ready SQL Server ever.</p>
+    </div>
+    <div class="reasons-list">
+      <div class="reason-item reveal"><h4>Industry-Leading Security</h4><p>Fewest vulnerabilities of any major database&mdash;62 CVEs vs. 1,193 for MySQL, 198 for Oracle, 195 for PostgreSQL (NIST NVD 2016&ndash;2025).</p></div>
+      <div class="reason-item reveal" style="transition-delay:.04s"><h4>Built-In AI &amp; Vector Search</h4><p>Native vector capabilities for semantic search&mdash;no third-party tools required.</p></div>
+      <div class="reason-item reveal" style="transition-delay:.08s"><h4>Modern Developer Workflows</h4><p>Streamlined tooling to build modern data applications faster than ever.</p></div>
+      <div class="reason-item reveal" style="transition-delay:.12s"><h4>Frictionless Analytics via Fabric</h4><p>Direct integration with Microsoft Fabric for unified analytics at any scale.</p></div>
+      <div class="reason-item reveal" style="transition-delay:.16s"><h4>Flexible Deployment</h4><p>Run in Azure or on-premises&mdash;same capabilities, your choice of environment.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Interactive Decision Tree -->
+<section id="decide">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Interactive Guide</span>
+      <h2 class="section-title">Find Your Best Path</h2>
+      <p class="section-sub">Answer a few questions to find the right SQL Server 2016 end-of-support option.</p>
+    </div>
+    <div class="dt-wrap reveal" id="decisionTree"></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section style="background:#fff;">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">FAQ</span>
+      <h2 class="section-title">Frequently Asked Questions</h2>
+    </div>
+    <div class="accordion reveal">
+      <div class="acc-item">
+        <div class="acc-hdr">What happens after July 14, 2026? <span class="chev">&#9660;</span></div>
+        <div class="acc-body"><div class="acc-inner">Microsoft stops providing security updates for SQL Server 2016. No more critical or important patches, leaving databases vulnerable to newly discovered threats and potentially out of compliance.</div></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-hdr">Are ESUs free on Azure VMs for SQL 2016? <span class="chev">&#9660;</span></div>
+        <div class="acc-body"><div class="acc-inner">No. Unlike SQL Server 2014, ESU for SQL Server 2016 is <strong>paid across all environments</strong>&mdash;including Azure VMs, Azure Local, and Azure VMware Solution. This creates consistent pricing across all channels.</div></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-hdr">What is the Savings Plan for Databases? <span class="chev">&#9660;</span></div>
+        <div class="acc-body"><div class="acc-inner">A flexible way to save up to 35% by committing to a fixed hourly dollar amount on database services for 1 year. Savings apply globally across participating services. It's ideal for dynamic workloads where usage varies. For stable workloads, Azure Reservations can save up to 55%.</div></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-hdr">What is Azure Hybrid Benefit? <span class="chev">&#9660;</span></div>
+        <div class="acc-body"><div class="acc-inner">Azure Hybrid Benefit lets you use your existing on-premises SQL Server licenses with Software Assurance in Azure, saving up to 55%. Azure is the <strong>only cloud</strong> that allows you to bring your SQL license to PaaS (Managed Instance). Combine with Reserved Capacity for savings up to 82%.</div></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-hdr">Can I use Azure Arc for ESU if I'm not in Azure? <span class="chev">&#9660;</span></div>
+        <div class="acc-body"><div class="acc-inner">Yes! Azure Arc lets you enroll and purchase ESUs directly in the Azure Portal for on-premises and multi-cloud servers. You get pay-as-you-go billing, centralized visibility, and can stop charges immediately when no longer needed.</div></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-hdr">What is Next-Gen General Purpose? <span class="chev">&#9660;</span></div>
+        <div class="acc-body"><div class="acc-inner">Next-Gen GP is a new Azure SQL Managed Instance tier that uses premium managed disks instead of page blobs. It delivers 3&ndash;5x better performance for OLTP and analytical workloads, 5x better database density, 2x storage scale, and 2x improved vCore flexibility&mdash;all at the General Purpose price point.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p><strong>Microsoft</strong> &bull; SQL Server 2016 End of Support &mdash; Customer Guide</p>
+  <p style="margin-top:.5rem;opacity:.7;">Find lifecycle support deadlines at support.microsoft.com/lifecycle</p>
+</footer>
+
+<script>
+// Countdown
+(function(){
+  const eol=new Date('2026-07-14T00:00:00').getTime();
+  function u(){const n=Date.now(),d=eol-n;if(d<=0){document.getElementById('cd-d').textContent='0';return;}
+  document.getElementById('cd-d').textContent=Math.floor(d/864e5);
+  document.getElementById('cd-h').textContent=Math.floor((d%864e5)/36e5);
+  document.getElementById('cd-m').textContent=Math.floor((d%36e5)/6e4);
+  document.getElementById('cd-s').textContent=Math.floor((d%6e4)/1e3);}
+  u();setInterval(u,1000);
+})();
+
+// Scroll reveal
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:.12,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Cost bars
+const barObs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.querySelectorAll('.cb-fill').forEach(b=>{b.style.width=b.dataset.width+'%';});barObs.unobserve(x.target);}});},{threshold:.25});
+document.querySelectorAll('.cost-bars').forEach(el=>barObs.observe(el));
+
+// Nav + progress
+const nav=document.getElementById('nav'),pb=document.getElementById('progressBar');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',scrollY>10);const h=document.documentElement.scrollHeight-innerHeight;pb.style.width=(scrollY/h*100)+'%';});
+
+// Accordion
+document.querySelectorAll('.acc-hdr').forEach(h=>{h.addEventListener('click',()=>{
+  const item=h.parentElement,body=item.querySelector('.acc-body'),isOpen=item.classList.contains('open');
+  document.querySelectorAll('.acc-item.open').forEach(i=>{i.classList.remove('open');i.querySelector('.acc-body').style.maxHeight='0';});
+  if(!isOpen){item.classList.add('open');body.style.maxHeight=body.scrollHeight+'px';}
+});});
+
+// Decision Tree
+const tree={id:'s',question:'Can your workload migrate to Azure?',choices:[
+  {label:'Yes, move to Azure',next:{id:'t',question:'Do you prefer PaaS (fully managed) or IaaS (VM-based)?',choices:[
+    {label:'PaaS (Managed Instance)',next:{id:'r1',result:{type:'green',title:'Modernize to Azure SQL Managed Instance',desc:'Best long-term option. Fully managed, always up to date, with the best cost savings. Consider Next-Gen GP for even better performance at lower cost.'}}},
+    {label:'IaaS (Azure VMs)',next:{id:'u',question:'Can you upgrade to a newer SQL Server version on Azure VMs?',choices:[
+      {label:'Yes',next:{id:'r2',result:{type:'green',title:'Upgrade to SQL Server 2025 on Azure VM',desc:'Latest features including AI and vector search. Use Azure Hybrid Benefit to maximize savings. No ESU cost needed.'}}},
+      {label:'Not yet',next:{id:'r3',result:{type:'yellow',title:'Stay on SQL 2016 + Subscribe to ESU',desc:'ESU is paid on Azure VMs for SQL 2016. Subscribe via the Azure Portal. Plan a parallel pilot migration to SQL MI.'}}}
+    ]}}
+  ]}},
+  {label:'No, staying on-premises',next:{id:'v',question:'Can you upgrade to SQL Server 2025 on-premises?',choices:[
+    {label:'Yes',next:{id:'r4',result:{type:'green',title:'Upgrade to SQL Server 2025 On-Premises',desc:'Built-in AI, industry-leading security, Fabric integration. No ESU needed. Use Azure Arc for ongoing management.'}}},
+    {label:'Not yet',next:{id:'w',question:'How would you like to purchase ESU?',choices:[
+      {label:'Azure Arc (monthly, flexible)',next:{id:'r5',result:{type:'blue',title:'ESU via Azure Arc',desc:'Pay monthly, no upfront commitment, stop anytime. Enroll in Azure Portal. Centralized management across all servers.'}}},
+      {label:'Volume Licensing',next:{id:'r6',result:{type:'yellow',title:'ESU via Volume Licensing',desc:'100% of full annual license price. Standard: $3,353/yr, Enterprise: $12,854/yr per 2-core pack. Contact your Microsoft account team.'}}}
+    ]}}
+  ]}}
+]};
+
+function renderTree(){const c=document.getElementById('decisionTree');c.innerHTML='';renderNode(tree,c);}
+function renderNode(n,c){
+  if(n.result){const d=document.createElement('div');d.className='dt-result '+n.result.type;
+  d.innerHTML='<h4>'+n.result.title+'</h4><p>'+n.result.desc+'</p>';
+  const b=document.createElement('button');b.className='dt-restart';b.textContent='Start Over';b.onclick=renderTree;d.appendChild(b);c.appendChild(d);return;}
+  const d=document.createElement('div');d.className='dt-node question';d.innerHTML='<h4>'+n.question+'</h4>';
+  const ch=document.createElement('div');ch.className='dt-choices';
+  n.choices.forEach(o=>{const b=document.createElement('button');b.className='dt-choice';b.textContent=o.label;
+  b.onclick=()=>{d.classList.remove('question');d.style.opacity='.5';ch.querySelectorAll('button').forEach(x=>{x.style.opacity=x===b?'1':'.3';x.style.pointerEvents='none';});renderNode(o.next,c);};
+  ch.appendChild(b);});d.appendChild(ch);c.appendChild(d);
+}
+renderTree();
+</script>
+</body>
+</html>

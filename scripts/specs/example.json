@@ -1,0 +1,9 @@
+{
+  "id": "example-footer-note",
+  "description": "Example spec — NOT applied. Demonstrates adding a block before </body>. Copy this file, bump id, adjust block/glob/target to make a real site-wide edit, then run scripts/apply-template-change.py.",
+  "target": "before-body-close",
+  "glob": "**/*.html",
+  "block": "<!-- example block: nothing here by design -->",
+  "skip_redirect_stubs": true,
+  "skip_index": true
+}

@@ -1,0 +1,88 @@
+name: Stamp Accuracy Review Date
+
+# Post-merge stamper. When a pull request labelled `accuracy-review`
+# is merged into `main`, this workflow updates the
+# `smec:last-accuracy-check` meta tag on every HTML file the PR
+# touched to today's UTC date, then commits the change back. This
+# guarantees the recorded review date reflects the merge time, not
+# the time the Copilot coding agent first opened the PR — so a slow
+# review doesn't shorten the next 28-day cycle incorrectly.
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: stamp-accuracy-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  stamp:
+    # Only run when the PR was actually merged AND it carried the
+    # `accuracy-review` label. `pull_request: closed` also fires for
+    # closed-without-merge, which we ignore.
+    if: >-
+      github.event.pull_request.merged == true &&
+      contains(github.event.pull_request.labels.*.name, 'accuracy-review')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          # Need write access from the workflow token; default checkout
+          # depth is fine because we only commit on top of HEAD.
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Collect changed HTML files
+        id: changed
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          # Pull the file list from the PR via the API rather than
+          # diffing locally — the merge commit may include unrelated
+          # work and we want exactly what the PR changed.
+          gh api \
+            --paginate \
+            "repos/${{ github.repository }}/pulls/${PR_NUMBER}/files" \
+            --jq '.[].filename' \
+            | grep -E '\.html$' \
+            | sort -u \
+            > changed-html.txt || true
+          echo "Changed HTML files:"
+          cat changed-html.txt || true
+          if [ ! -s changed-html.txt ]; then
+            echo "no_html=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Stamp accuracy date
+        if: steps.changed.outputs.no_html != 'true'
+        run: |
+          # Pass the file list as positional args. xargs -r avoids
+          # invoking the script with no args if the file is empty
+          # (defensive; the prior step already guards this case).
+          xargs -r -a changed-html.txt python3 scripts/stamp-accuracy-date.py
+
+      - name: Commit any updates
+        if: steps.changed.outputs.no_html != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A -- '*.html'
+          if git diff --staged --quiet; then
+            echo "No accuracy-date changes to commit."
+          else
+            git commit -m "chore: stamp accuracy-review date for #${{ github.event.pull_request.number }} [skip ci]"
+            git push
+          fi

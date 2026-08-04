@@ -1,0 +1,69 @@
+name: Audit Site
+
+# Warn-only checks on PRs: broken external links, deprecated terminology,
+# accessibility issues. This workflow uploads JSON reports as artifacts
+# but is intentionally NOT in the required-checks list — results are
+# advisory until the false-positive rate is understood.
+
+on:
+  pull_request:
+    paths:
+      - "**/*.html"
+      - "scripts/audit-pages.py"
+      - "scripts/check-links.py"
+      - "scripts/check-deprecated-terms.py"
+      - "scripts/ensure-a11y.py"
+      - "scripts/terminology.json"
+      - ".github/workflows/audit-site.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: audit-site-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Inventory audit
+        run: python3 scripts/audit-pages.py
+
+      - name: Deprecated-terminology check
+        continue-on-error: true
+        run: python3 scripts/check-deprecated-terms.py --check
+
+      - name: Accessibility check
+        continue-on-error: true
+        run: python3 scripts/ensure-a11y.py --check
+
+      - name: External link check
+        continue-on-error: true
+        run: python3 scripts/check-links.py --check --timeout 12 --workers 16
+
+      # Record the PR number so audit-site-comment.yml can find it when
+      # it's triggered by workflow_run (which does not carry PR context).
+      - name: Record PR number
+        if: github.event_name == 'pull_request'
+        run: |
+          mkdir -p reports
+          echo "${{ github.event.pull_request.number }}" > reports/pr-number.txt
+
+      - name: Upload audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-reports
+          path: reports/*
+          if-no-files-found: ignore

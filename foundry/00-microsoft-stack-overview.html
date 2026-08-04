@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Microsoft App, AI &amp; Data Stack — A Top-to-Bottom Map</title>
+<!-- smec-accuracy v1 -->
+<meta name="smec:last-accuracy-check" content="2026-06-27">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #1a1a1a; background: #f6f8fc; line-height: 1.65; overflow-x: hidden;
+  }
+  a { color: #0078d4; text-decoration: none; transition: color .2s; }
+  a:hover { color: #005a9e; text-decoration: underline; }
+  h1, h2, h3, h4 { font-weight: 700; letter-spacing: -.01em; color: #0a1840; }
+  code {
+    font-family: 'Cascadia Code', 'Consolas', monospace; font-size: .86em;
+    background: #e8edf6; padding: .08em .4em; border-radius: 4px; color: #0a1840;
+  }
+
+  /* ── PROGRESS / NAV ── */
+  .progress {
+    position: fixed; top: 0; left: 0; height: 3px;
+    background: linear-gradient(90deg, #50e6ff, #0078d4, #5C2D91, #c19a00);
+    width: 0%; z-index: 9999; transition: width .1s;
+  }
+  nav.top {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,24,64,.94); backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    display: flex; align-items: center; height: 56px; padding: 0 2rem;
+    gap: 1.4rem; overflow-x: auto; white-space: nowrap;
+  }
+  nav.top::-webkit-scrollbar { display: none; }
+  nav.top .brand {
+    font-weight: 700; font-size: .98rem; color: #fff; margin-right: auto;
+    display: flex; align-items: center; gap: .6rem;
+  }
+  nav.top .brand-mark {
+    width: 22px; height: 22px; border-radius: 5px;
+    background: linear-gradient(135deg, #50e6ff, #5C2D91);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 800; font-size: .68rem;
+  }
+  nav.top a {
+    color: rgba(255,255,255,.7); font-size: .8rem; font-weight: 600;
+    padding: .4rem .75rem; border-radius: 6px; transition: all .2s;
+  }
+  nav.top a:hover, nav.top a.active { background: rgba(80,230,255,.15); color: #50e6ff; text-decoration: none; }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(180deg, #05050f 0%, #0a1840 50%, #1a0a3a 100%);
+    color: #fff; padding: 5rem 2rem 4rem; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 15% 30%, rgba(80,230,255,.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 70%, rgba(180,140,222,.12) 0%, transparent 55%);
+  }
+  .hero::after {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: linear-gradient(180deg, rgba(0,0,0,.7), transparent 75%);
+    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,.7), transparent 75%);
+  }
+  .hero .container { position: relative; z-index: 2; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+  .hero-grid {
+    display: grid; grid-template-columns: 1.05fr 1fr;
+    gap: 3rem; align-items: center;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: .55rem;
+    font-size: .76rem; letter-spacing: .15em; text-transform: uppercase;
+    background: rgba(255,255,255,.08); padding: .4rem .95rem;
+    border-radius: 999px; border: 1px solid rgba(80,230,255,.3);
+    margin-bottom: 1.4rem; color: #50e6ff; font-weight: 700;
+  }
+  .hero-eyebrow .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #50e6ff; box-shadow: 0 0 8px #50e6ff;
+    animation: blink 1.6s infinite;
+  }
+  @keyframes blink { 50% { opacity: .35; } }
+  .hero h1 {
+    color: #fff; font-size: clamp(2.2rem, 5vw, 3.8rem); line-height: 1.08;
+    margin-bottom: 1.1rem; letter-spacing: -.02em;
+  }
+  .hero h1 .accent {
+    background: linear-gradient(135deg, #50e6ff, #b48cde 70%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p.lede {
+    font-size: 1.1rem; color: rgba(255,255,255,.82);
+    max-width: 580px; margin-bottom: 1.5rem;
+  }
+  .hero-meta { display: flex; gap: .65rem; flex-wrap: wrap; margin-top: 1.5rem; }
+  .hero-meta .chip {
+    padding: .45rem .95rem; background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.18); border-radius: 999px;
+    font-size: .82rem; color: rgba(255,255,255,.92); font-weight: 600;
+  }
+  .hero-meta .chip strong { color: #50e6ff; }
+
+  /* ── HERO STACK SVG ── */
+  .stack-svg-wrap { position: relative; }
+  .stack-svg-wrap svg { width: 100%; height: auto; filter: drop-shadow(0 30px 50px rgba(0,0,0,.45)); }
+  .stack-caption {
+    text-align: center; font-style: italic; color: rgba(255,255,255,.55);
+    font-size: .82rem; margin-top: .85rem;
+  }
+  /* Make SVG slabs feel clickable */
+  .slab-link { cursor: pointer; transition: opacity .25s, transform .25s; }
+  .slab-link:hover { opacity: .82; transform: translateY(-2px); }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 0; position: relative; }
+  .section-tag {
+    display: inline-block; font-size: .72rem; letter-spacing: .14em;
+    text-transform: uppercase; font-weight: 800;
+    color: #0078d4; border: 1px solid #0078d4;
+    padding: .3rem .85rem; border-radius: 999px; margin-bottom: 1rem;
+  }
+  h2.section-title {
+    font-size: clamp(1.7rem, 3.2vw, 2.5rem); line-height: 1.15; margin-bottom: 1rem;
+  }
+  p.section-sub { font-size: 1.05rem; color: #4a5568; max-width: 820px; margin-bottom: 2.5rem; }
+
+  /* ── REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* ── LAYER ANCHOR SECTIONS ── */
+  .layers-wrap { display: grid; gap: 1.5rem; margin-top: 2.5rem; }
+  .layer-card {
+    background: #fff; border-radius: 16px; padding: 2rem 2rem 1.75rem;
+    box-shadow: 0 6px 22px -10px rgba(10,24,64,.18);
+    border-left: 6px solid var(--lc);
+    display: grid; grid-template-columns: 220px 1fr 1fr; gap: 1.8rem;
+    align-items: flex-start;
+  }
+  .layer-card .ord {
+    font-family: Georgia, serif; font-size: 4rem; font-weight: 800;
+    line-height: 1; color: var(--lc); opacity: .85;
+  }
+  .layer-card .ord small {
+    display: block; font-family: 'Segoe UI', sans-serif; font-size: .72rem;
+    font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+    color: #6a7593; margin-top: .35rem;
+  }
+  .layer-card h3 { font-size: 1.35rem; margin-bottom: .45rem; }
+  .layer-card .role {
+    font-style: italic; color: var(--lc); font-size: .85rem;
+    margin-bottom: .6rem; font-weight: 600;
+  }
+  .layer-card p { font-size: .92rem; color: #3b4570; line-height: 1.6; }
+  .layer-card .examples {
+    list-style: none; display: flex; flex-direction: column; gap: .35rem;
+    margin-top: .65rem;
+  }
+  .layer-card .examples li {
+    font-size: .85rem; color: #2a3760; padding-left: 1.1rem; position: relative;
+  }
+  .layer-card .examples li::before {
+    content: ''; position: absolute; left: 0; top: .55rem;
+    width: 7px; height: 7px; border-radius: 2px;
+    background: var(--lc); transform: rotate(45deg);
+  }
+  .layer-card .next {
+    background: #f4f7fc; border-radius: 10px; padding: 1rem 1.1rem;
+    display: flex; flex-direction: column; gap: .55rem;
+  }
+  .layer-card .next-title {
+    font-size: .68rem; font-weight: 800; letter-spacing: .1em;
+    text-transform: uppercase; color: #6a7593;
+  }
+  .layer-card .next a {
+    font-size: .88rem; font-weight: 600; color: var(--lc);
+    padding: .35rem .55rem; border-radius: 6px;
+    background: var(--lc-soft); border: 1px solid var(--lc-mid);
+    display: inline-flex; align-items: center; gap: .35rem;
+    width: fit-content; transition: all .2s;
+  }
+  .layer-card .next a:hover { background: var(--lc); color: #fff; text-decoration: none; }
+  .layer-card .next .learn {
+    font-size: .8rem; color: #4a5568;
+  }
+
+  .layer-card.l5 { --lc: #0078d4; --lc-soft: #e8f4fd; --lc-mid: #b4d6f4; }
+  .layer-card.l4 { --lc: #5C2D91; --lc-soft: #f3effa; --lc-mid: #d8cce8; }
+  .layer-card.l3 { --lc: #c19a00; --lc-soft: #fff8e1; --lc-mid: #ffe082; }
+  .layer-card.l2 { --lc: #008575; --lc-soft: #e0f5f2; --lc-mid: #b8e6dd; }
+  .layer-card.l1 { --lc: #4a5c8a; --lc-soft: #eef0f8; --lc-mid: #c4cde0; }
+
+  /* ── CROSS-CUTTING RAILS ── */
+  .rails-section { background: #0a1840; color: #fff; }
+  .rails-section h2.section-title { color: #fff; }
+  .rails-section p.section-sub { color: rgba(255,255,255,.7); }
+  .rails-section .section-tag { color: #50e6ff; border-color: #50e6ff; }
+  .rails-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2.5rem;
+  }
+  .rail-card {
+    background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12);
+    border-top: 4px solid var(--rc); border-radius: 14px; padding: 1.9rem;
+    backdrop-filter: blur(8px); transition: transform .3s;
+  }
+  .rail-card:hover { transform: translateY(-4px); }
+  .rail-card.r1 { --rc: #50e6ff; }
+  .rail-card.r2 { --rc: #fbbf24; }
+  .rail-card h3 { color: #fff; font-size: 1.2rem; margin-bottom: .35rem; }
+  .rail-card .rsub { color: var(--rc); font-size: .85rem; font-weight: 600; margin-bottom: 1rem; }
+  .rail-card ul { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+  .rail-card li {
+    font-size: .9rem; color: rgba(255,255,255,.82); line-height: 1.55;
+    padding-left: 1.2rem; position: relative;
+  }
+  .rail-card li::before {
+    content: '▸'; position: absolute; left: 0; color: var(--rc); font-weight: 700;
+  }
+  .rail-card li strong { color: #fff; }
+  .rail-card .learn-row { margin-top: 1.1rem; }
+  .rail-card .learn-row a {
+    color: var(--rc); font-size: .85rem; font-weight: 600;
+  }
+
+  /* ── TRACE / WALKTHROUGH ── */
+  .trace-section { background: #fff; }
+  .trace-intro {
+    background: linear-gradient(135deg, #f6f8fc, #fff);
+    border: 1px solid #e1e7f2; border-radius: 14px;
+    padding: 1.5rem 1.75rem; margin: 1.5rem 0 2.5rem;
+    font-size: 1rem; color: #2a3760; max-width: 880px;
+  }
+  .trace-intro strong { color: #0a1840; }
+  .trace-grid {
+    display: grid; grid-template-columns: repeat(6, 1fr);
+    gap: .8rem; margin-top: 1rem;
+  }
+  .trace-step {
+    background: #f8faff; border: 1px solid #e1e7f2;
+    border-radius: 12px; padding: 1.25rem 1rem;
+    border-top: 4px solid var(--ts); position: relative;
+    transition: transform .3s, box-shadow .3s;
+  }
+  .trace-step:hover { transform: translateY(-4px); box-shadow: 0 8px 20px -8px rgba(10,24,64,.18); }
+  .trace-step .num {
+    font-family: Georgia, serif; font-size: 1.6rem; font-weight: 800;
+    color: var(--ts); line-height: 1;
+  }
+  .trace-step h5 {
+    font-size: .98rem; margin: .35rem 0 .4rem; color: #0a1840;
+  }
+  .trace-step p { font-size: .8rem; color: #4a5568; line-height: 1.5; }
+  .trace-step .meta {
+    margin-top: .55rem; padding-top: .55rem;
+    border-top: 1px dashed #d8e0ee;
+    font-size: .72rem; color: #6a7593; font-weight: 600;
+  }
+  .trace-step .meta code { font-size: .72rem; background: #eaf1fb; }
+  .trace-step.t1 { --ts: #0078d4; }
+  .trace-step.t2 { --ts: #5C2D91; }
+  .trace-step.t3 { --ts: #0078d4; }
+  .trace-step.t4 { --ts: #c19a00; }
+  .trace-step.t5 { --ts: #008575; }
+  .trace-step.t6 { --ts: #4a5c8a; }
+  .trace-net {
+    margin-top: 2rem; padding: 1.4rem 1.6rem;
+    background: linear-gradient(135deg, #f3effa, #fff);
+    border: 1px solid #d8cce8; border-left: 4px solid #5C2D91;
+    border-radius: 10px; font-style: italic; color: #2a3760;
+    max-width: 900px; font-size: .98rem;
+  }
+
+  /* ── PERSONA ROUTES ── */
+  .persona-section { background: #f0f4fb; }
+  .persona-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.2rem; margin-top: 2.5rem;
+  }
+  .persona-card {
+    background: #fff; border-radius: 14px; padding: 1.6rem 1.4rem;
+    box-shadow: 0 4px 16px -8px rgba(10,24,64,.15);
+    border-top: 5px solid var(--pc); transition: transform .3s;
+    display: flex; flex-direction: column;
+  }
+  .persona-card:hover { transform: translateY(-5px); }
+  .persona-card.p1 { --pc: #0078d4; }
+  .persona-card.p2 { --pc: #5C2D91; }
+  .persona-card.p3 { --pc: #c19a00; }
+  .persona-card.p4 { --pc: #008575; }
+  .persona-card.p5 { --pc: #d13438; }
+  .persona-emoji { font-size: 1.8rem; margin-bottom: .5rem; }
+  .persona-card h4 { font-size: 1.05rem; color: #0a1840; margin-bottom: .25rem; }
+  .persona-card .who {
+    font-size: .82rem; color: var(--pc); font-weight: 600;
+    margin-bottom: .75rem;
+  }
+  .persona-card p.route {
+    font-size: .85rem; color: #3b4570; line-height: 1.55; flex: 1;
+    margin-bottom: 1rem;
+  }
+  .persona-card .links {
+    display: flex; flex-direction: column; gap: .35rem; margin-top: auto;
+  }
+  .persona-card .links a {
+    font-size: .82rem; font-weight: 600; color: var(--pc);
+    padding: .35rem .55rem; border-radius: 6px;
+    background: rgba(0,0,0,.03); border-left: 3px solid var(--pc);
+    display: inline-flex; align-items: center; gap: .35rem;
+    transition: all .2s;
+  }
+  .persona-card .links a:hover { background: var(--pc); color: #fff; text-decoration: none; }
+
+  /* ── GLOSSARY ACCORDION ── */
+  .glossary-section { background: #fff; }
+  .glossary-list { margin-top: 2.5rem; display: flex; flex-direction: column; gap: .55rem; }
+  details.gl {
+    background: #f8faff; border: 1px solid #e1e7f2; border-radius: 10px;
+    padding: 0; transition: background .2s, border-color .2s;
+  }
+  details.gl[open] { background: #fff; border-color: #b4d6f4; box-shadow: 0 4px 16px -8px rgba(10,24,64,.12); }
+  details.gl > summary {
+    list-style: none; cursor: pointer; padding: .95rem 1.2rem;
+    display: flex; align-items: center; gap: .85rem;
+    font-weight: 700; color: #0a1840; font-size: .95rem;
+  }
+  details.gl > summary::-webkit-details-marker { display: none; }
+  details.gl > summary::after {
+    content: '+'; margin-left: auto; font-size: 1.4rem;
+    color: #0078d4; font-weight: 400; line-height: 1; transition: transform .25s;
+  }
+  details.gl[open] > summary::after { content: '−'; transform: rotate(0); }
+  details.gl .term-cat {
+    font-size: .62rem; font-weight: 800; letter-spacing: .08em;
+    text-transform: uppercase; padding: .15rem .5rem; border-radius: 4px;
+    background: #e8edf6; color: #4a5c8a;
+  }
+  details.gl[data-cat="data"] .term-cat { background: #e0f5f2; color: #008575; }
+  details.gl[data-cat="ai"] .term-cat { background: #fff8e1; color: #c19a00; }
+  details.gl[data-cat="agent"] .term-cat { background: #f3effa; color: #5C2D91; }
+  details.gl[data-cat="platform"] .term-cat { background: #e8f4fd; color: #0078d4; }
+  details.gl[data-cat="security"] .term-cat { background: #fde7e9; color: #d13438; }
+  details.gl .body {
+    padding: 0 1.2rem 1.1rem 1.2rem; font-size: .9rem;
+    color: #3b4570; line-height: 1.6;
+  }
+  details.gl .body code { background: #eaf1fb; }
+  details.gl .body .where {
+    margin-top: .6rem; font-size: .82rem; color: #6a7593;
+  }
+  details.gl .body .where a { font-weight: 600; }
+
+  /* ── RELATED INFOGRAPHICS FOOTER GRID ── */
+  .related-section {
+    background: linear-gradient(135deg, #0a1840 0%, #1a0a3a 60%, #2a0a40 100%);
+    color: #fff; padding: 5rem 0;
+  }
+  .related-section h2.section-title { color: #fff; }
+  .related-section p.section-sub { color: rgba(255,255,255,.7); }
+  .related-section .section-tag { color: #50e6ff; border-color: #50e6ff; }
+  .related-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.2rem; margin-top: 2.5rem;
+  }
+  .related-card {
+    background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12);
+    border-radius: 14px; padding: 1.6rem; transition: all .3s;
+    display: block; color: inherit;
+  }
+  .related-card:hover {
+    transform: translateY(-4px); background: rgba(80,230,255,.08);
+    border-color: rgba(80,230,255,.4); text-decoration: none;
+  }
+  .related-card .eyebrow {
+    font-size: .68rem; font-weight: 800; letter-spacing: .12em;
+    text-transform: uppercase; color: #50e6ff; margin-bottom: .55rem;
+  }
+  .related-card h4 { color: #fff; font-size: 1.05rem; margin-bottom: .45rem; }
+  .related-card p { color: rgba(255,255,255,.7); font-size: .85rem; line-height: 1.5; }
+  .related-card .arrow { color: #50e6ff; font-weight: 700; font-size: .85rem; margin-top: .9rem; display: inline-block; }
+
+  /* ── FOOTER ── */
+  footer.page-footer {
+    background: #05050f; color: rgba(255,255,255,.7); padding: 2.5rem 2rem 2rem;
+    text-align: center; border-top: 1px solid rgba(255,255,255,.06);
+  }
+  footer.page-footer p { color: rgba(255,255,255,.55); font-size: .82rem; max-width: 760px; margin: .35rem auto; }
+  footer.page-footer a { color: #50e6ff; }
+  footer.page-footer .brand-mark {
+    font-size: 1rem; color: #fff; margin-bottom: .6rem; font-weight: 700;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 980px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .layer-card { grid-template-columns: 1fr; gap: 1rem; }
+    .layer-card .ord { font-size: 2.6rem; }
+    .rails-grid { grid-template-columns: 1fr; }
+    .trace-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .container { padding: 0 1.2rem; }
+    nav.top { padding: 0 1rem; gap: .6rem; }
+    section { padding: 3rem 0; }
+    .trace-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── SMEC BACK BUTTON (shared chrome) ── */
+  .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 0; min-width: 44px; height: 44px; padding: 0; border-radius: 22px;
+    background: rgba(0, 120, 212, 0.92); color: #fff; text-decoration: none;
+    font: 600 13px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+    opacity: 0;
+    animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+    transition:
+      padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+      gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+      background 0.35s ease 0s,
+      box-shadow 0.35s ease 0s;
+    overflow: hidden; white-space: nowrap; }
+  .smec-back-btn__icon { flex: 0 0 auto;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+  .smec-back-btn__label { max-width: 0; opacity: 0;
+    transition: opacity 0.18s ease 0s, max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+  .smec-back-btn:hover, .smec-back-btn:focus-visible {
+    gap: 10px; padding: 0 18px 0 12px;
+    background: rgba(0, 90, 158, 0.96); text-decoration: none;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+    transition:
+      padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+      gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+      background 0.35s ease 0s,
+      box-shadow 0.35s ease 0s; }
+  .smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .smec-back-btn:hover .smec-back-btn__icon,
+  .smec-back-btn:focus-visible .smec-back-btn__icon {
+    transform: translateX(-2px);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s; }
+  .smec-back-btn:hover .smec-back-btn__label,
+  .smec-back-btn:focus-visible .smec-back-btn__label {
+    max-width: 260px; opacity: 1;
+    transition: max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s, opacity 0.3s ease 0.3s; }
+  @keyframes smec-back-btn-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @media (hover: none) {
+    .smec-back-btn { gap: 10px; padding: 0 18px 0 12px; }
+    .smec-back-btn__label { max-width: 260px; opacity: 1; }
+  }
+  @media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
+<!-- smec-meta v1 -->
+<meta name="description" content="The Microsoft App, AI &amp; Data Stack — A Top-to-Bottom Map — an interactive entry-point infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:title" content="The Microsoft App, AI &amp; Data Stack — A Top-to-Bottom Map">
+<meta property="og:description" content="The Microsoft App, AI &amp; Data Stack — A Top-to-Bottom Map — an interactive entry-point infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sme-c-infographics.github.io/foundry/00-microsoft-stack-overview.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Microsoft App, AI &amp; Data Stack — A Top-to-Bottom Map">
+<meta name="twitter:description" content="The Microsoft App, AI &amp; Data Stack — A Top-to-Bottom Map — an interactive entry-point infographic from the SME&amp;C Infographic Hub.">
+<!-- smec-favicon v1 -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<style>/* smec-back-btn v2 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  box-sizing: border-box;
+  display: inline-flex; align-items: center; justify-content: flex-start;
+  gap: 8px; height: 40px; padding: 0 16px 0 12px; border-radius: 20px;
+  background: rgba(0, 120, 212, 0.92) !important; color: #fff !important;
+  text-decoration: none !important;
+  font: 600 14px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  transition:
+    padding 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto; display: inline-block;
+  width: 18px; height: 18px; }
+.smec-back-btn__label { display: inline-block; flex: 0 0 auto;
+  font: inherit; color: inherit; }
+.smec-back-btn__more { display: inline-block; max-width: 0; opacity: 0;
+  overflow: hidden; vertical-align: bottom;
+  font: inherit; color: inherit;
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.05s; }
+
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  background: rgba(0, 90, 158, 0.96) !important; color: #fff !important;
+  text-decoration: none !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22); }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__more,
+.smec-back-btn:focus-visible .smec-back-btn__more {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.25s ease 0.2s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn__more { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__more,
+  .smec-back-btn:hover .smec-back-btn__more,
+  .smec-back-btn:focus-visible .smec-back-btn__more {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<!-- smec-submitter v1 -->
+<meta name="smec:submitter" content="harryarce">
+</head>
+<body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v2" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
+
+<div class="progress" id="progress"></div>
+
+<nav class="top">
+  <span class="brand">
+    <span class="brand-mark">MS</span>
+    Microsoft Stack · Top to Bottom
+  </span>
+  <a href="#hero">Overview</a>
+  <a href="#layers">The 5 Layers</a>
+  <a href="#rails">Rails</a>
+  <a href="#trace">Trace a Prompt</a>
+  <a href="#personas">Start by Role</a>
+  <a href="#glossary">Glossary</a>
+  <a href="#related">Related</a>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<header class="hero" id="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <span class="hero-eyebrow"><span class="dot"></span> Entry-point infographic · May 2026</span>
+        <h1>One stack. Five layers. Two rails. <span class="accent">The whole Microsoft picture, top to bottom.</span></h1>
+        <p class="lede">New to Microsoft's AI and data platforms and not sure where things connect? Start here. This map traces every layer from the human at the top &mdash; M365 Copilot, Dynamics 365, Power Platform, custom apps, agents, models, data, infrastructure &mdash; with Identity and Governance running end-to-end. Click any layer to dive deeper into the dedicated infographic.</p>
+        <div class="hero-meta">
+          <span class="chip"><strong>5</strong> stack layers</span>
+          <span class="chip"><strong>2</strong> cross-cutting rails</span>
+          <span class="chip"><strong>5</strong> persona routes</span>
+          <span class="chip"><strong>1</strong> traced prompt journey</span>
+        </div>
+      </div>
+      <div class="stack-svg-wrap">
+        <svg viewBox="0 0 560 540" xmlns="http://www.w3.org/2000/svg" aria-label="Microsoft App, AI, and Data stack: 5 layers plus Identity and Governance rails">
+          <defs>
+            <linearGradient id="g5" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#0062AD"/><stop offset="100%" stop-color="#0078d4"/>
+            </linearGradient>
+            <linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#5C2D91"/><stop offset="100%" stop-color="#7B4DB5"/>
+            </linearGradient>
+            <linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#a07800"/><stop offset="100%" stop-color="#c19a00"/>
+            </linearGradient>
+            <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#006B5E"/><stop offset="100%" stop-color="#008575"/>
+            </linearGradient>
+            <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#3a4870"/><stop offset="100%" stop-color="#4a5c8a"/>
+            </linearGradient>
+            <linearGradient id="railIdent" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#50e6ff" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#50e6ff" stop-opacity="0.4"/>
+            </linearGradient>
+            <linearGradient id="railGov" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#fbbf24" stop-opacity="0.4"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Humans at top -->
+          <g>
+            <circle cx="280" cy="35" r="14" fill="#fff" opacity="0.9"/>
+            <text x="280" y="68" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="Segoe UI" font-size="10" letter-spacing="0.16em">PEOPLE &middot; HUMAN JUDGMENT</text>
+          </g>
+
+          <!-- Layer 5 -->
+          <a class="slab-link" href="#layer-5">
+            <rect x="90" y="90" width="380" height="62" rx="10" fill="url(#g5)"/>
+            <text x="280" y="118" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="15" font-weight="700">Apps &amp; Surfaces</text>
+            <text x="280" y="138" text-anchor="middle" fill="rgba(255,255,255,0.82)" font-family="Segoe UI" font-size="11">M365 Copilot &middot; Dynamics 365 &middot; Power Platform &middot; custom apps</text>
+          </a>
+
+          <!-- Layer 4 -->
+          <a class="slab-link" href="#layer-4">
+            <rect x="90" y="162" width="380" height="62" rx="10" fill="url(#g4)"/>
+            <text x="280" y="190" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="15" font-weight="700">Agentic Platform</text>
+            <text x="280" y="210" text-anchor="middle" fill="rgba(255,255,255,0.82)" font-family="Segoe UI" font-size="11">Copilot Studio &middot; Foundry Agent Service &middot; MCP</text>
+          </a>
+
+          <!-- Layer 3 -->
+          <a class="slab-link" href="#layer-3">
+            <rect x="90" y="234" width="380" height="62" rx="10" fill="url(#g3)"/>
+            <text x="280" y="262" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="15" font-weight="700">AI Platform &amp; Models</text>
+            <text x="280" y="282" text-anchor="middle" fill="rgba(255,255,255,0.82)" font-family="Segoe UI" font-size="11">Microsoft Foundry &middot; 1,900+ models &middot; AI Gateway</text>
+          </a>
+
+          <!-- Layer 2 -->
+          <a class="slab-link" href="#layer-2">
+            <rect x="90" y="306" width="380" height="62" rx="10" fill="url(#g2)"/>
+            <text x="280" y="334" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="15" font-weight="700">Data Platform</text>
+            <text x="280" y="354" text-anchor="middle" fill="rgba(255,255,255,0.82)" font-family="Segoe UI" font-size="11">Microsoft Fabric &middot; OneLake &middot; Power BI &middot; IQ</text>
+          </a>
+
+          <!-- Layer 1 -->
+          <a class="slab-link" href="#layer-1">
+            <rect x="90" y="378" width="380" height="62" rx="10" fill="url(#g1)"/>
+            <text x="280" y="406" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="15" font-weight="700">Infrastructure</text>
+            <text x="280" y="426" text-anchor="middle" fill="rgba(255,255,255,0.82)" font-family="Segoe UI" font-size="11">Azure &middot; AI Landing Zones &middot; networking &middot; compute</text>
+          </a>
+
+          <!-- LEFT RAIL — Identity -->
+          <rect x="40" y="90" width="34" height="350" rx="10" fill="url(#railIdent)" stroke="#50e6ff" stroke-width="1" opacity="0.85"/>
+          <text x="57" y="265" text-anchor="middle" fill="#05050f" font-family="Segoe UI" font-size="11" font-weight="800" letter-spacing="0.2em" transform="rotate(-90 57 265)">IDENTITY</text>
+
+          <!-- RIGHT RAIL — Governance -->
+          <rect x="486" y="90" width="34" height="350" rx="10" fill="url(#railGov)" stroke="#fbbf24" stroke-width="1" opacity="0.85"/>
+          <text x="503" y="265" text-anchor="middle" fill="#05050f" font-family="Segoe UI" font-size="11" font-weight="800" letter-spacing="0.2em" transform="rotate(90 503 265)">GOVERNANCE</text>
+
+          <!-- Earth at bottom -->
+          <g>
+            <text x="280" y="475" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="Segoe UI" font-size="10" letter-spacing="0.16em">GLOBAL AZURE DATACENTERS</text>
+            <ellipse cx="280" cy="498" rx="160" ry="18" fill="rgba(80,230,255,0.12)" stroke="rgba(80,230,255,0.3)"/>
+          </g>
+        </svg>
+        <p class="stack-caption">People at the top &mdash; infrastructure at the bottom &mdash; Identity and Governance running edge to edge. Click any slab to jump to its layer.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════ LAYERS DEEP DIVE ═══════════ -->
+<section id="layers">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">The Stack, Layer by Layer</span>
+      <h2 class="section-title">Five layers, top to bottom &mdash; each with its own dedicated map.</h2>
+      <p class="section-sub">Read each row left to right: where you are in the stack, what it does, what concrete Microsoft products live there, and where to go next for the deep-dive. Click the linked infographic on the right to explore that layer in detail.</p>
+    </div>
+
+    <div class="layers-wrap">
+
+      <!-- LAYER 5 -->
+      <div class="layer-card l5 reveal" id="layer-5">
+        <div class="ord">5<small>Apps &amp; Surfaces</small></div>
+        <div>
+          <h3>Where humans meet AI</h3>
+          <div class="role">The top of the stack &mdash; every app a person actually opens, from M365 to LOB to bespoke.</div>
+          <p>Microsoft 365 Copilot is embedded directly in Word, Excel, Outlook, Teams, and PowerPoint &mdash; but the surface layer is bigger than M365. <strong>Dynamics 365</strong> brings agents into Sales, Service, and Finance. <strong>Power Platform</strong> (Power Apps, Power Automate, Power Pages) lets makers ship low-code apps that consume the same agents and models. <strong>Custom apps</strong> hosted on Azure App Service, Container Apps, or AKS round out the picture for bespoke experiences.</p>
+          <ul class="examples">
+            <li>Microsoft 365 Copilot &middot; Copilot Chat &middot; Copilot Notebooks</li>
+            <li>Outlook &middot; Teams &middot; Word &middot; Excel &middot; PowerPoint</li>
+            <li>Dynamics 365 &middot; Power Apps &middot; Power Automate &middot; Power Pages</li>
+            <li>Custom apps on App Service / Container Apps / AKS</li>
+            <li>Powered by GPT-5, grounded via Microsoft Graph and Dataverse</li>
+          </ul>
+        </div>
+        <div class="next">
+          <div class="next-title">Go deeper</div>
+          <a href="microsoft-ai-decision-guide.html">Microsoft AI Decision Guide &rarr;</a>
+          <a href="frontier-firm-playbook.html">Frontier Firm Playbook &rarr;</a>
+          <div class="learn">Docs: <a href="https://learn.microsoft.com/en-us/copilot/microsoft-365/" target="_blank">Microsoft 365 Copilot</a></div>
+        </div>
+      </div>
+
+      <!-- LAYER 4 -->
+      <div class="layer-card l4 reveal" id="layer-4">
+        <div class="ord">4<small>Agentic Platform</small></div>
+        <div>
+          <h3>Where work gets automated</h3>
+          <div class="role">Where REST APIs become tools and processes become autonomous agents.</div>
+          <p><strong>Copilot Studio</strong> is the low-code path to autonomous agents &mdash; with human-in-the-loop controls, multi-channel deployment, and 1,000+ connectors. <strong>Foundry Agent Service</strong> (GA, Responses API) is the pro-code path. <strong>MCP</strong> (Model Context Protocol) is the wire format both speak when calling tools.</p>
+          <ul class="examples">
+            <li>Microsoft Copilot Studio &middot; Foundry Agent Service</li>
+            <li>Agent Builder in M365 &middot; Power Platform</li>
+            <li>MCP servers, A2A (Agent2Agent), tool calling</li>
+            <li>Agent evaluations &middot; Human-in-the-Loop &middot; Voice agents</li>
+          </ul>
+        </div>
+        <div class="next">
+          <div class="next-title">Go deeper</div>
+          <a href="ai-agent-anatomy.html">Anatomy of an AI Agent &rarr;</a>
+          <a href="microsoft-ai-decision-guide.html">Pick your AI platform &rarr;</a>
+          <div class="learn">Docs: <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/" target="_blank">Copilot Studio</a> &middot; <a href="https://learn.microsoft.com/en-us/azure/ai-foundry/agents/" target="_blank">Foundry Agent Service</a></div>
+        </div>
+      </div>
+
+      <!-- LAYER 3 -->
+      <div class="layer-card l3 reveal" id="layer-3">
+        <div class="ord">3<small>AI Platform &amp; Models</small></div>
+        <div>
+          <h3>Where intelligence is built</h3>
+          <div class="role">The model catalog, the gateway, and the lifecycle tools that turn raw LLMs into governed services.</div>
+          <p><strong>Microsoft Foundry</strong> (rebranded from Azure AI Foundry) gives you 1,900+ models &mdash; GPT-5.5, GPT-5.4 family, Mistral Large 3, Llama, Phi &mdash; with fine-tuning, evaluation, and observability. <strong>AI Gateway in Azure API Management</strong> is the front door: token-aware throttling, semantic caching, content safety, OAuth 2.1 for MCP, and PTU-first load balancing.</p>
+          <ul class="examples">
+            <li>Microsoft Foundry &middot; Foundry Tools (Azure AI Services)</li>
+            <li><!-- smec-keep-term -->Azure OpenAI Service<!-- /smec-keep-term --> (migration to Foundry recommended)</li>
+            <li>AI Gateway in APIM &middot; <code>llm-token-limit</code> &middot; semantic cache</li>
+            <li>Foundry Local (GA) for edge inference &middot; Continuous Evaluation</li>
+          </ul>
+        </div>
+        <div class="next">
+          <div class="next-title">Go deeper</div>
+          <a href="microsoft-ai-decision-guide.html">5-platform decision guide &rarr;</a>
+          <a href="ai-gateway-apim.html">AI Gateway in APIM &rarr;</a>
+          <div class="learn">Docs: <a href="https://learn.microsoft.com/en-us/azure/ai-foundry/" target="_blank">Microsoft Foundry</a> &middot; <a href="https://learn.microsoft.com/en-us/azure/api-management/genai-gateway-capabilities" target="_blank">AI Gateway capabilities</a></div>
+        </div>
+      </div>
+
+      <!-- LAYER 2 -->
+      <div class="layer-card l2 reveal" id="layer-2">
+        <div class="ord">2<small>Data Platform</small></div>
+        <div>
+          <h3>Where AI is grounded</h3>
+          <div class="role">The fabric that holds the truth your agents need to be useful and safe.</div>
+          <p><strong>Microsoft Fabric</strong> unifies data engineering, warehousing, real-time analytics, and Power BI on a single SaaS surface backed by <strong>OneLake</strong>. The <strong>Microsoft IQ</strong> family &mdash; Foundry IQ, Fabric IQ, Work IQ, and the new <strong>Web IQ</strong> (Build 2026) &mdash; provides the retrieval, semantic-model, M365-context, and open-web layers that make grounding work without rebuilding indexes for every agent.</p>
+          <ul class="examples">
+            <li>Microsoft Fabric &middot; OneLake (the OneDrive for data)</li>
+            <li>Power BI &middot; semantic models &middot; verified answers</li>
+            <li>Azure AI Search &middot; vector + semantic + hybrid retrieval</li>
+            <li>Foundry IQ &middot; Fabric IQ &middot; Work IQ &middot; Web IQ (Public Preview)</li>
+          </ul>
+        </div>
+        <div class="next">
+          <div class="next-title">Go deeper</div>
+          <a href="microsoft-iq-platforms-guide.html">The 4 IQ platforms guide &rarr;</a>
+          <div class="learn">Docs: <a href="https://learn.microsoft.com/en-us/fabric/" target="_blank">Microsoft Fabric</a> &middot; <a href="https://learn.microsoft.com/en-us/fabric/onelake/" target="_blank">OneLake</a></div>
+        </div>
+      </div>
+
+      <!-- LAYER 1 -->
+      <div class="layer-card l1 reveal" id="layer-1">
+        <div class="ord">1<small>Infrastructure</small></div>
+        <div>
+          <h3>Where it all runs</h3>
+          <div class="role">The opinionated Azure foundation every layer above depends on.</div>
+          <p>The <strong>Azure AI Landing Zone</strong> (GA Nov 17, 2025) is Microsoft's reference architecture for production AI workloads: secure networking, private endpoints, identity-first access, observability, and a Cloud Adoption Framework-aligned operating model. Every layer above is more robust and more compliant when it lands here.</p>
+          <ul class="examples">
+            <li>Azure regions &middot; availability zones &middot; PTU capacity</li>
+            <li>Azure AI Landing Zone reference architecture (7 layers)</li>
+            <li>VNets &middot; private endpoints &middot; ExpressRoute</li>
+            <li>Azure Monitor &middot; Log Analytics &middot; Application Insights</li>
+          </ul>
+        </div>
+        <div class="next">
+          <div class="next-title">Go deeper</div>
+          <a href="ai-landing-zones.html">Azure AI Landing Zones &rarr;</a>
+          <div class="learn">Docs: <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/ai/" target="_blank">CAF for AI</a></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CROSS-CUTTING RAILS ═══════════ -->
+<section class="rails-section" id="rails">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">Edge to Edge</span>
+      <h2 class="section-title">Two rails that touch every layer.</h2>
+      <p class="section-sub">Identity and governance are not a step in the stack &mdash; they run alongside every layer, from the human surface down to the infrastructure. If you only ever remember two things on this page, remember these.</p>
+    </div>
+
+    <div class="rails-grid">
+      <div class="rail-card r1 reveal">
+        <h3>Identity</h3>
+        <div class="rsub">Every call, every agent, every model &mdash; needs an owner.</div>
+        <ul>
+          <li><strong>Microsoft Entra ID</strong> &mdash; user, group, conditional access for humans across M365 and Azure.</li>
+          <li><strong>Entra Agent ID</strong> &mdash; non-human identity for agents, so every tool call is attributable.</li>
+          <li><strong>Managed identities</strong> &mdash; backend-to-backend auth without secrets.</li>
+          <li><strong>OAuth 2.1 native MCP auth</strong> in APIM (aligned with MCP spec 2025-06-18).</li>
+          <li><strong>Credential Manager</strong> in APIM &middot; outbound token injection with Key Vault references.</li>
+        </ul>
+        <div class="learn-row">Docs: <a href="https://learn.microsoft.com/en-us/entra/identity/" target="_blank">Microsoft Entra ID</a> &middot; <a href="https://learn.microsoft.com/en-us/entra/identity/" target="_blank">Entra Agent ID</a></div>
+      </div>
+
+      <div class="rail-card r2 reveal">
+        <h3>Governance &amp; Trust</h3>
+        <div class="rsub">Policy you can write down, enforce, and audit.</div>
+        <ul>
+          <li><strong>Microsoft Purview</strong> &mdash; sensitivity labels, DLP, lineage, data lifecycle.</li>
+          <li><strong>Microsoft Defender for Cloud</strong> &mdash; threat detection across the AI stack.</li>
+          <li><strong>Azure AI Content Safety</strong> &mdash; prompt/completion moderation, AI-generated detection.</li>
+          <li><strong>Responsible AI</strong> &mdash; evaluations, red-teaming, observability in Foundry.</li>
+          <li><strong>Tiered agent governance</strong> &mdash; personal / team / enterprise, right-sized to risk.</li>
+        </ul>
+        <div class="learn-row">Docs: <a href="https://learn.microsoft.com/en-us/purview/" target="_blank">Microsoft Purview</a> &middot; <a href="https://learn.microsoft.com/en-us/azure/ai-services/content-safety/" target="_blank">Azure AI Content Safety</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ TRACE A PROMPT ═══════════ -->
+<section class="trace-section" id="trace">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">How the Layers Connect</span>
+      <h2 class="section-title">One prompt, six steps, every layer.</h2>
+      <p class="section-sub">Concrete &gt; abstract. Below is one end-to-end journey for a single question, the way it actually moves through the stack &mdash; with the specific Microsoft service handling each hop. Follow the numbered cards to see how the five layers and two rails work together.</p>
+      <div class="trace-intro">
+        <strong>Scenario:</strong> A regional sales manager opens Microsoft Teams and asks her custom <em>"Pipeline Health"</em> agent: <em>"Summarize my top-10 at-risk deals this quarter and draft a follow-up email to each account owner."</em>
+      </div>
+    </div>
+
+    <div class="trace-grid">
+      <div class="trace-step t1 reveal">
+        <div class="num">1</div>
+        <h5>The surface</h5>
+        <p>Teams (Layer 5 &mdash; Apps &amp; Surfaces) captures the prompt and identifies the user via Microsoft Entra ID.</p>
+        <div class="meta">Layer 5 &middot; Identity rail</div>
+      </div>
+      <div class="trace-step t2 reveal">
+        <div class="num">2</div>
+        <h5>The agent</h5>
+        <p>A custom <em>Pipeline Health</em> agent built in Copilot Studio (Layer 4) decomposes the question into tool calls and grounds intent.</p>
+        <div class="meta">Layer 4 &middot; <code>MCP</code> tool calls</div>
+      </div>
+      <div class="trace-step t3 reveal">
+        <div class="num">3</div>
+        <h5>The gateway</h5>
+        <p>Every model call passes through AI Gateway in APIM &mdash; <code>llm-token-limit</code> caps spend, Content Safety screens prompts, <code>llm-emit-token-metric</code> emits per-user telemetry.</p>
+        <div class="meta">Layer 3 &middot; Governance rail</div>
+      </div>
+      <div class="trace-step t4 reveal">
+        <div class="num">4</div>
+        <h5>The model</h5>
+        <p>Foundry routes the call to <strong>GPT-5.5</strong> on reserved PTU capacity. Overflow lands on PAYGO via priority-based load balancing.</p>
+        <div class="meta">Layer 3 &middot; PTU-first</div>
+      </div>
+      <div class="trace-step t5 reveal">
+        <div class="num">5</div>
+        <h5>The grounding</h5>
+        <p>RAG retrieves CRM data from a Fabric semantic model over OneLake, filtered by Purview sensitivity labels so only deals she may see come back.</p>
+        <div class="meta">Layer 2 &middot; Governance rail</div>
+      </div>
+      <div class="trace-step t6 reveal">
+        <div class="num">6</div>
+        <h5>The foundation</h5>
+        <p>All of it runs on an Azure AI Landing Zone &mdash; private endpoints, managed identities, Azure Monitor capturing every span end-to-end.</p>
+        <div class="meta">Layer 1 &middot; Identity rail</div>
+      </div>
+    </div>
+
+    <div class="trace-net reveal">
+      One prompt touches all five layers in under a second. The Identity rail ensures every hop has an owner; the Governance rail ensures every hop has policy. That is the Microsoft stack working as designed.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ PERSONA ROUTES ═══════════ -->
+<section class="persona-section" id="personas">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">Start Here by Role</span>
+      <h2 class="section-title">Five routes &mdash; pick the one that matches your day.</h2>
+      <p class="section-sub">Each persona has one recommended route through the rest of the SME&amp;C Infographic Hub. Click through in order to build the mental model for your role &mdash; no detours, no rabbit holes.</p>
+    </div>
+
+    <div class="persona-grid">
+      <div class="persona-card p1 reveal">
+        <div class="persona-emoji">🧭</div>
+        <h4>Business user &middot; Executive</h4>
+        <div class="who">I want to know what's possible.</div>
+        <p class="route">Start with the strategic playbook, then pick the right platform for your team's first AI use case.</p>
+        <div class="links">
+          <a href="frontier-firm-playbook.html">1. Frontier Firm Playbook</a>
+          <a href="microsoft-ai-decision-guide.html">2. AI Decision Guide</a>
+        </div>
+      </div>
+
+      <div class="persona-card p2 reveal">
+        <div class="persona-emoji">🛠️</div>
+        <h4>Maker &middot; Citizen Developer</h4>
+        <div class="who">I want to build my first agent.</div>
+        <p class="route">Pick your platform, then learn the agent anatomy so you know what to put inside it before you start clicking.</p>
+        <div class="links">
+          <a href="microsoft-ai-decision-guide.html">1. AI Decision Guide</a>
+          <a href="ai-agent-anatomy.html">2. Anatomy of an Agent</a>
+        </div>
+      </div>
+
+      <div class="persona-card p3 reveal">
+        <div class="persona-emoji">💻</div>
+        <h4>Developer</h4>
+        <div class="who">I'm writing code against models and tools.</div>
+        <p class="route">Understand agent anatomy, learn the gateway you'll deploy behind, then connect to the IQ retrieval layer that grounds your answers.</p>
+        <div class="links">
+          <a href="ai-agent-anatomy.html">1. Anatomy of an Agent</a>
+          <a href="ai-gateway-apim.html">2. AI Gateway in APIM</a>
+          <a href="microsoft-iq-platforms-guide.html">3. IQ Platforms Guide</a>
+        </div>
+      </div>
+
+      <div class="persona-card p4 reveal">
+        <div class="persona-emoji">🏗️</div>
+        <h4>Platform &middot; IT</h4>
+        <div class="who">I'm responsible for the foundation.</div>
+        <p class="route">Stand up the Landing Zone, front everything with AI Gateway, then align with the operating model from Microsoft's own playbook.</p>
+        <div class="links">
+          <a href="ai-landing-zones.html">1. Azure AI Landing Zones</a>
+          <a href="ai-gateway-apim.html">2. AI Gateway in APIM</a>
+          <a href="frontier-firm-playbook.html">3. Frontier Firm Playbook</a>
+        </div>
+      </div>
+
+      <div class="persona-card p5 reveal">
+        <div class="persona-emoji">🧠</div>
+        <h4>Architect</h4>
+        <div class="who">I design the integration shape.</div>
+        <p class="route">Master the IQ retrieval surface, the AI-ready foundation, and the gateway that governs traffic between them.</p>
+        <div class="links">
+          <a href="microsoft-iq-platforms-guide.html">1. IQ Platforms Guide</a>
+          <a href="ai-landing-zones.html">2. Azure AI Landing Zones</a>
+          <a href="ai-gateway-apim.html">3. AI Gateway in APIM</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ GLOSSARY ACCORDION ═══════════ -->
+<section class="glossary-section" id="glossary">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">Glossary</span>
+      <h2 class="section-title">The 16 words you'll see everywhere.</h2>
+      <p class="section-sub">Open any term to see a one-paragraph definition, where it lives in the stack, and the official Microsoft Learn link. No deep theory &mdash; just the concept and the breadcrumb.</p>
+    </div>
+
+    <div class="glossary-list reveal">
+
+      <details class="gl" data-cat="agent">
+        <summary><span class="term-cat">Agent</span> Agent</summary>
+        <div class="body">
+          A piece of software that uses an LLM plus tools, memory, and instructions to plan and execute work with some autonomy &mdash; from drafting an email to closing an expense claim. Lives in Layer 4 (Agentic Platform). Built in Copilot Studio (low-code) or Foundry Agent Service (pro-code).
+          <div class="where">See: <a href="ai-agent-anatomy.html">Anatomy of an Agent</a></div>
+        </div>
+      </details>
+
+      <details class="gl" data-cat="agent">
+        <summary><span class="term-cat">Agent</span> MCP (Model Context Protocol)</summary>
+        <div class="body">
+          The open wire format that lets LLM clients (Copilot, VS Code, Claude, etc.) discover and call tools. APIM can expose any REST API as an MCP server at <code>/mcp</code> and front external MCP servers with the same policies as REST.
+          <div class="where">See: <a href="ai-gateway-apim.html">AI Gateway in APIM</a> &middot; Docs: <a href="https://learn.microsoft.com/en-us/azure/api-management/mcp-server-overview" target="_blank">MCP server overview</a></div>
+        </div>
+      </details>
+
+      <details class="gl" data-cat="agent">
+        <summary><span class="term-cat">Agent</span> A2A (Agent2Agent)</summary>
+        <div class="body">
+          Microsoft's protocol for agent-to-agent communication, letting multiple agents collaborate on a single workflow. Currently in preview as part of the March 2026 APIM AI Gateway release.
+          <div class="where">See: <a href="ai-gateway-apim.html">AI Gateway in APIM</a> (timeline section)</div>
+        </div>
+      </details>
+
+      <details class="gl" data-cat="platform">
+        <summary><span class="term-cat">Platform</span> AI Gateway</summary>
+        <div class="body">
+          A set of policies built into Azure API Management that make APIM AI-aware: token-aware throttling, semantic caching, content safety, OAuth 2.1 for MCP, PTU-first load balancing, and OpenTelemetry GenAI semantic conventions. Same gateway you already use for REST, taught new tricks for LLMs.
+          <div class="where">See: <a href="ai-gateway-apim.html">AI Gateway in APIM</a></div>
+        </div>
+      </details>
+
+      <details class="gl" data-cat="ai">
+        <summary><span class="term-cat">AI</span> RAG (Retrieval-Augmented Generation)</summary>
+        <div class="body">
+          A pattern where the model is given relevant snippets of your data at inference time instead of being fine-tuned on it. The grounding step in our traced example. Built with Azure AI Search, Foundry IQ, or direct semantic-model queries.
+          <div class="where">See: <a href="microsoft-iq-platforms-guide.html">IQ Platforms Guide</a></div>
+        </div>
+      </details>
+
+      <details class="gl" data-cat="ai">
+        <summary><span class="term-cat">AI</span> PTU (Provisioned Throughput Units)</summary>
+        <div class="body">
+          Reserved model capacity priced per unit per month. Predictable cost and latency &mdash; the opposite of pay-as-you-go. AI Gateway's priority-based load balancing keeps PTU saturated first and overflows to PAYGO.
+          <div class="where">See: <a href="ai-gateway-apim.html">AI Gateway in APIM</a> (Cost pillar)</div>
+        </div>
+      </details>
+
+      <details class="gl" data-cat="data">
+        <summary><span class="term-cat">Data</span> OneLake</summary>
+        <div class="body">
+          The single logical data lake underpinning Microsoft Fabric &mdash; one copy of your data, accessed by every Fabric engine. Sometimes called "the OneDrive for data". Lives in Layer 2 (Data Platform) and grounds nearly every enterprise agent.
+          <div class="where">Docs: <a href="https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview" target="_blank">OneLake overview</a></div>
+        </div>
+      </details>
+
+      <details class="gl" data-cat="data">
+        <summary><span class="term-cat">Data</span> Foundry IQ</summary>
+        <div class="body">
+          The retrieval layer for AI Foundry &mdash; multi-source grounding, indexing, and reranking under one API. Public Preview at time of writing.
+          <div class="where">See: <a href="microsoft-iq-platforms-guide.html">IQ Platforms Guide</a></div>
+        </div>
+      </details>
+
+      <details class="gl" data-cat="data">
+        <summary><span class="term-cat">Data</span> Fabric IQ</summary>
+        <div class="body">
+          The semantic-model layer for Microsoft Fabric &mdash; verified, governed business semantics that grounding can trust. Public Preview.
+          <div class="where">See: <a href="microsoft-iq-platforms-guide.html">IQ Platforms Guide</a></div>
+        </div>
+      </details>
+
+      <details class="gl" data-cat="data">
+        <summary><span class="term-cat">Data</span> Work IQ</summary>
+        <div class="body">
+          The M365 context layer &mdash; signals about the user's work patterns, calendar, files, and collaborators that personalize Copilot answers. Public Preview.
+          <div class="where">See: <a href="microsoft-iq-platforms-guide.html">IQ Platforms Guide</a></div>
+        </div>
+      </details>
+
+      <details class="gl" data-cat="data">
+        <summary><span class="term-cat">Data</span> Web IQ</summary>
+        <div class="body">
+          The open-web grounding layer for every agent &mdash; model-agnostic, MCP-native search built for the AI era. Announced at Build 2026; Public Preview.
+          <div class="where">See: <a href="microsoft-iq-platforms-guide.html">IQ Platforms Guide</a> &middot; <a href="https://webiq.microsoft.ai/" target="_blank">webiq.microsoft.ai</a></div>
+        </div>
+      </details>
+
+      <details class="gl" data-cat="platform">
+        <summary><span class="term-cat">Platform</span> Microsoft Foundry</summary>
+        <div class="body">
+          Microsoft’s unified AI development platform (rebranded from Azure AI Foundry). 12,000+ models including GPT-5.5, GPT-5.2, Claude Opus 4.8, the new Microsoft <strong>MAI</strong> family, Mistral, Llama, Phi, plus open-weight models via the Fireworks AI partnership (Build 2026). Fine-tuning &mdash; including new <strong>Frontier Tuning</strong> with RLEs &mdash; evaluation, observability, and Agent Service all in one control plane.
+          <div class="where">Docs: <a href="https://learn.microsoft.com/en-us/azure/ai-foundry/" target="_blank">Microsoft Foundry</a> &middot; <a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/" target="_blank">What’s New @ Build 2026</a></div>
+        </div>
+      </details>
+
+      <details class="gl" data-cat="platform">
+        <summary><span class="term-cat">Platform</span> AI Landing Zone</summary>
+        <div class="body">
+          The Microsoft reference architecture (GA Nov 17, 2025) for production AI workloads on Azure &mdash; networking, identity, security, observability, operating model. The Layer 1 foundation everything else depends on.
+          <div class="where">See: <a href="ai-landing-zones.html">Azure AI Landing Zones</a></div>
+        </div>
+      </details>
+
+      <details class="gl" data-cat="platform">
+        <summary><span class="term-cat">Platform</span> Power Platform</summary>
+        <div class="body">
+          Microsoft's low-code family in Layer 5 (Apps &amp; Surfaces): <strong>Power Apps</strong> (canvas and model-driven apps), <strong>Power Automate</strong> (workflow automation), and <strong>Power Pages</strong> (external-facing sites). All three share <strong>Dataverse</strong> as their data backbone and can host or consume agents built in Copilot Studio &mdash; making it the fastest path from a business idea to a working app that uses the same models, tools, and governance as everything else in the stack.
+          <div class="where">Docs: <a href="https://learn.microsoft.com/en-us/power-platform/" target="_blank">Power Platform</a></div>
+        </div>
+      </details>
+
+      <details class="gl" data-cat="security">
+        <summary><span class="term-cat">Security</span> Entra Agent ID</summary>
+        <div class="body">
+          A non-human identity in Microsoft Entra ID, issued to an agent so every action it takes is attributable. Pairs with managed identities for backend access, removing API keys from the audit trail.
+          <div class="where">Docs: <a href="https://learn.microsoft.com/en-us/entra/identity/" target="_blank">Microsoft Entra ID</a></div>
+        </div>
+      </details>
+
+      <details class="gl" data-cat="security">
+        <summary><span class="term-cat">Security</span> Content Safety</summary>
+        <div class="body">
+          Azure AI Content Safety &mdash; the multi-modal moderation service for prompts, completions, images, and AI-generated content. Wired into AI Gateway as a built-in policy so every prompt is screened before reaching the model.
+          <div class="where">Docs: <a href="https://learn.microsoft.com/en-us/azure/ai-services/content-safety/" target="_blank">Azure AI Content Safety</a></div>
+        </div>
+      </details>
+
+      <details class="gl" data-cat="security">
+        <summary><span class="term-cat">Security</span> OAuth 2.1 for MCP</summary>
+        <div class="body">
+          Native authentication for APIM-hosted MCP servers, aligned with MCP spec 2025-06-18. Released to GA in the March 2026 APIM AI Gateway release. Lets every MCP tool call carry a verifiable user identity end-to-end.
+          <div class="where">See: <a href="ai-gateway-apim.html">AI Gateway in APIM</a> (Security pillar)</div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ RELATED INFOGRAPHICS ═══════════ -->
+<section class="related-section" id="related">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">Hub Map</span>
+      <h2 class="section-title">All six sibling infographics &mdash; one click away.</h2>
+      <p class="section-sub">This page is your entry point. Each card below dives into one specific layer or theme of the stack. Bookmark whichever you need next.</p>
+    </div>
+
+    <div class="related-grid">
+      <a class="related-card reveal" href="frontier-firm-playbook.html">
+        <div class="eyebrow">Strategy &middot; Layer 5</div>
+        <h4>Frontier Firm Playbook</h4>
+        <p>Microsoft's own playbook for becoming an AI-operated, human-led enterprise. 3 stages, 4 pillars, 6 governance principles.</p>
+        <div class="arrow">Open &rarr;</div>
+      </a>
+      <a class="related-card reveal" href="microsoft-ai-decision-guide.html">
+        <div class="eyebrow">Decision &middot; Layers 3-5</div>
+        <h4>AI Platform Decision Guide</h4>
+        <p>Choose between M365 Copilot, Copilot Studio, Azure OpenAI, Foundry, and Foundry Tools &mdash; with an interactive decision tree.</p>
+        <div class="arrow">Open &rarr;</div>
+      </a>
+      <a class="related-card reveal" href="ai-agent-anatomy.html">
+        <div class="eyebrow">Agents &middot; Layer 4</div>
+        <h4>Anatomy of an AI Agent</h4>
+        <p>The 10 "organs" inside every production agent &mdash; brain, memory, tools, observability &mdash; with the Microsoft services that fill each role.</p>
+        <div class="arrow">Open &rarr;</div>
+      </a>
+      <a class="related-card reveal" href="ai-gateway-apim.html">
+        <div class="eyebrow">Gateway &middot; Layer 3</div>
+        <h4>AI Gateway in APIM</h4>
+        <p>14 capabilities, 5 WAF pillars. Token throttling, semantic caching, OAuth 2.1 MCP, A2A, OpenTelemetry &mdash; one front door for every model.</p>
+        <div class="arrow">Open &rarr;</div>
+      </a>
+      <a class="related-card reveal" href="microsoft-iq-platforms-guide.html">
+        <div class="eyebrow">Data &middot; Layer 2</div>
+        <h4>The 4 IQ Platforms Guide</h4>
+        <p>Foundry IQ, Fabric IQ, Work IQ, Web IQ &mdash; how Microsoft’s retrieval, semantic, context, and open-web layers combine to ground every agent.</p>
+        <div class="arrow">Open &rarr;</div>
+      </a>
+      <a class="related-card reveal" href="ai-landing-zones.html">
+        <div class="eyebrow">Infrastructure &middot; Layer 1</div>
+        <h4>Azure AI Landing Zones</h4>
+        <p>The 7-layer reference architecture for production AI workloads. Network, identity, security, observability &mdash; baked in from day one.</p>
+        <div class="arrow">Open &rarr;</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="page-footer">
+  <div class="brand-mark">Microsoft Stack &middot; Top to Bottom</div>
+  <p>An entry-point map for the SME&amp;C Infographic Hub. Status snapshot accurate at time of writing &mdash; confirm GA / Preview state on Microsoft Learn before designing dependencies on preview features.</p>
+  <p>Primary sources: <a href="https://learn.microsoft.com/en-us/azure/ai-foundry/" target="_blank">Microsoft Foundry</a> &middot; <a href="https://learn.microsoft.com/en-us/azure/api-management/genai-gateway-capabilities" target="_blank">AI Gateway capabilities</a> &middot; <a href="https://learn.microsoft.com/en-us/fabric/" target="_blank">Microsoft Fabric</a> &middot; <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/ai/" target="_blank">CAF for AI</a> &middot; <a href="https://www.microsoft.com/insidetrack/blog/becoming-a-frontier-firm-a-guide-for-deploying-ai-agents-based-on-our-experience-at-microsoft/" target="_blank">Inside Track: Frontier Firm</a></p>
+</footer>
+
+<script>
+  // Progress bar
+  const progress = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    progress.style.width = (window.scrollY / h * 100) + '%';
+  });
+
+  // Reveal on scroll
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Active nav link
+  const sections = document.querySelectorAll('section[id], header[id]');
+  const navLinks = document.querySelectorAll('nav.top a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+</script>
+</body>
+</html>

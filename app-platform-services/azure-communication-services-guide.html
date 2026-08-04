@@ -1,0 +1,2584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Azure Communication Services — The future of customer communication</title>
+<style>
+  /* =========================================================
+     DESIGN TOKENS — Microsoft Fluent 2 / Windows 11 vibrant edition
+     ========================================================= */
+  :root {
+    /* Surfaces */
+    --bg:            #000000;
+    --bg-2:          #0a0a0f;
+    --bg-light:      #eef0f3;
+    --bg-light-2:    #e6e8ec;
+    --surface:       #f7f8fa;
+    --ink:           #1d1d1f;
+    --ink-2:         #2a2a2d;
+    --muted:         #6e6e73;
+    --muted-2:       #86868b;
+    --hair:          rgba(0,0,0,.10);
+    --hair-dark:     rgba(255,255,255,.12);
+
+    /* Vivid palette — Microsoft Fluent saturated */
+    --blue:          #0078d4;
+    --blue-2:        #2b88d8;
+    --sky:           #50e6ff;
+    --indigo:        #4f52b2;
+    --purple:        #8661c5;
+    --pink:          #e3008c;
+    --red:           #d13438;
+    --orange:        #ff8c00;
+    --yellow:        #fff100;
+    --green:         #107c10;
+    --teal:          #038387;
+    --mint:          #00b294;
+
+    /* Microsoft brand */
+    --ms-blue:       #0078d4;
+    --ms-cyan:       #00b7c3;
+    --ms-purple:     #5c2d91;
+    --ms-magenta:    #b4009e;
+    --ms-green:      #107c10;
+    --ms-red:        #d13438;
+    --ms-orange:     #ff8c00;
+
+    /* Gradients — Fluent vibrant, ever-shifting */
+    --g-aurora:      linear-gradient(120deg,#0078d4 0%,#4f52b2 35%,#8661c5 65%,#e3008c 100%);
+    --g-sunrise:     linear-gradient(135deg,#ff8c00 0%,#e3008c 55%,#8661c5 100%);
+    --g-ocean:       linear-gradient(135deg,#00b7c3 0%,#0078d4 60%,#4f52b2 100%);
+    --g-citrus:      linear-gradient(135deg,#fff100 0%,#ff8c00 50%,#e3008c 100%);
+    --g-forest:      linear-gradient(135deg,#107c10 0%,#00b294 55%,#0078d4 100%);
+    --g-neon:        linear-gradient(135deg,#50e6ff 0%,#4f52b2 50%,#8661c5 100%);
+    --g-peach:       linear-gradient(135deg,#ff8c00 0%,#d13438 100%);
+    --g-ink:         linear-gradient(135deg,#0b0b10 0%,#1a1a20 100%);
+    --g-holo:        conic-gradient(from 90deg at 50% 50%,
+                       #0078d4 0deg,#4f52b2 60deg,#8661c5 120deg,
+                       #e3008c 180deg,#ff8c00 240deg,#fff100 300deg,#0078d4 360deg);
+
+    /* Motion */
+    --ease:          cubic-bezier(.22,1,.36,1);
+    --ease-out:      cubic-bezier(0,0,.2,1);
+    --ease-spring:   cubic-bezier(.34,1.56,.64,1);
+
+    /* Radii — Fluent 2 scale */
+    --r-sm: 4px;
+    --r-md: 8px;
+    --r-lg: 12px;
+    --r-xl: 16px;
+    --r-full: 999px;
+
+    /* Shadows — rich, layered */
+    --sh-2:  0 1px 3px rgba(0,0,0,.06);
+    --sh-4:  0 4px 14px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+    --sh-8:  0 12px 32px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.04);
+    --sh-16: 0 24px 60px rgba(0,0,0,.12),0 4px 12px rgba(0,0,0,.06);
+    --sh-32: 0 48px 120px rgba(0,0,0,.16),0 8px 24px rgba(0,0,0,.08);
+    --sh-glow-blue:  0 20px 60px rgba(0,113,227,.45);
+    --sh-glow-pink:  0 20px 60px rgba(255,55,95,.45);
+    --sh-glow-purp:  0 20px 60px rgba(191,90,242,.45);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  body {
+    font-family: "Segoe UI Variable Display", "Segoe UI Variable", "Segoe UI",
+                 system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    font-size: 17px; line-height: 1.47;
+    color: var(--ink); background: var(--bg-light);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  /* Display type — Segoe UI Variable scale */
+  h1, h2, h3, h4 {
+    font-family: inherit;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+  }
+  h1 { font-size: clamp(2.8rem, 6.6vw, 5.6rem); letter-spacing: -0.02em; font-weight: 700; }
+  h2 { font-size: clamp(2rem, 4.4vw, 3.8rem); letter-spacing: -0.015em; font-weight: 700; }
+  h3 { font-size: clamp(1.4rem, 2.2vw, 1.9rem); font-weight: 600; letter-spacing: -0.01em; }
+  h4 { font-size: 1.15rem; font-weight: 600; letter-spacing: 0; }
+
+  a { color: var(--blue); text-decoration: none; transition: color .2s var(--ease); }
+  a:hover { color: var(--blue-2); }
+
+  ::selection { background: var(--pink); color: #fff; }
+
+  /* =========================================================
+     Scroll progress
+     ========================================================= */
+  #scrollProgress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+    background: var(--g-aurora); z-index: 1000;
+    box-shadow: 0 0 16px rgba(0,113,227,.6);
+    transition: width .08s linear;
+  }
+
+  /* =========================================================
+     Animated aurora background (reused)
+     ========================================================= */
+  .aurora-bg {
+    position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;
+  }
+  .aurora-bg::before,
+  .aurora-bg::after {
+    content: ""; position: absolute;
+    width: 60vw; height: 60vw;
+    border-radius: 50%;
+    filter: blur(100px); opacity: .55;
+    will-change: transform;
+  }
+  .aurora-bg::before {
+    top: -20%; left: -10%;
+    background: radial-gradient(circle,#2997ff,#5e5ce6 50%,transparent 70%);
+    animation: drift-a 18s ease-in-out infinite alternate;
+  }
+  .aurora-bg::after {
+    bottom: -20%; right: -10%;
+    background: radial-gradient(circle,#bf5af2,#ff375f 50%,transparent 70%);
+    animation: drift-b 22s ease-in-out infinite alternate;
+  }
+  @keyframes drift-a {
+    from { transform: translate(0,0) scale(1); }
+    to   { transform: translate(20%,15%) scale(1.2); }
+  }
+  @keyframes drift-b {
+    from { transform: translate(0,0) scale(1); }
+    to   { transform: translate(-15%,-20%) scale(1.15); }
+  }
+
+  /* =========================================================
+     Header — glassy sticky bar
+     ========================================================= */
+  header.topbar {
+    position: sticky; top: 0; z-index: 900;
+    background: rgba(238,240,243,.78);
+    backdrop-filter: saturate(180%) blur(24px);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+    border-bottom: 1px solid rgba(0,0,0,.05);
+  }
+  .topbar-inner {
+    max-width: 1440px; margin: 0 auto;
+    padding: 14px 32px;
+    display: flex; align-items: center; gap: 28px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 600; color: var(--ink); font-size: 1rem;
+    letter-spacing: -0.01em;
+  }
+  .brand svg.ms-logo { width: 22px; height: 22px; }
+  .brand .product {
+    font-weight: 600; font-size: .96rem;
+  }
+  nav.topnav { margin-left: auto; display: flex; gap: 4px; flex-wrap: wrap; }
+  nav.topnav a {
+    color: var(--muted); font-size: .86rem; font-weight: 500;
+    padding: 8px 14px; border-radius: 999px;
+    transition: all .2s var(--ease);
+  }
+  nav.topnav a:hover {
+    color: var(--ink); background: rgba(0,0,0,.06);
+  }
+  .topbar-cta {
+    background: var(--ink); color: #fff !important;
+    padding: 8px 18px !important; font-weight: 600 !important;
+  }
+  .topbar-cta:hover { background: var(--blue) !important; }
+
+  @media (max-width: 920px) {
+    nav.topnav a:not(.topbar-cta) { display: none; }
+  }
+
+  /* =========================================================
+     HERO — Apple marquee style
+     ========================================================= */
+  .hero {
+    position: relative;
+    background: #000;
+    color: #fff;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    padding: 120px 24px 80px;
+  }
+  .hero-mesh {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 20%, rgba(41,151,255,.35),transparent 60%),
+      radial-gradient(ellipse 70% 60% at 80% 60%, rgba(191,90,242,.32),transparent 60%),
+      radial-gradient(ellipse 50% 70% at 50% 100%, rgba(255,55,95,.28),transparent 60%),
+      #000;
+    animation: mesh-shift 20s ease-in-out infinite alternate;
+  }
+  @keyframes mesh-shift {
+    from { filter: hue-rotate(0deg); }
+    to   { filter: hue-rotate(30deg); }
+  }
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 85%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 85%);
+  }
+  .hero-inner {
+    position: relative; z-index: 2;
+    max-width: 1280px; margin: 0 auto;
+    flex: 1; display: flex; flex-direction: column; justify-content: center;
+    text-align: center;
+    width: 100%;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    align-self: center;
+    font-size: .82rem; font-weight: 600; letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #fff;
+    padding: 10px 20px; border-radius: 999px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.15);
+    backdrop-filter: blur(10px);
+    margin-bottom: 32px;
+  }
+  .hero-eyebrow .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 0 4px rgba(48,209,88,.25);
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50%     { opacity: .55; transform: scale(1.5); }
+  }
+
+  .hero h1 {
+    color: #fff;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin-bottom: 24px;
+  }
+  .hero h1 .line-grad {
+    background: var(--g-aurora);
+    background-size: 200% 200%;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: grad-shift 6s ease-in-out infinite;
+    display: inline-block;
+  }
+  @keyframes grad-shift {
+    0%,100% { background-position: 0% 50%; }
+    50%     { background-position: 100% 50%; }
+  }
+  .hero p.lead {
+    font-size: clamp(1.1rem, 1.6vw, 1.45rem);
+    line-height: 1.45; font-weight: 400;
+    max-width: 720px; margin: 0 auto;
+    color: rgba(255,255,255,.82);
+  }
+
+  .hero-cta {
+    margin-top: 40px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 26px; border-radius: 8px;
+    font-weight: 600; font-size: 1rem;
+    font-family: inherit; cursor: pointer;
+    border: 1px solid transparent;
+    transition: all .2s var(--ease);
+    letter-spacing: 0;
+  }
+  .btn-primary {
+    background: var(--ms-blue); color: #fff;
+    box-shadow: 0 8px 24px rgba(0,120,212,.4);
+  }
+  .btn-primary:hover {
+    background: var(--blue-2);
+    transform: translateY(-1px);
+    box-shadow: 0 12px 32px rgba(0,120,212,.55);
+    color: #fff;
+  }
+  .btn-ghost {
+    background: rgba(255,255,255,.08); color: #fff;
+    border-color: rgba(255,255,255,.25);
+    backdrop-filter: blur(10px);
+  }
+  .btn-ghost:hover {
+    background: rgba(255,255,255,.16);
+    border-color: rgba(255,255,255,.4);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  /* Hero Fluent widget board — Windows 11 Widgets Board inspired */
+  .hero-board {
+    margin-top: 72px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(110px, auto);
+    gap: 14px;
+    width: min(1100px, 100%);
+    margin-left: auto; margin-right: auto;
+  }
+  @media (max-width: 900px) {
+    .hero-board { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 540px) {
+    .hero-board { grid-template-columns: 1fr; }
+  }
+
+  .tile {
+    position: relative;
+    padding: 20px 22px;
+    border-radius: 12px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,.03) 100%);
+    border: 1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(22px) saturate(160%);
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+    color: #fff;
+    display: flex; flex-direction: column; gap: 6px; justify-content: space-between;
+    box-shadow: 0 12px 32px rgba(0,0,0,.35);
+    overflow: hidden;
+    transition: transform .35s var(--ease), border-color .3s var(--ease), box-shadow .35s var(--ease);
+  }
+  .tile:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255,255,255,.26);
+    box-shadow: 0 20px 48px rgba(0,0,0,.45);
+  }
+  .tile::before {
+    content: ""; position: absolute; inset: 0;
+    background: var(--tile-accent, var(--g-ocean));
+    opacity: .14;
+    z-index: 0;
+    transition: opacity .3s var(--ease);
+  }
+  .tile:hover::before { opacity: .22; }
+  .tile > * { position: relative; z-index: 1; }
+
+  .tile-head {
+    display: flex; align-items: center; gap: 10px;
+    font-size: .74rem; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: rgba(255,255,255,.72);
+  }
+  .tile-icon {
+    width: 28px; height: 28px; border-radius: 6px;
+    display: grid; place-items: center;
+    background: var(--tile-accent, var(--g-ocean));
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,.25);
+  }
+  .tile-icon svg { width: 14px; height: 14px; }
+  .tile-num {
+    font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+    font-weight: 700; letter-spacing: -0.02em;
+    line-height: 1; color: #fff;
+  }
+  .tile-num .grad {
+    background: var(--tile-accent, var(--g-ocean));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .tile-label {
+    font-size: .88rem; color: rgba(255,255,255,.75);
+    line-height: 1.3;
+  }
+  .tile-live {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: .72rem; font-weight: 600; color: #84f4a5;
+    text-transform: uppercase; letter-spacing: .1em;
+  }
+  .tile-live .live-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #84f4a5;
+    box-shadow: 0 0 0 4px rgba(132,244,165,.25);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  /* Tile variants */
+  .t-wide   { grid-column: span 2; }
+  .t-tall   { grid-row: span 2; }
+  .t-accent-ocean   { --tile-accent: var(--g-ocean); }
+  .t-accent-neon    { --tile-accent: var(--g-neon); }
+  .t-accent-peach   { --tile-accent: var(--g-peach); }
+  .t-accent-forest  { --tile-accent: var(--g-forest); }
+  .t-accent-citrus  { --tile-accent: var(--g-citrus); }
+  .t-accent-sunrise { --tile-accent: var(--g-sunrise); }
+
+  /* Chart tile */
+  .tile-chart { min-height: 220px; }
+  .tile-chart svg {
+    width: 100%; height: 90px; margin-top: 10px;
+  }
+
+  /* Channel strip inside WhatsApp tile */
+  .tile-bars {
+    display: flex; align-items: flex-end; gap: 6px;
+    margin-top: 10px; height: 46px;
+  }
+  .tile-bars span {
+    flex: 1; border-radius: 3px 3px 0 0;
+    background: var(--tile-accent, var(--g-ocean));
+    opacity: .85;
+    animation: bar-pulse 2.4s ease-in-out infinite;
+  }
+  .tile-bars span:nth-child(1) { height: 40%; animation-delay: 0s; }
+  .tile-bars span:nth-child(2) { height: 65%; animation-delay: .15s; }
+  .tile-bars span:nth-child(3) { height: 50%; animation-delay: .3s; }
+  .tile-bars span:nth-child(4) { height: 85%; animation-delay: .45s; }
+  .tile-bars span:nth-child(5) { height: 70%; animation-delay: .6s; }
+  .tile-bars span:nth-child(6) { height: 95%; animation-delay: .75s; }
+  @keyframes bar-pulse {
+    0%,100% { transform: scaleY(1); opacity: .85; }
+    50%     { transform: scaleY(.75); opacity: 1; }
+  }
+
+  /* Marquee trust bar */
+  .trust-marquee {
+    margin-top: 64px;
+    padding: 20px 0;
+    border-top: 1px solid rgba(255,255,255,.08);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    overflow: hidden;
+    position: relative; z-index: 2;
+  }
+  .trust-marquee-label {
+    text-align: center;
+    font-size: .74rem; font-weight: 600; letter-spacing: .14em;
+    text-transform: uppercase; color: rgba(255,255,255,.5);
+    margin-bottom: 14px;
+  }
+  .trust-track {
+    display: flex; gap: 48px;
+    animation: marquee 28s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+  }
+  .trust-item {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 1.02rem; font-weight: 600;
+    color: rgba(255,255,255,.75);
+  }
+  .trust-item svg { width: 20px; height: 20px; color: var(--sky); }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* =========================================================
+     KPI monoliths — huge numbers, Apple-style
+     ========================================================= */
+  .kpi-section {
+    padding: 140px 24px;
+    background: var(--bg-light);
+    position: relative;
+  }
+  .kpi-grid {
+    max-width: 1280px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+  }
+  @media (max-width: 900px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .kpi-grid { grid-template-columns: 1fr; } }
+
+  .kpi-tile {
+    background: var(--surface);
+    border-radius: var(--r-lg);
+    padding: 44px 32px;
+    box-shadow: var(--sh-8);
+    position: relative; overflow: hidden;
+    transition: all .4s var(--ease);
+  }
+  .kpi-tile::before {
+    content: ""; position: absolute;
+    top: -50%; right: -50%;
+    width: 200%; height: 200%;
+    background: var(--g-aurora);
+    opacity: 0;
+    transition: opacity .4s var(--ease);
+    transform: rotate(45deg);
+    z-index: 0;
+  }
+  .kpi-tile:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--sh-32);
+  }
+  .kpi-tile:hover::before { opacity: .08; }
+  .kpi-tile > * { position: relative; z-index: 1; }
+  .kpi-tile .kpi-num {
+    font-size: clamp(3rem, 5vw, 4.4rem);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 1;
+    background: var(--g-aurora);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .kpi-tile .kpi-label {
+    margin-top: 14px;
+    font-size: 1.02rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .kpi-tile .kpi-tag {
+    display: inline-block;
+    font-size: .72rem; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 18px;
+  }
+
+  /* =========================================================
+     Sections — shared
+     ========================================================= */
+  section.block {
+    padding: 140px 24px;
+    position: relative;
+  }
+  .container {
+    max-width: 1280px; margin: 0 auto;
+  }
+  .section-head {
+    text-align: center;
+    max-width: 880px; margin: 0 auto 80px;
+  }
+  .kicker {
+    display: inline-block;
+    font-size: .82rem; font-weight: 600; letter-spacing: .14em;
+    text-transform: uppercase;
+    background: var(--g-aurora);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 18px;
+  }
+  .section-head h2 .grad-word {
+    background: var(--g-aurora);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .section-head p {
+    margin-top: 20px;
+    font-size: clamp(1.1rem, 1.4vw, 1.3rem);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+
+  /* Section backgrounds */
+  section.dark {
+    background: #000;
+    color: #fff;
+  }
+  section.dark .section-head p { color: rgba(255,255,255,.65); }
+  section.dark h1, section.dark h2, section.dark h3, section.dark h4 { color: #fff; }
+
+  section.tinted {
+    background: linear-gradient(180deg, #e6e8ec 0%, #eef0f3 100%);
+  }
+
+  /* Reveal */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+  .reveal.in { opacity: 1; transform: none; }
+  .reveal.d1 { transition-delay: .08s; }
+  .reveal.d2 { transition-delay: .16s; }
+  .reveal.d3 { transition-delay: .24s; }
+  .reveal.d4 { transition-delay: .32s; }
+  .reveal.d5 { transition-delay: .40s; }
+
+  /* =========================================================
+     PILLARS — bold bento grid
+     ========================================================= */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 280px;
+    gap: 20px;
+  }
+  @media (max-width: 1024px) { .bento { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .bento { grid-template-columns: 1fr; } }
+
+  .bento-cell {
+    position: relative; overflow: hidden;
+    border-radius: var(--r-lg);
+    padding: 36px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    transition: all .45s var(--ease);
+    cursor: default;
+    box-shadow: var(--sh-4);
+  }
+  .bento-cell:hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: var(--sh-32);
+  }
+  .bento-cell::after {
+    content: ""; position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 2px;
+    background: var(--g-aurora);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    opacity: 0; transition: opacity .4s var(--ease);
+    pointer-events: none;
+  }
+  .bento-cell:hover::after { opacity: 1; }
+  .bento-cell h3 { font-size: 1.5rem; margin-bottom: 10px; }
+  .bento-cell p { font-size: .98rem; color: inherit; opacity: .85; line-height: 1.5; max-width: 320px; }
+  .bento-cell .b-icon {
+    width: 56px; height: 56px; border-radius: 16px;
+    display: grid; place-items: center;
+    backdrop-filter: blur(12px);
+  }
+  .bento-cell .b-icon svg { width: 26px; height: 26px; }
+
+  /* Variants */
+  .b-ocean {
+    background: var(--g-ocean); color: #fff;
+    grid-column: span 2;
+  }
+  .b-ocean .b-icon { background: rgba(255,255,255,.2); color: #fff; }
+  .b-ocean::before {
+    content: ""; position: absolute; top: -40%; right: -30%;
+    width: 70%; height: 150%; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,.22), transparent 60%);
+  }
+
+  .b-light-1 {
+    background: #fff; color: var(--ink);
+    border: 1px solid var(--hair);
+  }
+  .b-light-1 .b-icon { background: linear-gradient(135deg, rgba(48,209,88,.15), rgba(64,200,224,.15)); color: var(--green); }
+
+  .b-light-2 {
+    background: #fff; color: var(--ink);
+    border: 1px solid var(--hair);
+  }
+  .b-light-2 .b-icon { background: linear-gradient(135deg, rgba(191,90,242,.15), rgba(255,55,95,.15)); color: var(--purple); }
+
+  .b-sunrise {
+    background: var(--g-sunrise); color: #fff;
+    grid-column: span 2;
+  }
+  .b-sunrise .b-icon { background: rgba(255,255,255,.2); color: #fff; }
+  .b-sunrise::before {
+    content: ""; position: absolute; bottom: -40%; left: -20%;
+    width: 70%; height: 150%; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,.22), transparent 60%);
+  }
+
+  /* Bento stat */
+  .bento-stat {
+    font-size: 4.2rem; font-weight: 800;
+    letter-spacing: -0.04em; line-height: 1;
+    margin: 8px 0;
+  }
+  .b-ocean .bento-stat, .b-sunrise .bento-stat { color: #fff; }
+  .b-light-1 .bento-stat, .b-light-2 .bento-stat {
+    background: var(--g-aurora);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* =========================================================
+     Feature marquee — huge product cards
+     ========================================================= */
+  .feature-stack {
+    display: flex; flex-direction: column; gap: 28px;
+  }
+  .feature-card {
+    position: relative; overflow: hidden;
+    border-radius: var(--r-xl);
+    padding: 80px 64px;
+    min-height: 560px;
+    display: grid; grid-template-columns: 1.1fr .9fr; gap: 60px;
+    align-items: center;
+    box-shadow: var(--sh-16);
+  }
+  @media (max-width: 900px) {
+    .feature-card { grid-template-columns: 1fr; padding: 56px 32px; min-height: 0; }
+  }
+  .feature-card h3 {
+    font-size: clamp(1.8rem, 3.4vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    margin-bottom: 18px;
+  }
+  .feature-card p {
+    font-size: 1.12rem; line-height: 1.5;
+    opacity: .88;
+    max-width: 520px;
+  }
+  .feature-card ul {
+    list-style: none; margin-top: 28px;
+  }
+  .feature-card ul li {
+    padding: 10px 0 10px 28px;
+    font-size: 1rem; opacity: .9;
+    position: relative;
+  }
+  .feature-card ul li::before {
+    content: "✓"; position: absolute; left: 0; top: 10px;
+    width: 20px; height: 20px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: rgba(255,255,255,.2);
+    font-size: .7rem; font-weight: 700;
+  }
+
+  .feature-card .f-kicker {
+    display: inline-block;
+    font-size: .78rem; font-weight: 600; letter-spacing: .14em;
+    text-transform: uppercase;
+    opacity: .8;
+    margin-bottom: 18px;
+  }
+
+  /* Giant icon visual */
+  .f-visual {
+    position: relative;
+    display: grid; place-items: center;
+    min-height: 340px;
+  }
+  .f-hero-icon {
+    width: 240px; height: 240px;
+    border-radius: 60px;
+    display: grid; place-items: center;
+    color: #fff;
+    position: relative;
+    animation: hero-icon-float 5s ease-in-out infinite;
+  }
+  .f-hero-icon svg { width: 110px; height: 110px; }
+  @keyframes hero-icon-float {
+    0%,100% { transform: translateY(0) rotate(-2deg); }
+    50%     { transform: translateY(-18px) rotate(2deg); }
+  }
+  .f-hero-icon::before {
+    content: ""; position: absolute;
+    inset: -20px;
+    border-radius: inherit;
+    background: inherit;
+    filter: blur(40px); opacity: .5;
+    z-index: -1;
+  }
+
+  /* Feature variants */
+  .feat-ocean {
+    background:
+      radial-gradient(ellipse at 80% 20%, rgba(41,151,255,.25), transparent 60%),
+      linear-gradient(135deg, #001d3d 0%, #003566 50%, #0071e3 100%);
+    color: #fff;
+  }
+  .feat-ocean .f-hero-icon { background: var(--g-ocean); box-shadow: var(--sh-glow-blue); }
+
+  .feat-sunrise {
+    background:
+      radial-gradient(ellipse at 20% 80%, rgba(255,159,10,.3), transparent 60%),
+      linear-gradient(135deg, #3d0a1f 0%, #7a1733 50%, #ff375f 100%);
+    color: #fff;
+  }
+  .feat-sunrise .f-hero-icon { background: var(--g-sunrise); box-shadow: var(--sh-glow-pink); }
+
+  .feat-neon {
+    background:
+      radial-gradient(ellipse at 80% 80%, rgba(191,90,242,.3), transparent 60%),
+      linear-gradient(135deg, #0a0a2a 0%, #1a0a4a 50%, #5e5ce6 100%);
+    color: #fff;
+  }
+  .feat-neon .f-hero-icon { background: var(--g-neon); box-shadow: var(--sh-glow-purp); }
+
+  .feat-forest {
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(48,209,88,.28), transparent 60%),
+      linear-gradient(135deg, #003d1a 0%, #00573a 50%, #30d158 100%);
+    color: #fff;
+  }
+  .feat-forest .f-hero-icon { background: var(--g-forest); box-shadow: 0 20px 60px rgba(48,209,88,.45); }
+
+  .feat-citrus {
+    background:
+      radial-gradient(ellipse at 70% 40%, rgba(255,214,10,.28), transparent 60%),
+      linear-gradient(135deg, #3d2a00 0%, #7a4e00 50%, #ff9f0a 100%);
+    color: #fff;
+  }
+  .feat-citrus .f-hero-icon { background: var(--g-citrus); box-shadow: 0 20px 60px rgba(255,159,10,.45); }
+
+  .feat-dark {
+    background:
+      radial-gradient(ellipse at 50% 50%, rgba(100,210,255,.15), transparent 60%),
+      linear-gradient(135deg, #0a0a0f 0%, #1d1d1f 100%);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,.08);
+  }
+  .feat-dark .f-hero-icon {
+    background: linear-gradient(135deg, #64d2ff 0%, #5e5ce6 100%);
+    box-shadow: 0 20px 60px rgba(100,210,255,.35);
+  }
+
+  /* =========================================================
+     What's new — timeline with vibrancy
+     ========================================================= */
+  .whats-new {
+    display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px;
+    align-items: start;
+  }
+  @media (max-width: 960px) { .whats-new { grid-template-columns: 1fr; } }
+
+  .timeline { position: relative; padding-left: 40px; }
+  .timeline::before {
+    content: ""; position: absolute;
+    left: 12px; top: 10px; bottom: 10px;
+    width: 3px;
+    background: var(--g-aurora);
+    border-radius: 3px;
+  }
+  .tl-item {
+    position: relative;
+    margin-bottom: 24px;
+    padding: 24px 28px;
+    background: var(--surface);
+    border-radius: var(--r-md);
+    box-shadow: var(--sh-4);
+    border: 1px solid var(--hair);
+    transition: all .3s var(--ease);
+  }
+  .tl-item:hover {
+    transform: translateX(8px);
+    box-shadow: var(--sh-16);
+    border-color: transparent;
+  }
+  .tl-item::before {
+    content: ""; position: absolute;
+    left: -34px; top: 28px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--surface);
+    border: 4px solid var(--blue);
+    box-shadow: 0 0 0 6px rgba(0,113,227,.15);
+  }
+  .tl-item.t-purple::before { border-color: var(--purple); box-shadow: 0 0 0 6px rgba(191,90,242,.15); }
+  .tl-item.t-pink::before { border-color: var(--pink); box-shadow: 0 0 0 6px rgba(255,55,95,.15); }
+  .tl-item.t-orange::before { border-color: var(--orange); box-shadow: 0 0 0 6px rgba(255,159,10,.15); }
+
+  .tl-date {
+    display: inline-block;
+    font-size: .74rem; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 4px 12px; border-radius: 999px;
+    margin-bottom: 10px;
+  }
+  .tl-item.t-blue .tl-date { background: rgba(0,113,227,.1); color: var(--blue); }
+  .tl-item.t-purple .tl-date { background: rgba(191,90,242,.1); color: var(--purple); }
+  .tl-item.t-pink .tl-date { background: rgba(255,55,95,.1); color: var(--pink); }
+  .tl-item.t-orange .tl-date { background: rgba(255,159,10,.1); color: var(--orange); }
+  .tl-item h4 { margin: 4px 0 8px; font-size: 1.15rem; }
+  .tl-item p { color: var(--muted); font-size: .94rem; line-height: 1.5; margin: 0; }
+
+  /* Why it matters panel */
+  .why-panel {
+    background: linear-gradient(160deg, #0071e3 0%, #5e5ce6 55%, #bf5af2 100%);
+    color: #fff;
+    border-radius: var(--r-lg);
+    padding: 44px;
+    position: relative; overflow: hidden;
+    box-shadow: var(--sh-glow-blue);
+  }
+  .why-panel::before {
+    content: ""; position: absolute;
+    top: -50%; right: -50%;
+    width: 80%; height: 180%;
+    background: radial-gradient(circle, rgba(255,255,255,.2), transparent 60%);
+  }
+  .why-panel > * { position: relative; }
+  .why-panel h3 { color: #fff; margin-bottom: 12px; }
+  .why-panel > p { opacity: .9; margin-bottom: 28px; font-size: 1.04rem; line-height: 1.5; }
+  .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .why-cell {
+    background: rgba(255,255,255,.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: var(--r-md);
+    padding: 22px 20px;
+  }
+  .why-cell .v {
+    font-size: 2.2rem; font-weight: 800; letter-spacing: -0.025em;
+    line-height: 1; color: #fff;
+  }
+  .why-cell small {
+    display: block; margin-top: 8px;
+    font-size: .86rem; opacity: .85;
+  }
+
+  /* =========================================================
+     Steps — zero to hello world
+     ========================================================= */
+  .steps {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+    counter-reset: step;
+  }
+  @media (max-width: 960px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .steps { grid-template-columns: 1fr; } }
+  .step {
+    background: #fff;
+    border-radius: var(--r-lg);
+    padding: 36px 28px 28px;
+    position: relative;
+    box-shadow: var(--sh-4);
+    border: 1px solid var(--hair);
+    transition: all .3s var(--ease);
+  }
+  .step:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--sh-16);
+    border-color: transparent;
+  }
+  .step-num {
+    counter-increment: step;
+    content: counter(step);
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--g-aurora);
+    color: #fff;
+    display: grid; place-items: center;
+    font-size: 1.2rem; font-weight: 800;
+    margin-bottom: 18px;
+    box-shadow: var(--sh-glow-blue);
+  }
+  .step-num::before { content: counter(step); }
+  .step h4 { font-size: 1.15rem; margin-bottom: 8px; }
+  .step p { color: var(--muted); font-size: .95rem; line-height: 1.5; }
+
+  /* =========================================================
+     Channels — Apple-style product switcher
+     ========================================================= */
+  .channel-wrap {
+    background: var(--surface);
+    border-radius: var(--r-xl);
+    overflow: hidden;
+    box-shadow: var(--sh-32);
+    border: 1px solid var(--hair);
+  }
+  .channel-tabs {
+    display: flex;
+    padding: 12px;
+    background: var(--bg-light);
+    border-bottom: 1px solid var(--hair);
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .channel-tabs::-webkit-scrollbar { display: none; }
+  .channel-tab {
+    flex: 1; min-width: 140px;
+    padding: 16px 14px;
+    background: transparent; border: none;
+    font-family: inherit; font-size: .95rem; font-weight: 600;
+    color: var(--muted); cursor: pointer;
+    border-radius: 14px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    transition: all .25s var(--ease);
+  }
+  .channel-tab svg { width: 22px; height: 22px; }
+  .channel-tab:hover { color: var(--ink); background: rgba(0,0,0,.04); }
+  .channel-tab.active {
+    background: var(--surface); color: var(--ink);
+    box-shadow: var(--sh-4);
+  }
+  .channel-tab.active svg {
+    color: var(--blue);
+  }
+  .channel-panels {
+    padding: 56px;
+    min-height: 500px;
+  }
+  @media (max-width: 700px) { .channel-panels { padding: 32px; } }
+  .channel-panel { display: none; }
+  .channel-panel.active {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 56px;
+    align-items: center;
+    animation: panel-in .5s var(--ease);
+  }
+  @media (max-width: 900px) { .channel-panel.active { grid-template-columns: 1fr; } }
+  @keyframes panel-in {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: none; }
+  }
+  .channel-panel h3 {
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    margin-bottom: 14px;
+  }
+  .channel-panel > div:first-child > p {
+    color: var(--muted); font-size: 1.06rem; line-height: 1.55;
+  }
+  .channel-panel ul {
+    list-style: none; margin: 24px 0;
+  }
+  .channel-panel li {
+    padding: 10px 0 10px 32px;
+    font-size: 1rem; color: var(--ink-2);
+    position: relative;
+  }
+  .channel-panel li::before {
+    content: ""; position: absolute; left: 0; top: 12px;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--g-aurora);
+    background-image:
+      var(--g-aurora),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>");
+  }
+  .channel-panel li::after {
+    content: ""; position: absolute; left: 0; top: 12px;
+    width: 22px; height: 22px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>");
+    background-size: 13px 13px; background-position: center; background-repeat: no-repeat;
+  }
+
+  .ch-visual {
+    aspect-ratio: 4/3.2;
+    border-radius: var(--r-lg);
+    position: relative; overflow: hidden;
+    display: grid; place-items: center;
+  }
+  .ch-visual .ch-mesh {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, #000 30%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, #000 30%, transparent 80%);
+  }
+  .ch-visual .ch-icon {
+    width: 180px; height: 180px;
+    border-radius: 44px;
+    display: grid; place-items: center;
+    color: #fff;
+    position: relative; z-index: 1;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.3);
+    animation: ch-icon-float 4.5s ease-in-out infinite;
+  }
+  .ch-visual .ch-icon svg { width: 84px; height: 84px; }
+  @keyframes ch-icon-float {
+    0%,100% { transform: translateY(0) scale(1); }
+    50%     { transform: translateY(-12px) scale(1.04); }
+  }
+
+  .ch-bg-email    { background: linear-gradient(135deg,#001d3d,#0071e3); }
+  .ch-bg-email    .ch-icon { background: var(--g-ocean); box-shadow: 0 30px 60px rgba(0,113,227,.5); }
+  .ch-bg-sms      { background: linear-gradient(135deg,#1a3d00,#30d158); }
+  .ch-bg-sms      .ch-icon { background: var(--g-forest); box-shadow: 0 30px 60px rgba(48,209,88,.5); }
+  .ch-bg-voice    { background: linear-gradient(135deg,#3d0a1f,#ff375f); }
+  .ch-bg-voice    .ch-icon { background: var(--g-peach); box-shadow: 0 30px 60px rgba(255,55,95,.5); }
+  .ch-bg-chat     { background: linear-gradient(135deg,#1a0a4a,#bf5af2); }
+  .ch-bg-chat     .ch-icon { background: var(--g-neon); box-shadow: 0 30px 60px rgba(191,90,242,.5); }
+  .ch-bg-video    { background: linear-gradient(135deg,#0a0a2a,#5e5ce6); }
+  .ch-bg-video    .ch-icon { background: linear-gradient(135deg,#64d2ff,#5e5ce6); box-shadow: 0 30px 60px rgba(100,210,255,.5); }
+  .ch-bg-msg      { background: linear-gradient(135deg,#3d2a00,#ff9f0a); }
+  .ch-bg-msg      .ch-icon { background: var(--g-citrus); box-shadow: 0 30px 60px rgba(255,159,10,.5); }
+
+  .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill {
+    padding: 7px 14px; border-radius: 999px;
+    background: var(--bg-light-2); color: var(--ink-2);
+    font-size: .86rem; font-weight: 600;
+    border: 1px solid var(--hair);
+  }
+
+  /* =========================================================
+     Industries
+     ========================================================= */
+  .industries {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px;
+  }
+  @media (max-width: 1024px) { .industries { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .industries { grid-template-columns: 1fr; } }
+
+  .ind-card {
+    position: relative; overflow: hidden;
+    padding: 36px 30px;
+    min-height: 320px;
+    border-radius: var(--r-lg);
+    display: flex; flex-direction: column; gap: 14px;
+    color: #fff;
+    transition: all .4s var(--ease);
+    box-shadow: var(--sh-8);
+  }
+  .ind-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: var(--sh-32);
+  }
+  .ind-card::before {
+    content: ""; position: absolute;
+    top: -30%; right: -30%;
+    width: 80%; height: 160%;
+    background: radial-gradient(circle, rgba(255,255,255,.25), transparent 55%);
+    transition: transform .5s var(--ease);
+  }
+  .ind-card:hover::before { transform: scale(1.3) rotate(10deg); }
+  .ind-card > * { position: relative; z-index: 1; }
+  .ind-icon {
+    width: 56px; height: 56px; border-radius: 16px;
+    background: rgba(255,255,255,.2);
+    backdrop-filter: blur(10px);
+    display: grid; place-items: center; color: #fff;
+  }
+  .ind-icon svg { width: 26px; height: 26px; }
+  .ind-card h4 { font-size: 1.3rem; color: #fff; }
+  .ind-card p { color: rgba(255,255,255,.9); font-size: .96rem; line-height: 1.5; flex: 1; }
+  .ind-stats { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+  .ind-stat {
+    padding: 5px 11px; border-radius: 999px;
+    background: rgba(255,255,255,.2);
+    font-size: .78rem; font-weight: 600;
+    backdrop-filter: blur(8px);
+  }
+
+  .ind-card.health  { background: linear-gradient(135deg,#064e3b 0%,#30d158 50%,#63e6e2 100%); }
+  .ind-card.retail  { background: linear-gradient(135deg,#4c1d95 0%,#bf5af2 50%,#ff375f 100%); }
+  .ind-card.finance { background: linear-gradient(135deg,#0c1e3d 0%,#0071e3 50%,#2997ff 100%); }
+  .ind-card.public  { background: linear-gradient(135deg,#7c2d12 0%,#ff9f0a 50%,#ffd60a 100%); }
+
+  /* =========================================================
+     Services grid — glassy dark cards
+     ========================================================= */
+  .services {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+  }
+  @media (max-width: 960px) { .services { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .services { grid-template-columns: 1fr; } }
+
+  .service {
+    position: relative;
+    padding: 36px 30px;
+    border-radius: var(--r-lg);
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.1);
+    backdrop-filter: blur(16px);
+    color: #fff;
+    transition: all .35s var(--ease);
+    overflow: hidden;
+  }
+  .service::before {
+    content: ""; position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: var(--g-aurora);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .4s var(--ease);
+  }
+  .service:hover {
+    transform: translateY(-8px);
+    background: rgba(255,255,255,.07);
+    border-color: rgba(255,255,255,.2);
+    box-shadow: 0 30px 60px rgba(0,0,0,.3);
+  }
+  .service:hover::before { transform: scaleX(1); }
+  .service .s-icon {
+    width: 56px; height: 56px;
+    border-radius: 16px;
+    background: var(--g-aurora);
+    display: grid; place-items: center; color: #fff;
+    margin-bottom: 20px;
+    box-shadow: var(--sh-glow-blue);
+  }
+  .service .s-icon svg { width: 26px; height: 26px; }
+  .service h4 { color: #fff; font-size: 1.2rem; margin-bottom: 10px; }
+  .service p { color: rgba(255,255,255,.7); font-size: .96rem; line-height: 1.5; margin-bottom: 18px; }
+  .service .s-link {
+    color: var(--sky); font-weight: 600; font-size: .94rem;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .service .s-link::after { content: "→"; transition: transform .25s var(--ease); }
+  .service:hover .s-link::after { transform: translateX(5px); }
+
+  /* =========================================================
+     Reference cards — elegant SDK grid
+     ========================================================= */
+  .ref-wrap {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+  @media (max-width: 900px) { .ref-wrap { grid-template-columns: 1fr; } }
+  .ref-card {
+    padding: 44px 40px;
+    border-radius: var(--r-lg);
+    background: var(--surface);
+    border: 1px solid var(--hair);
+    position: relative; overflow: hidden;
+    box-shadow: var(--sh-8);
+    transition: all .35s var(--ease);
+  }
+  .ref-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--sh-32);
+  }
+  .ref-card::before {
+    content: ""; position: absolute;
+    top: 0; left: 0; right: 0; height: 5px;
+    background: var(--g-aurora);
+  }
+  .ref-card h3 {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 14px;
+  }
+  .ref-card h3 svg { width: 28px; height: 28px; color: var(--blue); }
+  .ref-card > p { color: var(--muted); font-size: 1rem; line-height: 1.5; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 26px 0; }
+  .chip {
+    padding: 10px 16px; border-radius: 999px;
+    background: var(--bg-light-2);
+    font-size: .92rem; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 10px;
+    transition: all .2s var(--ease);
+    border: 1px solid transparent;
+  }
+  .chip:hover {
+    background: var(--surface);
+    border-color: var(--hair);
+    transform: translateY(-2px);
+    box-shadow: var(--sh-4);
+  }
+  .chip .dot-lang {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+
+  .ref-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-weight: 600; font-size: 1rem;
+    padding: 10px 18px;
+    background: var(--ink); color: #fff !important;
+    border-radius: 999px;
+    transition: all .25s var(--ease);
+    margin-top: 8px;
+  }
+  .ref-link:hover {
+    background: var(--blue);
+    transform: translateX(4px);
+  }
+
+  /* =========================================================
+     Training cards
+     ========================================================= */
+  .training {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+  }
+  @media (max-width: 960px) { .training { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .training { grid-template-columns: 1fr; } }
+
+  .train-card {
+    display: block; color: inherit; text-decoration: none;
+    background: var(--surface);
+    border: 1px solid var(--hair);
+    border-radius: var(--r-lg);
+    padding: 32px 28px;
+    position: relative; overflow: hidden;
+    transition: all .35s var(--ease);
+    min-height: 260px;
+    box-shadow: var(--sh-4);
+  }
+  .train-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--sh-32);
+    border-color: transparent;
+    color: inherit;
+  }
+  .train-card::before {
+    content: ""; position: absolute;
+    bottom: -40px; right: -40px;
+    width: 160px; height: 160px; border-radius: 50%;
+    background: var(--g-aurora);
+    opacity: .08;
+    transition: all .4s var(--ease);
+  }
+  .train-card:hover::before {
+    transform: scale(1.5);
+    opacity: .15;
+  }
+  .train-card::after {
+    content: "→";
+    position: absolute; right: 26px; bottom: 24px;
+    font-size: 1.5rem; font-weight: 700;
+    color: var(--blue);
+    transition: transform .3s var(--ease);
+  }
+  .train-card:hover::after {
+    transform: translateX(8px);
+  }
+  .train-tag {
+    display: inline-block;
+    font-size: .72rem; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 5px 12px; border-radius: 999px;
+    background: var(--g-aurora);
+    color: #fff;
+    margin-bottom: 16px;
+  }
+  .train-card h4 { font-size: 1.12rem; margin-bottom: 8px; }
+  .train-card p { color: var(--muted); font-size: .94rem; line-height: 1.5; margin: 0; }
+  .train-meta {
+    margin-top: 16px;
+    font-size: .82rem; color: var(--muted-2);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .train-meta svg { width: 14px; height: 14px; }
+
+  /* =========================================================
+     Support — large 3-up cards
+     ========================================================= */
+  .support {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  }
+  @media (max-width: 960px) { .support { grid-template-columns: 1fr; } }
+
+  .support-card {
+    padding: 44px 36px;
+    border-radius: var(--r-lg);
+    background: var(--surface);
+    border: 1px solid var(--hair);
+    box-shadow: var(--sh-4);
+    transition: all .35s var(--ease);
+    display: flex; flex-direction: column;
+  }
+  .support-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--sh-32);
+    border-color: transparent;
+  }
+  .support-icon {
+    width: 68px; height: 68px;
+    border-radius: 20px;
+    display: grid; place-items: center; color: #fff;
+    margin-bottom: 24px;
+    box-shadow: var(--sh-glow-blue);
+  }
+  .support-icon svg { width: 32px; height: 32px; }
+  .support-card:nth-child(1) .support-icon { background: var(--g-citrus); box-shadow: 0 20px 40px rgba(255,159,10,.4); }
+  .support-card:nth-child(2) .support-icon { background: var(--g-neon); box-shadow: 0 20px 40px rgba(191,90,242,.4); }
+  .support-card:nth-child(3) .support-icon { background: var(--g-ocean); box-shadow: var(--sh-glow-blue); }
+  .support-card h4 { font-size: 1.3rem; margin-bottom: 10px; }
+  .support-card p { color: var(--muted); font-size: 1rem; line-height: 1.55; margin-bottom: 24px; flex: 1; }
+  .support-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-weight: 600; font-size: .96rem;
+    padding: 12px 24px;
+    background: var(--ink); color: #fff !important;
+    border-radius: 999px;
+    align-self: flex-start;
+    transition: all .25s var(--ease);
+  }
+  .support-link:hover {
+    background: var(--blue);
+    transform: translateX(4px);
+  }
+
+  /* =========================================================
+     CTA banner
+     ========================================================= */
+  .cta-banner {
+    padding: 120px 24px;
+    background: var(--g-aurora);
+    background-size: 200% 200%;
+    animation: grad-shift 8s ease-in-out infinite;
+    color: #fff;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .cta-banner::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,.2), transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(255,255,255,.15), transparent 50%);
+  }
+  .cta-banner .container { position: relative; z-index: 1; }
+  .cta-banner h2 {
+    color: #fff;
+    font-size: clamp(2.4rem, 5.5vw, 4.8rem);
+    letter-spacing: -0.04em;
+    font-weight: 800;
+    margin-bottom: 20px;
+  }
+  .cta-banner p {
+    color: rgba(255,255,255,.9);
+    font-size: clamp(1.1rem, 1.4vw, 1.3rem);
+    max-width: 720px; margin: 0 auto 36px;
+    line-height: 1.45;
+  }
+  .cta-banner .btn-primary { background: #fff; color: var(--ms-blue); box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+  .cta-banner .btn-primary:hover { background: #fff; color: var(--ms-blue); box-shadow: 0 16px 40px rgba(0,0,0,.3); }
+  .cta-banner .btn-ghost {
+    background: rgba(255,255,255,.15); color: #fff;
+    border-color: rgba(255,255,255,.4);
+  }
+  .cta-banner .btn-ghost:hover {
+    background: rgba(255,255,255,.25);
+    color: #fff;
+  }
+
+  /* =========================================================
+     Footer
+     ========================================================= */
+  footer.site-footer {
+    background: #000;
+    color: rgba(255,255,255,.7);
+    padding: 80px 24px 40px;
+    position: relative; overflow: hidden;
+  }
+  footer.site-footer::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 10% 20%, rgba(0,113,227,.15), transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(191,90,242,.1), transparent 40%);
+  }
+  .footer-inner {
+    max-width: 1280px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px;
+    position: relative; z-index: 1;
+  }
+  @media (max-width: 860px) { .footer-inner { grid-template-columns: 1fr 1fr; } }
+  footer h5 {
+    color: #fff; font-size: .86rem;
+    letter-spacing: .1em; text-transform: uppercase;
+    font-weight: 600; margin-bottom: 18px;
+  }
+  footer a {
+    color: rgba(255,255,255,.65); display: block;
+    padding: 7px 0; font-size: .92rem;
+    transition: color .2s var(--ease);
+  }
+  footer a:hover { color: #fff; }
+  .footer-brand-wrap p {
+    color: rgba(255,255,255,.6); font-size: .94rem;
+    line-height: 1.55; max-width: 420px; margin-top: 14px;
+  }
+  .footer-bottom {
+    max-width: 1280px; margin: 48px auto 0;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255,255,255,.1);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+    color: rgba(255,255,255,.5); font-size: .84rem;
+    position: relative; z-index: 1;
+  }
+  .footer-bottom a { display: inline; color: #fff; text-decoration: underline; padding: 0; }
+
+</style>
+<script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
+<!-- smec-meta v1 -->
+<meta name="description" content="Azure Communication Services — The future of customer communication — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:title" content="Azure Communication Services — The future of customer communication">
+<meta property="og:description" content="Azure Communication Services — The future of customer communication — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sme-c-infographics.github.io/app-platform-services/azure-communication-services-guide.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Azure Communication Services — The future of customer communication">
+<meta name="twitter:description" content="Azure Communication Services — The future of customer communication — an interactive infographic from the SME&amp;C Infographic Hub.">
+<!-- smec-favicon v1 -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<!-- smec-accuracy v1 -->
+<meta name="smec:last-accuracy-check" content="2026-06-27">
+<style>/* smec-back-btn v2 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  box-sizing: border-box;
+  display: inline-flex; align-items: center; justify-content: flex-start;
+  gap: 8px; height: 40px; padding: 0 16px 0 12px; border-radius: 20px;
+  background: rgba(0, 120, 212, 0.92) !important; color: #fff !important;
+  text-decoration: none !important;
+  font: 600 14px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  transition:
+    padding 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto; display: inline-block;
+  width: 18px; height: 18px; }
+.smec-back-btn__label { display: inline-block; flex: 0 0 auto;
+  font: inherit; color: inherit; }
+.smec-back-btn__more { display: inline-block; max-width: 0; opacity: 0;
+  overflow: hidden; vertical-align: bottom;
+  font: inherit; color: inherit;
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.05s; }
+
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  background: rgba(0, 90, 158, 0.96) !important; color: #fff !important;
+  text-decoration: none !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22); }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__more,
+.smec-back-btn:focus-visible .smec-back-btn__more {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.25s ease 0.2s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn__more { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__more,
+  .smec-back-btn:hover .smec-back-btn__more,
+  .smec-back-btn:focus-visible .smec-back-btn__more {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<!-- smec-submitter v1 -->
+<meta name="smec:submitter" content="ashwinkrishnanm-sys">
+</head>
+<body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v2" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
+
+<div id="scrollProgress"></div>
+
+<!-- ============= SVG SPRITE ============= -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>
+    </symbol>
+    <symbol id="i-puzzle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 3v3a2 2 0 0 0 2 2h3a2 2 0 0 1 2 2v3h-1.5a2.5 2.5 0 0 0 0 5H21v3a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2v-1.5a2.5 2.5 0 0 0-5 0V21H6a2 2 0 0 1-2-2v-3H2.5a2.5 2.5 0 0 1 0-5H4V8a2 2 0 0 1 2-2h3a2 2 0 0 0 2-2V3z"/>
+    </symbol>
+    <symbol id="i-handshake" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M11 17l2 2a1.5 1.5 0 1 0 2.12-2.12"/><path d="M13 15l3 3a1.5 1.5 0 1 0 2.12-2.12L15 12.88"/><path d="M15.5 13.5L20 9l-3-3-4 4"/><path d="M9 11L5 7 2 10l4 4"/><path d="M6 14l3 3a1.5 1.5 0 0 0 2.12 0"/>
+    </symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/>
+    </symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/>
+    </symbol>
+    <symbol id="i-sms" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12.01" y2="18"/><path d="M8 8h8M8 12h5"/>
+    </symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.86 19.86 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+    </symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </symbol>
+    <symbol id="i-video" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>
+    </symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 17l.6 1.6L21 19l-1.4.4L19 21l-.6-1.6L17 19l1.4-.4z"/>
+    </symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+    </symbol>
+    <symbol id="i-palette" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2a10 10 0 0 0 0 20 3 3 0 0 0 3-3v-1a3 3 0 0 1 3-3h1a4 4 0 0 0 4-4 10 10 0 0 0-11-9z"/><circle cx="7.5" cy="10.5" r="1.2" fill="currentColor"/><circle cx="12" cy="7.5" r="1.2" fill="currentColor"/><circle cx="16.5" cy="10.5" r="1.2" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+    </symbol>
+    <symbol id="i-diag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><path d="M8 11h6M11 8v6"/>
+    </symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+    </symbol>
+    <symbol id="i-bulb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12c.7.6 1 1.4 1 2v1h6v-1c0-.6.3-1.4 1-2A7 7 0 0 0 12 2z"/>
+    </symbol>
+    <symbol id="i-life" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/>
+    </symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+    </symbol>
+    <symbol id="i-stack" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/>
+    </symbol>
+    <symbol id="i-trend" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/>
+    </symbol>
+    <symbol id="i-dollar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="2" x2="12" y2="22"/><path d="M17 6H10a3.5 3.5 0 0 0 0 7h4a3.5 3.5 0 0 1 0 7H6"/>
+    </symbol>
+    <symbol id="i-ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="2" x2="9" y2="6"/><line x1="15" y1="2" x2="15" y2="6"/><line x1="9" y1="18" x2="9" y2="22"/><line x1="15" y1="18" x2="15" y2="22"/><line x1="2" y1="9" x2="6" y2="9"/><line x1="2" y1="15" x2="6" y2="15"/><line x1="18" y1="9" x2="22" y2="9"/><line x1="18" y1="15" x2="22" y2="15"/>
+    </symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.7 1-1a5.5 5.5 0 0 0 0-7.7z"/>
+    </symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+    </symbol>
+    <symbol id="i-building" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="2" width="16" height="20" rx="1"/><line x1="9" y1="22" x2="9" y2="18"/><line x1="15" y1="22" x2="15" y2="18"/>
+    </symbol>
+    <symbol id="i-bank" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9L12 3l9 6"/><line x1="4" y1="10" x2="4" y2="19"/><line x1="20" y1="10" x2="20" y2="19"/><line x1="8" y1="10" x2="8" y2="19"/><line x1="12" y1="10" x2="12" y2="19"/><line x1="16" y1="10" x2="16" y2="19"/><line x1="2" y1="21" x2="22" y2="21"/>
+    </symbol>
+    <symbol id="i-docs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="14" y2="17"/>
+    </symbol>
+    <symbol id="i-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+    </symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+    </symbol>
+    <symbol id="i-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="5 3 19 12 5 21 5 3"/>
+    </symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ============= HEADER ============= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="#top" class="brand">
+      <svg class="ms-logo" viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="1"  y="1"  width="10" height="10" fill="#F25022"/>
+        <rect x="13" y="1"  width="10" height="10" fill="#7FBA00"/>
+        <rect x="1"  y="13" width="10" height="10" fill="#00A4EF"/>
+        <rect x="13" y="13" width="10" height="10" fill="#FFB900"/>
+      </svg>
+      <span class="product">Azure Communication Services</span>
+    </a>
+    <nav class="topnav">
+      <a href="#overview">Overview</a>
+      <a href="#value">Why ACS</a>
+      <a href="#whats-new">What's new</a>
+      <a href="#channels">Channels</a>
+      <a href="#industries">Industries</a>
+      <a href="https://azure.microsoft.com/en-us/pricing/details/communication-services/" target="_blank" rel="noopener">Pricing</a>
+      <a href="#training">Training</a>
+      <a class="topbar-cta" href="https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/create-communication-resource" target="_blank" rel="noopener">Get started</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============= HERO ============= -->
+<section class="hero" id="top">
+  <div class="hero-mesh"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-inner">
+    <span class="hero-eyebrow"><span class="dot"></span>The cloud behind Microsoft Teams</span>
+
+    <h1>
+      Every channel.<br/>
+      One cloud.<br/>
+      <span class="line-grad">Infinite possibility.</span>
+    </h1>
+
+    <p class="lead">
+      Enterprise-grade voice, video, chat, SMS, email and Teams interoperability —
+      delivered as composable APIs on the same global network that powers Microsoft Teams.
+    </p>
+
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#get-started">
+        Get started
+        <svg style="width:16px;height:16px" aria-hidden="true"><use href="#i-arrow"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="https://learn.microsoft.com/en-us/azure/communication-services/" target="_blank" rel="noopener">
+        <svg style="width:14px;height:14px" aria-hidden="true"><use href="#i-play"/></svg>
+        View documentation
+      </a>
+    </div>
+
+    <!-- Fluent widget board — no overlap -->
+    <div class="hero-board" aria-hidden="true">
+      <div class="tile t-wide tile-chart t-accent-ocean">
+        <div>
+          <div class="tile-head"><span class="tile-icon"><svg><use href="#i-globe"/></svg></span>Global reach</div>
+          <div class="tile-num" style="margin-top:8px;"><span class="grad">60+</span></div>
+          <div class="tile-label">Azure regions worldwide</div>
+        </div>
+        <svg viewBox="0 0 400 90" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="hero-area" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0078d4" stop-opacity=".6"/>
+              <stop offset="100%" stop-color="#8661c5" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="hero-line" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#00b7c3"/>
+              <stop offset="50%" stop-color="#0078d4"/>
+              <stop offset="100%" stop-color="#e3008c"/>
+            </linearGradient>
+          </defs>
+          <path d="M0,70 Q50,65 80,55 T160,40 T240,28 T320,22 T400,8 L400,90 L0,90 Z" fill="url(#hero-area)"/>
+          <path d="M0,70 Q50,65 80,55 T160,40 T240,28 T320,22 T400,8" fill="none" stroke="url(#hero-line)" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="400" cy="8" r="5" fill="#e3008c"><animate attributeName="r" values="5;8;5" dur="2s" repeatCount="indefinite"/></circle>
+        </svg>
+      </div>
+
+      <div class="tile t-accent-forest">
+        <div class="tile-head"><span class="tile-icon"><svg><use href="#i-shield"/></svg></span>Uptime SLA</div>
+        <div class="tile-num"><span class="grad">99.9%</span></div>
+        <div class="tile-label">Across every channel</div>
+      </div>
+
+      <div class="tile t-accent-peach">
+        <div class="tile-head"><span class="tile-icon"><svg><use href="#i-sparkle"/></svg></span>WhatsApp Business</div>
+        <div>
+          <div class="tile-num"><span class="grad">2B+</span></div>
+          <div class="tile-label">Users reachable worldwide</div>
+        </div>
+        <div class="tile-bars"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+
+      <div class="tile t-wide t-accent-neon">
+        <div class="tile-head"><span class="tile-icon"><svg><use href="#i-ai"/></svg></span>AI Call Intelligence</div>
+        <div>
+          <div class="tile-num">Real-time</div>
+          <div class="tile-label">Transcription · Sentiment · Summary</div>
+        </div>
+        <span class="tile-live"><span class="live-dot"></span>Live</span>
+      </div>
+
+      <div class="tile t-accent-citrus">
+        <div class="tile-head"><span class="tile-icon"><svg><use href="#i-stack"/></svg></span>Channels</div>
+        <div class="tile-num"><span class="grad">6</span></div>
+        <div class="tile-label">Voice · Video · Chat · SMS · Email · WhatsApp</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust marquee -->
+  <div class="trust-marquee">
+    <div class="trust-marquee-label">Enterprise-certified · trusted globally</div>
+    <div class="trust-track">
+      <span class="trust-item"><svg><use href="#i-shield"/></svg>HIPAA</span>
+      <span class="trust-item"><svg><use href="#i-shield"/></svg>SOC 2</span>
+      <span class="trust-item"><svg><use href="#i-shield"/></svg>ISO 27001</span>
+      <span class="trust-item"><svg><use href="#i-shield"/></svg>PCI DSS</span>
+      <span class="trust-item"><svg><use href="#i-shield"/></svg>GDPR</span>
+      <span class="trust-item"><svg><use href="#i-shield"/></svg>EU Data Boundary</span>
+      <span class="trust-item"><svg><use href="#i-shield"/></svg>FedRAMP</span>
+      <span class="trust-item"><svg><use href="#i-shield"/></svg>HITRUST</span>
+      <!-- duplicate for seamless loop -->
+      <span class="trust-item"><svg><use href="#i-shield"/></svg>HIPAA</span>
+      <span class="trust-item"><svg><use href="#i-shield"/></svg>SOC 2</span>
+      <span class="trust-item"><svg><use href="#i-shield"/></svg>ISO 27001</span>
+      <span class="trust-item"><svg><use href="#i-shield"/></svg>PCI DSS</span>
+      <span class="trust-item"><svg><use href="#i-shield"/></svg>GDPR</span>
+      <span class="trust-item"><svg><use href="#i-shield"/></svg>EU Data Boundary</span>
+      <span class="trust-item"><svg><use href="#i-shield"/></svg>FedRAMP</span>
+      <span class="trust-item"><svg><use href="#i-shield"/></svg>HITRUST</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============= KPI MONOLITHS ============= -->
+<section class="kpi-section" id="overview">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">At a glance</span>
+      <h2>The numbers that <span class="grad-word">matter</span>.</h2>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-tile reveal">
+        <span class="kpi-tag">SLA</span>
+        <div class="kpi-num" data-target="99.9" data-suffix="%">0%</div>
+        <div class="kpi-label">Service-level agreement across every channel</div>
+      </div>
+      <div class="kpi-tile reveal d1">
+        <span class="kpi-tag">Channels</span>
+        <div class="kpi-num" data-target="6" data-suffix="">0</div>
+        <div class="kpi-label">Native channels on a single unified platform</div>
+      </div>
+      <div class="kpi-tile reveal d2">
+        <span class="kpi-tag">Pricing</span>
+        <div class="kpi-num">PAYG</div>
+        <div class="kpi-label">Pay-as-you-go · no per-seat licensing</div>
+      </div>
+      <div class="kpi-tile reveal d3">
+        <span class="kpi-tag">Microsoft</span>
+        <div class="kpi-num">Teams</div>
+        <div class="kpi-label">Native interoperability baked in</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= BENTO PILLARS ============= -->
+<section class="block tinted">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">Overview</span>
+      <h2>One platform.<br/><span class="grad-word">Every channel.</span></h2>
+      <p>A unified, globally available cloud for real-time and asynchronous communication — built on the same infrastructure that runs Microsoft Teams.</p>
+    </div>
+
+    <div class="bento">
+      <div class="bento-cell b-ocean reveal">
+        <div class="b-icon"><svg><use href="#i-globe"/></svg></div>
+        <div>
+          <div class="bento-stat">60+</div>
+          <h3>Globally scaled</h3>
+          <p>Microsoft's global network — the same infrastructure that underpins Teams — delivered to 60+ Azure regions.</p>
+        </div>
+      </div>
+      <div class="bento-cell b-light-1 reveal d1">
+        <div class="b-icon"><svg><use href="#i-puzzle"/></svg></div>
+        <div>
+          <div class="bento-stat">6</div>
+          <h3>Composable APIs</h3>
+          <p>Pick the channels you need — voice, video, chat, SMS, email — and mix them.</p>
+        </div>
+      </div>
+      <div class="bento-cell b-light-2 reveal d2">
+        <div class="b-icon"><svg><use href="#i-handshake"/></svg></div>
+        <div>
+          <div class="bento-stat">Teams</div>
+          <h3>Native interop</h3>
+          <p>Join meetings, chats and calls from your own custom apps.</p>
+        </div>
+      </div>
+      <div class="bento-cell b-sunrise reveal d3">
+        <div class="b-icon"><svg><use href="#i-shield"/></svg></div>
+        <div>
+          <div class="bento-stat">100+</div>
+          <h3>Enterprise trust</h3>
+          <p>HIPAA, SOC 2, ISO 27001, PCI DSS, GDPR and the EU Data Boundary — with end-to-end encryption in transit.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= BUSINESS VALUE — dark section ============= -->
+<section class="block dark" id="value">
+  <div class="aurora-bg"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="section-head reveal">
+      <span class="kicker">Business value</span>
+      <h2>Why leaders<br/>choose <span class="grad-word">ACS.</span></h2>
+      <p>Consolidate fragmented communication tooling, accelerate time-to-market and modernize customer engagement — on one enterprise-grade platform backed by Microsoft.</p>
+    </div>
+
+    <div class="feature-stack">
+
+      <div class="feature-card feat-ocean reveal">
+        <div>
+          <span class="f-kicker">Vendor consolidation</span>
+          <h3>One cloud. One contract. One SLA.</h3>
+          <p>Replace a patchwork of SMS gateways, email senders, video SDKs and telephony providers with a single Microsoft-backed platform.</p>
+          <ul>
+            <li>Unified identity across channels</li>
+            <li>Single Microsoft commercial relationship</li>
+            <li>One invoice, one support desk</li>
+          </ul>
+        </div>
+        <div class="f-visual">
+          <div class="f-hero-icon"><svg><use href="#i-stack"/></svg></div>
+        </div>
+      </div>
+
+      <div class="feature-card feat-sunrise reveal">
+        <div>
+          <span class="f-kicker">Accelerated delivery</span>
+          <h3>Ship in weeks, not quarters.</h3>
+          <p>Drop-in UI Library components and prebuilt workflows let product teams deliver customer-facing communication in weeks — freeing engineering for differentiation.</p>
+          <ul>
+            <li>Production-ready React, iOS and Android components</li>
+            <li>Quickstarts for every channel</li>
+            <li>Prebuilt Call Automation workflows</li>
+          </ul>
+        </div>
+        <div class="f-visual">
+          <div class="f-hero-icon"><svg><use href="#i-bolt"/></svg></div>
+        </div>
+      </div>
+
+      <div class="feature-card feat-forest reveal">
+        <div>
+          <span class="f-kicker">Usage-aligned economics</span>
+          <h3>Pay only for what you use.</h3>
+          <p>Scale with demand without committing to per-seat licenses or capacity you don't consume. No floor. No ceiling.</p>
+          <ul>
+            <li>Per-message, per-minute, per-transaction</li>
+            <li>No seat minimums or ramp commitments</li>
+            <li>Transparent pricing calculator</li>
+          </ul>
+        </div>
+        <div class="f-visual">
+          <div class="f-hero-icon"><svg><use href="#i-dollar"/></svg></div>
+        </div>
+      </div>
+
+      <div class="feature-card feat-neon reveal">
+        <div>
+          <span class="f-kicker">Enterprise-grade trust</span>
+          <h3>Security baked in — not bolted on.</h3>
+          <p>Microsoft Entra ID integration, end-to-end encryption in transit and a compliance portfolio aligned to Microsoft's Zero Trust security principles.</p>
+          <ul>
+            <li>HIPAA, SOC 2, ISO 27001, PCI DSS, GDPR</li>
+            <li>EU Data Boundary for EU customers</li>
+            <li>Entra ID integration for enterprise identity</li>
+          </ul>
+        </div>
+        <div class="f-visual">
+          <div class="f-hero-icon"><svg><use href="#i-shield"/></svg></div>
+        </div>
+      </div>
+
+      <div class="feature-card feat-citrus reveal">
+        <div>
+          <span class="f-kicker">Teams as a channel</span>
+          <h3>Bring Teams to your customers.</h3>
+          <p>Extend Microsoft Teams into your own customer-facing apps — no bridging vendors, no media duplication, no separate directory to govern.</p>
+          <ul>
+            <li>Join Teams meetings from a custom app</li>
+            <li>Federate chat between Teams and your app</li>
+            <li>One identity surface to manage</li>
+          </ul>
+        </div>
+        <div class="f-visual">
+          <div class="f-hero-icon"><svg><use href="#i-handshake"/></svg></div>
+        </div>
+      </div>
+
+      <div class="feature-card feat-dark reveal">
+        <div>
+          <span class="f-kicker">Intelligent by design</span>
+          <h3>AI-ready conversations.</h3>
+          <p>Combine Call Automation with Azure AI for live transcription, sentiment, summarization and intent — turning every conversation into structured insight.</p>
+          <ul>
+            <li>Real-time transcription &amp; translation</li>
+            <li>Sentiment and intent detection</li>
+            <li>Automatic call summarization</li>
+          </ul>
+        </div>
+        <div class="f-visual">
+          <div class="f-hero-icon"><svg><use href="#i-ai"/></svg></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============= WHAT'S NEW ============= -->
+<section class="block tinted" id="whats-new">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">What's new</span>
+      <h2>Moving <span class="grad-word">forward</span>, always.</h2>
+      <p>ACS is updated continuously. A snapshot of recent and notable capabilities you can use today.</p>
+    </div>
+
+    <div class="whats-new">
+      <div class="reveal">
+        <div class="timeline">
+          <div class="tl-item t-blue">
+            <span class="tl-date">Build 2026</span>
+            <h4>MAI voice + transcription stack</h4>
+            <p>Microsoft’s new MAI family adds <strong>MAI-Voice-2</strong> and <strong>MAI-Voice-2-Flash</strong> for low-latency synthesis, and <strong>MAI-Transcribe-1.5</strong> for 43-language transcription — a first-party voice/STT layer to wire into Call Automation and Dynamics 365 Contact Center.</p>
+          </div>
+          <div class="tl-item t-blue">
+            <span class="tl-date">Latest</span>
+            <h4>Advanced Messaging for WhatsApp</h4>
+            <p>Send and receive WhatsApp Business messages through a single ACS API — notifications, OTPs and two-way conversations.</p>
+          </div>
+          <div class="tl-item t-purple">
+            <span class="tl-date">Recent</span>
+            <h4>High-volume Email scale</h4>
+            <p>ACS Email is now the recommended destination for customers hitting Exchange Online tenant outbound limits (TERRL).</p>
+          </div>
+          <div class="tl-item t-pink">
+            <span class="tl-date">Recent</span>
+            <h4>Call Automation + Azure AI</h4>
+            <p>Real-time transcription, sentiment and summarization directly inside Call Automation workflows — a natural place to plug in MAI-Voice-2 / MAI-Transcribe-1.5 for AI-augmented contact-center experiences wired into Dynamics 365 Contact Center.</p>
+          </div>
+          <div class="tl-item t-orange">
+            <span class="tl-date">Evolving</span>
+            <h4>UI Library Composites</h4>
+            <p>Plug-and-play calling and chat components for React, Web, iOS and Android — ship UI in hours, not sprints.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal d2">
+        <div class="why-panel">
+          <h3>Why it matters</h3>
+          <p>Communication is no longer a silo. ACS lets you unify every channel — voice, video, chat, SMS, email and Teams — behind a single identity model and one billing surface.</p>
+          <div class="why-grid">
+            <div class="why-cell"><div class="v">99.9%</div><small>SLA uptime</small></div>
+            <div class="why-cell"><div class="v">30+</div><small>Countries for voice/SMS</small></div>
+            <div class="why-cell"><div class="v">PAYG</div><small>No per-user licensing</small></div>
+            <div class="why-cell"><div class="v">Teams</div><small>Native interop</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= GET STARTED ============= -->
+<section class="block" id="get-started">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">Get started</span>
+      <h2>From zero to<br/><span class="grad-word">"hello world"</span> in four steps.</h2>
+      <p>A consistent onboarding path whether you're adding SMS, email, calling or chat.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num"></div>
+        <h4>Create a resource</h4>
+        <p>Provision an Azure Communication Services resource in the Azure portal or via ARM/Bicep.</p>
+      </div>
+      <div class="step reveal d1">
+        <div class="step-num"></div>
+        <h4>Choose a channel</h4>
+        <p>Select voice, video, chat, SMS, email or advanced messaging for your scenario.</p>
+      </div>
+      <div class="step reveal d2">
+        <div class="step-num"></div>
+        <h4>Install the SDK</h4>
+        <p>Add the .NET, JavaScript, Java, Python, iOS, Android or PowerShell SDK to your app.</p>
+      </div>
+      <div class="step reveal d3">
+        <div class="step-num"></div>
+        <h4>Authenticate &amp; send</h4>
+        <p>Issue an identity token or use a connection string, then send your first message or make your first call.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= CHANNELS — tabbed ============= -->
+<section class="block tinted" id="channels">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">Communication channels</span>
+      <h2>Meet your customers<br/><span class="grad-word">where they are</span>.</h2>
+      <p>Click each channel to see capabilities, common scenarios and the SDKs available.</p>
+    </div>
+
+    <div class="channel-wrap reveal">
+      <div class="channel-tabs" role="tablist">
+        <button class="channel-tab active" data-tab="email"     role="tab"><svg><use href="#i-mail"/></svg>Email</button>
+        <button class="channel-tab"        data-tab="sms"       role="tab"><svg><use href="#i-sms"/></svg>SMS</button>
+        <button class="channel-tab"        data-tab="voice"     role="tab"><svg><use href="#i-phone"/></svg>Phone Calling</button>
+        <button class="channel-tab"        data-tab="chat"      role="tab"><svg><use href="#i-chat"/></svg>Chat</button>
+        <button class="channel-tab"        data-tab="video"     role="tab"><svg><use href="#i-video"/></svg>Voice &amp; Video</button>
+        <button class="channel-tab"        data-tab="messaging" role="tab"><svg><use href="#i-sparkle"/></svg>Advanced</button>
+      </div>
+
+      <div class="channel-panels">
+
+        <div class="channel-panel active" data-panel="email">
+          <div>
+            <h3>Email at scale.</h3>
+            <p>Send transactional and bulk email from your own verified domain — the recommended path for workloads throttled by Exchange Online TERRL / RRL limits.</p>
+            <ul>
+              <li>REST API, SDKs or SMTP AUTH relay</li>
+              <li>Custom domains with SPF, DKIM and ARC</li>
+              <li>Delivery analytics, bounce &amp; suppression lists</li>
+              <li>EU Data Boundary supported</li>
+            </ul>
+            <div class="pill-row">
+              <span class="pill">.NET</span><span class="pill">Java</span><span class="pill">Python</span><span class="pill">JavaScript</span><span class="pill">SMTP</span>
+            </div>
+          </div>
+          <div class="ch-visual ch-bg-email">
+            <div class="ch-mesh"></div>
+            <div class="ch-icon"><svg><use href="#i-mail"/></svg></div>
+          </div>
+        </div>
+
+        <div class="channel-panel" data-panel="sms">
+          <div>
+            <h3>SMS that just works.</h3>
+            <p>Toll-free numbers, short codes or long codes — for alerts, 2FA, reminders and two-way conversations at global scale.</p>
+            <ul>
+              <li>Toll-free, short-code and alphanumeric sender IDs</li>
+              <li>Opt-out handling and delivery reports</li>
+              <li>Global coverage with region-specific compliance</li>
+              <li>Event Grid webhooks for inbound messages</li>
+            </ul>
+            <div class="pill-row">
+              <span class="pill">.NET</span><span class="pill">Java</span><span class="pill">Python</span><span class="pill">JavaScript</span>
+            </div>
+          </div>
+          <div class="ch-visual ch-bg-sms">
+            <div class="ch-mesh"></div>
+            <div class="ch-icon"><svg><use href="#i-sms"/></svg></div>
+          </div>
+        </div>
+
+        <div class="channel-panel" data-panel="voice">
+          <div>
+            <h3>PSTN calling, cloud-native.</h3>
+            <p>Purchase phone numbers and make or receive PSTN calls directly from your application, or route calls through your existing SBC via Direct Routing.</p>
+            <ul>
+              <li>Outbound and inbound calling from the cloud</li>
+              <li>Direct Routing via your SBC — bring your carrier</li>
+              <li>Emergency calling and dynamic location</li>
+              <li>Integrates with Call Automation for IVR &amp; bots</li>
+            </ul>
+            <div class="pill-row">
+              <span class="pill">.NET</span><span class="pill">JavaScript</span><span class="pill">iOS</span><span class="pill">Android</span>
+            </div>
+          </div>
+          <div class="ch-visual ch-bg-voice">
+            <div class="ch-mesh"></div>
+            <div class="ch-icon"><svg><use href="#i-phone"/></svg></div>
+          </div>
+        </div>
+
+        <div class="channel-panel" data-panel="chat">
+          <div>
+            <h3>Persistent group chat.</h3>
+            <p>Multi-party chat threads with typing indicators, read receipts, message history and file or image support.</p>
+            <ul>
+              <li>Group threads with 250+ participants</li>
+              <li>Message history with edit and delete semantics</li>
+              <li>Event notifications for presence &amp; typing</li>
+              <li>Pairs with Teams interop for hybrid threads</li>
+            </ul>
+            <div class="pill-row">
+              <span class="pill">.NET</span><span class="pill">Java</span><span class="pill">Python</span><span class="pill">JavaScript</span><span class="pill">iOS</span><span class="pill">Android</span>
+            </div>
+          </div>
+          <div class="ch-visual ch-bg-chat">
+            <div class="ch-mesh"></div>
+            <div class="ch-icon"><svg><use href="#i-chat"/></svg></div>
+          </div>
+        </div>
+
+        <div class="channel-panel" data-panel="video">
+          <div>
+            <h3>HD voice &amp; video.</h3>
+            <p>Embed high-quality 1:1 and group audio and video calls into web, iOS and Android apps using the Calling SDK or the drop-in UI Library.</p>
+            <ul>
+              <li>HD audio and video, screen share, raw media access</li>
+              <li>Background blur, noise suppression, closed captions</li>
+              <li>Join Teams meetings as a custom-branded user</li>
+              <li>Composable UI Library for React, iOS &amp; Android</li>
+            </ul>
+            <div class="pill-row">
+              <span class="pill">JavaScript</span><span class="pill">iOS</span><span class="pill">Android</span><span class="pill">Windows</span>
+            </div>
+          </div>
+          <div class="ch-visual ch-bg-video">
+            <div class="ch-mesh"></div>
+            <div class="ch-icon"><svg><use href="#i-video"/></svg></div>
+          </div>
+        </div>
+
+        <div class="channel-panel" data-panel="messaging">
+          <div>
+            <h3>Beyond SMS &amp; email.</h3>
+            <p>Reach customers where they already are — send and receive messages over WhatsApp Business and other third-party channels through a unified API.</p>
+            <ul>
+              <li>WhatsApp Business: templates, media, two-way</li>
+              <li>Single identity across channels</li>
+              <li>Delivery receipts and analytics</li>
+              <li>Roadmap includes additional OTT channels</li>
+            </ul>
+            <div class="pill-row">
+              <span class="pill">.NET</span><span class="pill">Java</span><span class="pill">Python</span><span class="pill">JavaScript</span>
+            </div>
+          </div>
+          <div class="ch-visual ch-bg-msg">
+            <div class="ch-mesh"></div>
+            <div class="ch-icon"><svg><use href="#i-sparkle"/></svg></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= INDUSTRIES ============= -->
+<section class="block" id="industries">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">Industries</span>
+      <h2>Trusted where<br/><span class="grad-word">it matters most.</span></h2>
+      <p>From telehealth visits to branch-grade financial advisory — ACS underpins mission-critical customer communication where compliance, scale and experience cannot be compromised.</p>
+    </div>
+
+    <div class="industries">
+      <div class="ind-card health reveal">
+        <div class="ind-icon"><svg><use href="#i-heart"/></svg></div>
+        <h4>Healthcare</h4>
+        <p>HIPAA-aligned video visits, appointment reminders and secure patient messaging — without a separate EHR integration layer.</p>
+        <div class="ind-stats">
+          <span class="ind-stat">Telehealth</span>
+          <span class="ind-stat">HIPAA</span>
+        </div>
+      </div>
+      <div class="ind-card retail reveal d1">
+        <div class="ind-icon"><svg><use href="#i-bag"/></svg></div>
+        <h4>Retail &amp; consumer</h4>
+        <p>Abandoned-cart SMS, WhatsApp order updates and live video shopping — orchestrated across channels from one customer identity.</p>
+        <div class="ind-stats">
+          <span class="ind-stat">Omnichannel</span>
+          <span class="ind-stat">WhatsApp</span>
+        </div>
+      </div>
+      <div class="ind-card finance reveal d2">
+        <div class="ind-icon"><svg><use href="#i-bank"/></svg></div>
+        <h4>Financial services</h4>
+        <p>Authenticated OTP delivery, compliant call recording and advisor video with full audit trails — on infrastructure banks already trust.</p>
+        <div class="ind-stats">
+          <span class="ind-stat">SOC 2</span>
+          <span class="ind-stat">PCI DSS</span>
+        </div>
+      </div>
+      <div class="ind-card public reveal d3">
+        <div class="ind-icon"><svg><use href="#i-building"/></svg></div>
+        <h4>Public sector</h4>
+        <p>Citizen contact centers, multilingual AI-assisted IVR and secure SMS notifications — inside the EU Data Boundary where required.</p>
+        <div class="ind-stats">
+          <span class="ind-stat">EU boundary</span>
+          <span class="ind-stat">Sovereign</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= OTHER SERVICES — dark ============= -->
+<section class="block dark">
+  <div class="aurora-bg"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="section-head reveal">
+      <span class="kicker">Other services</span>
+      <h2>More than just<br/><span class="grad-word">channels</span>.</h2>
+      <p>Beyond voice and messaging, ACS ships higher-level building blocks for interop, automation, UI and diagnostics.</p>
+    </div>
+
+    <div class="services">
+      <div class="service reveal">
+        <div class="s-icon"><svg><use href="#i-handshake"/></svg></div>
+        <h4>Teams Interoperability</h4>
+        <p>Let your apps and users participate in Microsoft Teams calls, meetings and chats — with your own branded experience.</p>
+        <a class="s-link" href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/teams-interop" target="_blank" rel="noopener">Learn more</a>
+      </div>
+      <div class="service reveal d1">
+        <div class="s-icon"><svg><use href="#i-gear"/></svg></div>
+        <h4>Call Automation</h4>
+        <p>Server-side APIs for intelligent calling workflows — IVR, routing, recording, transcription and AI-driven call flows.</p>
+        <a class="s-link" href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/call-automation/call-automation" target="_blank" rel="noopener">Learn more</a>
+      </div>
+      <div class="service reveal d2">
+        <div class="s-icon"><svg><use href="#i-palette"/></svg></div>
+        <h4>UI Library</h4>
+        <p>Production-ready, accessible React, iOS and Android components for calling and chat — ship a polished UX fast.</p>
+        <a class="s-link" href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/ui-library/ui-library-overview" target="_blank" rel="noopener">Learn more</a>
+      </div>
+      <div class="service reveal d3">
+        <div class="s-icon"><svg><use href="#i-compass"/></svg></div>
+        <h4>Job Router</h4>
+        <p>Route each customer interaction to the right agent using a flexible engine of queues, workers and rule-based policies.</p>
+        <a class="s-link" href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/router/concepts" target="_blank" rel="noopener">Learn more</a>
+      </div>
+      <div class="service reveal d4">
+        <div class="s-icon"><svg><use href="#i-diag"/></svg></div>
+        <h4>Call Diagnostics</h4>
+        <p>Visual tooling in the Azure portal to debug media quality, connectivity and call setup — with per-participant telemetry.</p>
+        <a class="s-link" href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/call-diagnostics" target="_blank" rel="noopener">Learn more</a>
+      </div>
+      <div class="service reveal d5">
+        <div class="s-icon"><svg><use href="#i-lock"/></svg></div>
+        <h4>Identity &amp; Access</h4>
+        <p>Issue short-lived access tokens per user, with scopes per channel — integrates with Entra ID for enterprise identity.</p>
+        <a class="s-link" href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/authentication" target="_blank" rel="noopener">Learn more</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= REFERENCE ============= -->
+<section class="block">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">Reference</span>
+      <h2>Built for <span class="grad-word">every stack</span>.</h2>
+      <p>Every capability is accessible through both native SDKs and language-neutral REST — in the language and platform you already use.</p>
+    </div>
+
+    <div class="ref-wrap">
+      <div class="ref-card reveal">
+        <h3><svg><use href="#i-code"/></svg>Client &amp; Server SDKs</h3>
+        <p>First-class SDKs across your stack, versioned on NuGet, npm, Maven, PyPI and CocoaPods.</p>
+        <div class="chips">
+          <span class="chip"><span class="dot-lang" style="background:#512BD4"></span>.NET</span>
+          <span class="chip"><span class="dot-lang" style="background:#F7DF1E"></span>JavaScript / TypeScript</span>
+          <span class="chip"><span class="dot-lang" style="background:#E76F00"></span>Java</span>
+          <span class="chip"><span class="dot-lang" style="background:#3776AB"></span>Python</span>
+          <span class="chip"><span class="dot-lang" style="background:#000"></span>Swift / iOS</span>
+          <span class="chip"><span class="dot-lang" style="background:#3DDC84"></span>Kotlin / Android</span>
+          <span class="chip"><span class="dot-lang" style="background:#0078D4"></span>PowerShell</span>
+        </div>
+        <a class="ref-link" href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/reference" target="_blank" rel="noopener">Browse SDK reference <svg style="width:14px;height:14px" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+      <div class="ref-card reveal d2">
+        <h3><svg><use href="#i-docs"/></svg>REST API</h3>
+        <p>Language-neutral HTTP/JSON APIs for every channel, versioned with stable and preview contracts.</p>
+        <div class="chips">
+          <span class="chip">Identity</span>
+          <span class="chip">Email</span>
+          <span class="chip">SMS</span>
+          <span class="chip">Chat</span>
+          <span class="chip">Calling</span>
+          <span class="chip">Call Automation</span>
+          <span class="chip">Job Router</span>
+          <span class="chip">Advanced Messaging</span>
+        </div>
+        <a class="ref-link" href="https://learn.microsoft.com/en-us/rest/api/communication/" target="_blank" rel="noopener">Browse REST reference <svg style="width:14px;height:14px" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= TRAINING ============= -->
+<section class="block tinted" id="training">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">Training</span>
+      <h2>Learn by <span class="grad-word">doing</span>.</h2>
+      <p>Guided learning paths, hands-on modules and focused quickstarts — curated from the official Azure documentation.</p>
+    </div>
+
+    <div class="training">
+      <a class="train-card reveal" href="https://learn.microsoft.com/en-us/training/modules/intro-azure-communication-services/" target="_blank" rel="noopener">
+        <span class="train-tag">Learning path</span>
+        <h4>Introduction to Azure Communication Services</h4>
+        <p>Understand what ACS is, how it fits alongside Microsoft Teams and where each channel shines.</p>
+        <div class="train-meta"><svg><use href="#i-clock"/></svg>~45 min · Beginner</div>
+      </a>
+      <a class="train-card reveal d1" href="https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/email/send-email" target="_blank" rel="noopener">
+        <span class="train-tag">Module</span>
+        <h4>Send your first email with ACS</h4>
+        <p>Create a resource, verify a domain and send a test email using the .NET SDK.</p>
+        <div class="train-meta"><svg><use href="#i-clock"/></svg>~25 min · Beginner</div>
+      </a>
+      <a class="train-card reveal d2" href="https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/ui-library/get-started-composites" target="_blank" rel="noopener">
+        <span class="train-tag">Module</span>
+        <h4>Build a calling experience with the UI Library</h4>
+        <p>Embed a production-ready calling UI in a React app in under an hour.</p>
+        <div class="train-meta"><svg><use href="#i-clock"/></svg>~50 min · Intermediate</div>
+      </a>
+      <a class="train-card reveal" href="https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/sms/send" target="_blank" rel="noopener">
+        <span class="train-tag">Quickstart</span>
+        <h4>Send an SMS with ACS</h4>
+        <p>Provision a number, authenticate and deliver your first SMS in a few lines of code.</p>
+        <div class="train-meta"><svg><use href="#i-clock"/></svg>~15 min · Beginner</div>
+      </a>
+      <a class="train-card reveal d1" href="https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/voice-video-calling/get-started-teams-interop" target="_blank" rel="noopener">
+        <span class="train-tag">Quickstart</span>
+        <h4>Join a Teams meeting from a custom app</h4>
+        <p>Use Teams interop to let your application's users join Teams meetings seamlessly.</p>
+        <div class="train-meta"><svg><use href="#i-clock"/></svg>~30 min · Intermediate</div>
+      </a>
+      <a class="train-card reveal d2" href="https://learn.microsoft.com/en-us/azure/communication-services/how-tos/call-automation/real-time-transcription-tutorial" target="_blank" rel="noopener">
+        <span class="train-tag">Advanced</span>
+        <h4>Automate calls with AI</h4>
+        <p>Combine Call Automation with Azure AI for real-time transcription and summarization.</p>
+        <div class="train-meta"><svg><use href="#i-clock"/></svg>~75 min · Advanced</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============= SUPPORT ============= -->
+<section class="block">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">Support &amp; help</span>
+      <h2>We're here <span class="grad-word">when you need us</span>.</h2>
+      <p>From quick community answers to a formal Azure support case — pick the channel that matches the urgency and complexity of your issue.</p>
+    </div>
+
+    <div class="support">
+      <div class="support-card reveal">
+        <div class="support-icon"><svg><use href="#i-bulb"/></svg></div>
+        <h4>Share feedback</h4>
+        <p>Shape the roadmap. Submit feature requests, vote on ideas and track what Microsoft is building next through the official Azure feedback portal.</p>
+        <a class="support-link" href="https://feedback.azure.com/d365community" target="_blank" rel="noopener">Provide feedback <svg style="width:14px;height:14px" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+      <div class="support-card reveal d1">
+        <div class="support-icon"><svg><use href="#i-chat"/></svg></div>
+        <h4>Ask the community</h4>
+        <p>Get answers from Microsoft engineers, MVPs and a global developer community on Microsoft Q&amp;A — the fastest path for how-to and design questions.</p>
+        <a class="support-link" href="https://learn.microsoft.com/en-us/answers/" target="_blank" rel="noopener">Ask on Microsoft Q&amp;A <svg style="width:14px;height:14px" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+      <div class="support-card reveal d2">
+        <div class="support-icon"><svg><use href="#i-life"/></svg></div>
+        <h4>Open a support case</h4>
+        <p>For production issues, billing questions or items requiring account-level investigation, open a formal Azure support request and engage Microsoft engineers directly.</p>
+        <a class="support-link" href="https://learn.microsoft.com/en-us/azure/azure-portal/supportability/how-to-create-azure-support-request" target="_blank" rel="noopener">Create a support request <svg style="width:14px;height:14px" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= FINAL CTA ============= -->
+<section class="cta-banner">
+  <div class="container">
+    <h2 class="reveal">Ready to unify every channel?</h2>
+    <p class="reveal d1">Start free. Pay only for what you use. Ship customer-facing communication in weeks, not quarters.</p>
+    <div class="hero-cta reveal d2" style="justify-content:center;">
+      <a class="btn btn-primary" href="https://azure.microsoft.com/en-us/pricing/details/communication-services/" target="_blank" rel="noopener">View pricing <svg style="width:14px;height:14px" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      <a class="btn btn-ghost" href="https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/create-communication-resource" target="_blank" rel="noopener">Create a resource</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============= FOOTER ============= -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand-wrap">
+      <div class="brand" style="color:#fff;">
+        <svg class="ms-logo" viewBox="0 0 24 24" aria-hidden="true" style="width:22px;height:22px;">
+          <rect x="1"  y="1"  width="10" height="10" fill="#F25022"/>
+          <rect x="13" y="1"  width="10" height="10" fill="#7FBA00"/>
+          <rect x="1"  y="13" width="10" height="10" fill="#00A4EF"/>
+          <rect x="13" y="13" width="10" height="10" fill="#FFB900"/>
+        </svg>
+        <span style="color:#fff;">Azure Communication Services</span>
+      </div>
+      <p>An interactive overview of the unified communication platform — voice, video, chat, SMS, email and Teams interoperability, delivered as composable cloud APIs.</p>
+    </div>
+    <div>
+      <h5>Explore</h5>
+      <a href="https://learn.microsoft.com/en-us/azure/communication-services/overview" target="_blank" rel="noopener">Overview</a>
+      <a href="https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/create-communication-resource" target="_blank" rel="noopener">Quickstarts</a>
+      <a href="https://learn.microsoft.com/en-us/azure/communication-services/tutorials/building-app-start" target="_blank" rel="noopener">Tutorials</a>
+      <a href="https://learn.microsoft.com/en-us/azure/communication-services/samples/overview" target="_blank" rel="noopener">Samples</a>
+    </div>
+    <div>
+      <h5>Reference</h5>
+      <a href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/reference" target="_blank" rel="noopener">SDK reference</a>
+      <a href="https://learn.microsoft.com/en-us/rest/api/communication/" target="_blank" rel="noopener">REST API</a>
+      <a href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/service-limits" target="_blank" rel="noopener">Service limits</a>
+      <a href="https://azure.microsoft.com/en-us/pricing/details/communication-services/" target="_blank" rel="noopener">Pricing details</a>
+    </div>
+    <div>
+      <h5>Support</h5>
+      <a href="https://feedback.azure.com/d365community" target="_blank" rel="noopener">Azure feedback</a>
+      <a href="https://learn.microsoft.com/en-us/answers/" target="_blank" rel="noopener">Microsoft Q&amp;A</a>
+      <a href="https://learn.microsoft.com/en-us/azure/azure-portal/supportability/how-to-create-azure-support-request" target="_blank" rel="noopener">Create a support request</a>
+      <a href="https://techcommunity.microsoft.com/category/azure/blog/azurecommunicationservices" target="_blank" rel="noopener">Tech Community</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>Based on the <a href="https://learn.microsoft.com/en-us/azure/communication-services/" target="_blank" rel="noopener">Azure Communication Services documentation</a> · Microsoft Learn · <a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/" target="_blank" rel="noopener">Foundry @ Build 2026</a> for MAI voice/transcription context</span>
+    <span>Executive briefing · June 2026 (Build 2026)</span>
+  </div>
+</footer>
+
+<script>
+  // Scroll progress
+  const prog = document.getElementById('scrollProgress');
+  function updateProgress() {
+    const h = document.documentElement;
+    const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    prog.style.width = Math.min(100, Math.max(0, scrolled * 100)) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Count-up animation
+  const countUp = (el, target, suffix = '', duration = 1600) => {
+    const isInt = Number.isInteger(target);
+    const start = performance.now();
+    const tick = (now) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const v = target * eased;
+      el.textContent = (isInt ? Math.round(v).toLocaleString() : v.toFixed(1)) + suffix;
+      if (t < 1) requestAnimationFrame(tick);
+      else el.textContent = (isInt ? target.toLocaleString() : target.toFixed(1)) + suffix;
+    };
+    requestAnimationFrame(tick);
+  };
+  const kpiObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseFloat(el.dataset.target);
+      const suffix = el.dataset.suffix || '';
+      countUp(el, target, suffix);
+      kpiObs.unobserve(el);
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('[data-target]').forEach(el => kpiObs.observe(el));
+
+  // Channel tabs
+  const tabs = document.querySelectorAll('.channel-tab');
+  const panels = document.querySelectorAll('.channel-panel');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const t = tab.dataset.tab;
+      tabs.forEach(x => x.classList.toggle('active', x === tab));
+      panels.forEach(p => p.classList.toggle('active', p.dataset.panel === t));
+    });
+  });
+  const tabList = Array.from(tabs);
+  tabList.forEach((tab, i) => {
+    tab.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const dir = e.key === 'ArrowRight' ? 1 : -1;
+        const next = tabList[(i + dir + tabList.length) % tabList.length];
+        next.focus(); next.click();
+      }
+    });
+  });
+
+  // Subtle parallax on hero device
+  const device = document.querySelector('.device-card');
+  if (device) {
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (y < window.innerHeight) {
+        device.style.setProperty('--p', `${y * 0.15}px`);
+        device.style.transform = `rotateX(${8 - y * 0.015}deg) translateY(${y * 0.15}px)`;
+      }
+    }, { passive: true });
+  }
+</script>
+
+</body>
+</html>

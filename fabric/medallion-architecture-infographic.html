@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medallion Lakehouse Architecture in Microsoft Fabric</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&display=swap');
+
+  :root {
+    --bronze: #CD7F32;
+    --bronze-light: #F5E6D3;
+    --bronze-dark: #8B5A2B;
+    --silver: #A8A9AD;
+    --silver-light: #E8E8EC;
+    --silver-dark: #6B6C70;
+    --gold: #D4AF37;
+    --gold-light: #FFF8E1;
+    --gold-dark: #997A1E;
+    --fabric-primary: #0078D4;
+    --fabric-dark: #004578;
+    --fabric-accent: #00B7C3;
+    --bg: #0F1117;
+    --bg-card: #1A1D27;
+    --bg-card-hover: #222639;
+    --text: #E8EAED;
+    --text-muted: #9AA0A6;
+    --border: #2D3140;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(205,127,50,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(168,169,173,0.1) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 50%, rgba(212,175,55,0.15) 0%, transparent 50%);
+    z-index: 0;
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 900px; }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(0,120,212,0.15);
+    border: 1px solid rgba(0,120,212,0.3);
+    border-radius: 999px;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.85rem;
+    color: var(--fabric-primary);
+    margin-bottom: 1.5rem;
+    animation: fadeInDown 0.8s ease;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    animation: fadeInUp 0.8s ease;
+  }
+
+  .hero h1 .gradient-text {
+    background: linear-gradient(135deg, var(--bronze), var(--silver), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero p {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    max-width: 650px;
+    margin: 0 auto 2rem;
+    animation: fadeInUp 0.8s ease 0.2s both;
+  }
+
+  .scroll-indicator {
+    animation: bounce 2s infinite;
+    cursor: pointer;
+    opacity: 0.6;
+  }
+
+  .scroll-indicator svg { width: 32px; height: 32px; fill: var(--text-muted); }
+
+  /* ===== FLOATING MEDALLIONS (hero decoration) ===== */
+  .medallion-float {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.08;
+    z-index: 0;
+  }
+  .medallion-float.bronze { background: var(--bronze); width: 300px; height: 300px; top: 10%; left: -5%; animation: float1 8s ease-in-out infinite; }
+  .medallion-float.silver { background: var(--silver); width: 200px; height: 200px; top: 60%; left: 15%; animation: float2 10s ease-in-out infinite; }
+  .medallion-float.gold   { background: var(--gold);   width: 250px; height: 250px; top: 20%; right: -3%; animation: float3 9s ease-in-out infinite; }
+
+  /* ===== SECTION SHARED ===== */
+  section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+
+  .section-label {
+    display: inline-block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--fabric-primary);
+    background: rgba(0,120,212,0.1);
+    padding: 0.3rem 0.9rem;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 700px;
+    margin-bottom: 3rem;
+  }
+
+  /* ===== WHAT IS SECTION ===== */
+  .what-is {
+    text-align: center;
+  }
+
+  .concept-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .concept-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: left;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+
+  .concept-card:hover {
+    background: var(--bg-card-hover);
+    transform: translateY(-4px);
+    border-color: rgba(0,120,212,0.3);
+  }
+
+  .concept-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .concept-card h3 { font-size: 1.15rem; margin-bottom: 0.5rem; }
+  .concept-card p { font-size: 0.92rem; color: var(--text-muted); }
+
+  /* ===== INTERACTIVE ARCHITECTURE FLOW ===== */
+  .arch-flow { padding-top: 3rem; }
+
+  .flow-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Layer Card */
+  .layer-card {
+    position: relative;
+    border-radius: 20px;
+    padding: 2.5rem;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    border: 2px solid transparent;
+    overflow: hidden;
+  }
+
+  .layer-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+    border-radius: 18px;
+    transition: opacity 0.3s;
+  }
+
+  .layer-card:hover::before { opacity: 0.12; }
+
+  .layer-card.bronze-card { background: var(--bg-card); border-color: rgba(205,127,50,0.25); }
+  .layer-card.bronze-card::before { background: var(--bronze); }
+  .layer-card.silver-card { background: var(--bg-card); border-color: rgba(168,169,173,0.25); }
+  .layer-card.silver-card::before { background: var(--silver); }
+  .layer-card.gold-card   { background: var(--bg-card); border-color: rgba(212,175,55,0.25); }
+  .layer-card.gold-card::before   { background: var(--gold); }
+
+  .layer-card.active.bronze-card { border-color: var(--bronze); box-shadow: 0 0 40px rgba(205,127,50,0.15); }
+  .layer-card.active.silver-card { border-color: var(--silver); box-shadow: 0 0 40px rgba(168,169,173,0.15); }
+  .layer-card.active.gold-card   { border-color: var(--gold);   box-shadow: 0 0 40px rgba(212,175,55,0.15); }
+
+  .layer-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .layer-medallion {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .bronze-card .layer-medallion { background: linear-gradient(135deg, var(--bronze-dark), var(--bronze)); }
+  .silver-card .layer-medallion { background: linear-gradient(135deg, var(--silver-dark), var(--silver)); }
+  .gold-card .layer-medallion   { background: linear-gradient(135deg, var(--gold-dark), var(--gold)); }
+
+  .layer-title-group h2 { font-size: 1.5rem; font-weight: 700; }
+  .layer-title-group .layer-subtitle { font-size: 0.85rem; color: var(--text-muted); margin-top: 2px; }
+
+  .layer-toggle {
+    margin-left: auto;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s;
+    position: relative;
+    z-index: 1;
+  }
+
+  .layer-card.active .layer-toggle { transform: rotate(180deg); }
+
+  .layer-toggle svg { width: 16px; height: 16px; fill: var(--text-muted); }
+
+  .layer-summary {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    position: relative;
+    z-index: 1;
+    margin-left: 72px;
+  }
+
+  .layer-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease, opacity 0.3s ease;
+    opacity: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .layer-card.active .layer-details {
+    max-height: 2000px;
+    opacity: 1;
+  }
+
+  .details-inner {
+    padding-top: 1.5rem;
+    margin-left: 72px;
+  }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  .detail-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+  }
+
+  .detail-item h4 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .bronze-card .detail-item h4 { color: var(--bronze); }
+  .silver-card .detail-item h4 { color: var(--silver); }
+  .gold-card .detail-item h4   { color: var(--gold); }
+
+  .detail-item ul { list-style: none; padding: 0; }
+  .detail-item li {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+  .detail-item li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    font-weight: 700;
+  }
+  .bronze-card .detail-item li::before { color: var(--bronze); }
+  .silver-card .detail-item li::before { color: var(--silver); }
+  .gold-card .detail-item li::before   { color: var(--gold); }
+
+  /* Flow Arrows */
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 0;
+    position: relative;
+  }
+
+  .flow-arrow-line {
+    width: 3px;
+    height: 40px;
+    border-radius: 2px;
+    position: relative;
+  }
+
+  .flow-arrow-line.bronze-to-silver {
+    background: linear-gradient(to bottom, var(--bronze), var(--silver));
+  }
+  .flow-arrow-line.silver-to-gold {
+    background: linear-gradient(to bottom, var(--silver), var(--gold));
+  }
+
+  .flow-arrow-label {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    background: var(--bg);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  /* ===== DEPLOYMENT PATTERNS ===== */
+  .patterns-section { text-align: center; }
+
+  .pattern-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .pattern-tab {
+    padding: 0.6rem 1.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-family: inherit;
+    transition: all 0.3s;
+  }
+
+  .pattern-tab:hover { border-color: var(--fabric-primary); color: var(--text); }
+  .pattern-tab.active {
+    background: var(--fabric-primary);
+    border-color: var(--fabric-primary);
+    color: #fff;
+  }
+
+  .pattern-content { display: none; }
+  .pattern-content.active { display: block; }
+
+  .pattern-diagram {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .pattern-diagram h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .pattern-diagram .pattern-desc {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .diagram-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+    padding: 1.5rem 0;
+  }
+
+  .diagram-node {
+    text-align: center;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    min-width: 120px;
+    position: relative;
+  }
+
+  .diagram-node.lakehouse {
+    background: rgba(0,120,212,0.12);
+    border: 1px solid rgba(0,120,212,0.3);
+    color: var(--fabric-primary);
+  }
+
+  .diagram-node.warehouse {
+    background: rgba(0,183,195,0.12);
+    border: 1px solid rgba(0,183,195,0.3);
+    color: var(--fabric-accent);
+  }
+
+  .diagram-node small {
+    display: block;
+    font-weight: 400;
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin-top: 2px;
+  }
+
+  .diagram-arrow {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    padding: 0 0.5rem;
+  }
+
+  .pattern-pros {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .pro-item, .con-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+  }
+
+  .pro-item .check { color: #4CAF50; flex-shrink: 0; }
+  .con-item .check { color: #FF9800; flex-shrink: 0; }
+
+  /* ===== E-COMMERCE EXAMPLE ===== */
+  .example-section { text-align: center; }
+
+  .example-timeline {
+    position: relative;
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .example-timeline::before {
+    content: '';
+    position: absolute;
+    left: 24px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--bronze), var(--silver), var(--gold));
+    border-radius: 2px;
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-left: 60px;
+    padding-bottom: 2rem;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: 12px;
+    top: 4px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .timeline-item.bronze .timeline-dot { background: var(--bronze); }
+  .timeline-item.silver .timeline-dot { background: var(--silver); }
+  .timeline-item.gold .timeline-dot   { background: var(--gold); }
+
+  .timeline-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    transition: all 0.3s;
+  }
+
+  .timeline-card:hover {
+    transform: translateX(4px);
+    border-color: rgba(0,120,212,0.3);
+  }
+
+  .timeline-card h4 { font-size: 1rem; margin-bottom: 0.4rem; }
+  .timeline-card p  { font-size: 0.88rem; color: var(--text-muted); }
+
+  .data-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    margin-right: 0.3rem;
+    margin-top: 0.4rem;
+    font-weight: 600;
+  }
+
+  .timeline-item.bronze .data-tag { background: rgba(205,127,50,0.15); color: var(--bronze); }
+  .timeline-item.silver .data-tag { background: rgba(168,169,173,0.15); color: var(--silver); }
+  .timeline-item.gold .data-tag   { background: rgba(212,175,55,0.15); color: var(--gold); }
+
+  /* ===== BEST PRACTICES ===== */
+  .practices-section { text-align: center; }
+
+  .practices-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    text-align: left;
+  }
+
+  .practice-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.8rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .practice-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0,120,212,0.3);
+    background: var(--bg-card-hover);
+  }
+
+  .practice-number {
+    font-size: 3rem;
+    font-weight: 800;
+    opacity: 0.06;
+    position: absolute;
+    top: 10px;
+    right: 16px;
+  }
+
+  .practice-card h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
+  .practice-card p { font-size: 0.88rem; color: var(--text-muted); }
+
+  .practice-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(0,120,212,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+  }
+
+  /* ===== FABRIC TOOLS ===== */
+  .tools-section { text-align: center; }
+
+  .tools-wheel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .tool-tile {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    transition: all 0.3s;
+    cursor: default;
+  }
+
+  .tool-tile:hover {
+    transform: translateY(-4px);
+    border-color: var(--fabric-primary);
+    background: var(--bg-card-hover);
+  }
+
+  .tool-tile .tool-emoji {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .tool-tile h4 { font-size: 0.9rem; margin-bottom: 0.3rem; }
+  .tool-tile p  { font-size: 0.78rem; color: var(--text-muted); }
+
+  /* ===== SECURITY ===== */
+  .security-section { text-align: center; }
+
+  .security-layers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .security-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    text-align: left;
+    transition: all 0.3s;
+  }
+
+  .security-item:hover {
+    border-color: rgba(0,183,195,0.3);
+    background: var(--bg-card-hover);
+  }
+
+  .security-item h4 {
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .security-item p { font-size: 0.85rem; color: var(--text-muted); }
+
+  /* ===== INTERACTIVE QUIZ ===== */
+  .quiz-section { text-align: center; }
+
+  .quiz-container {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .quiz-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s;
+  }
+
+  .quiz-card h3 {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .quiz-card h3 .q-num {
+    color: var(--fabric-primary);
+    flex-shrink: 0;
+  }
+
+  .quiz-options { display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .quiz-option {
+    padding: 0.8rem 1.2rem;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: var(--text);
+    text-align: left;
+    width: 100%;
+  }
+
+  .quiz-option:hover:not(.selected) {
+    border-color: var(--fabric-primary);
+    background: rgba(0,120,212,0.05);
+  }
+
+  .quiz-option.correct {
+    border-color: #4CAF50;
+    background: rgba(76,175,80,0.1);
+    color: #81C784;
+  }
+
+  .quiz-option.wrong {
+    border-color: #f44336;
+    background: rgba(244,67,54,0.1);
+    color: #EF9A9A;
+  }
+
+  .quiz-explanation {
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    display: none;
+  }
+
+  .quiz-explanation.show { display: block; }
+
+  .quiz-explanation.correct-explain {
+    background: rgba(76,175,80,0.08);
+    border: 1px solid rgba(76,175,80,0.2);
+    color: #A5D6A7;
+  }
+
+  .quiz-explanation.wrong-explain {
+    background: rgba(244,67,54,0.08);
+    border: 1px solid rgba(244,67,54,0.2);
+    color: #EF9A9A;
+  }
+
+  .quiz-score {
+    text-align: center;
+    padding: 2rem;
+    background: var(--bg-card);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    display: none;
+  }
+
+  .quiz-score.show { display: block; }
+
+  .score-number {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--fabric-primary), var(--fabric-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .score-label { color: var(--text-muted); margin-top: 0.3rem; }
+
+  .quiz-reset {
+    margin-top: 1rem;
+    padding: 0.6rem 2rem;
+    border-radius: 999px;
+    background: var(--fabric-primary);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+  }
+
+  .quiz-reset:hover { background: var(--fabric-dark); }
+
+  /* ===== MATERIALIZED VIEWS ===== */
+  .mlv-section { text-align: center; }
+
+  .mlv-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .mlv-card h3 { font-size: 1.2rem; margin-bottom: 0.75rem; }
+  .mlv-card > p { font-size: 0.92rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+
+  .mlv-benefits {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .mlv-benefit {
+    background: rgba(0,183,195,0.06);
+    border: 1px solid rgba(0,183,195,0.15);
+    border-radius: 10px;
+    padding: 1rem;
+  }
+
+  .mlv-benefit h4 {
+    font-size: 0.85rem;
+    color: var(--fabric-accent);
+    margin-bottom: 0.3rem;
+  }
+
+  .mlv-benefit p { font-size: 0.82rem; color: var(--text-muted); }
+
+  /* ===== DATA MESH CALLOUT ===== */
+  .mesh-callout {
+    max-width: 800px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, rgba(0,120,212,0.08), rgba(0,183,195,0.08));
+    border: 1px solid rgba(0,120,212,0.2);
+    border-radius: 20px;
+    padding: 2.5rem;
+    text-align: center;
+  }
+
+  .mesh-callout h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+  .mesh-callout p { font-size: 0.95rem; color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+
+  footer p { font-size: 0.85rem; color: var(--text-muted); }
+  footer a { color: var(--fabric-primary); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(8px); }
+  }
+  @keyframes float1 {
+    0%, 100% { transform: translate(0, 0); }
+    50%      { transform: translate(20px, -30px); }
+  }
+  @keyframes float2 {
+    0%, 100% { transform: translate(0, 0); }
+    50%      { transform: translate(-15px, 20px); }
+  }
+  @keyframes float3 {
+    0%, 100% { transform: translate(0, 0); }
+    50%      { transform: translate(-25px, -20px); }
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    section { padding: 3rem 1.2rem; }
+    .layer-summary { margin-left: 0; }
+    .details-inner { margin-left: 0; }
+    .pattern-pros { grid-template-columns: 1fr; }
+    .diagram-flow { flex-direction: column; }
+    .diagram-arrow { transform: rotate(90deg); }
+  }
+</style>
+<script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
+<!-- smec-meta v1 -->
+<meta name="description" content="Medallion Lakehouse Architecture in Microsoft Fabric — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:title" content="Medallion Lakehouse Architecture in Microsoft Fabric">
+<meta property="og:description" content="Medallion Lakehouse Architecture in Microsoft Fabric — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sme-c-infographics.github.io/fabric/medallion-architecture-infographic.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Medallion Lakehouse Architecture in Microsoft Fabric">
+<meta name="twitter:description" content="Medallion Lakehouse Architecture in Microsoft Fabric — an interactive infographic from the SME&amp;C Infographic Hub.">
+<!-- smec-favicon v1 -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<!-- smec-accuracy v1 -->
+<meta name="smec:last-accuracy-check" content="2026-07-23">
+<style>/* smec-back-btn v2 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  box-sizing: border-box;
+  display: inline-flex; align-items: center; justify-content: flex-start;
+  gap: 8px; height: 40px; padding: 0 16px 0 12px; border-radius: 20px;
+  background: rgba(0, 120, 212, 0.92) !important; color: #fff !important;
+  text-decoration: none !important;
+  font: 600 14px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  transition:
+    padding 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto; display: inline-block;
+  width: 18px; height: 18px; }
+.smec-back-btn__label { display: inline-block; flex: 0 0 auto;
+  font: inherit; color: inherit; }
+.smec-back-btn__more { display: inline-block; max-width: 0; opacity: 0;
+  overflow: hidden; vertical-align: bottom;
+  font: inherit; color: inherit;
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.05s; }
+
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  background: rgba(0, 90, 158, 0.96) !important; color: #fff !important;
+  text-decoration: none !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22); }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__more,
+.smec-back-btn:focus-visible .smec-back-btn__more {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.25s ease 0.2s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn__more { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__more,
+  .smec-back-btn:hover .smec-back-btn__more,
+  .smec-back-btn:focus-visible .smec-back-btn__more {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<!-- smec-submitter v1 -->
+<meta name="smec:submitter" content="cbattlegear">
+</head>
+<body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v2" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="medallion-float bronze"></div>
+  <div class="medallion-float silver"></div>
+  <div class="medallion-float gold"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0L10 5.5H16L11 9L13 15L8 11.5L3 15L5 9L0 5.5H6L8 0Z"/></svg>
+      Microsoft Fabric &middot; Learning Infographic
+    </div>
+    <h1>
+      <span class="gradient-text">Medallion</span><br>
+      Lakehouse Architecture
+    </h1>
+    <p>A progressive data refinement pattern that transforms raw data into trusted, analytics-ready insights — implemented natively in Microsoft Fabric with OneLake.</p>
+    <div class="scroll-indicator" onclick="document.getElementById('what-is').scrollIntoView({behavior:'smooth'})">
+      <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+    </div>
+  </div>
+</div>
+
+<!-- ===== WHAT IS MEDALLION ===== -->
+<section id="what-is" class="what-is">
+  <div class="reveal">
+    <span class="section-label">The Concept</span>
+    <h2 class="section-title">What is Medallion Architecture?</h2>
+    <p class="section-subtitle" style="margin-left:auto;margin-right:auto;">
+      A three-stage cleaning and organizing process for your data. Each layer makes data more reliable, structured, and ready for business use.
+    </p>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="concept-icon" style="background:rgba(0,120,212,0.12);">
+          <span>&#9653;</span>
+        </div>
+        <h3>Incremental Refinement</h3>
+        <p>Data progresses from raw to enriched to curated. Each layer adds structure and quality, maintaining a clear lineage from source to insight.</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-icon" style="background:rgba(0,183,195,0.12);">
+          <span>&#9878;</span>
+        </div>
+        <h3>ACID Compliance</h3>
+        <p>Built on Delta Lake, every transaction guarantees Atomicity, Consistency, Isolation, and Durability — preventing data corruption at scale.</p>
+      </div>
+      <div class="concept-card">
+        <div class="concept-icon" style="background:rgba(212,175,55,0.12);">
+          <span>&#10070;</span>
+        </div>
+        <h3>Separation of Concerns</h3>
+        <p>Each layer lives in its own lakehouse or workspace. Data engineers own Bronze/Silver; analysts and BI teams own Gold.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== THE THREE LAYERS ===== -->
+<section class="arch-flow">
+  <div class="reveal">
+    <span class="section-label">The Three Layers</span>
+    <h2 class="section-title">Bronze &rarr; Silver &rarr; Gold</h2>
+    <p class="section-subtitle">Click each layer to explore its purpose, tools, and best practices in Microsoft Fabric.</p>
+
+    <div class="flow-container">
+      <!-- BRONZE -->
+      <div class="layer-card bronze-card active" onclick="toggleLayer(this)">
+        <div class="layer-header">
+          <div class="layer-medallion">B</div>
+          <div class="layer-title-group">
+            <h2>Bronze Layer</h2>
+            <div class="layer-subtitle">Raw Data &middot; Landing Zone</div>
+          </div>
+          <div class="layer-toggle">
+            <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+          </div>
+        </div>
+        <p class="layer-summary">Store everything exactly as it arrives. No changes allowed — preserve the source of truth.</p>
+        <div class="layer-details">
+          <div class="details-inner">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <h4>What Goes Here</h4>
+                <ul>
+                  <li>Raw JSON from web APIs</li>
+                  <li>CSV exports from warehouses</li>
+                  <li>SQL database snapshots</li>
+                  <li>IoT telemetry streams</li>
+                  <li>Unstructured files (PDFs, images)</li>
+                </ul>
+              </div>
+              <div class="detail-item">
+                <h4>Fabric Tools</h4>
+                <ul>
+                  <li>Data Pipelines (Copy Activity)</li>
+                  <li>Dataflow Gen2</li>
+                  <li>OneLake Shortcuts (ADLS, S3, GCS)</li>
+                  <li>Eventstream (real-time)</li>
+                </ul>
+              </div>
+              <div class="detail-item">
+                <h4>Storage Format</h4>
+                <ul>
+                  <li>Original format preserved</li>
+                  <li>Delta tables for relational sources</li>
+                  <li>Parquet for columnar data</li>
+                  <li>Files area for unstructured data</li>
+                </ul>
+              </div>
+              <div class="detail-item">
+                <h4>Best Practices</h4>
+                <ul>
+                  <li>Never delete bronze data</li>
+                  <li>Partition by ingestion date</li>
+                  <li>Add audit columns (_ingestion_ts)</li>
+                  <li>Use shortcuts instead of copying</li>
+                  <li>Handle schema evolution</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrow -->
+      <div class="flow-arrow">
+        <div class="flow-arrow-line bronze-to-silver">
+          <span class="flow-arrow-label">Cleanse &middot; Validate &middot; Deduplicate</span>
+        </div>
+      </div>
+
+      <!-- SILVER -->
+      <div class="layer-card silver-card" onclick="toggleLayer(this)">
+        <div class="layer-header">
+          <div class="layer-medallion">S</div>
+          <div class="layer-title-group">
+            <h2>Silver Layer</h2>
+            <div class="layer-subtitle">Enriched Data &middot; Conformed Zone</div>
+          </div>
+          <div class="layer-toggle">
+            <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+          </div>
+        </div>
+        <p class="layer-summary">Fix errors, standardize formats, remove duplicates, and match records across systems.</p>
+        <div class="layer-details">
+          <div class="details-inner">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <h4>Transformations</h4>
+                <ul>
+                  <li>Standardize date/time formats</li>
+                  <li>Convert currencies (e.g., to USD)</li>
+                  <li>Remove test/invalid transactions</li>
+                  <li>Flatten nested JSON structures</li>
+                  <li>Apply surrogate keys</li>
+                </ul>
+              </div>
+              <div class="detail-item">
+                <h4>Fabric Tools</h4>
+                <ul>
+                  <li>Spark Notebooks (PySpark/SQL)</li>
+                  <li>Dataflow Gen2</li>
+                  <li>SQL Scripts</li>
+                  <li>Materialized Lake Views</li>
+                </ul>
+              </div>
+              <div class="detail-item">
+                <h4>Storage Format</h4>
+                <ul>
+                  <li>Delta tables (recommended)</li>
+                  <li>V-Order for read-heavy SQL/BI tables</li>
+                  <li>Liquid Clustering preferred</li>
+                  <li>OPTIMIZE &amp; VACUUM maintenance</li>
+                </ul>
+              </div>
+              <div class="detail-item">
+                <h4>Best Practices</h4>
+                <ul>
+                  <li>Apply data quality rules here</li>
+                  <li>Resolve heavy logic before Gold</li>
+                  <li>Use MERGE for upserts</li>
+                  <li>Target 128-256 MB file sizes</li>
+                  <li>Enforce conformed dimensions</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrow -->
+      <div class="flow-arrow">
+        <div class="flow-arrow-line silver-to-gold">
+          <span class="flow-arrow-label">Aggregate &middot; Model &middot; Optimize</span>
+        </div>
+      </div>
+
+      <!-- GOLD -->
+      <div class="layer-card gold-card" onclick="toggleLayer(this)">
+        <div class="layer-header">
+          <div class="layer-medallion">G</div>
+          <div class="layer-title-group">
+            <h2>Gold Layer</h2>
+            <div class="layer-subtitle">Curated Data &middot; Business-Ready</div>
+          </div>
+          <div class="layer-toggle">
+            <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+          </div>
+        </div>
+        <p class="layer-summary">Organize for reports and dashboards — star schemas, KPI tables, and department-specific data marts.</p>
+        <div class="layer-details">
+          <div class="details-inner">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <h4>What Gets Built</h4>
+                <ul>
+                  <li>Star/snowflake schema models</li>
+                  <li>Fact &amp; dimension tables</li>
+                  <li>Aggregated KPI tables</li>
+                  <li>Department data marts</li>
+                  <li>Customer lifetime value tables</li>
+                </ul>
+              </div>
+              <div class="detail-item">
+                <h4>Fabric Tools</h4>
+                <ul>
+                  <li>Data Warehouse (SQL endpoint)</li>
+                  <li>Power BI Semantic Models</li>
+                  <li>SQL Analytics Endpoint</li>
+                  <li>Materialized Lake Views</li>
+                </ul>
+              </div>
+              <div class="detail-item">
+                <h4>Storage Format</h4>
+                <ul>
+                  <li>Delta tables (optimized)</li>
+                  <li>Warehouse tables for SQL</li>
+                  <li>V-Order for fast reads</li>
+                  <li>Large file sizes (400 MB–1 GB)</li>
+                </ul>
+              </div>
+              <div class="detail-item">
+                <h4>Best Practices</h4>
+                <ul>
+                  <li>Clearly define table grain</li>
+                  <li>Manage SCDs (slowly changing dims)</li>
+                  <li>Pre-aggregate where appropriate</li>
+                  <li>Enable self-service analytics</li>
+                  <li>Consistent KPI definitions</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DEPLOYMENT PATTERNS ===== -->
+<section class="patterns-section">
+  <div class="reveal">
+    <span class="section-label">Deployment</span>
+    <h2 class="section-title">Implementation Patterns</h2>
+    <p class="section-subtitle" style="margin-left:auto;margin-right:auto;">Two recommended approaches for deploying medallion architecture in Fabric. Choose based on your team's expertise.</p>
+
+    <div class="pattern-tabs">
+      <button class="pattern-tab active" onclick="switchPattern(0, this)">Pattern 1: All Lakehouses</button>
+      <button class="pattern-tab" onclick="switchPattern(1, this)">Pattern 2: Lakehouse + Warehouse</button>
+    </div>
+
+    <div class="pattern-content active" id="pattern-0">
+      <div class="pattern-diagram">
+        <h3>All Lakehouse Pattern</h3>
+        <p class="pattern-desc">Each layer is a separate lakehouse. Business users access data through the SQL Analytics Endpoint.</p>
+        <div class="diagram-flow">
+          <div class="diagram-node lakehouse">Lakehouse<small>Bronze</small></div>
+          <span class="diagram-arrow">&rarr;</span>
+          <div class="diagram-node lakehouse">Lakehouse<small>Silver</small></div>
+          <span class="diagram-arrow">&rarr;</span>
+          <div class="diagram-node lakehouse">Lakehouse<small>Gold</small></div>
+        </div>
+        <div class="pattern-pros">
+          <div class="pro-item"><span class="check">&#10003;</span> Unified Spark-native experience</div>
+          <div class="pro-item"><span class="check">&#10003;</span> SQL Analytics Endpoint for BI</div>
+          <div class="pro-item"><span class="check">&#10003;</span> Simpler architecture</div>
+          <div class="pro-item"><span class="check">&#10003;</span> Best for Spark-first teams</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pattern-content" id="pattern-1">
+      <div class="pattern-diagram">
+        <h3>Lakehouse + Warehouse Hybrid</h3>
+        <p class="pattern-desc">Bronze and Silver are lakehouses; Gold is a Data Warehouse for high-performance SQL analytics.</p>
+        <div class="diagram-flow">
+          <div class="diagram-node lakehouse">Lakehouse<small>Bronze</small></div>
+          <span class="diagram-arrow">&rarr;</span>
+          <div class="diagram-node lakehouse">Lakehouse<small>Silver</small></div>
+          <span class="diagram-arrow">&rarr;</span>
+          <div class="diagram-node warehouse">Warehouse<small>Gold</small></div>
+        </div>
+        <div class="pattern-pros">
+          <div class="pro-item"><span class="check">&#10003;</span> T-SQL for Gold layer queries</div>
+          <div class="pro-item"><span class="check">&#10003;</span> Familiar for SQL teams</div>
+          <div class="pro-item"><span class="check">&#10003;</span> High-perf warehouse endpoint</div>
+          <div class="con-item"><span class="check">&#9679;</span> Two paradigms to manage</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== REAL-WORLD EXAMPLE ===== -->
+<section class="example-section">
+  <div class="reveal">
+    <span class="section-label">Real-World Example</span>
+    <h2 class="section-title">E-Commerce Data Journey</h2>
+    <p class="section-subtitle" style="margin-left:auto;margin-right:auto;">Follow data from raw ingestion to business-ready insights through all three medallion layers.</p>
+
+    <div class="example-timeline">
+      <div class="timeline-item bronze">
+        <div class="timeline-dot">B</div>
+        <div class="timeline-card">
+          <h4>Ingest Raw Sources</h4>
+          <p>Store raw sales data from the website, inventory data from the warehouse system, and customer records from the CRM — exactly as they arrive.</p>
+          <span class="data-tag">JSON</span><span class="data-tag">CSV</span><span class="data-tag">SQL Export</span>
+        </div>
+      </div>
+      <div class="timeline-item silver">
+        <div class="timeline-dot">S</div>
+        <div class="timeline-card">
+          <h4>Cleanse &amp; Standardize</h4>
+          <p>Standardize all date formats. Convert currencies to USD. Remove test transactions. Match and deduplicate customer records across all three systems.</p>
+          <span class="data-tag">Date Normalization</span><span class="data-tag">Currency Conversion</span><span class="data-tag">Deduplication</span>
+        </div>
+      </div>
+      <div class="timeline-item gold">
+        <div class="timeline-dot">G</div>
+        <div class="timeline-card">
+          <h4>Build Business Models</h4>
+          <p>Create a daily sales dashboard table, build a customer lifetime value model, and generate inventory forecasting tables — all optimized for Power BI.</p>
+          <span class="data-tag">Sales Dashboard</span><span class="data-tag">CLV Model</span><span class="data-tag">Forecasting</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FABRIC TOOLS ===== -->
+<section class="tools-section">
+  <div class="reveal">
+    <span class="section-label">The Fabric Toolkit</span>
+    <h2 class="section-title">Key Fabric Components</h2>
+    <p class="section-subtitle" style="margin-left:auto;margin-right:auto;">The integrated tools that power each stage of your medallion architecture.</p>
+
+    <div class="tools-wheel">
+      <div class="tool-tile">
+        <span class="tool-emoji">&#127754;</span>
+        <h4>OneLake</h4>
+        <p>Unified data lake for your entire org. Auto-provisioned with every Fabric tenant.</p>
+      </div>
+      <div class="tool-tile">
+        <span class="tool-emoji">&#9881;</span>
+        <h4>Data Pipelines</h4>
+        <p>Orchestrate data movement with Copy Activity, incremental loads, and scheduling.</p>
+      </div>
+      <div class="tool-tile">
+        <span class="tool-emoji">&#128221;</span>
+        <h4>Spark Notebooks</h4>
+        <p>PySpark and SQL transformations for Silver &amp; Gold layer processing.</p>
+      </div>
+      <div class="tool-tile">
+        <span class="tool-emoji">&#9889;</span>
+        <h4>Dataflow Gen2</h4>
+        <p>Low-code data transformation for cleansing, merging, and enriching data.</p>
+      </div>
+      <div class="tool-tile">
+        <span class="tool-emoji">&#128279;</span>
+        <h4>Shortcuts</h4>
+        <p>Zero-copy references to ADLS Gen2, S3, and Google Cloud Storage sources.</p>
+      </div>
+      <div class="tool-tile">
+        <span class="tool-emoji">&#128200;</span>
+        <h4>Power BI</h4>
+        <p>Semantic models and reports consuming Gold layer for self-service analytics.</p>
+      </div>
+      <div class="tool-tile">
+        <span class="tool-emoji">&#128451;</span>
+        <h4>Data Warehouse</h4>
+        <p>High-performance T-SQL endpoint for Gold layer serving.</p>
+      </div>
+      <div class="tool-tile">
+        <span class="tool-emoji">&#9651;</span>
+        <h4>Delta Lake</h4>
+        <p>ACID-compliant storage with time travel, V-Order, and transaction logs.</p>
+      </div>
+      <div class="tool-tile">
+        <span class="tool-emoji">&#128065;</span>
+        <h4>Materialized Lake Views</h4>
+        <p>Declarative SQL transforms with auto-refresh and dependency management.</p>
+      </div>
+      <div class="tool-tile">
+        <span class="tool-emoji">&#127919;</span>
+        <h4>Eventstream</h4>
+        <p>Real-time data ingestion for streaming workloads into the Bronze layer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MATERIALIZED LAKE VIEWS ===== -->
+<section class="mlv-section">
+  <div class="reveal">
+    <span class="section-label">New in Fabric</span>
+    <h2 class="section-title">Materialized Lake Views</h2>
+    <p class="section-subtitle" style="margin-left:auto;margin-right:auto;">Replace complex pipeline orchestration with declarative SQL definitions that Fabric refreshes automatically.</p>
+
+    <div class="mlv-card">
+      <h3>Simplify Your Medallion Pipelines</h3>
+      <p>Rather than building manual pipelines to move data between Bronze, Silver, and Gold layers, define materialized lake views that automatically manage transformations and refresh orchestration.</p>
+      <div class="mlv-benefits">
+        <div class="mlv-benefit">
+          <h4>Declarative SQL</h4>
+          <p>Define transforms as SQL statements — no pipeline plumbing required.</p>
+        </div>
+        <div class="mlv-benefit">
+          <h4>Auto Dependencies</h4>
+          <p>Fabric resolves execution order based on view relationships.</p>
+        </div>
+        <div class="mlv-benefit">
+          <h4>Quality Rules</h4>
+          <p>Built-in data quality constraints enforced as data flows between layers.</p>
+        </div>
+        <div class="mlv-benefit">
+          <h4>Smart Refresh</h4>
+          <p>Incremental, full, or no-refresh — the system decides what's optimal.</p>
+        </div>
+        <div class="mlv-benefit">
+          <h4>Lineage Tracking</h4>
+          <p>Visualize data flow across all layers and monitor execution progress.</p>
+        </div>
+        <div class="mlv-benefit">
+          <h4>Less Code</h4>
+          <p>Dramatically reduce the amount of ETL orchestration code to maintain.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECURITY & GOVERNANCE ===== -->
+<section class="security-section">
+  <div class="reveal">
+    <span class="section-label">Governance</span>
+    <h2 class="section-title">Security at Every Layer</h2>
+    <p class="section-subtitle" style="margin-left:auto;margin-right:auto;">Built-in security capabilities in Fabric protect data from ingestion through consumption.</p>
+
+    <div class="security-layers">
+      <div class="security-item">
+        <h4><span style="color:#4CAF50">&#9679;</span> Workspace Isolation</h4>
+        <p>Each medallion layer in its own workspace for granular access control and governance.</p>
+      </div>
+      <div class="security-item">
+        <h4><span style="color:#2196F3">&#9679;</span> Role-Based Access</h4>
+        <p>RBAC at the workspace, lakehouse, and warehouse level to restrict who sees what.</p>
+      </div>
+      <div class="security-item">
+        <h4><span style="color:#FF9800">&#9679;</span> Row-Level Security</h4>
+        <p>Filter data dynamically by user role — each user sees only what they should.</p>
+      </div>
+      <div class="security-item">
+        <h4><span style="color:#9C27B0">&#9679;</span> Object-Level Security</h4>
+        <p>Restrict access to sensitive columns (e.g., PII, salary data) from unauthorized eyes.</p>
+      </div>
+      <div class="security-item">
+        <h4><span style="color:#00BCD4">&#9679;</span> Data Lineage</h4>
+        <p>Track every transformation from source to Bronze to Silver to Gold with full visibility.</p>
+      </div>
+      <div class="security-item">
+        <h4><span style="color:#F44336">&#9679;</span> Sensitivity Labels</h4>
+        <p>Classify confidential or regulated data with Microsoft Purview integration.</p>
+      </div>
+      <div class="security-item">
+        <h4><span style="color:#8BC34A">&#9679;</span> Delta Time Travel</h4>
+        <p>Roll back to any previous state for audit, compliance, and debugging purposes.</p>
+      </div>
+      <div class="security-item">
+        <h4><span style="color:#FF5722">&#9679;</span> Domains (Data Mesh)</h4>
+        <p>Organize medallion layers within business domains for decentralized governance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BEST PRACTICES ===== -->
+<section class="practices-section">
+  <div class="reveal">
+    <span class="section-label">Optimization</span>
+    <h2 class="section-title">Best Practices</h2>
+    <p class="section-subtitle" style="margin-left:auto;margin-right:auto;">Key recommendations from the official Microsoft guidance for a production-ready medallion implementation.</p>
+
+    <div class="practices-grid">
+      <div class="practice-card">
+        <div class="practice-number">01</div>
+        <div class="practice-icon">&#128230;</div>
+        <h3>Optimize File Sizes</h3>
+        <p>Target 128-256 MB files in the Silver layer, 400 MB–1 GB in the Gold layer. Smaller files are fine in Bronze. Use OPTIMIZE command to compact small files.</p>
+      </div>
+      <div class="practice-card">
+        <div class="practice-number">02</div>
+        <div class="practice-icon">&#128218;</div>
+        <h3>Use Liquid Clustering</h3>
+        <p>Prefer Liquid Clustering over partitioning in Silver/Gold layers for better query performance. Partitioning works well in Bronze for ingestion patterns.</p>
+      </div>
+      <div class="practice-card">
+        <div class="practice-number">03</div>
+        <div class="practice-icon">&#128279;</div>
+        <h3>Shortcuts Over Copies</h3>
+        <p>When source data is in ADLS Gen2, S3, or Google Cloud, create shortcuts in the Bronze layer instead of copying data across.</p>
+      </div>
+      <div class="practice-card">
+        <div class="practice-number">04</div>
+        <div class="practice-icon">&#128336;</div>
+        <h3>Manage History Retention</h3>
+        <p>Use VACUUM to clean up old Delta history. Default 7-day retention prevents accidental data loss while controlling storage costs.</p>
+      </div>
+      <div class="practice-card">
+        <div class="practice-number">05</div>
+        <div class="practice-icon">&#127968;</div>
+        <h3>Separate Workspaces</h3>
+        <p>Create each lakehouse in its own workspace for better control, governance, and access management at the layer level.</p>
+      </div>
+      <div class="practice-card">
+        <div class="practice-number">06</div>
+        <div class="practice-icon">&#9889;</div>
+        <h3>Use V-Order Selectively</h3>
+        <p>V-Order is disabled by default in new Fabric workspaces. Enable it on Silver and Gold tables — especially those serving Power BI Direct Lake and SQL analytics endpoints — for significantly faster reads.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DATA MESH CALLOUT ===== -->
+<section>
+  <div class="reveal">
+    <div class="mesh-callout">
+      <span class="section-label" style="margin-bottom:1rem;">Advanced Pattern</span>
+      <h3>Scale with Data Mesh</h3>
+      <p style="margin-top:0.75rem;">For massive, decentralized organizations, implement medallion architecture within Fabric Domains — mapping to your business areas (Marketing, Sales, HR). Each domain gets its own Bronze &rarr; Silver &rarr; Gold pipeline with federated governance.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== QUIZ ===== -->
+<section class="quiz-section">
+  <div class="reveal">
+    <span class="section-label">Test Your Knowledge</span>
+    <h2 class="section-title">Quick Quiz</h2>
+    <p class="section-subtitle" style="margin-left:auto;margin-right:auto;">Check your understanding of medallion architecture in Microsoft Fabric.</p>
+
+    <div class="quiz-container" id="quiz-container">
+      <!-- Q1 -->
+      <div class="quiz-card" data-correct="1">
+        <h3><span class="q-num">Q1.</span> In which layer should you store data exactly as it arrives from the source?</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" data-idx="0" onclick="checkAnswer(this)">Silver Layer</button>
+          <button class="quiz-option" data-idx="1" onclick="checkAnswer(this)">Bronze Layer</button>
+          <button class="quiz-option" data-idx="2" onclick="checkAnswer(this)">Gold Layer</button>
+        </div>
+        <div class="quiz-explanation correct-explain">Correct! The Bronze layer stores raw data exactly as it arrives — no transformations allowed.</div>
+        <div class="quiz-explanation wrong-explain">Not quite. The Bronze layer is the raw data landing zone where data is stored exactly as it arrives.</div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-card" data-correct="2">
+        <h3><span class="q-num">Q2.</span> What is the recommended storage format for Silver and Gold layers in Fabric?</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" data-idx="0" onclick="checkAnswer(this)">CSV files</button>
+          <button class="quiz-option" data-idx="1" onclick="checkAnswer(this)">JSON files</button>
+          <button class="quiz-option" data-idx="2" onclick="checkAnswer(this)">Delta tables</button>
+        </div>
+        <div class="quiz-explanation correct-explain">Correct! Delta tables provide ACID compliance, time travel, V-Order optimization, and are the default format in Fabric.</div>
+        <div class="quiz-explanation wrong-explain">Not quite. Delta tables are recommended for Silver and Gold layers due to ACID compliance and performance benefits.</div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-card" data-correct="0">
+        <h3><span class="q-num">Q3.</span> Instead of copying data from ADLS Gen2 into Bronze, what should you create?</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" data-idx="0" onclick="checkAnswer(this)">A Shortcut</button>
+          <button class="quiz-option" data-idx="1" onclick="checkAnswer(this)">A Data Pipeline</button>
+          <button class="quiz-option" data-idx="2" onclick="checkAnswer(this)">A Dataflow Gen2</button>
+        </div>
+        <div class="quiz-explanation correct-explain">Correct! Shortcuts provide zero-copy references to data in ADLS Gen2, S3, and Google Cloud.</div>
+        <div class="quiz-explanation wrong-explain">Not quite. Shortcuts are preferred because they reference data without copying it, saving storage and latency.</div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-card" data-correct="1">
+        <h3><span class="q-num">Q4.</span> For Silver and Gold layers, Microsoft recommends using _____ instead of traditional partitioning.</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" data-idx="0" onclick="checkAnswer(this)">Z-Order</button>
+          <button class="quiz-option" data-idx="1" onclick="checkAnswer(this)">Liquid Clustering</button>
+          <button class="quiz-option" data-idx="2" onclick="checkAnswer(this)">Bucketing</button>
+        </div>
+        <div class="quiz-explanation correct-explain">Correct! Liquid Clustering optimizes query performance in Silver and Gold layers better than traditional partitioning.</div>
+        <div class="quiz-explanation wrong-explain">Not quite. Liquid Clustering is Fabric's recommended approach for optimizing query performance in Silver and Gold layers.</div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-card" data-correct="2">
+        <h3><span class="q-num">Q5.</span> What new Fabric feature lets you define medallion layer transformations as SQL instead of building pipelines?</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" data-idx="0" onclick="checkAnswer(this)">Stored Procedures</button>
+          <button class="quiz-option" data-idx="1" onclick="checkAnswer(this)">Dynamic Views</button>
+          <button class="quiz-option" data-idx="2" onclick="checkAnswer(this)">Materialized Lake Views</button>
+        </div>
+        <div class="quiz-explanation correct-explain">Correct! Materialized Lake Views let you define transforms as SQL with automatic dependency management and refresh.</div>
+        <div class="quiz-explanation wrong-explain">Not quite. Materialized Lake Views are the new Fabric feature for declarative medallion architecture with auto-refresh.</div>
+      </div>
+    </div>
+
+    <div class="quiz-score" id="quiz-score">
+      <div class="score-number" id="score-value">0/5</div>
+      <p class="score-label">Questions Answered Correctly</p>
+      <button class="quiz-reset" onclick="resetQuiz()">Try Again</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <p>
+    Based on <a href="https://learn.microsoft.com/fabric/onelake/onelake-medallion-lakehouse-architecture" target="_blank" rel="noopener">Implement Medallion Lakehouse Architecture in Fabric</a> &mdash; Microsoft Learn
+  </p>
+  <p style="margin-top:0.5rem; font-size:0.78rem;">Interactive learning infographic &middot; April 2026</p>
+</footer>
+
+<script>
+  // Layer toggle
+  function toggleLayer(card) {
+    card.classList.toggle('active');
+  }
+
+  // Pattern tabs
+  function switchPattern(idx, btn) {
+    document.querySelectorAll('.pattern-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.pattern-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('pattern-' + idx).classList.add('active');
+  }
+
+  // Quiz
+  let score = 0;
+  let answered = 0;
+  const totalQ = 5;
+
+  function checkAnswer(btn) {
+    const card = btn.closest('.quiz-card');
+    if (card.classList.contains('answered')) return;
+    card.classList.add('answered');
+
+    const correct = parseInt(card.dataset.correct);
+    const selected = parseInt(btn.dataset.idx);
+    const explanations = card.querySelectorAll('.quiz-explanation');
+
+    answered++;
+
+    if (selected === correct) {
+      btn.classList.add('correct');
+      explanations[0].classList.add('show');
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      card.querySelectorAll('.quiz-option')[correct].classList.add('correct');
+      explanations[1].classList.add('show');
+    }
+
+    // Disable all options
+    card.querySelectorAll('.quiz-option').forEach(o => {
+      o.classList.add('selected');
+      o.style.pointerEvents = 'none';
+    });
+
+    if (answered === totalQ) {
+      setTimeout(() => {
+        document.getElementById('score-value').textContent = score + '/' + totalQ;
+        document.getElementById('quiz-score').classList.add('show');
+      }, 600);
+    }
+  }
+
+  function resetQuiz() {
+    score = 0;
+    answered = 0;
+    document.getElementById('quiz-score').classList.remove('show');
+    document.querySelectorAll('.quiz-card').forEach(card => {
+      card.classList.remove('answered');
+      card.querySelectorAll('.quiz-option').forEach(o => {
+        o.classList.remove('correct', 'wrong', 'selected');
+        o.style.pointerEvents = '';
+      });
+      card.querySelectorAll('.quiz-explanation').forEach(e => e.classList.remove('show'));
+    });
+  }
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  revealEls.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

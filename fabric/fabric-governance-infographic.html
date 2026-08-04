@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microsoft Fabric Governance Framework</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary: #0078D4;
+    --primary-dark: #005A9E;
+    --primary-light: #DEECF9;
+    --accent: #00B7C3;
+    --accent2: #8764B8;
+    --success: #107C10;
+    --warning: #FFB900;
+    --danger: #D13438;
+    --bg: #F5F7FA;
+    --card: #FFFFFF;
+    --text: #1B1B1B;
+    --text-secondary: #605E5C;
+    --border: #E1DFDD;
+    --shadow: 0 2px 8px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,.12);
+    --radius: 12px;
+    --transition: .3s cubic-bezier(.4,0,.2,1);
+  }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── Hero ──────────────────────────────────────── */
+  .hero {
+    background: linear-gradient(135deg, #0078D4 0%, #005A9E 40%, #8764B8 100%);
+    color: #fff;
+    text-align: center;
+    padding: 80px 24px 64px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .hero .badge {
+    display: inline-block;
+    background: rgba(255,255,255,.18);
+    backdrop-filter: blur(6px);
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: .82rem;
+    font-weight: 600;
+    letter-spacing: .5px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .hero .subtitle {
+    font-size: 1.1rem;
+    opacity: .9;
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ── Sticky Nav ────────────────────────────────── */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+  .sticky-nav .nav-inner {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 8px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .sticky-nav .nav-inner::-webkit-scrollbar { display: none; }
+  .sticky-nav a {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: .82rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    transition: var(--transition);
+  }
+  .sticky-nav a:hover { background: var(--primary-light); color: var(--primary); }
+  .sticky-nav a.active { background: var(--primary); color: #fff; }
+
+  /* ── Section ───────────────────────────────────── */
+  section { padding: 64px 0; }
+
+  .section-header { margin-bottom: 40px; }
+  .section-label {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .3px;
+    margin-bottom: 12px;
+  }
+  .section-header h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .section-header p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    max-width: 760px;
+    line-height: 1.7;
+  }
+
+  /* ── Compare Grid ──────────────────────────────── */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+  .compare-column {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .column-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+  }
+  .good-title { color: var(--success); }
+  .pitfall-title { color: var(--danger); }
+
+  .good-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    background: #F6FFF6;
+    border-radius: 8px;
+    border-left: 3px solid var(--success);
+    margin-bottom: 6px;
+    font-size: .92rem;
+    color: var(--text);
+  }
+  .good-item .check { color: var(--success); flex-shrink: 0; font-weight: 700; }
+
+  .pitfall-item {
+    padding: 12px 14px;
+    background: #FFF6F6;
+    border-radius: 8px;
+    border-left: 3px solid var(--danger);
+    margin-bottom: 8px;
+  }
+  .pitfall-item h4 { font-size: .92rem; color: var(--danger); margin-bottom: 4px; }
+  .pitfall-item p { font-size: .85rem; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+
+  /* ── Recommendation Cards ──────────────────────── */
+  .recs-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .rec-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+  .rec-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+  @media (prefers-reduced-motion: reduce) {
+    .rec-card:hover { transform: none; }
+  }
+  .rec-card .card-accent {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+  }
+  .rec-card .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    color: #fff;
+    font-weight: 700;
+    font-size: .8rem;
+    margin-bottom: 10px;
+  }
+  .rec-card h4 { font-size: 1rem; margin-bottom: 8px; font-weight: 700; }
+  .rec-card .desc { font-size: .88rem; color: var(--text-secondary); line-height: 1.6; }
+
+  /* ── Learn More Button ─────────────────────────── */
+  .learn-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 24px;
+    padding: 10px 20px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: .85rem;
+    font-weight: 600;
+    transition: background .2s;
+  }
+  .learn-more-btn:hover { background: var(--primary-dark); }
+
+  /* ── Footer ────────────────────────────────────── */
+  footer {
+    text-align: center;
+    padding: 40px 24px;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    font-size: .85rem;
+    color: var(--text-secondary);
+  }
+  footer a { color: var(--primary); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  footer p + p { margin-top: 6px; }
+
+  /* ── Responsive ────────────────────────────────── */
+  @media (max-width: 640px) {
+    .hero { padding: 56px 20px 44px; }
+    .hero h1 { font-size: 1.7rem; }
+    section { padding: 44px 0; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .cards { grid-template-columns: 1fr; }
+    .container { padding: 0 16px; }
+  }
+
+  /* ── Back Button (SME&C style) ─────────────────── */
+  .smec-back-btn {
+    position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 0; min-width: 44px; height: 44px; padding: 0; border-radius: 22px;
+    background: rgba(0, 120, 212, 0.92); color: #fff; text-decoration: none;
+    font: 600 13px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+    opacity: 0;
+    animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+    transition: padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+      gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+      background 0.35s ease 0s, box-shadow 0.35s ease 0s;
+    overflow: hidden; white-space: nowrap;
+  }
+  .smec-back-btn__icon {
+    flex: 0 0 auto;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
+  }
+  .smec-back-btn__label {
+    max-width: 0; opacity: 0;
+    transition: opacity 0.18s ease 0s,
+      max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
+  }
+  .smec-back-btn:hover, .smec-back-btn:focus-visible {
+    gap: 10px; padding: 0 18px 0 12px;
+    background: rgba(0, 90, 158, 0.96); color: #fff; text-decoration: none;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+    transition: padding 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+      gap 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+      background 0.35s ease 0s, box-shadow 0.35s ease 0s;
+  }
+  .smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .smec-back-btn:hover .smec-back-btn__icon,
+  .smec-back-btn:focus-visible .smec-back-btn__icon {
+    transform: translateX(-2px);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s;
+  }
+  .smec-back-btn:hover .smec-back-btn__label,
+  .smec-back-btn:focus-visible .smec-back-btn__label {
+    max-width: 260px; opacity: 1;
+    transition: max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+      opacity 0.3s ease 0.3s;
+  }
+  @keyframes smec-back-btn-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (hover: none) {
+    .smec-back-btn { gap: 10px; padding: 0 18px 0 12px; }
+    .smec-back-btn__label { max-width: 260px; opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .smec-back-btn, .smec-back-btn__icon, .smec-back-btn__label,
+    .smec-back-btn:hover, .smec-back-btn:focus-visible,
+    .smec-back-btn:hover .smec-back-btn__icon,
+    .smec-back-btn:focus-visible .smec-back-btn__icon,
+    .smec-back-btn:hover .smec-back-btn__label,
+    .smec-back-btn:focus-visible .smec-back-btn__label {
+      transition: background 0.2s ease, color 0.2s ease;
+      animation: none; opacity: 1;
+    }
+  }
+  @media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<!-- smec-meta v1 -->
+<meta name="description" content="Microsoft Fabric Governance Framework — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:title" content="Microsoft Fabric Governance Framework">
+<meta property="og:description" content="Microsoft Fabric Governance Framework — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sme-c-infographics.github.io/fabric/fabric-governance-infographic.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Microsoft Fabric Governance Framework">
+<meta name="twitter:description" content="Microsoft Fabric Governance Framework — an interactive infographic from the SME&amp;C Infographic Hub.">
+<!-- smec-favicon v1 -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<!-- smec-accuracy v1 -->
+<meta name="smec:last-accuracy-check" content="2026-07-16">
+<style>/* smec-back-btn v2 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  box-sizing: border-box;
+  display: inline-flex; align-items: center; justify-content: flex-start;
+  gap: 8px; height: 40px; padding: 0 16px 0 12px; border-radius: 20px;
+  background: rgba(0, 120, 212, 0.92) !important; color: #fff !important;
+  text-decoration: none !important;
+  font: 600 14px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  transition:
+    padding 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto; display: inline-block;
+  width: 18px; height: 18px; }
+.smec-back-btn__label { display: inline-block; flex: 0 0 auto;
+  font: inherit; color: inherit; }
+.smec-back-btn__more { display: inline-block; max-width: 0; opacity: 0;
+  overflow: hidden; vertical-align: bottom;
+  font: inherit; color: inherit;
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.05s; }
+
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  background: rgba(0, 90, 158, 0.96) !important; color: #fff !important;
+  text-decoration: none !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22); }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__more,
+.smec-back-btn:focus-visible .smec-back-btn__more {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.25s ease 0.2s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn__more { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__more,
+  .smec-back-btn:hover .smec-back-btn__more,
+  .smec-back-btn:focus-visible .smec-back-btn__more {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<!-- smec-submitter v1 -->
+<meta name="smec:submitter" content="sodomon2">
+</head>
+<body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v2" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<header class="hero">
+  <div class="badge">Microsoft Fabric • Governance</div>
+  <h1>Governance Framework<br>for Microsoft Fabric</h1>
+  <p class="subtitle">A visual guide to the 7 governance domains — from tenant settings to deployment pipelines.</p>
+</header>
+
+<!-- ═══════════════════ NAV ════════════════════ -->
+<nav class="sticky-nav" id="nav">
+  <div class="nav-inner">
+    <a href="#tenant-settings">⚙️ Tenant Settings</a>
+    <a href="#workspace-governance">📐 Workspaces</a>
+    <a href="#domains-data-mesh">🔗 Domains</a>
+    <a href="#roles-access">🛡️ Roles &amp; Access</a>
+    <a href="#capacity-cost">💰 Capacity &amp; Cost</a>
+    <a href="#data-security">🔒 Security</a>
+    <a href="#monitoring-deployment">📊 Monitoring</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════ DOMAIN 1 ══════════════════ -->
+<section id="tenant-settings" style="background:var(--bg)">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label" style="background:#6366F115;color:#6366F1;">⚙️ Domain 1</span>
+      <h2>Tenant Settings &amp; Administration</h2>
+      <p>The foundation of your Fabric environment. Tenant settings control who can do what across the entire organization — from workspace creation to external sharing to AI features.</p>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-column good-column">
+        <h3 class="column-title good-title">✅ What Good Looks Like</h3>
+        <div class="good-item"><span class="check">✓</span><span>All tenant settings are documented with an owner, rationale, and review date</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Workspace creation is restricted to approved groups — no sprawl</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Feature toggles are scoped to security groups, not enabled tenant-wide</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Audit logs are enabled with retention beyond 90 days</span></div>
+        <div class="good-item"><span class="check">✓</span><span>AI and Copilot features are governed with clear usage policies</span></div>
+        <div class="good-item"><span class="check">✓</span><span>A monthly review cadence catches drift before it becomes a problem</span></div>
+      </div>
+      <div class="compare-column pitfall-column">
+        <h3 class="column-title pitfall-title">⚠️ Common Pitfalls</h3>
+        <div class="pitfall-item"><h4>Leaving defaults on</h4><p>Fabric ships with permissive defaults. If you don't review them, every user can create workspaces, share externally, and use AI features without guardrails.</p></div>
+        <div class="pitfall-item"><h4>No admin role governance</h4><p>Too many Fabric Admins means too many people can change tenant-wide settings. Limit admin roles and use PIM for just-in-time access.</p></div>
+        <div class="pitfall-item"><h4>Audit log blind spot</h4><p>The Power BI activity log retains data for only 30 days; the Unified Audit Log default is 180 days. Both may fall short of compliance requirements. Export to Log Analytics or a storage account for long-term retention.</p></div>
+        <div class="pitfall-item"><h4>Feature toggle whack-a-mole</h4><p>Microsoft releases new features monthly. Without a review process, new toggles get enabled without evaluation — creating shadow governance gaps.</p></div>
+      </div>
+    </div>
+
+    <h3 class="recs-title">💡 Recommendations</h3>
+    <div class="cards">
+      <div class="rec-card"><div class="card-accent" style="background:#6366F1"></div><div class="step-num" style="background:#6366F1">1</div><h4>Document Before You Change</h4><p class="desc"><strong>Export a baseline</strong> of all tenant settings before making changes.<br>This becomes your <strong>audit trail</strong> and rollback reference.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#6366F1"></div><div class="step-num" style="background:#6366F1">2</div><h4>Scope, Don't Blanket</h4><p class="desc">Use <strong>security groups</strong> to scope tenant settings.<br>Instead of enabling a feature for the entire org, <strong>enable it for a pilot group first</strong>.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#6366F1"></div><div class="step-num" style="background:#6366F1">3</div><h4>Treat Settings as Code</h4><p class="desc">At maturity, manage tenant settings via <strong>Infrastructure-as-Code</strong>.<br>Changes go through <strong>pull requests with approval</strong>, not manual portal clicks.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#6366F1"></div><div class="step-num" style="background:#6366F1">4</div><h4>AI Features Need a Policy</h4><p class="desc"><strong>Copilot and AI features</strong> consume capacity units and can expose data.<br>Define <strong>who can use them</strong>, in which workspaces, and <strong>monitor CU impact</strong>.</p></div>
+    </div>
+
+    <a href="https://learn.microsoft.com/fabric/admin/tenant-settings-index" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
+  </div>
+</section>
+
+<!-- ═══════════════════ DOMAIN 2 ══════════════════ -->
+<section id="workspace-governance" style="background:#fff">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label" style="background:#8B5CF615;color:#8B5CF6;">📐 Domain 2</span>
+      <h2>Workspace Governance</h2>
+      <p>Workspaces are the organizational unit of Fabric. How you structure them determines your security boundaries, collaboration patterns, and ability to scale.</p>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-column good-column">
+        <h3 class="column-title good-title">✅ What Good Looks Like</h3>
+        <div class="good-item"><span class="check">✓</span><span>Every workspace has a clear owner, purpose, and documented naming convention</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Workspace structure follows a deliberate pattern (per data product, per domain, or per layer)</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Medallion architecture (Bronze → Silver → Gold) is implemented with clear layer boundaries</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Stale workspaces are identified and decommissioned through a lifecycle process</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Semantic models are endorsed or certified — users know which data to trust</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Workspace provisioning is automated with templates, not ad-hoc</span></div>
+      </div>
+      <div class="compare-column pitfall-column">
+        <h3 class="column-title pitfall-title">⚠️ Common Pitfalls</h3>
+        <div class="pitfall-item"><h4>Workspace sprawl</h4><p>Without governance, teams create workspaces ad-hoc. Within months you have hundreds of 'Test', 'Copy of', and abandoned workspaces nobody owns.</p></div>
+        <div class="pitfall-item"><h4>No naming convention</h4><p>Without a naming standard, you can't tell what a workspace contains, who owns it, or what environment it belongs to.</p></div>
+        <div class="pitfall-item"><h4>Flat structure</h4><p>Putting everything in one workspace means everyone has access to everything. No separation between raw data, curated models, and consumer reports.</p></div>
+        <div class="pitfall-item"><h4>Orphaned semantic models</h4><p>Without endorsement governance, users don't know which models are trusted. They build reports on draft or experimental data.</p></div>
+      </div>
+    </div>
+
+    <h3 class="recs-title">💡 Recommendations</h3>
+    <div class="cards">
+      <div class="rec-card"><div class="card-accent" style="background:#8B5CF6"></div><div class="step-num" style="background:#8B5CF6">1</div><h4>Choose a Workspace Pattern</h4><p class="desc"><strong>Pattern A (Recommended):</strong> One workspace per data product — great for data mesh.<br><strong>Pattern B:</strong> Per medallion layer — for strict regulatory needs.<br><strong>Pattern C:</strong> Consolidated — only for small pilots.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#8B5CF6"></div><div class="step-num" style="background:#8B5CF6">2</div><h4>Naming Convention</h4><p class="desc">Format: <strong>{Domain} - {Layer/Purpose} - {Description} [{Env}]</strong><br>Example: <strong>Finance - Gold - Revenue Reporting [Prod]</strong><br>Enforce via automation, not email reminders.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#8B5CF6"></div><div class="step-num" style="background:#8B5CF6">3</div><h4>Medallion Layers</h4><p class="desc"><strong>Bronze</strong> = raw ingestion (land as-is).<br><strong>Silver</strong> = cleansed and conformed.<br><strong>Gold</strong> = curated business models ready for consumption.<br>Each layer = its own workspace for access control.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#8B5CF6"></div><div class="step-num" style="background:#8B5CF6">4</div><h4>Lifecycle Management</h4><p class="desc">Review workspaces <strong>quarterly</strong>.<br><strong>Archive</strong> unused workspaces after 90 days of inactivity.<br><strong>Delete</strong> after 180 days.<br>Automate notifications to owners.</p></div>
+    </div>
+
+    <a href="https://learn.microsoft.com/fabric/governance/governance-compliance-overview" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
+  </div>
+</section>
+
+<!-- ═══════════════════ DOMAIN 3 ══════════════════ -->
+<section id="domains-data-mesh" style="background:var(--bg)">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label" style="background:#A855F715;color:#A855F7;">🔗 Domain 3</span>
+      <h2>Domains &amp; Data Mesh</h2>
+      <p>Domains enable federated governance — letting business units own their data while the central team sets guardrails. This is how Fabric scales beyond one team.</p>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-column good-column">
+        <h3 class="column-title good-title">✅ What Good Looks Like</h3>
+        <div class="good-item"><span class="check">✓</span><span>3–7 top-level domains aligned to business units or value streams</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Every workspace is assigned to a domain — no orphaned workspaces</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Domain admins handle day-to-day governance; central team sets policies</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Tenant settings are delegated to domains where appropriate</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Data products are endorsed and certified at the domain level</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Subdomains provide granularity without over-complicating the structure</span></div>
+      </div>
+      <div class="compare-column pitfall-column">
+        <h3 class="column-title pitfall-title">⚠️ Common Pitfalls</h3>
+        <div class="pitfall-item"><h4>Too many domains</h4><p>Creating a domain per team or project leads to fragmentation. Start with 3–7 aligned to major business functions.</p></div>
+        <div class="pitfall-item"><h4>Domains without owners</h4><p>A domain without an admin is just a label. Every domain needs a named administrator who is accountable.</p></div>
+        <div class="pitfall-item"><h4>Central team bottleneck</h4><p>If the central team must approve every workspace, every access request, and every deployment, you've created a bottleneck.</p></div>
+        <div class="pitfall-item"><h4>Ignoring certification</h4><p>Without endorsement and certification, consumers can't distinguish authoritative data from experimental datasets.</p></div>
+      </div>
+    </div>
+
+    <h3 class="recs-title">💡 Recommendations</h3>
+    <div class="cards">
+      <div class="rec-card"><div class="card-accent" style="background:#A855F7"></div><div class="step-num" style="background:#A855F7">1</div><h4>Align to Business, Not Org Chart</h4><p class="desc">Domains should map to <strong>business functions</strong> (Finance, Sales, Operations) or value streams.<br>Not to reporting lines — <strong>org charts change; business functions are stable</strong>.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#A855F7"></div><div class="step-num" style="background:#A855F7">2</div><h4>Three-Tier Delegation</h4><p class="desc"><strong>Fabric Admin</strong> → sets tenant-level guardrails.<br><strong>Domain Admin</strong> → manages workspaces, access, and settings within their domain.<br><strong>Domain Contributor</strong> → self-service within boundaries.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#A855F7"></div><div class="step-num" style="background:#A855F7">3</div><h4>Certification Framework</h4><p class="desc">Two levels:<br><strong>Promoted</strong> — owner recommends it.<br><strong>Certified</strong> — formally reviewed against quality criteria.<br>Certification should require <strong>documented lineage</strong>, refresh reliability, and owner accountability.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#A855F7"></div><div class="step-num" style="background:#A855F7">4</div><h4>Default Domain</h4><p class="desc">Configure a <strong>default domain</strong> so new workspaces aren't orphaned.<br>Route them to a <strong>'Sandbox'</strong> or <strong>'Unassigned'</strong> domain for triage.</p></div>
+    </div>
+
+    <a href="https://learn.microsoft.com/fabric/governance/domains" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
+  </div>
+</section>
+
+<!-- ═══════════════════ DOMAIN 4 ══════════════════ -->
+<section id="roles-access" style="background:#fff">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label" style="background:#EC489915;color:#EC4899;">🛡️ Domain 4</span>
+      <h2>Roles &amp; Access Control</h2>
+      <p>Who can see what, who can change what, and how you enforce least privilege. This domain covers workspace roles, row-level security, sensitivity labels, and identity governance.</p>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-column good-column">
+        <h3 class="column-title good-title">✅ What Good Looks Like</h3>
+        <div class="good-item"><span class="check">✓</span><span>Workspace roles use security groups — never individual accounts</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Least privilege is the default: most users are Viewers, not Members</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Sensitivity labels (Public → Highly Confidential) are applied to all data assets</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Row-Level Security filters data by user context — no 'everyone sees everything'</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Access reviews happen quarterly with automated reminders via Entra ID</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Admin access uses PIM — just-in-time elevation, not permanent assignment</span></div>
+      </div>
+      <div class="compare-column pitfall-column">
+        <h3 class="column-title pitfall-title">⚠️ Common Pitfalls</h3>
+        <div class="pitfall-item"><h4>Everyone is a Member</h4><p>Making everyone a 'Member' role gives them edit access to all content. Most users should be Viewers.</p></div>
+        <div class="pitfall-item"><h4>Individual account assignments</h4><p>Assigning access to john@company.com instead of 'Finance-Analysts' security group means no one knows who has access.</p></div>
+        <div class="pitfall-item"><h4>No sensitivity labels</h4><p>Without labels, a confidential financial model looks the same as a public marketing dashboard.</p></div>
+        <div class="pitfall-item"><h4>RLS afterthought</h4><p>Adding Row-Level Security after go-live means users have already seen data they shouldn't.</p></div>
+      </div>
+    </div>
+
+    <h3 class="recs-title">💡 Recommendations</h3>
+    <div class="cards">
+      <div class="rec-card"><div class="card-accent" style="background:#EC4899"></div><div class="step-num" style="background:#EC4899">1</div><h4>Four Workspace Roles</h4><p class="desc"><strong>Admin</strong> — infrastructure changes.<br><strong>Member</strong> — create/edit content.<br><strong>Contributor</strong> — edit only assigned items.<br><strong>Viewer</strong> — read-only.<br>Map each to a <strong>security group</strong>.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#EC4899"></div><div class="step-num" style="background:#EC4899">2</div><h4>Sensitivity Labels</h4><p class="desc">Four tiers: <strong>Public</strong>, <strong>Internal</strong>, <strong>Confidential</strong>, <strong>Highly Confidential</strong>.<br>Enable <strong>label inheritance</strong> — when a Lakehouse is labeled 'Confidential', downstream reports inherit it.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#EC4899"></div><div class="step-num" style="background:#EC4899">3</div><h4>Just-in-Time Access</h4><p class="desc">Use <strong>Privileged Identity Management (PIM)</strong> for admin roles.<br>Admins activate their role for a <strong>time-limited window</strong>, with approval and audit trail.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#EC4899"></div><div class="step-num" style="background:#EC4899">4</div><h4>RLS Design Patterns</h4><p class="desc"><strong>Static RLS:</strong> map security groups to data filters (e.g., region = 'EMEA').<br><strong>Dynamic RLS:</strong> use <strong>USERPRINCIPALNAME()</strong> for per-user filtering.<br>Always test with <strong>'View as Role'</strong>.</p></div>
+    </div>
+
+    <a href="https://learn.microsoft.com/fabric/security/security-overview" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
+  </div>
+</section>
+
+<!-- ═══════════════════ DOMAIN 5 ══════════════════ -->
+<section id="capacity-cost" style="background:var(--bg)">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label" style="background:#F59E0B15;color:#F59E0B;">💰 Domain 5</span>
+      <h2>Capacity &amp; Cost Governance</h2>
+      <p>Fabric uses a capacity-based model where compute is shared across workloads. Understanding CU consumption, throttling, and cost attribution is essential to avoid surprise bills.</p>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-column good-column">
+        <h3 class="column-title good-title">✅ What Good Looks Like</h3>
+        <div class="good-item"><span class="check">✓</span><span>Each domain or business unit has a defined capacity budget</span></div>
+        <div class="good-item"><span class="check">✓</span><span>The Capacity Metrics app is deployed and reviewed weekly</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Throttling and smoothing policies are documented and understood</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Dev/Test workloads run on separate, smaller capacities</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Cost attribution uses showback or chargeback to drive accountability</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Capacity scaling has governance guardrails — not a free-for-all</span></div>
+      </div>
+      <div class="compare-column pitfall-column">
+        <h3 class="column-title pitfall-title">⚠️ Common Pitfalls</h3>
+        <div class="pitfall-item"><h4>One shared capacity for everything</h4><p>A single capacity means one runaway notebook can throttle everyone's reports. Separate at least by environment.</p></div>
+        <div class="pitfall-item"><h4>Ignoring the smoothing window</h4><p>Fabric smooths CU consumption over 24 hours. Teams misread this as 'unlimited' until they hit rejection.</p></div>
+        <div class="pitfall-item"><h4>No cost visibility</h4><p>Without showback, no one knows their workloads cost $8K/month.</p></div>
+        <div class="pitfall-item"><h4>Over-provisioning 'just in case'</h4><p>Starting with F64 when F8 would suffice wastes thousands per month. Start small, monitor, right-size.</p></div>
+      </div>
+    </div>
+
+    <h3 class="recs-title">💡 Recommendations</h3>
+    <div class="cards">
+      <div class="rec-card"><div class="card-accent" style="background:#F59E0B"></div><div class="step-num" style="background:#F59E0B">1</div><h4>Capacity Topology</h4><p class="desc"><strong>Pattern 1:</strong> Single shared (NOT for prod).<br><strong>Pattern 2 (Recommended):</strong> Per domain — enables cost attribution.<br><strong>Pattern 3:</strong> Per workload type (interactive vs background).<br><strong>Pattern 4:</strong> Per environment + domain (enterprise).</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#F59E0B"></div><div class="step-num" style="background:#F59E0B">2</div><h4>Monitor Before You Scale</h4><p class="desc">Deploy the <strong>Capacity Metrics app</strong> on day one.<br>Review <strong>weekly</strong>. Scale based on data, not guesses.<br><strong>F2 handles more than you'd expect</strong> for BI-only workloads.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#F59E0B"></div><div class="step-num" style="background:#F59E0B">3</div><h4>Smoothing vs Throttling</h4><p class="desc">Fabric's <strong>24h smoothing window</strong> absorbs burst usage.<br>But if your average exceeds capacity:<br><strong>1.</strong> Interactive operations delayed 20 sec (usage &gt; 10 min of capacity)<br><strong>2.</strong> Interactive operations rejected (usage &gt; 60 min of capacity)<br><strong>3.</strong> All requests rejected incl. background (usage &gt; 24 hr)</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#F59E0B"></div><div class="step-num" style="background:#F59E0B">4</div><h4>Showback First</h4><p class="desc">Start with <strong>showback</strong>: give each domain visibility into their CU consumption.<br>After <strong>6–12 months</strong> of stable patterns, transition to <strong>chargeback</strong> for true cost accountability.</p></div>
+    </div>
+
+    <a href="https://learn.microsoft.com/fabric/enterprise/licenses" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
+  </div>
+</section>
+
+<!-- ═══════════════════ DOMAIN 6 ══════════════════ -->
+<section id="data-security" style="background:#fff">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label" style="background:#10B98115;color:#10B981;">🔒 Domain 6</span>
+      <h2>Data Security &amp; Compliance</h2>
+      <p>Protecting data at rest, in transit, and in use. This covers DLP policies, data classification, lineage, Purview integration, network security, and regulatory compliance.</p>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-column good-column">
+        <h3 class="column-title good-title">✅ What Good Looks Like</h3>
+        <div class="good-item"><span class="check">✓</span><span>All data assets are classified by sensitivity tier</span></div>
+        <div class="good-item"><span class="check">✓</span><span>DLP policies are active in enforcement mode with user-facing policy tips</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Data lineage is tracked end-to-end from source to report</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Microsoft Purview provides unified governance across Fabric and other platforms</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Private endpoints protect sensitive workloads from public internet access</span></div>
+        <div class="good-item"><span class="check">✓</span><span>OneLake shortcuts and gateways are inventoried with credential rotation schedules</span></div>
+      </div>
+      <div class="compare-column pitfall-column">
+        <h3 class="column-title pitfall-title">⚠️ Common Pitfalls</h3>
+        <div class="pitfall-item"><h4>DLP in monitor-only forever</h4><p>Many orgs enable DLP in 'monitor mode' and never transition to enforcement. Set a deadline (4–6 weeks) to move to blocking.</p></div>
+        <div class="pitfall-item"><h4>No data classification</h4><p>Without classification, you can't apply the right protection. A 'Highly Confidential' dataset and a public reference table get the same (lack of) protection.</p></div>
+        <div class="pitfall-item"><h4>Lineage gaps</h4><p>If data flows through external tools (ADF, Databricks) before landing in Fabric, built-in lineage breaks.</p></div>
+        <div class="pitfall-item"><h4>OneLake shortcut sprawl</h4><p>Shortcuts let any workspace reference data from another. Without governance, you create invisible data dependencies.</p></div>
+      </div>
+    </div>
+
+    <h3 class="recs-title">💡 Recommendations</h3>
+    <div class="cards">
+      <div class="rec-card"><div class="card-accent" style="background:#10B981"></div><div class="step-num" style="background:#10B981">1</div><h4>Classify at the Source</h4><p class="desc">Apply sensitivity labels when data <strong>enters Fabric (Bronze layer)</strong>.<br>Labels flow downstream through lineage.<br>Don't wait until the Gold layer — <strong>by then, unclassified data has already been exposed</strong>.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#10B981"></div><div class="step-num" style="background:#10B981">2</div><h4>DLP Rollout Strategy</h4><p class="desc"><strong>Week 1–2:</strong> Test mode (no user impact).<br><strong>Week 3–4:</strong> Monitor mode (log violations).<br><strong>Week 5+:</strong> Enforce with policy tips (block + educate).<br>Review <strong>false positives weekly</strong>.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#10B981"></div><div class="step-num" style="background:#10B981">3</div><h4>Purview Integration</h4><p class="desc">Fabric has built-in lineage, but <strong>Purview extends governance</strong> across Azure SQL, Databricks, Power BI, and external sources.<br>Register Fabric as a <strong>Purview source</strong> for unified catalog.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#10B981"></div><div class="step-num" style="background:#10B981">4</div><h4>Network Security Tiers</h4><p class="desc"><strong>Tier 1:</strong> Public endpoints (default — fine for non-sensitive data).<br><strong>Tier 2:</strong> Conditional Access policies (restrict by location/device).<br><strong>Tier 3:</strong> Private Link + Managed VNet (for regulated industries).</p></div>
+    </div>
+
+    <a href="https://learn.microsoft.com/fabric/security/security-overview" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
+  </div>
+</section>
+
+<!-- ═══════════════════ DOMAIN 7 ══════════════════ -->
+<section id="monitoring-deployment" style="background:var(--bg)">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label" style="background:#0EA5E915;color:#0EA5E9;">📊 Domain 7</span>
+      <h2>Monitoring &amp; Deployment</h2>
+      <p>Operational excellence: how you deploy changes, monitor health, and ensure reliability. Covers Git integration, CI/CD, the Capacity Metrics app, and change management.</p>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-column good-column">
+        <h3 class="column-title good-title">✅ What Good Looks Like</h3>
+        <div class="good-item"><span class="check">✓</span><span>Fabric artifacts are in Git with a branching strategy (main/develop/feature)</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Deployments go through a pipeline: Dev → Test → Prod with approval gates</span></div>
+        <div class="good-item"><span class="check">✓</span><span>The Capacity Metrics app tracks CU usage, refresh success, and query performance</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Change management requires documented rationale and peer review</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Automated testing validates data quality before production deployment</span></div>
+        <div class="good-item"><span class="check">✓</span><span>Monitoring dashboards provide proactive alerting, not reactive firefighting</span></div>
+      </div>
+      <div class="compare-column pitfall-column">
+        <h3 class="column-title pitfall-title">⚠️ Common Pitfalls</h3>
+        <div class="pitfall-item"><h4>No version control</h4><p>Editing directly in the Fabric portal means no history, no rollback, no code review.</p></div>
+        <div class="pitfall-item"><h4>Manual deployments</h4><p>Copy-pasting between Dev and Prod introduces human error. Missed configurations, wrong connection strings.</p></div>
+        <div class="pitfall-item"><h4>Metrics app not deployed</h4><p>The Capacity Metrics app is free and gives you CU consumption, throttling events, and refresh success rates.</p></div>
+        <div class="pitfall-item"><h4>No testing for data</h4><p>Code gets unit tests; data gets nothing. Without data validation, bad data silently flows to production.</p></div>
+      </div>
+    </div>
+
+    <h3 class="recs-title">💡 Recommendations</h3>
+    <div class="cards">
+      <div class="rec-card"><div class="card-accent" style="background:#0EA5E9"></div><div class="step-num" style="background:#0EA5E9">1</div><h4>Start with Deployment Pipelines</h4><p class="desc">Fabric's built-in <strong>Deployment Pipelines</strong> are the easiest way to promote content.<br><strong>Dev → Test → Prod</strong> with no code required.<br>Great for BI teams getting started.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#0EA5E9"></div><div class="step-num" style="background:#0EA5E9">2</div><h4>Graduate to fabric-cicd</h4><p class="desc">For engineering teams, the <strong>fabric-cicd Python library</strong> enables code-first deployments.<br>Use <strong>parameter.yml</strong> for environment configs.<br>Use <strong>lakehouse_id.yml</strong> for target mapping.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#0EA5E9"></div><div class="step-num" style="background:#0EA5E9">3</div><h4>Git Integration</h4><p class="desc">Connect workspaces to <strong>Azure DevOps or GitHub</strong>.<br>Use <strong>feature branches</strong> for development, <strong>PRs</strong> for review, and <strong>main branch</strong> for production.<br>Sync is automatic.</p></div>
+      <div class="rec-card"><div class="card-accent" style="background:#0EA5E9"></div><div class="step-num" style="background:#0EA5E9">4</div><h4>Monitor Proactively</h4><p class="desc">Deploy <strong>Capacity Metrics app</strong>. Set alerts for:<br><strong>CU utilization</strong> &gt; 80%<br><strong>Refresh failure rate</strong> &gt; 5%<br><strong>Query duration</strong> &gt; SLA threshold<br>Review weekly — don't wait for user complaints.</p></div>
+    </div>
+
+    <a href="https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration" target="_blank" class="learn-more-btn">📖 Learn More on Microsoft Learn →</a>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═════════════════════ -->
+<footer>
+  <p>Sources: <a href="https://learn.microsoft.com/fabric/governance/">Official Governance Documentation</a></p>
+  <p>Microsoft Fabric • Governance Framework</p>
+</footer>
+
+<!-- ═══════════════════ BACK BUTTON ════════════════ -->
+<a href="/" class="smec-back-btn" aria-label="Back to SME&C Infographics">
+  <svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18">
+    <path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+  </svg>
+  <span class="smec-back-btn__label">Back to SME&amp;C Infographics</span>
+</a>
+
+<!-- ═══════════════════ SCRIPTS ════════════════════ -->
+<script>
+(function() {
+  const nav = document.getElementById('nav');
+  const links = nav.querySelectorAll('a');
+  const sections = [];
+
+  links.forEach(function(link) {
+    const id = link.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el) sections.push({ id: id, el: el, link: link });
+  });
+
+  // Scroll-spy
+  function onScroll() {
+    const scrollY = window.scrollY + 120;
+    let current = sections[0];
+    for (let i = 0; i < sections.length; i++) {
+      if (sections[i].el.offsetTop <= scrollY) current = sections[i];
+    }
+    links.forEach(function(l) { l.classList.remove('active'); });
+    if (current) current.link.classList.add('active');
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Smooth scroll on nav click
+  links.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const id = this.getAttribute('href').slice(1);
+      const target = document.getElementById(id);
+      if (target) {
+        const y = target.offsetTop - nav.offsetHeight - 8;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    });
+  });
+})();
+</script>
+<script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
+</body>
+</html>

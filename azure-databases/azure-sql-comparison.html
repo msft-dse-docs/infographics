@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azure SQL Decision Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&display=swap');
+
+  :root {
+    --azure-blue: #0078D4;
+    --azure-dark: #002050;
+    --vm-color: #5C2D91;
+    --mi-color: #0078D4;
+    --db-color: #008272;
+    --vm-light: #F3EFFA;
+    --mi-light: #EBF3FC;
+    --db-light: #E6F5F2;
+    --vm-mid: #D8CCE8;
+    --mi-mid: #C7DFFB;
+    --db-mid: #B8E6DD;
+    --gray-50: #FAFAFA;
+    --gray-100: #F5F5F5;
+    --gray-200: #E5E5E5;
+    --gray-600: #666;
+    --gray-800: #333;
+    --radius: 12px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 50%, #e0f7f4 100%);
+    color: var(--gray-800);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--azure-blue);
+    color: #fff;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .header-badge svg { width: 16px; height: 16px; fill: currentColor; }
+  .header h1 {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700;
+    color: var(--azure-dark);
+    margin-bottom: 8px;
+  }
+  .header p {
+    font-size: 18px;
+    color: var(--gray-600);
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  /* ── Spectrum Bar ── */
+  .spectrum {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 32px;
+    margin-bottom: 48px;
+    text-align: center;
+  }
+  .spectrum h2 {
+    font-size: 18px;
+    color: var(--azure-dark);
+    margin-bottom: 20px;
+  }
+  .spectrum-bar {
+    display: flex;
+    height: 56px;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.08);
+    margin-bottom: 12px;
+  }
+  .spectrum-bar div {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+  }
+  .spectrum-bar .s-vm { background: linear-gradient(135deg, #5C2D91, #7B4DB5); }
+  .spectrum-bar .s-mi { background: linear-gradient(135deg, #0062AD, #0078D4); }
+  .spectrum-bar .s-db { background: linear-gradient(135deg, #006B5E, #008272); }
+  .spectrum-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--gray-600);
+    padding: 0 8px;
+  }
+
+  /* ── Three Columns ── */
+  .columns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+  @media (max-width: 960px) {
+    .columns { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .card-header {
+    padding: 24px 24px 20px;
+    color: #fff;
+    position: relative;
+  }
+  .card-header.vm { background: linear-gradient(135deg, #5C2D91, #7B4DB5); }
+  .card-header.mi { background: linear-gradient(135deg, #0062AD, #0078D4); }
+  .card-header.db { background: linear-gradient(135deg, #006B5E, #008272); }
+
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  .card-icon svg { width: 28px; height: 28px; fill: #fff; }
+
+  .card-header h3 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .card-header .subtitle { font-size: 13px; opacity: 0.85; }
+
+  .card-body { padding: 24px; }
+
+  .card-body h4 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--gray-200);
+  }
+  .card-body h4.vm-accent { color: var(--vm-color); border-color: var(--vm-mid); }
+  .card-body h4.mi-accent { color: var(--mi-color); border-color: var(--mi-mid); }
+  .card-body h4.db-accent { color: var(--db-color); border-color: var(--db-mid); }
+
+  .card-body ul {
+    list-style: none;
+    margin-bottom: 20px;
+  }
+  .card-body li {
+    position: relative;
+    padding: 6px 0 6px 22px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .card-body li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 13px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .card.vm-card li::before { background: var(--vm-color); }
+  .card.mi-card li::before { background: var(--mi-color); }
+  .card.db-card li::before { background: var(--db-color); }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .tag {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+  .tag.vm-tag { background: var(--vm-light); color: var(--vm-color); }
+  .tag.mi-tag { background: var(--mi-light); color: var(--mi-color); }
+  .tag.db-tag { background: var(--db-light); color: var(--db-color); }
+
+  /* ── Meter Bars ── */
+  .meter-group { margin-bottom: 20px; }
+  .meter-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .meter {
+    height: 8px;
+    background: var(--gray-200);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .meter-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.6s ease;
+  }
+  .meter-fill.vm-fill { background: linear-gradient(90deg, #5C2D91, #9B6FCF); }
+  .meter-fill.mi-fill { background: linear-gradient(90deg, #0062AD, #4BA3E3); }
+  .meter-fill.db-fill { background: linear-gradient(90deg, #006B5E, #3DBFAD); }
+
+  /* ── Comparison Table ── */
+  .table-section {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-bottom: 48px;
+  }
+  .table-section h2 {
+    padding: 24px 28px 0;
+    font-size: 20px;
+    color: var(--azure-dark);
+  }
+  .table-section p.table-sub {
+    padding: 4px 28px 20px;
+    font-size: 14px;
+    color: var(--gray-600);
+  }
+  .table-wrap {
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  thead th {
+    padding: 14px 20px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--gray-200);
+  }
+  thead th:first-child { color: var(--gray-600); }
+  thead th:nth-child(2) { color: var(--vm-color); }
+  thead th:nth-child(3) { color: var(--mi-color); }
+  thead th:nth-child(4) { color: var(--db-color); }
+  tbody td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--gray-100);
+    vertical-align: top;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--gray-50); }
+  tbody td:first-child {
+    font-weight: 600;
+    color: var(--azure-dark);
+    white-space: nowrap;
+  }
+  .check { color: #008272; font-weight: 700; }
+  .partial { color: #D48C00; font-weight: 600; }
+  .no { color: #C4314B; }
+
+  /* ── Decision Flowchart ── */
+  .flow-section {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 32px;
+    margin-bottom: 48px;
+  }
+  .flow-section h2 {
+    font-size: 20px;
+    color: var(--azure-dark);
+    margin-bottom: 4px;
+  }
+  .flow-section > p {
+    font-size: 14px;
+    color: var(--gray-600);
+    margin-bottom: 28px;
+  }
+
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .flow-node {
+    width: 100%;
+    max-width: 640px;
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    text-align: center;
+    position: relative;
+  }
+  .flow-question {
+    background: var(--azure-dark);
+    color: #fff;
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .flow-answer-row {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    width: 100%;
+    max-width: 640px;
+    padding: 0;
+  }
+  .flow-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--gray-600);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 0;
+  }
+  .flow-arrow svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--gray-600);
+    margin-top: 2px;
+  }
+  .flow-result {
+    font-weight: 700;
+    font-size: 14px;
+    padding: 14px 24px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .flow-result.vm-result { background: var(--vm-light); color: var(--vm-color); border: 2px solid var(--vm-mid); }
+  .flow-result.mi-result { background: var(--mi-light); color: var(--mi-color); border: 2px solid var(--mi-mid); }
+  .flow-result.db-result { background: var(--db-light); color: var(--db-color); border: 2px solid var(--db-mid); }
+
+  .flow-connector {
+    width: 2px;
+    height: 20px;
+    background: var(--gray-200);
+  }
+
+  /* Flow step grouping */
+  .flow-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  .flow-branches {
+    display: flex;
+    width: 100%;
+    max-width: 700px;
+    gap: 16px;
+  }
+  .flow-branch {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .flow-branch-label {
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 16px;
+    margin-bottom: 8px;
+  }
+  .yes-label { background: #E6F4EA; color: #1B7D3A; }
+  .no-label { background: #FDE8E8; color: #C4314B; }
+
+  /* ── Scenario Cards ── */
+  .scenarios {
+    margin-bottom: 48px;
+  }
+  .scenarios h2 {
+    font-size: 20px;
+    color: var(--azure-dark);
+    margin-bottom: 4px;
+  }
+  .scenarios > p {
+    font-size: 14px;
+    color: var(--gray-600);
+    margin-bottom: 24px;
+  }
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+  .scenario-card {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    border-left: 5px solid;
+    transition: transform 0.2s;
+  }
+  .scenario-card:hover { transform: translateY(-2px); }
+  .scenario-card.vm-border { border-color: var(--vm-color); }
+  .scenario-card.mi-border { border-color: var(--mi-color); }
+  .scenario-card.db-border { border-color: var(--db-color); }
+
+  .scenario-card .sc-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+  }
+  .scenario-card.vm-border .sc-label { color: var(--vm-color); }
+  .scenario-card.mi-border .sc-label { color: var(--mi-color); }
+  .scenario-card.db-border .sc-label { color: var(--db-color); }
+
+  .scenario-card h3 { font-size: 16px; margin-bottom: 8px; color: var(--azure-dark); }
+  .scenario-card p { font-size: 14px; color: var(--gray-600); line-height: 1.55; }
+
+  /* ── Cost Snapshot ── */
+  .cost-section {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 32px;
+    margin-bottom: 48px;
+  }
+  .cost-section h2 {
+    font-size: 20px;
+    color: var(--azure-dark);
+    margin-bottom: 4px;
+  }
+  .cost-section > p {
+    font-size: 14px;
+    color: var(--gray-600);
+    margin-bottom: 24px;
+  }
+  .cost-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 700px) {
+    .cost-grid { grid-template-columns: 1fr; }
+  }
+  .cost-card {
+    padding: 24px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  .cost-card.vm-cost { background: var(--vm-light); border: 2px solid var(--vm-mid); }
+  .cost-card.mi-cost { background: var(--mi-light); border: 2px solid var(--mi-mid); }
+  .cost-card.db-cost { background: var(--db-light); border: 2px solid var(--db-mid); }
+  .cost-card h3 { font-size: 15px; margin-bottom: 12px; }
+  .cost-card.vm-cost h3 { color: var(--vm-color); }
+  .cost-card.mi-cost h3 { color: var(--mi-color); }
+  .cost-card.db-cost h3 { color: var(--db-color); }
+  .cost-card .cost-items { text-align: left; }
+  .cost-card .cost-items li {
+    font-size: 13px;
+    padding: 4px 0;
+    list-style: none;
+    position: relative;
+    padding-left: 18px;
+    color: var(--gray-800);
+  }
+  .cost-card .cost-items li::before {
+    content: '💲';
+    position: absolute;
+    left: 0;
+    font-size: 12px;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    padding: 24px;
+    color: var(--gray-600);
+    font-size: 13px;
+  }
+  .footer a { color: var(--azure-blue); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+
+  /* ── Print ── */
+  @media print {
+    body { background: #fff; }
+    .card:hover, .scenario-card:hover { transform: none; box-shadow: var(--shadow); }
+  }
+</style>
+<script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
+<!-- smec-meta v1 -->
+<meta name="description" content="Azure SQL Decision Guide — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:title" content="Azure SQL Decision Guide">
+<meta property="og:description" content="Azure SQL Decision Guide — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sme-c-infographics.github.io/azure-databases/azure-sql-comparison.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Azure SQL Decision Guide">
+<meta name="twitter:description" content="Azure SQL Decision Guide — an interactive infographic from the SME&amp;C Infographic Hub.">
+<!-- smec-favicon v1 -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<!-- smec-accuracy v1 -->
+<meta name="smec:last-accuracy-check" content="2026-07-16">
+<style>/* smec-back-btn v2 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  box-sizing: border-box;
+  display: inline-flex; align-items: center; justify-content: flex-start;
+  gap: 8px; height: 40px; padding: 0 16px 0 12px; border-radius: 20px;
+  background: rgba(0, 120, 212, 0.92) !important; color: #fff !important;
+  text-decoration: none !important;
+  font: 600 14px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  transition:
+    padding 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto; display: inline-block;
+  width: 18px; height: 18px; }
+.smec-back-btn__label { display: inline-block; flex: 0 0 auto;
+  font: inherit; color: inherit; }
+.smec-back-btn__more { display: inline-block; max-width: 0; opacity: 0;
+  overflow: hidden; vertical-align: bottom;
+  font: inherit; color: inherit;
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.05s; }
+
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  background: rgba(0, 90, 158, 0.96) !important; color: #fff !important;
+  text-decoration: none !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22); }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__more,
+.smec-back-btn:focus-visible .smec-back-btn__more {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.25s ease 0.2s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn__more { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__more,
+  .smec-back-btn:hover .smec-back-btn__more,
+  .smec-back-btn:focus-visible .smec-back-btn__more {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<!-- smec-submitter v1 -->
+<meta name="smec:submitter" content="cbattlegear">
+</head>
+<body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v2" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-badge">
+      <svg viewBox="0 0 16 16"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm1 12H7V7h2v5zm0-6H7V4h2v2z"/></svg>
+      Azure SQL Decision Guide
+    </div>
+    <h1>Which Azure SQL Option Is Right for You?</h1>
+    <p>A visual comparison of SQL Server on Azure VM, Azure SQL Managed Instance, and Azure SQL Database to help you choose the best fit for your workload.</p>
+  </div>
+
+  <!-- SPECTRUM -->
+  <div class="spectrum">
+    <h2>The IaaS → PaaS Spectrum</h2>
+    <div class="spectrum-bar">
+      <div class="s-vm">SQL Server on VM</div>
+      <div class="s-mi">Managed Instance</div>
+      <div class="s-db">SQL Database</div>
+    </div>
+    <div class="spectrum-labels">
+      <span>← Full control &amp; responsibility (IaaS)</span>
+      <span>Fully managed service (PaaS) →</span>
+    </div>
+  </div>
+
+  <!-- THREE PILLAR CARDS -->
+  <div class="columns">
+
+    <!-- VM -->
+    <div class="card vm-card">
+      <div class="card-header vm">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 2v10h16V6H4zm4 14h8v2H8v-2z"/></svg>
+        </div>
+        <h3>SQL Server on Azure VM</h3>
+        <div class="subtitle">Infrastructure as a Service (IaaS)</div>
+      </div>
+      <div class="card-body">
+        <h4 class="vm-accent">What It Is</h4>
+        <ul>
+          <li>Full SQL Server instance running on a Windows or Linux VM in Azure</li>
+          <li>You manage the OS, patching, backups, HA, and the SQL Server engine</li>
+          <li>100% feature parity with on-premises SQL Server</li>
+        </ul>
+
+        <h4 class="vm-accent">Best For</h4>
+        <div class="tag-row">
+          <span class="tag vm-tag">Lift &amp; Shift</span>
+          <span class="tag vm-tag">OS Access</span>
+          <span class="tag vm-tag">Legacy Apps</span>
+          <span class="tag vm-tag">SSIS / SSRS / SSAS</span>
+        </div>
+        <ul>
+          <li>Migrating on-prem SQL Server with zero code changes</li>
+          <li>Workloads requiring OS-level access or custom agents</li>
+          <li>Apps using SQL Server features not yet in PaaS (CLR, linked servers to non-SQL sources, etc.)</li>
+          <li>Running SSIS, SSRS, or SSAS alongside the engine</li>
+        </ul>
+
+        <h4 class="vm-accent">Operational Profile</h4>
+        <div class="meter-group">
+          <div class="meter-label"><span>Your Management Effort</span><span>High</span></div>
+          <div class="meter"><div class="meter-fill vm-fill" style="width:90%"></div></div>
+          <div class="meter-label"><span>SQL Compatibility</span><span>100%</span></div>
+          <div class="meter"><div class="meter-fill vm-fill" style="width:100%"></div></div>
+          <div class="meter-label"><span>Scaling Flexibility</span><span>Medium</span></div>
+          <div class="meter"><div class="meter-fill vm-fill" style="width:55%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MI -->
+    <div class="card mi-card">
+      <div class="card-header mi">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 4.02 2 6.5v11C2 19.98 6.48 22 12 22s10-2.02 10-4.5v-11C22 4.02 17.52 2 12 2zm0 2c4.42 0 8 1.57 8 3.5S16.42 11 12 11 4 9.43 4 7.5 7.58 4 12 4zM4 17.5v-3.24C6.06 15.7 8.88 16.5 12 16.5s5.94-.8 8-2.24v3.24c0 1.93-3.58 3.5-8 3.5s-8-1.57-8-3.5zm0-5.5v-2.74C6.06 10.7 8.88 11.5 12 11.5s5.94-.8 8-2.24V12c0 1.93-3.58 3.5-8 3.5S4 13.93 4 12z"/></svg>
+        </div>
+        <h3>SQL Managed Instance</h3>
+        <div class="subtitle">Platform as a Service (PaaS) — Instance-scoped</div>
+      </div>
+      <div class="card-body">
+        <h4 class="mi-accent">What It Is</h4>
+        <ul>
+          <li>A fully managed SQL Server <em>instance</em> with near-complete engine compatibility</li>
+          <li>Azure handles OS, patching, backups, and high availability</li>
+          <li>Deployed into your VNet for network isolation</li>
+        </ul>
+
+        <h4 class="mi-accent">Best For</h4>
+        <div class="tag-row">
+          <span class="tag mi-tag">Modernize</span>
+          <span class="tag mi-tag">Multi-DB</span>
+          <span class="tag mi-tag">Cross-DB Queries</span>
+          <span class="tag mi-tag">SQL Agent</span>
+        </div>
+        <ul>
+          <li>Modernizing on-prem with minimal code changes but PaaS benefits</li>
+          <li>Apps that need instance-scoped features: SQL Agent jobs, cross-database queries, Service Broker</li>
+          <li>Organizations consolidating many databases onto one managed instance</li>
+          <li>Workloads requiring VNet integration &amp; private endpoints</li>
+        </ul>
+
+        <h4 class="mi-accent">Operational Profile</h4>
+        <div class="meter-group">
+          <div class="meter-label"><span>Your Management Effort</span><span>Low–Medium</span></div>
+          <div class="meter"><div class="meter-fill mi-fill" style="width:35%"></div></div>
+          <div class="meter-label"><span>SQL Compatibility</span><span>~99%</span></div>
+          <div class="meter"><div class="meter-fill mi-fill" style="width:95%"></div></div>
+          <div class="meter-label"><span>Scaling Flexibility</span><span>Medium</span></div>
+          <div class="meter"><div class="meter-fill mi-fill" style="width:60%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DB -->
+    <div class="card db-card">
+      <div class="card-header db">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M19.14 12.94a7 7 0 0 0 .02-.94 6.97 6.97 0 0 0-.94-3.52L21 6l-3-1.01L16.06 3 12 5.49 7.94 3 6 4.99 3 6l2.78 2.48A6.97 6.97 0 0 0 5 12c0 .32.02.63.06.94L3 15l1.5 2.54.01.01L6 19.01l4-2.49 4 2.49 2-1.45 1.49-2.54L19.14 12.94zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></svg>
+        </div>
+        <h3>Azure SQL Database</h3>
+        <div class="subtitle">Platform as a Service (PaaS) — Database-scoped</div>
+      </div>
+      <div class="card-body">
+        <h4 class="db-accent">What It Is</h4>
+        <ul>
+          <li>A fully managed, <em>single database</em> service built on the latest stable SQL Server engine</li>
+          <li>Automated patching, backups, tuning, and geo-replication</li>
+          <li>Multiple purchasing models including serverless with auto-pause for cost efficiency</li>
+        </ul>
+
+        <h4 class="db-accent">Best For</h4>
+        <div class="tag-row">
+          <span class="tag db-tag">Cloud-Native</span>
+          <span class="tag db-tag">SaaS</span>
+          <span class="tag db-tag">Microservices</span>
+          <span class="tag db-tag">Serverless</span>
+        </div>
+        <ul>
+          <li>New cloud-native applications designed for the cloud from day one</li>
+          <li>SaaS products needing per-tenant database isolation</li>
+          <li>Microservice architectures with one database per service</li>
+          <li>Dev/test workloads benefiting from serverless auto-pause</li>
+        </ul>
+
+        <h4 class="db-accent">Operational Profile</h4>
+        <div class="meter-group">
+          <div class="meter-label"><span>Your Management Effort</span><span>Minimal</span></div>
+          <div class="meter"><div class="meter-fill db-fill" style="width:15%"></div></div>
+          <div class="meter-label"><span>SQL Compatibility</span><span>~95%</span></div>
+          <div class="meter"><div class="meter-fill db-fill" style="width:85%"></div></div>
+          <div class="meter-label"><span>Scaling Flexibility</span><span>High</span></div>
+          <div class="meter"><div class="meter-fill db-fill" style="width:90%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPARISON TABLE -->
+  <div class="table-section">
+    <h2>Feature-by-Feature Comparison</h2>
+    <p class="table-sub">How the three options stack up across key capabilities</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Capability</th>
+            <th>SQL Server on VM</th>
+            <th>SQL Managed Instance</th>
+            <th>Azure SQL Database</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>SQL Server Compatibility</td>
+            <td><span class="check">✔ 100%</span></td>
+            <td><span class="check">✔ ~99%</span></td>
+            <td><span class="partial">◐ ~95%</span></td>
+          </tr>
+          <tr>
+            <td>OS Access</td>
+            <td><span class="check">✔ Full RDP / SSH</span></td>
+            <td><span class="no">✘ No</span></td>
+            <td><span class="no">✘ No</span></td>
+          </tr>
+          <tr>
+            <td>SQL Agent Jobs</td>
+            <td><span class="check">✔ Yes</span></td>
+            <td><span class="check">✔ Yes</span></td>
+            <td><span class="no">✘ No (use Elastic Jobs)</span></td>
+          </tr>
+          <tr>
+            <td>Cross-Database Queries</td>
+            <td><span class="check">✔ Yes</span></td>
+            <td><span class="check">✔ Yes</span></td>
+            <td><span class="partial">◐ Elastic Query only</span></td>
+          </tr>
+          <tr>
+            <td>Linked Servers</td>
+            <td><span class="check">✔ Any provider</span></td>
+            <td><span class="partial">◐ SQL Server, SQL DB &amp; Synapse only</span></td>
+            <td><span class="no">✘ No</span></td>
+          </tr>
+          <tr>
+            <td>CLR / .NET Integration</td>
+            <td><span class="check">✔ Unrestricted</span></td>
+            <td><span class="check">✔ Safe assemblies</span></td>
+            <td><span class="no">✘ No</span></td>
+          </tr>
+          <tr>
+            <td>Service Broker</td>
+            <td><span class="check">✔ Yes</span></td>
+            <td><span class="check">✔ Yes (within instance)</span></td>
+            <td><span class="no">✘ No</span></td>
+          </tr>
+          <tr>
+            <td>Database Mail</td>
+            <td><span class="check">✔ Yes</span></td>
+            <td><span class="check">✔ Yes</span></td>
+            <td><span class="no">✘ No</span></td>
+          </tr>
+          <tr>
+            <td>VNet Integration</td>
+            <td><span class="check">✔ Yes</span></td>
+            <td><span class="check">✔ Native</span></td>
+            <td><span class="partial">◐ Service endpoints &amp; private links</span></td>
+          </tr>
+          <tr>
+            <td>Automated Backups</td>
+            <td><span class="partial">◐ You configure</span></td>
+            <td><span class="check">✔ Built-in, up to 35 days</span></td>
+            <td><span class="check">✔ Built-in, up to 35 days</span></td>
+          </tr>
+          <tr>
+            <td>Auto-Tuning</td>
+            <td><span class="no">✘ Manual</span></td>
+            <td><span class="partial">◐ Limited</span></td>
+            <td><span class="check">✔ Automatic indexing &amp; plans</span></td>
+          </tr>
+          <tr>
+            <td>High Availability</td>
+            <td><span class="partial">◐ You build (FCI / AG)</span></td>
+            <td><span class="check">✔ Built-in (99.99% / 99.995% zone-redundant)</span></td>
+            <td><span class="check">✔ Built-in (99.99% / 99.995% zone-redundant)</span></td>
+          </tr>
+          <tr>
+            <td>Serverless Tier</td>
+            <td><span class="no">✘ No</span></td>
+            <td><span class="no">✘ No</span></td>
+            <td><span class="check">✔ Yes (auto-pause)</span></td>
+          </tr>
+          <tr>
+            <td>Geo-Replication</td>
+            <td><span class="partial">◐ Manual (AG across regions)</span></td>
+            <td><span class="check">✔ Failover groups</span></td>
+            <td><span class="check">✔ Active geo-replication &amp; failover groups</span></td>
+          </tr>
+          <tr>
+            <td>Max Database Size</td>
+            <td>256 TB (disk dependent)</td>
+            <td>up to 32 TB (Next-gen GP)</td>
+            <td>128 TB (Hyperscale)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- DECISION FLOW -->
+  <div class="flow-section">
+    <h2>Quick Decision Flowchart</h2>
+    <p>Answer three questions to narrow down the right option for your workload.</p>
+
+    <div class="flow">
+
+      <!-- Q1 -->
+      <div class="flow-step">
+        <div class="flow-node flow-question">❶ Do you need OS-level access, SSIS/SSRS/SSAS, or unsupported SQL features?</div>
+        <div class="flow-branches">
+          <div class="flow-branch">
+            <div class="flow-connector"></div>
+            <div class="flow-branch-label yes-label">YES</div>
+            <div class="flow-connector"></div>
+            <div class="flow-result vm-result">→ SQL Server on Azure VM</div>
+          </div>
+          <div class="flow-branch">
+            <div class="flow-connector"></div>
+            <div class="flow-branch-label no-label">NO</div>
+            <div class="flow-connector"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-connector"></div>
+
+      <!-- Q2 -->
+      <div class="flow-step">
+        <div class="flow-node flow-question">❷ Do you need instance-scoped features (SQL Agent, cross-DB queries, Service Broker)?</div>
+        <div class="flow-branches">
+          <div class="flow-branch">
+            <div class="flow-connector"></div>
+            <div class="flow-branch-label yes-label">YES</div>
+            <div class="flow-connector"></div>
+            <div class="flow-result mi-result">→ SQL Managed Instance</div>
+          </div>
+          <div class="flow-branch">
+            <div class="flow-connector"></div>
+            <div class="flow-branch-label no-label">NO</div>
+            <div class="flow-connector"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-connector"></div>
+
+      <!-- Q3 -->
+      <div class="flow-step">
+        <div class="flow-node flow-question">❸ Building cloud-native, SaaS, or microservice apps?</div>
+        <div class="flow-branches">
+          <div class="flow-branch">
+            <div class="flow-connector"></div>
+            <div class="flow-branch-label yes-label">YES</div>
+            <div class="flow-connector"></div>
+            <div class="flow-result db-result">→ Azure SQL Database</div>
+          </div>
+          <div class="flow-branch">
+            <div class="flow-connector"></div>
+            <div class="flow-branch-label no-label">STILL UNSURE?</div>
+            <div class="flow-connector"></div>
+            <div class="flow-result mi-result">→ Start with Managed Instance (broadest compat, PaaS benefits)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REAL-WORLD SCENARIOS -->
+  <div class="scenarios">
+    <h2>Real-World Scenarios</h2>
+    <p>See which option maps to common migration and greenfield situations.</p>
+    <div class="scenario-grid">
+
+      <div class="scenario-card vm-border">
+        <div class="sc-label">Azure VM</div>
+        <h3>Legacy ERP Lift &amp; Shift</h3>
+        <p>Your ERP vendor requires specific SQL Server builds, CLR assemblies, and Windows-scheduled tasks. Move the VM image to Azure with near-zero rework.</p>
+      </div>
+
+      <div class="scenario-card vm-border">
+        <div class="sc-label">Azure VM</div>
+        <h3>SSIS + SSRS Co-Located</h3>
+        <p>ETL packages (SSIS) and paginated reports (SSRS) run on the same server. Azure VM lets you replicate this topology in the cloud.</p>
+      </div>
+
+      <div class="scenario-card mi-border">
+        <div class="sc-label">Managed Instance</div>
+        <h3>Consolidating Multi-Database Apps</h3>
+        <p>Your app spans 15 databases with cross-DB joins and SQL Agent jobs. Managed Instance hosts all of them under one roof with PaaS management.</p>
+      </div>
+
+      <div class="scenario-card mi-border">
+        <div class="sc-label">Managed Instance</div>
+        <h3>Regulated Industry Migration</h3>
+        <p>A financial services firm needs VNet isolation, no public endpoints, and near-100% SQL compatibility. MI checks every box with minimal re-architecture.</p>
+      </div>
+
+      <div class="scenario-card db-border">
+        <div class="sc-label">SQL Database</div>
+        <h3>Multi-Tenant SaaS Product</h3>
+        <p>You're building a SaaS app with one database per customer. Serverless auto-pauses idle trial databases, keeping costs low while scaling on demand.</p>
+      </div>
+
+      <div class="scenario-card db-border">
+        <div class="sc-label">SQL Database</div>
+        <h3>Microservice Data Store</h3>
+        <p>Each microservice owns its database. Azure SQL Database gives each service an independent, auto-tuned database with built-in geo-replication.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- COST SNAPSHOT -->
+  <div class="cost-section">
+    <h2>Cost Model Snapshot</h2>
+    <p>What you're paying for in each model — actual pricing varies by region, tier, and reservations.</p>
+    <div class="cost-grid">
+      <div class="cost-card vm-cost">
+        <h3>SQL Server on VM</h3>
+        <ul class="cost-items">
+          <li>VM compute (by size &amp; series)</li>
+          <li>SQL Server license (or Azure Hybrid Benefit)</li>
+          <li>Managed disks (Premium SSD, Ultra Disk)</li>
+          <li>OS license (Windows Server)</li>
+          <li>Backup storage (you manage)</li>
+        </ul>
+      </div>
+      <div class="cost-card mi-cost">
+        <h3>Managed Instance</h3>
+        <ul class="cost-items">
+          <li>vCores + memory tier (GP or BC)</li>
+          <li>Storage (per GB provisioned)</li>
+          <li>SQL license included (or AHB discount)</li>
+          <li>Backup storage (included up to 100% of instance size)</li>
+          <li>No OS/infra costs</li>
+        </ul>
+      </div>
+      <div class="cost-card db-cost">
+        <h3>SQL Database</h3>
+        <ul class="cost-items">
+          <li>DTU-based or vCore-based tiers</li>
+          <li>Serverless: pay per second of compute</li>
+          <li>Provisioned or serverless compute options</li>
+          <li>Backup storage (included up to 100%)</li>
+          <li>Hyperscale: scale storage independently</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>Azure SQL Decision Guide &bull; Created April 2026 &bull; Always validate against the latest <a href="https://learn.microsoft.com/azure/azure-sql/" target="_blank">Azure SQL documentation</a></p>
+  </div>
+
+</div>
+
+</body>
+</html>

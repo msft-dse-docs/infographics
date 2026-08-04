@@ -1,0 +1,338 @@
+name: Accuracy Review
+
+# Weekly scan that opens a Copilot-assigned GitHub issue for any
+# infographic whose `smec:last-accuracy-check` meta tag is missing or
+# older than 28 days. Copilot is asked to verify the page against the
+# current Microsoft Learn documentation and submit a draft PR with
+# corrections (and citations) — or, if the page is already accurate,
+# a metadata-only PR that just refreshes the marker block.
+#
+# Schedule note: deliberately runs on Thursdays so it does not collide
+# with `copilot-page-review.yml` (which runs at 07:00 UTC on the 1st
+# of every month). The dedup logic below also looks for open issues
+# created by the monthly review workflow so that the two workflows
+# never queue duplicate Copilot work for the same file.
+#
+# IMPORTANT — Copilot trigger on assignment:
+# The default `GITHUB_TOKEN` authenticates as `github-actions[bot]`,
+# and assignments made by a bot actor do NOT cause the Copilot coding
+# agent to start work on the issue. To kick off Copilot from this
+# workflow, configure the repo/org secret `COPILOT_ASSIGN_TOKEN` as
+# documented on `copilot-page-review.yml`. Without the secret, issues
+# are created but intentionally left unassigned so the failure mode
+# is visible.
+
+on:
+  schedule:
+    # 07:00 UTC every Thursday.
+    - cron: "0 7 * * 4"
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Optional path prefix to restrict the scan (e.g. fabric/)."
+        required: false
+        default: ""
+      max_age_days:
+        description: "Flag pages older than this many days (default 28)."
+        required: false
+        default: "28"
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: accuracy-review
+  cancel-in-progress: false
+
+env:
+  # Single source of truth for the per-run issue cap. Used by both the
+  # Python generator (--max-issues) and the JS assignment step
+  # (MAX_ISSUES_PER_RUN) so the two can't drift out of sync. Lower
+  # than the monthly review cap (25) because this workflow runs
+  # weekly and we want the initial wave of legacy pages to roll
+  # through over several weeks rather than landing all at once.
+  MAX_ISSUES_PER_RUN: "10"
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Ensure accuracy-review label exists
+        # Idempotent: creates the dedup label on first run, no-ops
+        # afterwards. Lets the assignment step filter open issues by
+        # label instead of paging the full repo issue list.
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const name = "accuracy-review";
+            try {
+              await github.rest.issues.getLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name,
+              });
+              core.info(`Label '${name}' already exists.`);
+            } catch (err) {
+              if (err.status !== 404) {
+                core.warning(`getLabel failed (${err.message}); continuing.`);
+                return;
+              }
+              try {
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name,
+                  color: "0e8a16",
+                  description: "Issues opened by the weekly accuracy-review workflow.",
+                });
+                core.info(`Created label '${name}'.`);
+              } catch (createErr) {
+                core.warning(`Could not create label '${name}' (${createErr.message}); dedup will fall back to scanning all open issues.`);
+              }
+            }
+
+      - name: Build accuracy review issue bodies
+        env:
+          ONLY_PREFIX: ${{ inputs.only }}
+          MAX_AGE_DAYS: ${{ inputs.max_age_days || '28' }}
+        run: |
+          args=(--max-age-days "$MAX_AGE_DAYS" --max-issues "$MAX_ISSUES_PER_RUN")
+          if [ -n "$ONLY_PREFIX" ]; then
+            args+=(--only "$ONLY_PREFIX")
+          fi
+          python3 scripts/check-accuracy-staleness.py "${args[@]}"
+
+      - name: Upload review bodies as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: accuracy-review-issues
+          path: |
+            reports/accuracy-review-issues/*.md
+            reports/accuracy-review-issues/index.json
+          if-no-files-found: ignore
+
+      - name: Open issues and assign Copilot
+        uses: actions/github-script@v7
+        env:
+          USING_COPILOT_PAT: ${{ secrets.COPILOT_ASSIGN_TOKEN != '' }}
+        with:
+          # Prefer a user-scoped PAT so the issue assignment actually
+          # triggers the Copilot coding agent. See
+          # `copilot-page-review.yml` for the rationale.
+          github-token: ${{ secrets.COPILOT_ASSIGN_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require("fs");
+            const path = require("path");
+
+            const usingPat = process.env.USING_COPILOT_PAT === "true";
+            if (!usingPat) {
+              core.warning(
+                "COPILOT_ASSIGN_TOKEN secret is not set; falling back " +
+                "to GITHUB_TOKEN. Issues will be created but left " +
+                "UNASSIGNED — assignments from github-actions[bot] do " +
+                "not trigger the Copilot coding agent."
+              );
+            }
+
+            const MAX_ISSUES_PER_RUN =
+              Number.parseInt(process.env.MAX_ISSUES_PER_RUN || "10", 10) || 10;
+
+            // Must match ISSUE_MARKER in check-accuracy-staleness.py.
+            const ISSUE_MARKER = "<!-- copilot-accuracy-review v1 -->";
+            const DEDUP_LABEL = "accuracy-review";
+            // Cross-workflow dedup: also skip pages already queued by
+            // the monthly content review workflow so we don't open
+            // two Copilot issues for the same file.
+            const SIBLING_LABEL = "copilot-review";
+            const SIBLING_MARKER = "<!-- copilot-page-review v1 -->";
+
+            const dir = "reports/accuracy-review-issues";
+            const indexPath = path.join(dir, "index.json");
+            if (!fs.existsSync(indexPath)) {
+              core.info("No index.json; nothing to do.");
+              return;
+            }
+            const index = JSON.parse(fs.readFileSync(indexPath, "utf8"));
+            const entries = Array.isArray(index.issues) ? index.issues : [];
+            if (!entries.length) {
+              core.info("No stale pages; nothing to do.");
+              return;
+            }
+
+            // Resolve preferred labels that actually exist on the repo.
+            const preferredLabels = ["content-freshness", "automated", DEDUP_LABEL];
+            let labelsToUse = [];
+            const existingLabelNames = new Set();
+            try {
+              const existing = await github.paginate(
+                github.rest.issues.listLabelsForRepo,
+                { owner: context.repo.owner, repo: context.repo.repo, per_page: 100 }
+              );
+              for (const l of existing) existingLabelNames.add(l.name);
+              labelsToUse = preferredLabels.filter(n => existingLabelNames.has(n));
+            } catch (err) {
+              core.info(`Could not list labels (${err.message}); creating issues without labels.`);
+            }
+            const hasDedupLabel = existingLabelNames.has(DEDUP_LABEL);
+            const hasSiblingLabel = existingLabelNames.has(SIBLING_LABEL);
+
+            // Collect existing open issues for dedup. Look at both our
+            // own label and the monthly-review label so the same page
+            // is never queued twice.
+            async function listOpenWithLabel(label) {
+              if (!label) return [];
+              try {
+                return await github.paginate(
+                  github.rest.issues.listForRepo,
+                  {
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    state: "open",
+                    per_page: 100,
+                    labels: label,
+                  }
+                );
+              } catch (err) {
+                core.info(`Could not list open issues for label '${label}' (${err.message}).`);
+                return [];
+              }
+            }
+
+            const openByPath = new Map();
+            const ownOpen = hasDedupLabel ? await listOpenWithLabel(DEDUP_LABEL) : [];
+            const siblingOpen = hasSiblingLabel ? await listOpenWithLabel(SIBLING_LABEL) : [];
+            for (const issue of [...ownOpen, ...siblingOpen]) {
+              if (issue.pull_request) continue;
+              const body = issue.body || "";
+              if (!body.includes(ISSUE_MARKER) && !body.includes(SIBLING_MARKER)) continue;
+              const m = body.match(/<!-- page: ([^>]+?) -->/);
+              if (m) {
+                openByPath.set(m[1].trim(), issue.number);
+              }
+            }
+
+            // Look up Copilot's assignable actor id once.
+            let copilotActorId = null;
+            try {
+              const q = `
+                query($owner:String!, $repo:String!) {
+                  repository(owner:$owner, name:$repo) {
+                    suggestedActors(capabilities:[CAN_BE_ASSIGNED], first:100) {
+                      nodes {
+                        login
+                        __typename
+                        ... on Bot { id }
+                        ... on User { id }
+                      }
+                    }
+                  }
+                }
+              `;
+              const result = await github.graphql(q, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              });
+              const nodes = result?.repository?.suggestedActors?.nodes || [];
+              const copilot = nodes.find(n =>
+                n && n.__typename === "Bot" &&
+                (n.login === "copilot-swe-agent" || n.login === "Copilot")
+              );
+              if (copilot?.id) {
+                copilotActorId = copilot.id;
+                core.info(`Found Copilot assignable actor (${copilot.login}).`);
+              } else {
+                core.info("Copilot coding agent not available as an assignee on this repo.");
+              }
+            } catch (err) {
+              core.info(`Could not query suggestedActors (${err.message}); continuing without Copilot assignment.`);
+            }
+
+            let created = 0;
+            let skipped = 0;
+
+            for (const entry of entries) {
+              if (created >= MAX_ISSUES_PER_RUN) {
+                core.warning(`Reached MAX_ISSUES_PER_RUN (${MAX_ISSUES_PER_RUN}); stopping.`);
+                break;
+              }
+              if (!entry || typeof entry.path !== "string" || typeof entry.body_file !== "string") {
+                core.info("Skipping malformed index entry.");
+                continue;
+              }
+              const title = `Accuracy review: \`${entry.path}\``;
+              const safeBodyName = path.basename(entry.body_file);
+              const bodyPath = path.join(dir, safeBodyName);
+              if (!fs.existsSync(bodyPath)) {
+                core.info(`Missing body file for ${entry.path}; skipping.`);
+                continue;
+              }
+              const body = fs.readFileSync(bodyPath, "utf8");
+              if (!body.includes(ISSUE_MARKER)) {
+                core.info(`Body for ${entry.path} missing expected marker; skipping.`);
+                continue;
+              }
+
+              const existingNumber = openByPath.get(entry.path);
+              if (existingNumber) {
+                core.info(`Open issue already exists for ${entry.path}: #${existingNumber}`);
+                skipped++;
+                continue;
+              }
+
+              const issueParams = {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body,
+              };
+              if (labelsToUse.length) {
+                issueParams.labels = labelsToUse;
+              }
+              const createResp = await github.rest.issues.create(issueParams);
+              const issueNumber = createResp.data.number;
+              const issueNodeId = createResp.data.node_id;
+              core.info(`Created issue #${issueNumber} for ${entry.path}.`);
+              created++;
+
+              if (copilotActorId && usingPat) {
+                try {
+                  await github.graphql(
+                    `mutation($assignableId:ID!, $actorIds:[ID!]!) {
+                       replaceActorsForAssignable(input:{assignableId:$assignableId, actorIds:$actorIds}) {
+                         assignable { ... on Issue { number } }
+                       }
+                     }`,
+                    { assignableId: issueNodeId, actorIds: [copilotActorId] }
+                  );
+                  core.info(`Assigned Copilot to #${issueNumber}.`);
+                } catch (err) {
+                  core.warning(`Could not assign Copilot to #${issueNumber} (${err.message}); leaving unassigned.`);
+                }
+              } else if (copilotActorId && !usingPat) {
+                core.info(
+                  `Leaving #${issueNumber} unassigned (no PAT). ` +
+                  `A human can re-assign Copilot to start the agent.`
+                );
+              }
+            }
+
+            core.info(`Done. created=${created} skipped_existing=${skipped}`);
+
+            const summary = core.summary
+              .addHeading("Accuracy Review", 2)
+              .addRaw(`**Stale pages found:** ${entries.length}`).addBreak()
+              .addRaw(`**Issues created:** ${created}`).addBreak()
+              .addRaw(`**Skipped (already open):** ${skipped}`).addBreak()
+              .addRaw(`**Copilot assignment available:** ${copilotActorId ? "yes" : "no"}`).addBreak()
+              .addRaw(`**Using PAT (will trigger Copilot):** ${usingPat ? "yes" : "no — issues left unassigned"}`).addBreak();
+            await summary.write();

@@ -1,0 +1,10 @@
+# Generated audit/check reports. Produced locally and in CI as artifacts;
+# not intended to be committed.
+reports/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/

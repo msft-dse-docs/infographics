@@ -1,0 +1,163 @@
+{
+  "azure-databases": {
+    "displayName": "Azure Databases",
+    "items": [
+      {
+        "file": "azure-sql-comparison.html",
+        "title": "Azure SQL Decision Guide"
+      },
+      {
+        "file": "azure-sql-db-bcdr.html",
+        "title": "Azure SQL Database: Business Continuity & Disaster Recovery"
+      },
+      {
+        "file": "sql-2016-eol-customer-guide.html",
+        "title": "SQL Server 2016 End of Support — Your Complete Guide"
+      }
+    ]
+  },
+  "fabric": {
+    "displayName": "Fabric",
+    "items": [
+      {
+        "file": "fabric-data-agent-best-practices.html",
+        "title": "Fabric Data Agent — Modeling Best Practices"
+      },
+      {
+        "file": "fabric-governance-infographic.html",
+        "title": "Microsoft Fabric Governance Framework"
+      },
+      {
+        "file": "fabric-mcp-isv-scale-infographic.html",
+        "title": "The Analytics Factory — Scaling ISV Apps to Thousands of Tenants with Fabric & Power BI MCP Servers, Skills & REST APIs"
+      },
+      {
+        "file": "medallion-architecture-infographic.html",
+        "title": "Medallion Lakehouse Architecture in Microsoft Fabric"
+      },
+      {
+        "file": "microsoft-fabric-interactive.html",
+        "title": "Microsoft Fabric — Unified Analytics Platform"
+      }
+    ]
+  },
+  "foundry": {
+    "displayName": "AI & Foundry",
+    "items": [
+      {
+        "file": "00-microsoft-stack-overview.html",
+        "title": "The Microsoft App, AI & Data Stack — A Top-to-Bottom Map"
+      },
+      {
+        "file": "ai-agent-anatomy.html",
+        "title": "The Anatomy of an AI Agent — A Field Guide"
+      },
+      {
+        "file": "ai-gateway-apim.html",
+        "title": "AI Gateway in Azure API Management — One Front Door for Every Model"
+      },
+      {
+        "file": "ai-landing-zones.html",
+        "title": "Azure AI Landing Zones — The Runway Before Takeoff"
+      },
+      {
+        "file": "azure-ai-billing-models.html",
+        "title": "Azure AI Billing Models — From Consumption to Commitment"
+      },
+      {
+        "file": "frontier-firm-playbook.html",
+        "title": "Become a Frontier Firm — Microsoft's Playbook for the Agentic Enterprise"
+      },
+      {
+        "file": "microsoft-ai-decision-guide.html",
+        "title": "Microsoft AI Platform Decision Guide"
+      },
+      {
+        "file": "microsoft-iq-platforms-guide.html",
+        "title": "Microsoft IQ Platforms — Foundry IQ, Fabric IQ, Work IQ, Web IQ: The Knowledge Layer for Smarter Agents"
+      }
+    ]
+  },
+  "github-copilot": {
+    "displayName": "GitHub Copilot",
+    "items": [
+      {
+        "file": "agent-commit-identity.html",
+        "title": "Who authored this PR? Agent identity on GitHub"
+      },
+      {
+        "file": "agent-correction-loop.html",
+        "title": "When the agent's PR is wrong: the correction loop"
+      },
+      {
+        "file": "agent-governance-surface.html",
+        "title": "Where does the agent's audit trail live?"
+      },
+      {
+        "file": "ai-agent-setup-cost.html",
+        "title": "Setup cost to first PR: AI coding agents on GitHub"
+      },
+      {
+        "file": "ai-coding-agent-landscape.html",
+        "title": "Which AI coding agent fits which team?"
+      },
+      {
+        "file": "copilot-learn-mcp-dogfood.html",
+        "title": "Copilot + Microsoft Learn: how this site schedules accuracy work"
+      }
+    ]
+  },
+  "avd": {
+    "displayName": "AVD",
+    "items": [
+      {
+        "file": "healthcare-vdi-strategyguide.html",
+        "title": "Healthcare VDI Strategy — Windows 365 + Azure Virtual Desktop"
+      }
+    ]
+  },
+  "app-platform-services": {
+    "displayName": "App Platform Services",
+    "items": [
+      {
+        "file": "apim-logic-apps-functions-decision-guide.html",
+        "title": "App Platform Services Decision Guide — APIM, Logic Apps, Functions"
+      },
+      {
+        "file": "azure-apim-v2-networking-guide.html",
+        "title": "Azure API Management v2 — Public & Private Networking Guide"
+      },
+      {
+        "file": "azure-communication-services-guide.html",
+        "title": "Azure Communication Services — The future of customer communication"
+      }
+    ]
+  },
+  "defender-for-cloud": {
+    "displayName": "Defender for Cloud",
+    "items": [
+      {
+        "file": "defender-for-cloud-unified-security.html",
+        "title": "Microsoft Defender for Cloud · Interactive Learning"
+      }
+    ]
+  },
+  "infrastructure": {
+    "displayName": "Infrastructure",
+    "items": [
+      {
+        "file": "azure-arc.html",
+        "title": "Azure Arc: The Multi-Cloud Command Center"
+      }
+    ]
+  },
+  "conference-rollup": {
+    "displayName": "Conference Rollup",
+    "items": [
+      {
+        "file": "build-2026-announcements-infographic.html",
+        "title": "Microsoft Build 2026 — All Announcements by Category"
+      }
+    ]
+  }
+}

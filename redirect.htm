@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redirecting… | SME&amp;C Infographics</title>
+  <!--
+    The meta refresh below serves three purposes:
+      1. No-JS fallback so visitors still leave this page if scripting
+         is disabled or fails to load.
+      2. Triggers the SKIP rule in scripts/ensure-*.py (those scripts
+         skip pages with a meta http-equiv="refresh"), so this page
+         doesn't get a back button or other site chrome injected on
+         top of the redirect.
+      3. Buys the JS-driven Umami tracking call enough time to fire
+         before the navigation happens by giving it a 5s ceiling.
+    The fallback target is the homepage, not the dynamic ?url= value,
+    because meta refresh can't read query params at parse time.
+  -->
+  <meta http-equiv="refresh" content="5; url=/" />
+  <style>
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #F3F2F1;
+      color: #201F1E;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #EDEBE9;
+      border-radius: 4px;
+      padding: 32px 40px;
+      max-width: 520px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,.12);
+    }
+    h1 { color: #005A9E; font-size: 1.4rem; margin-bottom: 12px; }
+    p { color: #605E5C; margin: 8px 0; }
+    a { color: #0078D4; word-break: break-all; }
+    .small { font-size: .85rem; color: #605E5C; margin-top: 16px; }
+  </style>
+  <script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
+</head>
+<body>
+  <div class="card">
+    <h1>Redirecting…</h1>
+    <p>Sending you to your destination.</p>
+    <p id="manual" class="small">
+      If you are not redirected automatically,
+      <a id="manual-link" href="/">click here</a>.
+    </p>
+    <noscript>
+      <p class="small">
+        JavaScript is disabled — you will be returned to the homepage
+        in a few seconds.
+      </p>
+    </noscript>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      // Read and validate the destination from the query string.
+      // Anything that isn't an http(s) URL is rejected so this page
+      // can't be turned into an open vector for `javascript:` /
+      // `data:` URIs by an attacker who crafts a tracked link.
+      var params = new URLSearchParams(window.location.search);
+      var dest = (params.get("url") || "").trim();
+
+      function isSafeHttpsUrl(value) {
+        if (!value) return false;
+        var parsed;
+        try { parsed = new URL(value); } catch (_) { return false; }
+        if (parsed.protocol !== "https:") return false;
+        // Destination allow-list. Mirrors link-builder.html — keep
+        // them in sync. Match exact host or any subdomain of it.
+        var allowed = [
+          "msit.events.teams.microsoft.com",
+          "smecevents.cloudevents.ai",
+          "msevents.microsoft.com"
+        ];
+        var host = parsed.hostname.toLowerCase();
+        return allowed.some(function (a) {
+          return host === a || host.endsWith("." + a);
+        });
+      }
+
+      if (!isSafeHttpsUrl(dest)) {
+        // Leave the meta-refresh fallback to send the visitor home.
+        document.getElementById("manual").innerHTML =
+          'No valid destination URL provided. Returning to the ' +
+          '<a href="/">homepage</a>…';
+        return;
+      }
+
+      // The destination URL is used verbatim — UTM params live on the
+      // redirect link only, so our own Umami records the click but
+      // the visitor lands at a clean URL on the destination.
+      var finalHref = dest;
+
+      // Update the manual fallback link so a visitor whose JS got far
+      // enough to run this still ends up at the right place if the
+      // automatic navigation is somehow blocked.
+      document.getElementById("manual-link").setAttribute("href", finalHref);
+
+      // Fire a Umami event tagged with the source/campaign so the
+      // dashboard can break clicks down by newsletter without relying
+      // on the destination domain's analytics. Umami loads with
+      // `defer`, so it may not be ready the instant this script runs;
+      // we wrap the call in a tiny retry/timeout that bounds the
+      // total delay before redirecting.
+      var REDIRECT_DELAY_MS = 750;       // ceiling on how long we wait
+      var POLL_INTERVAL_MS = 50;
+      var maxAttempts = Math.ceil(REDIRECT_DELAY_MS / POLL_INTERVAL_MS);
+      var attempts = 0;
+      var redirected = false;
+
+      function go() {
+        if (redirected) return;
+        redirected = true;
+        // location.replace does not push a history entry, so the
+        // visitor's Back button skips this page — closest UX
+        // approximation to a server-side 301 from pure JS.
+        window.location.replace(finalHref);
+      }
+
+      function tryTrackThenGo() {
+        attempts++;
+        var eventName = "outbound:" +
+          (params.get("utm_source") || "unknown") + "/" +
+          (params.get("utm_campaign") || "unknown");
+        var eventData = {
+          dest: finalHref,
+          source: params.get("utm_source") || "",
+          medium: params.get("utm_medium") || "",
+          campaign: params.get("utm_campaign") || "",
+          content: params.get("utm_content") || "",
+          term: params.get("utm_term") || ""
+        };
+
+        if (window.umami && typeof window.umami.track === "function") {
+          try {
+            // umami.track returns a promise (newer builds) or a
+            // truthy value (older). Either way, give the network
+            // request a brief moment to flush before navigating.
+            var result = window.umami.track(eventName, eventData);
+            if (result && typeof result.then === "function") {
+              result.then(go, go);
+              // Hard ceiling in case the promise never settles.
+              setTimeout(go, 400);
+            } else {
+              setTimeout(go, 200);
+            }
+          } catch (_) {
+            go();
+          }
+          return;
+        }
+        if (attempts >= maxAttempts) {
+          // Umami never loaded (blocked, offline, etc). Redirect
+          // anyway so the visitor isn't stranded.
+          go();
+          return;
+        }
+        setTimeout(tryTrackThenGo, POLL_INTERVAL_MS);
+      }
+
+      tryTrackThenGo();
+    })();
+  </script>
+</body>
+</html>

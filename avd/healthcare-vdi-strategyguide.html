@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Healthcare VDI Strategy — Windows 365 + Azure Virtual Desktop</title>
+<style>
+/* ===== RESET & BASE ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Fluent tokens */
+  --brand-primary:#0078D4;
+  --brand-dark:#005A9E;
+  --brand-darker:#004578;
+  --brand-light:#DEECF9;
+  --brand-lightest:#EFF6FC;
+  --avd-color:#8661C5;
+  --w365-color:#0078D4;
+  --neutral-00:#000;
+  --neutral-10:#1B1A19;
+  --neutral-20:#323130;
+  --neutral-40:#605E5C;
+  --neutral-60:#8A8886;
+  --neutral-80:#B3B0AD;
+  --neutral-90:#D2D0CE;
+  --neutral-95:#EDEBE9;
+  --neutral-98:#F3F2F1;
+  --neutral-100:#FFF;
+  --green:#107C10;
+  --red:#D13438;
+  --yellow:#FFB900;
+  --teal:#00B294;
+  --shadow-4:0 1.6px 3.6px rgba(0,0,0,.132),0 .3px .9px rgba(0,0,0,.108);
+  --shadow-8:0 3.2px 7.2px rgba(0,0,0,.132),0 .6px 1.8px rgba(0,0,0,.108);
+  --shadow-16:0 6.4px 14.4px rgba(0,0,0,.132),0 1.2px 3.6px rgba(0,0,0,.108);
+  --shadow-28:0 12.8px 28.8px rgba(0,0,0,.132),0 2.4px 7.2px rgba(0,0,0,.108);
+  --radius-m:8px;
+  --radius-l:12px;
+  --radius-xl:16px;
+  --transition:0.3s cubic-bezier(0.4,0,0.2,1);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:'Segoe UI Variable','Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif;
+  color:var(--neutral-20);
+  background:var(--neutral-100);
+  line-height:1.6;
+  overflow-x:hidden;
+}
+
+/* ===== SCROLL PROGRESS ===== */
+.scroll-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--brand-primary),var(--avd-color));width:0;z-index:1001;transition:width .1s linear}
+
+/* ===== NAV ===== */
+nav{
+  position:fixed;top:0;left:0;right:0;
+  height:48px;
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--neutral-90);
+  z-index:1000;
+  display:flex;align-items:center;
+  padding:0 24px;
+  transition:box-shadow var(--transition);
+}
+nav.scrolled{box-shadow:var(--shadow-4)}
+nav .logo{display:flex;align-items:center;gap:10px;font-weight:600;font-size:14px;color:var(--neutral-20);white-space:nowrap}
+nav .logo svg{width:20px;height:20px}
+nav .nav-links{display:flex;gap:4px;margin-left:32px;overflow-x:auto;scrollbar-width:none}
+nav .nav-links::-webkit-scrollbar{display:none}
+nav .nav-links a{
+  font-size:13px;
+  color:var(--neutral-40);
+  text-decoration:none;
+  padding:6px 12px;
+  border-radius:var(--radius-m);
+  white-space:nowrap;
+  transition:all var(--transition);
+  font-weight:500;
+}
+nav .nav-links a:hover{color:var(--brand-primary);background:var(--brand-lightest)}
+nav .nav-links a.active{color:var(--brand-primary);background:var(--brand-light);font-weight:600}
+
+/* ===== HERO ===== */
+.hero{
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#0078D4 0%,#005A9E 40%,#8661C5 100%);
+  position:relative;overflow:hidden;
+  padding:80px 24px 60px;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero-content{
+  text-align:center;position:relative;z-index:1;
+  max-width:800px;
+}
+.hero-badge{
+  display:inline-block;
+  background:rgba(255,255,255,.15);
+  backdrop-filter:blur(8px);
+  color:#fff;
+  font-size:12px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;
+  padding:6px 16px;
+  border-radius:100px;
+  border:1px solid rgba(255,255,255,.2);
+  margin-bottom:24px;
+  animation:fadeInDown .6s ease-out;
+}
+.hero h1{
+  font-size:clamp(2rem,5vw,3.5rem);
+  font-weight:700;color:#fff;
+  line-height:1.15;margin-bottom:16px;
+  animation:fadeInUp .6s ease-out .1s both;
+}
+.hero h1 span{
+  background:linear-gradient(90deg,#FFB900,#FF8C00);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero p{
+  font-size:clamp(1rem,2vw,1.25rem);
+  color:rgba(255,255,255,.85);
+  max-width:620px;margin:0 auto 32px;
+  animation:fadeInUp .6s ease-out .2s both;
+}
+.hero-cta{
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+  animation:fadeInUp .6s ease-out .3s both;
+}
+.hero-cta a{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 24px;border-radius:var(--radius-m);
+  font-size:15px;font-weight:600;
+  text-decoration:none;
+  transition:all var(--transition);
+}
+.btn-primary{background:#fff;color:var(--brand-primary)}
+.btn-primary:hover{background:var(--brand-lightest);transform:translateY(-1px);box-shadow:var(--shadow-8)}
+.btn-secondary{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.btn-secondary:hover{background:rgba(255,255,255,.2)}
+
+/* Floating shapes */
+.hero-shapes{position:absolute;inset:0;pointer-events:none}
+.hero-shapes .shape{position:absolute;border-radius:50%;opacity:.1;background:#fff}
+.shape-1{width:300px;height:300px;top:-80px;right:-60px;animation:float 8s ease-in-out infinite}
+.shape-2{width:200px;height:200px;bottom:-40px;left:-40px;animation:float 10s ease-in-out infinite reverse}
+.shape-3{width:150px;height:150px;top:40%;left:10%;animation:float 12s ease-in-out infinite 2s}
+
+/* ===== SECTIONS ===== */
+section{padding:80px 24px;position:relative}
+.container{max-width:1100px;margin:0 auto}
+.section-label{
+  display:inline-block;font-size:11px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--brand-primary);margin-bottom:8px;
+}
+.section-title{font-size:clamp(1.5rem,3vw,2.25rem);font-weight:700;color:var(--neutral-10);margin-bottom:8px}
+.section-subtitle{font-size:1.05rem;color:var(--neutral-40);max-width:640px;margin-bottom:48px}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInLeft{from{opacity:0;transform:translateX(-32px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeInRight{from{opacity:0;transform:translateX(32px)}to{opacity:1;transform:translateX(0)}}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-20px) rotate(5deg)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes countUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideRight{from{width:0}to{width:var(--bar-width)}}
+@keyframes drawLine{to{stroke-dashoffset:0}}
+
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .6s ease-out,transform .6s ease-out}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .6s ease-out,transform .6s ease-out}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .6s ease-out,transform .6s ease-out}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+
+.stagger > *{opacity:0;transform:translateY(20px);transition:opacity .4s ease-out,transform .4s ease-out}
+.stagger.visible > *:nth-child(1){transition-delay:.05s}
+.stagger.visible > *:nth-child(2){transition-delay:.12s}
+.stagger.visible > *:nth-child(3){transition-delay:.19s}
+.stagger.visible > *:nth-child(4){transition-delay:.26s}
+.stagger.visible > *:nth-child(5){transition-delay:.33s}
+.stagger.visible > *:nth-child(6){transition-delay:.40s}
+.stagger.visible > *:nth-child(7){transition-delay:.47s}
+.stagger.visible > *{opacity:0;transform:translateY(20px)}
+.stagger.visible > *{opacity:1;transform:translateY(0)}
+
+/* ===== WHY VDI ===== */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+.why-card{
+  background:var(--neutral-100);
+  border:1px solid var(--neutral-90);
+  border-radius:var(--radius-l);
+  padding:28px 24px;
+  transition:all var(--transition);
+  position:relative;overflow:hidden;
+}
+.why-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--brand-primary);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .4s ease-out;
+}
+.why-card:hover{box-shadow:var(--shadow-8);transform:translateY(-2px)}
+.why-card:hover::before{transform:scaleX(1)}
+.why-icon{
+  width:44px;height:44px;
+  border-radius:var(--radius-m);
+  background:var(--brand-lightest);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:16px;color:var(--brand-primary);
+}
+.why-card h3{font-size:16px;font-weight:600;margin-bottom:8px;color:var(--neutral-10)}
+.why-card p{font-size:14px;color:var(--neutral-40);line-height:1.55}
+
+/* ===== COMPARISON ===== */
+.comparison-section{background:var(--neutral-98)}
+.compare-header{
+  text-align:center;
+  display:flex;justify-content:center;gap:16px;margin-bottom:40px;flex-wrap:wrap;
+}
+.compare-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 20px;border-radius:100px;font-size:14px;font-weight:600;
+}
+.compare-badge.w365{background:var(--brand-light);color:var(--brand-dark)}
+.compare-badge.avd{background:#EDE5F5;color:#5B3F8C}
+
+.compare-table{
+  width:100%;border-collapse:separate;border-spacing:0;
+  background:var(--neutral-100);
+  border-radius:var(--radius-l);
+  overflow:hidden;
+  box-shadow:var(--shadow-4);
+}
+.compare-table thead th{
+  padding:16px 20px;font-size:13px;font-weight:600;
+  text-transform:uppercase;letter-spacing:1px;
+  border-bottom:2px solid var(--neutral-90);
+  text-align:left;
+}
+.compare-table thead th:first-child{background:var(--neutral-98);color:var(--neutral-40);width:140px}
+.compare-table thead th:nth-child(2){background:var(--brand-lightest);color:var(--brand-dark)}
+.compare-table thead th:nth-child(3){background:#EDE5F5;color:#5B3F8C}
+.compare-table tbody td{
+  padding:14px 20px;font-size:14px;color:var(--neutral-20);
+  border-bottom:1px solid var(--neutral-95);
+  vertical-align:top;
+}
+.compare-table tbody tr:last-child td{border-bottom:none}
+.compare-table tbody td:first-child{font-weight:600;color:var(--neutral-40);background:var(--neutral-98)}
+.compare-table tbody tr{transition:background var(--transition)}
+.compare-table tbody tr:hover{background:var(--brand-lightest)}
+
+/* ===== BETTER TOGETHER ===== */
+.together-layout{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.together-col h3{font-size:18px;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.together-col h3 .dot{width:10px;height:10px;border-radius:50%}
+.w365-dot{background:var(--brand-primary)}
+.avd-dot{background:var(--avd-color)}
+.together-list{list-style:none}
+.together-list li{
+  padding:10px 14px;font-size:14px;
+  border-radius:var(--radius-m);
+  margin-bottom:6px;
+  display:flex;align-items:flex-start;gap:10px;
+  transition:all var(--transition);
+  cursor:default;
+}
+.together-list li:hover{background:var(--neutral-95)}
+.together-list li .check{
+  flex-shrink:0;width:20px;height:20px;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  margin-top:1px;font-size:11px;
+}
+.w365-list .check{background:var(--brand-lightest);color:var(--brand-primary)}
+.avd-list .check{background:#EDE5F5;color:var(--avd-color)}
+
+/* ===== PERSONA CARDS ===== */
+.persona-tabs{display:flex;gap:8px;margin-bottom:32px;flex-wrap:wrap}
+.persona-tab{
+  padding:10px 20px;border-radius:100px;
+  font-size:14px;font-weight:600;
+  border:2px solid var(--neutral-90);
+  background:var(--neutral-100);
+  color:var(--neutral-40);
+  cursor:pointer;
+  transition:all var(--transition);
+}
+.persona-tab:hover{border-color:var(--brand-primary);color:var(--brand-primary)}
+.persona-tab.active{border-color:var(--brand-primary);background:var(--brand-primary);color:#fff}
+
+.persona-panel{display:none;animation:fadeInUp .4s ease-out}
+.persona-panel.active{display:block}
+
+.persona-card{
+  background:var(--neutral-100);
+  border-radius:var(--radius-xl);
+  box-shadow:var(--shadow-8);
+  overflow:hidden;
+  display:grid;grid-template-columns:1fr 1fr;
+}
+.persona-info{padding:40px}
+.persona-tier{
+  font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  margin-bottom:8px;
+}
+.tier-light{color:var(--teal)}
+.tier-medium{color:var(--brand-primary)}
+.tier-heavy{color:var(--avd-color)}
+
+.persona-card h3{font-size:1.5rem;font-weight:700;margin-bottom:6px;color:var(--neutral-10)}
+.persona-roles{
+  font-size:14px;color:var(--neutral-40);
+  margin-bottom:20px;padding-bottom:20px;
+  border-bottom:1px solid var(--neutral-90);
+}
+.persona-detail-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--neutral-60);margin-bottom:6px;margin-top:20px}
+.persona-detail-text{font-size:14px;color:var(--neutral-20);line-height:1.55}
+.persona-rec{
+  margin-top:20px;padding:16px;
+  border-radius:var(--radius-m);
+  background:var(--brand-lightest);
+  border-left:3px solid var(--brand-primary);
+}
+.persona-rec strong{color:var(--brand-dark)}
+.persona-rec p{font-size:14px;color:var(--neutral-20);margin-top:4px}
+
+.persona-visual{
+  display:flex;align-items:center;justify-content:center;
+  padding:40px;position:relative;
+}
+.persona-visual svg{width:100%;max-width:300px;height:auto}
+
+.persona-meter{
+  display:flex;flex-direction:column;gap:16px;
+  width:100%;max-width:260px;
+}
+.meter-item{display:flex;flex-direction:column;gap:6px}
+.meter-label{font-size:12px;font-weight:600;color:var(--neutral-40);display:flex;justify-content:space-between}
+.meter-bar{height:8px;background:var(--neutral-90);border-radius:100px;overflow:hidden;position:relative}
+.meter-fill{
+  height:100%;border-radius:100px;
+  animation:slideRight .8s ease-out .3s both;
+  width:0;
+}
+
+.rule-thumb{
+  margin-top:24px;padding:12px 16px;
+  background:var(--neutral-98);border-radius:var(--radius-m);
+  font-size:13px;color:var(--neutral-40);
+  display:flex;align-items:center;gap:8px;
+}
+.rule-thumb svg{flex-shrink:0;color:var(--yellow)}
+
+/* ===== ARCHITECTURE ===== */
+.arch-tabs{display:flex;gap:4px;margin-bottom:32px;background:var(--neutral-95);border-radius:var(--radius-m);padding:4px;width:fit-content}
+.arch-tab{
+  padding:10px 24px;border-radius:6px;
+  font-size:14px;font-weight:600;
+  color:var(--neutral-40);background:transparent;
+  cursor:pointer;border:none;
+  transition:all var(--transition);
+}
+.arch-tab:hover{color:var(--neutral-20)}
+.arch-tab.active{background:var(--neutral-100);color:var(--brand-primary);box-shadow:var(--shadow-4)}
+
+.arch-panel{display:none;animation:scaleIn .4s ease-out}
+.arch-panel.active{display:block}
+
+.arch-diagram{
+  background:var(--neutral-100);
+  border-radius:var(--radius-xl);
+  box-shadow:var(--shadow-8);
+  padding:40px;
+  position:relative;
+  overflow:hidden;
+}
+.arch-title{font-size:18px;font-weight:700;margin-bottom:8px;color:var(--neutral-10)}
+.arch-desc{font-size:14px;color:var(--neutral-40);margin-bottom:32px;max-width:600px}
+
+/* Flow diagrams */
+.flow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px}
+.flow-node{
+  padding:16px 20px;
+  border-radius:var(--radius-l);
+  text-align:center;
+  font-size:13px;font-weight:600;
+  min-width:130px;
+  transition:all var(--transition);
+  position:relative;
+}
+.flow-node:hover{transform:translateY(-2px);box-shadow:var(--shadow-8)}
+.flow-node small{display:block;font-weight:400;font-size:11px;margin-top:4px;opacity:.8}
+.node-user{background:#E8F5E9;color:#2E7D32;border:1px solid #C8E6C9}
+.node-msft{background:var(--brand-lightest);color:var(--brand-dark);border:1px solid #B4D6F3}
+.node-azure{background:#EDE5F5;color:#5B3F8C;border:1px solid #D1C4E9}
+.node-security{background:#FFF3E0;color:#E65100;border:1px solid #FFE0B2}
+.node-onprem{background:var(--neutral-95);color:var(--neutral-20);border:1px solid var(--neutral-80)}
+
+.flow-arrow{
+  width:32px;height:2px;background:var(--neutral-80);position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.flow-arrow::after{
+  content:'';position:absolute;right:-3px;
+  width:0;height:0;
+  border-left:6px solid var(--neutral-80);
+  border-top:4px solid transparent;
+  border-bottom:4px solid transparent;
+}
+.flow-arrow-label{
+  position:absolute;top:-18px;left:50%;transform:translateX(-50%);
+  font-size:10px;white-space:nowrap;color:var(--neutral-60);font-weight:600;
+}
+.flow-separator{width:100%;height:0;flex-basis:100%}
+
+.flow-section{
+  display:flex;flex-direction:column;gap:8px;
+  padding:20px;border-radius:var(--radius-l);
+  border:2px dashed var(--neutral-90);
+  min-width:180px;text-align:center;
+}
+.flow-section-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--neutral-60)}
+
+/* Hybrid arch layout */
+.hybrid-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:24px}
+.hybrid-col{
+  padding:24px;border-radius:var(--radius-l);
+  text-align:center;
+  transition:all var(--transition);
+}
+.hybrid-col:hover{transform:translateY(-3px);box-shadow:var(--shadow-16)}
+.hybrid-col h4{font-size:15px;font-weight:700;margin-bottom:6px}
+.hybrid-col p{font-size:13px;margin-bottom:12px}
+.hybrid-col .hybrid-users{
+  font-size:12px;color:var(--neutral-40);
+  background:rgba(255,255,255,.6);
+  padding:6px 12px;border-radius:var(--radius-m);
+  display:inline-block;
+}
+.hybrid-bar{
+  padding:16px 24px;border-radius:var(--radius-l);
+  background:linear-gradient(90deg,var(--brand-primary),var(--avd-color));
+  color:#fff;text-align:center;
+}
+.hybrid-bar .bar-title{font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.hybrid-bar .bar-items{font-size:12px;opacity:.9;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.hybrid-bar .bar-items span{background:rgba(255,255,255,.15);padding:3px 10px;border-radius:100px}
+
+/* ===== DECISION FRAMEWORK (Interactive) ===== */
+.decision-section{background:var(--neutral-98)}
+.decision-tool{
+  background:var(--neutral-100);
+  border-radius:var(--radius-xl);
+  box-shadow:var(--shadow-8);
+  padding:40px;
+  max-width:700px;
+  margin:0 auto;
+}
+.decision-step{display:none;animation:fadeInUp .3s ease-out}
+.decision-step.active{display:block}
+.decision-step h3{font-size:1.2rem;font-weight:700;color:var(--neutral-10);margin-bottom:6px}
+.decision-step p{font-size:14px;color:var(--neutral-40);margin-bottom:24px}
+.decision-progress{
+  display:flex;gap:6px;margin-bottom:28px;
+}
+.decision-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--neutral-90);
+  transition:all var(--transition);
+}
+.decision-dot.done{background:var(--green)}
+.decision-dot.current{background:var(--brand-primary);box-shadow:0 0 0 4px var(--brand-light)}
+
+.decision-btns{display:flex;gap:12px;flex-wrap:wrap}
+.decision-btn{
+  flex:1;min-width:140px;
+  padding:16px 20px;
+  border-radius:var(--radius-l);
+  border:2px solid var(--neutral-90);
+  background:var(--neutral-100);
+  cursor:pointer;
+  text-align:center;
+  transition:all var(--transition);
+}
+.decision-btn:hover{border-color:var(--brand-primary);background:var(--brand-lightest)}
+.decision-btn .btn-label{font-size:15px;font-weight:700;color:var(--neutral-10)}
+.decision-btn .btn-desc{font-size:12px;color:var(--neutral-40);margin-top:4px}
+
+.decision-result{
+  text-align:center;
+  padding:32px;
+  animation:scaleIn .4s ease-out;
+}
+.result-icon{
+  width:64px;height:64px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;
+  font-size:28px;
+}
+.result-w365 .result-icon{background:var(--brand-lightest);color:var(--brand-primary)}
+.result-avd .result-icon{background:#EDE5F5;color:var(--avd-color)}
+.result-either .result-icon{background:#E8F5E9;color:var(--green)}
+.decision-result h3{font-size:1.3rem;font-weight:700;margin-bottom:8px}
+.decision-result p{font-size:14px;color:var(--neutral-40);max-width:400px;margin:0 auto}
+.restart-btn{
+  margin-top:24px;
+  padding:10px 24px;
+  border-radius:var(--radius-m);
+  border:2px solid var(--brand-primary);
+  background:var(--neutral-100);
+  color:var(--brand-primary);
+  font-size:14px;font-weight:600;
+  cursor:pointer;
+  transition:all var(--transition);
+}
+.restart-btn:hover{background:var(--brand-primary);color:#fff}
+
+/* ===== KEY MESSAGES ===== */
+.messages-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.message-card{
+  background:var(--neutral-100);
+  border-radius:var(--radius-l);
+  padding:28px 24px;
+  border:1px solid var(--neutral-90);
+  transition:all var(--transition);
+  display:flex;gap:16px;
+  align-items:flex-start;
+}
+.message-card:hover{box-shadow:var(--shadow-8);transform:translateY(-2px)}
+.message-icon{
+  flex-shrink:0;width:44px;height:44px;
+  border-radius:var(--radius-m);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+}
+.message-card:nth-child(1) .message-icon{background:#E8F5E9;color:var(--green)}
+.message-card:nth-child(2) .message-icon{background:var(--brand-lightest);color:var(--brand-primary)}
+.message-card:nth-child(3) .message-icon{background:#EDE5F5;color:var(--avd-color)}
+.message-card:nth-child(4) .message-icon{background:#FFF3E0;color:#E65100}
+.message-card:nth-child(5) .message-icon{background:#E3F2FD;color:#1565C0}
+.message-card:nth-child(6) .message-icon{background:#FCE4EC;color:#C62828}
+.message-body h3{font-size:15px;font-weight:600;color:var(--neutral-10);margin-bottom:6px}
+.message-body p{font-size:13px;color:var(--neutral-40);line-height:1.55}
+
+/* ===== NEXT STEPS ===== */
+.next-steps-section{background:linear-gradient(135deg,#0078D4 0%,#005A9E 40%,#8661C5 100%);color:#fff}
+.next-steps-section .section-label{color:rgba(255,255,255,.6)}
+.next-steps-section .section-title{color:#fff}
+.next-steps-section .section-subtitle{color:rgba(255,255,255,.7)}
+.steps-timeline{position:relative;padding-left:48px;max-width:600px}
+.steps-timeline::before{
+  content:'';position:absolute;left:18px;top:0;bottom:0;
+  width:2px;background:rgba(255,255,255,.2);
+}
+.step-item{position:relative;padding-bottom:32px}
+.step-item:last-child{padding-bottom:0}
+.step-num{
+  position:absolute;left:-48px;
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,.15);
+  backdrop-filter:blur(8px);
+  border:2px solid rgba(255,255,255,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;
+  transition:all var(--transition);
+}
+.step-item:hover .step-num{background:rgba(255,255,255,.3);transform:scale(1.1)}
+.step-item h3{font-size:16px;font-weight:600;margin-bottom:4px}
+.step-item p{font-size:14px;color:rgba(255,255,255,.7)}
+
+/* ===== FOOTER ===== */
+footer{
+  padding:32px 24px;
+  background:var(--neutral-10);
+  color:var(--neutral-80);
+  text-align:center;font-size:13px;
+}
+footer a{color:var(--brand-light);text-decoration:none}
+footer a:hover{text-decoration:underline}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:768px){
+  .persona-card{grid-template-columns:1fr}
+  .persona-visual{padding:24px}
+  .together-layout{grid-template-columns:1fr}
+  .hybrid-grid{grid-template-columns:1fr}
+  .compare-table{font-size:13px}
+  .compare-table thead th,.compare-table tbody td{padding:10px 12px}
+  nav .nav-links{display:none}
+  section{padding:56px 20px}
+  .arch-diagram{padding:24px}
+  .flow{gap:10px}
+  .flow-arrow{width:20px}
+}
+</style>
+<script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
+<!-- smec-meta v1 -->
+<meta name="description" content="Healthcare VDI Strategy — Windows 365 + Azure Virtual Desktop — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:title" content="Healthcare VDI Strategy — Windows 365 + Azure Virtual Desktop">
+<meta property="og:description" content="Healthcare VDI Strategy — Windows 365 + Azure Virtual Desktop — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sme-c-infographics.github.io/avd/healthcare-vdi-strategyguide.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Healthcare VDI Strategy — Windows 365 + Azure Virtual Desktop">
+<meta name="twitter:description" content="Healthcare VDI Strategy — Windows 365 + Azure Virtual Desktop — an interactive infographic from the SME&amp;C Infographic Hub.">
+<!-- smec-favicon v1 -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<!-- smec-accuracy v1 -->
+<meta name="smec:last-accuracy-check" content="2026-07-16">
+<style>/* smec-back-btn v2 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  box-sizing: border-box;
+  display: inline-flex; align-items: center; justify-content: flex-start;
+  gap: 8px; height: 40px; padding: 0 16px 0 12px; border-radius: 20px;
+  background: rgba(0, 120, 212, 0.92) !important; color: #fff !important;
+  text-decoration: none !important;
+  font: 600 14px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  transition:
+    padding 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto; display: inline-block;
+  width: 18px; height: 18px; }
+.smec-back-btn__label { display: inline-block; flex: 0 0 auto;
+  font: inherit; color: inherit; }
+.smec-back-btn__more { display: inline-block; max-width: 0; opacity: 0;
+  overflow: hidden; vertical-align: bottom;
+  font: inherit; color: inherit;
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.05s; }
+
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  background: rgba(0, 90, 158, 0.96) !important; color: #fff !important;
+  text-decoration: none !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22); }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__more,
+.smec-back-btn:focus-visible .smec-back-btn__more {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.25s ease 0.2s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn__more { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__more,
+  .smec-back-btn:hover .smec-back-btn__more,
+  .smec-back-btn:focus-visible .smec-back-btn__more {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<!-- smec-submitter v1 -->
+<meta name="smec:submitter" content="cbattlegear">
+</head>
+<body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v2" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
+
+<!-- Scroll Progress -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Navigation -->
+<nav id="navbar">
+  <div class="logo">
+    <svg viewBox="0 0 23 23" fill="none"><rect x="1" y="1" width="10" height="10" fill="#F25022"/><rect x="12" y="1" width="10" height="10" fill="#7FBA00"/><rect x="1" y="12" width="10" height="10" fill="#00A4EF"/><rect x="12" y="12" width="10" height="10" fill="#FFB900"/></svg>
+    Healthcare VDI
+  </div>
+  <div class="nav-links">
+    <a href="#why-vdi">Why VDI</a>
+    <a href="#comparison">W365 vs AVD</a>
+    <a href="#better-together">Better Together</a>
+    <a href="#personas">Personas</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#decision">Decision Tool</a>
+    <a href="#messages">Key Messages</a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">Healthcare &middot; VDI Strategy</div>
+    <h1>Windows 365 + <span>Azure Virtual Desktop</span></h1>
+    <p>A unified cloud desktop strategy for modern healthcare payers and providers</p>
+    <div class="hero-cta">
+      <a href="#why-vdi" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M8 13l4-4M8 13l-4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Start Learning
+      </a>
+      <a href="#decision" class="btn-secondary">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M14 8H2m6-6v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Decision Tool
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHY VDI ===== -->
+<section id="why-vdi">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Context</div>
+      <div class="section-title">Why VDI matters for healthcare</div>
+      <div class="section-subtitle">Healthcare organizations face unique desktop delivery challenges — from HIPAA to 24/7 operations.</div>
+    </div>
+    <div class="why-grid stagger">
+      <div class="why-card">
+        <div class="why-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Regulated Data Everywhere</h3>
+        <p>PHI and PII flow through claims platforms, EHRs, care-management tools, and provider portals. Centralizing the desktop keeps data off endpoints — a direct HIPAA and HITRUST benefit.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Mixed Workforce Profiles</h3>
+        <p>Contact-center reps, utilization-management nurses, provider-relations staff, actuaries, developers, and M&A-acquired users all need different desktops.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 12a9 9 0 1 1-6.219-8.56" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 8v4l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Contractors, BPO &amp; Seasonal Scale</h3>
+        <p>Offshore claims adjudication, coders, and temporary staff need fast, secure access without shipping or reclaiming hardware.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2"/></svg>
+        </div>
+        <h3>Clinical &amp; Claims App Certification</h3>
+        <p>EHRs and claims platforms publish VDI reference architectures. AVD is a named deployment option in several major vendor guides (e.g., Epic Client Systems).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COMPARISON ===== -->
+<section class="comparison-section" id="comparison">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <div class="section-label">At a Glance</div>
+      <div class="section-title" style="text-align:center">Windows 365 vs. Azure Virtual Desktop</div>
+      <div class="section-subtitle" style="margin:0 auto 24px;text-align:center">One identity plane. One endpoint management plane. One security perimeter.</div>
+      <div class="compare-header">
+        <span class="compare-badge w365">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8M12 17v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Windows 365
+        </span>
+        <span class="compare-badge avd">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Azure Virtual Desktop
+        </span>
+      </div>
+    </div>
+    <div class="reveal" style="overflow-x:auto">
+      <table class="compare-table">
+        <thead>
+          <tr><th></th><th>Windows 365</th><th>Azure Virtual Desktop</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Model</td><td>SaaS — Microsoft-managed</td><td>PaaS — customer-managed on Azure</td></tr>
+          <tr><td>Session</td><td>1:1 dedicated, persistent</td><td>Pooled multi-session or personal</td></tr>
+          <tr><td>Pricing</td><td>Fixed per-user / month</td><td>Consumption (compute + storage + network)</td></tr>
+          <tr><td>Management</td><td>Intune only</td><td>Intune + ARM + Nerdio / partners</td></tr>
+          <tr><td>Scale</td><td>Manual license adds</td><td>Autoscale — schedule + load-based</td></tr>
+          <tr><td>GPU / Large SKUs</td><td>Preconfigured GPU Cloud PC sizes</td><td>Full Azure VM catalog incl. GPU</td></tr>
+          <tr><td>Best Fit</td><td>Predictable persona, lean IT</td><td>Variable usage, specialized workloads, scale</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BETTER TOGETHER ===== -->
+<section id="better-together">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Positioning</div>
+      <div class="section-title">Better together, not either-or</div>
+      <div class="section-subtitle">Most mature customers run both. Match the tool to the persona — don't standardize on a single delivery model.</div>
+    </div>
+    <div class="together-layout">
+      <div class="together-col reveal-left">
+        <h3><span class="dot w365-dot"></span> Windows 365 wins when&hellip;</h3>
+        <ul class="together-list w365-list">
+          <li><span class="check">&#10003;</span> Usage is predictable (8-hr shifts, steady knowledge work)</li>
+          <li><span class="check">&#10003;</span> IT team is lean — simplicity outweighs flexibility</li>
+          <li><span class="check">&#10003;</span> Persistent, 1:1 desktop is non-negotiable</li>
+          <li><span class="check">&#10003;</span> Fixed, forecastable cost matters more than optimization</li>
+          <li><span class="check">&#10003;</span> Flex licensing (3:1) fits shift-based populations</li>
+        </ul>
+      </div>
+      <div class="together-col reveal-right">
+        <h3><span class="dot avd-dot"></span> AVD wins when&hellip;</h3>
+        <ul class="together-list avd-list">
+          <li><span class="check">&#10003;</span> Usage is variable — autoscale drives real savings</li>
+          <li><span class="check">&#10003;</span> Specific GPU VM SKUs or &gt;16 vCPU are required (imaging, analytics, dev)</li>
+          <li><span class="check">&#10003;</span> Custom golden images or complex app layering is needed</li>
+          <li><span class="check">&#10003;</span> Multi-session density lowers $/user for light workloads</li>
+          <li><span class="check">&#10003;</span> Azure maturity is already in place (landing zone, ExpressRoute)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PERSONAS ===== -->
+<section id="personas" style="background:var(--neutral-98)">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Persona Mapping</div>
+      <div class="section-title">Match the tool to the user</div>
+      <div class="section-subtitle">Three personas, three recommended delivery models — click each to explore.</div>
+    </div>
+    <div class="persona-tabs reveal">
+      <button class="persona-tab active" data-persona="light">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px"><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/><path d="M6 21v-2a6 6 0 0 1 12 0v2" stroke="currentColor" stroke-width="2"/></svg>
+        &nbsp;Light — Task Workers
+      </button>
+      <button class="persona-tab" data-persona="medium">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px"><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/><path d="M6 21v-2a6 6 0 0 1 12 0v2" stroke="currentColor" stroke-width="2"/></svg>
+        &nbsp;Medium — Knowledge Workers
+      </button>
+      <button class="persona-tab" data-persona="heavy">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px"><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/><path d="M6 21v-2a6 6 0 0 1 12 0v2" stroke="currentColor" stroke-width="2"/></svg>
+        &nbsp;Heavy — Power Users
+      </button>
+    </div>
+
+    <!-- Light -->
+    <div class="persona-panel active" id="persona-light">
+      <div class="persona-card reveal">
+        <div class="persona-info">
+          <div class="persona-tier tier-light">Task Workers</div>
+          <h3>Light Users</h3>
+          <div class="persona-roles">Claims intake &middot; Member services &middot; Contact center &middot; Provider-relations reps</div>
+          <div class="persona-detail-label">Workload</div>
+          <div class="persona-detail-text">Browser-based claims or core-admin platform, Teams voice, Office web, CRM. Single-session focus, high concurrency.</div>
+          <div class="persona-rec">
+            <strong>Recommendation:</strong>
+            <p>AVD pooled (multi-session) or W365 Flex for shift-based staff</p>
+          </div>
+          <div class="rule-thumb">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 19.5h20L12 2zm0 4l7 12.5H5L12 6z"/><rect x="11" y="10" width="2" height="4"/><rect x="11" y="15.5" width="2" height="2"/></svg>
+            ~0.5 vCPU and ~2 GB RAM per concurrent light user on a pooled host
+          </div>
+        </div>
+        <div class="persona-visual" style="background:linear-gradient(135deg,#E0F7FA,#B2EBF2)">
+          <div class="persona-meter">
+            <div class="meter-item">
+              <div class="meter-label"><span>CPU Need</span><span>Low</span></div>
+              <div class="meter-bar"><div class="meter-fill" style="--bar-width:25%;background:var(--teal)"></div></div>
+            </div>
+            <div class="meter-item">
+              <div class="meter-label"><span>RAM Need</span><span>Low</span></div>
+              <div class="meter-bar"><div class="meter-fill" style="--bar-width:20%;background:var(--teal)"></div></div>
+            </div>
+            <div class="meter-item">
+              <div class="meter-label"><span>Persistence</span><span>Optional</span></div>
+              <div class="meter-bar"><div class="meter-fill" style="--bar-width:30%;background:var(--yellow)"></div></div>
+            </div>
+            <div class="meter-item">
+              <div class="meter-label"><span>Concurrency</span><span>High</span></div>
+              <div class="meter-bar"><div class="meter-fill" style="--bar-width:90%;background:var(--brand-primary)"></div></div>
+            </div>
+            <div class="meter-item">
+              <div class="meter-label"><span>Cost Sensitivity</span><span>High</span></div>
+              <div class="meter-bar"><div class="meter-fill" style="--bar-width:85%;background:var(--red)"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Medium -->
+    <div class="persona-panel" id="persona-medium">
+      <div class="persona-card reveal visible">
+        <div class="persona-info">
+          <div class="persona-tier tier-medium">Knowledge Workers</div>
+          <h3>Medium Users</h3>
+          <div class="persona-roles">Care managers &middot; UM nurses &middot; Medical coders &middot; Claims examiners &middot; Financial analysts</div>
+          <div class="persona-detail-label">Workload</div>
+          <div class="persona-detail-text">Full EHR or claims rich client, Office desktop, multiple browsers, Power BI, Teams video. Persistence and add-ins matter.</div>
+          <div class="persona-rec">
+            <strong>Recommendation:</strong>
+            <p>W365 Enterprise 4 vCPU / 16 GB or AVD personal when admin rights / plug-ins required</p>
+          </div>
+          <div class="rule-thumb">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 19.5h20L12 2zm0 4l7 12.5H5L12 6z"/><rect x="11" y="10" width="2" height="4"/><rect x="11" y="15.5" width="2" height="2"/></svg>
+            Start at 4 vCPU / 16 GB; step up for heavy Excel models or Power BI analysts
+          </div>
+        </div>
+        <div class="persona-visual" style="background:linear-gradient(135deg,var(--brand-lightest),#C5E1F5)">
+          <div class="persona-meter">
+            <div class="meter-item">
+              <div class="meter-label"><span>CPU Need</span><span>Medium</span></div>
+              <div class="meter-bar"><div class="meter-fill" style="--bar-width:55%;background:var(--brand-primary)"></div></div>
+            </div>
+            <div class="meter-item">
+              <div class="meter-label"><span>RAM Need</span><span>Medium</span></div>
+              <div class="meter-bar"><div class="meter-fill" style="--bar-width:50%;background:var(--brand-primary)"></div></div>
+            </div>
+            <div class="meter-item">
+              <div class="meter-label"><span>Persistence</span><span>Required</span></div>
+              <div class="meter-bar"><div class="meter-fill" style="--bar-width:85%;background:var(--green)"></div></div>
+            </div>
+            <div class="meter-item">
+              <div class="meter-label"><span>Concurrency</span><span>Medium</span></div>
+              <div class="meter-bar"><div class="meter-fill" style="--bar-width:50%;background:var(--brand-primary)"></div></div>
+            </div>
+            <div class="meter-item">
+              <div class="meter-label"><span>App Complexity</span><span>High</span></div>
+              <div class="meter-bar"><div class="meter-fill" style="--bar-width:80%;background:var(--red)"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Heavy -->
+    <div class="persona-panel" id="persona-heavy">
+      <div class="persona-card reveal visible">
+        <div class="persona-info">
+          <div class="persona-tier tier-heavy">Power Users</div>
+          <h3>Heavy Users</h3>
+          <div class="persona-roles">Actuaries &middot; Data scientists &middot; Developers &middot; Imaging / PACS viewers &middot; GIS and pop-health analysts</div>
+          <div class="persona-detail-label">Workload</div>
+          <div class="persona-detail-text">SAS, R, Python notebooks, large datasets, DICOM rendering, IDEs, multi-monitor 4K. GPU and fast storage often required.</div>
+          <div class="persona-rec">
+            <strong>Recommendation:</strong>
+            <p>AVD personal with GPU (NVadsA10 v5 / NVads-v710 v5) or Windows 365 GPU Cloud PCs for workload-aligned sizing</p>
+          </div>
+          <div class="rule-thumb">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 19.5h20L12 2zm0 4l7 12.5H5L12 6z"/><rect x="11" y="10" width="2" height="4"/><rect x="11" y="15.5" width="2" height="2"/></svg>
+            Size to the workload, not the persona. Validate with a two-week telemetry capture.
+          </div>
+        </div>
+        <div class="persona-visual" style="background:linear-gradient(135deg,#EDE5F5,#D1C4E9)">
+          <div class="persona-meter">
+            <div class="meter-item">
+              <div class="meter-label"><span>CPU Need</span><span>High</span></div>
+              <div class="meter-bar"><div class="meter-fill" style="--bar-width:90%;background:var(--avd-color)"></div></div>
+            </div>
+            <div class="meter-item">
+              <div class="meter-label"><span>RAM Need</span><span>High</span></div>
+              <div class="meter-bar"><div class="meter-fill" style="--bar-width:85%;background:var(--avd-color)"></div></div>
+            </div>
+            <div class="meter-item">
+              <div class="meter-label"><span>GPU Need</span><span>Often Required</span></div>
+              <div class="meter-bar"><div class="meter-fill" style="--bar-width:75%;background:var(--red)"></div></div>
+            </div>
+            <div class="meter-item">
+              <div class="meter-label"><span>Persistence</span><span>Required</span></div>
+              <div class="meter-bar"><div class="meter-fill" style="--bar-width:95%;background:var(--green)"></div></div>
+            </div>
+            <div class="meter-item">
+              <div class="meter-label"><span>Storage Speed</span><span>Premium</span></div>
+              <div class="meter-bar"><div class="meter-fill" style="--bar-width:80%;background:var(--yellow)"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ARCHITECTURE ===== -->
+<section id="architecture">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Architecture</div>
+      <div class="section-title">Three deployment models</div>
+      <div class="section-subtitle">From fully Microsoft-managed to a hybrid strategy that covers every persona.</div>
+    </div>
+    <div class="arch-tabs reveal">
+      <button class="arch-tab active" data-arch="a">A — W365 Managed</button>
+      <button class="arch-tab" data-arch="b">B — AVD Controlled</button>
+      <button class="arch-tab" data-arch="c">C — Hybrid Model</button>
+    </div>
+
+    <!-- Arch A -->
+    <div class="arch-panel active" id="arch-a">
+      <div class="arch-diagram reveal">
+        <div class="arch-title">Windows 365 — Microsoft-Managed Cloud PC</div>
+        <div class="arch-desc">Simplest model: Microsoft hosts the compute, storage, gateway, and broker. IT manages via Intune.</div>
+        <div class="flow">
+          <div class="flow-node node-user">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="margin:0 auto 4px;display:block"><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/><path d="M6 21v-2a6 6 0 0 1 12 0v2" stroke="currentColor" stroke-width="2"/></svg>
+            End User
+            <small>Managed or BYOD</small>
+          </div>
+          <div class="flow-arrow"><span class="flow-arrow-label">HTTPS 443</span></div>
+          <div class="flow-node node-msft">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="margin:0 auto 4px;display:block"><rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8M12 17v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Microsoft Cloud PC
+            <small>Compute &middot; Storage &middot; Gateway &middot; Broker</small>
+          </div>
+          <div class="flow-arrow"><span class="flow-arrow-label">Optional ANC</span></div>
+          <div class="flow-node node-onprem">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="margin:0 auto 4px;display:block"><rect x="2" y="2" width="20" height="8" rx="2" stroke="currentColor" stroke-width="2"/><rect x="2" y="14" width="20" height="8" rx="2" stroke="currentColor" stroke-width="2"/><circle cx="6" cy="6" r="1" fill="currentColor"/><circle cx="6" cy="18" r="1" fill="currentColor"/></svg>
+            On-Prem Apps
+            <small>ExpressRoute / VPN</small>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;justify-content:center">
+          <span class="flow-node node-security" style="min-width:auto;padding:8px 14px;font-size:12px">Entra ID</span>
+          <span class="flow-node node-security" style="min-width:auto;padding:8px 14px;font-size:12px">Intune</span>
+          <span class="flow-node node-security" style="min-width:auto;padding:8px 14px;font-size:12px">Defender for Endpoint</span>
+          <span class="flow-node node-security" style="min-width:auto;padding:8px 14px;font-size:12px">Defender for Cloud Apps</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arch B -->
+    <div class="arch-panel" id="arch-b">
+      <div class="arch-diagram reveal visible">
+        <div class="arch-title">Azure Virtual Desktop — Customer-Controlled</div>
+        <div class="arch-desc">Full control: you manage session hosts, golden images, host pools, and FSLogix profiles in your own Azure subscription.</div>
+        <div class="flow">
+          <div class="flow-node node-user">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="margin:0 auto 4px;display:block"><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/><path d="M6 21v-2a6 6 0 0 1 12 0v2" stroke="currentColor" stroke-width="2"/></svg>
+            End User
+            <small>Windows App / Web / Mobile</small>
+          </div>
+          <div class="flow-arrow"><span class="flow-arrow-label">HTTPS 443</span></div>
+          <div class="flow-node node-msft">
+            AVD Control Plane
+            <small>Gateway &middot; Broker &middot; Web &middot; Diagnostics</small>
+          </div>
+          <div class="flow-arrow"><span class="flow-arrow-label">Reverse-connect 443</span></div>
+          <div class="flow-node node-azure">
+            Your Azure Subscription
+            <small>Host Pool &middot; Session Hosts &middot; App Groups</small>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:24px">
+          <div class="flow-node node-azure" style="min-width:auto;padding:10px 14px;font-size:12px">FSLogix Profiles<small>HIPAA-scoped</small></div>
+          <div class="flow-node node-azure" style="min-width:auto;padding:10px 14px;font-size:12px">Azure Files / ANF<small>Premium encrypted</small></div>
+          <div class="flow-node node-azure" style="min-width:auto;padding:10px 14px;font-size:12px">Custom Images<small>Clinical / claims client</small></div>
+          <div class="flow-node node-onprem" style="min-width:auto;padding:10px 14px;font-size:12px">On-Prem<small>ExpressRoute / VPN</small></div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;justify-content:center">
+          <span class="flow-node node-security" style="min-width:auto;padding:8px 14px;font-size:12px">Entra ID</span>
+          <span class="flow-node node-security" style="min-width:auto;padding:8px 14px;font-size:12px">Intune</span>
+          <span class="flow-node node-security" style="min-width:auto;padding:8px 14px;font-size:12px">Defender</span>
+          <span class="flow-node node-security" style="min-width:auto;padding:8px 14px;font-size:12px">Purview DLP</span>
+          <span class="flow-node node-security" style="min-width:auto;padding:8px 14px;font-size:12px">Log Analytics</span>
+          <span class="flow-node node-security" style="min-width:auto;padding:8px 14px;font-size:12px">Nerdio</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arch C -->
+    <div class="arch-panel" id="arch-c">
+      <div class="arch-diagram reveal visible">
+        <div class="arch-title">The Hybrid Model — W365 + AVD Under One Identity</div>
+        <div class="arch-desc">Best of both worlds: route each persona to the right delivery model, unified by a single security and identity plane.</div>
+        <div class="hybrid-grid">
+          <div class="hybrid-col" style="background:linear-gradient(135deg,#E0F7FA,#B2EBF2)">
+            <h4 style="color:#00695C">AVD Pooled</h4>
+            <p style="color:#004D40">Multi-session / RemoteApp</p>
+            <div class="hybrid-users">Contact center, claims intake</div>
+          </div>
+          <div class="hybrid-col" style="background:linear-gradient(135deg,var(--brand-lightest),#C5E1F5)">
+            <h4 style="color:var(--brand-dark)">W365 Enterprise / Flex</h4>
+            <p style="color:var(--brand-darker)">Persistent Cloud PC</p>
+            <div class="hybrid-users">Care managers, UM nurses, coders</div>
+          </div>
+          <div class="hybrid-col" style="background:linear-gradient(135deg,#EDE5F5,#D1C4E9)">
+            <h4 style="color:#5B3F8C">AVD Personal + GPU</h4>
+            <p style="color:#4A148C">NVadsA10 v5 / NVads-v710 v5</p>
+            <div class="hybrid-users">Actuaries, devs, imaging / PACS</div>
+          </div>
+        </div>
+        <div class="hybrid-bar">
+          <div class="bar-title">Shared Identity &amp; Security Plane</div>
+          <div class="bar-items">
+            <span>Entra ID</span><span>Intune</span><span>Defender</span><span>Conditional Access</span><span>Purview DLP</span><span>HIPAA / HITRUST</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DECISION TOOL ===== -->
+<section class="decision-section" id="decision">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <div class="section-label">Interactive Tool</div>
+      <div class="section-title">Find the right model for your persona</div>
+      <div class="section-subtitle" style="margin:0 auto 48px;text-align:center">Answer five questions to get a delivery-model recommendation for any user population.</div>
+    </div>
+    <div class="decision-tool reveal" id="decisionTool">
+      <!-- Step indicators -->
+      <div class="decision-progress">
+        <div class="decision-dot current" id="dot-0"></div>
+        <div class="decision-dot" id="dot-1"></div>
+        <div class="decision-dot" id="dot-2"></div>
+        <div class="decision-dot" id="dot-3"></div>
+        <div class="decision-dot" id="dot-4"></div>
+      </div>
+
+      <!-- Q1 -->
+      <div class="decision-step active" id="step-0">
+        <h3>1. Is persistence required?</h3>
+        <p>Does the user need a dedicated desktop that retains state between sessions?</p>
+        <div class="decision-btns">
+          <button class="decision-btn" onclick="answerQ(0,'yes')"><div class="btn-label">Yes</div><div class="btn-desc">User needs persistent state</div></button>
+          <button class="decision-btn" onclick="answerQ(0,'no')"><div class="btn-label">No</div><div class="btn-desc">Stateless / pooled is fine</div></button>
+        </div>
+      </div>
+      <!-- Q2 -->
+      <div class="decision-step" id="step-1">
+        <h3>2. Is usage predictable?</h3>
+        <p>Does this persona work consistent 8-hour shifts, or is usage highly variable?</p>
+        <div class="decision-btns">
+          <button class="decision-btn" onclick="answerQ(1,'yes')"><div class="btn-label">Predictable</div><div class="btn-desc">Steady 8-hr shifts</div></button>
+          <button class="decision-btn" onclick="answerQ(1,'no')"><div class="btn-label">Variable</div><div class="btn-desc">Bursts, part-time, seasonal</div></button>
+        </div>
+      </div>
+      <!-- Q3 -->
+      <div class="decision-step" id="step-2">
+        <h3>3. Admin rights or plug-ins needed?</h3>
+        <p>Does the user need to install software, browser plug-ins, or have local admin access?</p>
+        <div class="decision-btns">
+          <button class="decision-btn" onclick="answerQ(2,'yes')"><div class="btn-label">Yes</div><div class="btn-desc">Admin rights are required</div></button>
+          <button class="decision-btn" onclick="answerQ(2,'no')"><div class="btn-label">No</div><div class="btn-desc">Standard user is sufficient</div></button>
+        </div>
+      </div>
+      <!-- Q4 -->
+      <div class="decision-step" id="step-3">
+        <h3>4. GPU or high compute needed?</h3>
+        <p>Does the workload need custom GPU VM profiles or more than 16 vCPU?</p>
+        <div class="decision-btns">
+          <button class="decision-btn" onclick="answerQ(3,'yes')"><div class="btn-label">Yes</div><div class="btn-desc">Custom GPU or &gt;16 vCPU required</div></button>
+          <button class="decision-btn" onclick="answerQ(3,'no')"><div class="btn-label">No</div><div class="btn-desc">Standard compute is fine</div></button>
+        </div>
+      </div>
+      <!-- Q5 -->
+      <div class="decision-step" id="step-4">
+        <h3>5. Lean IT / low Azure maturity?</h3>
+        <p>Is the IT team looking for simplicity, or does the org have deep Azure expertise?</p>
+        <div class="decision-btns">
+          <button class="decision-btn" onclick="answerQ(4,'yes')"><div class="btn-label">Lean IT</div><div class="btn-desc">Simplicity is the priority</div></button>
+          <button class="decision-btn" onclick="answerQ(4,'no')"><div class="btn-label">Azure Mature</div><div class="btn-desc">Landing zone, ExpressRoute ready</div></button>
+        </div>
+      </div>
+      <!-- Result -->
+      <div class="decision-step" id="step-result"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== KEY MESSAGES ===== -->
+<section id="messages">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Key Talking Points</div>
+      <div class="section-title">Messages to land</div>
+      <div class="section-subtitle">The six takeaways that matter most in every healthcare VDI conversation.</div>
+    </div>
+    <div class="messages-grid stagger">
+      <div class="message-card">
+        <div class="message-icon">&#128274;</div>
+        <div class="message-body">
+          <h3>One Security Perimeter</h3>
+          <p>Entra ID + Conditional Access + Defender + Purview apply identically across W365 and AVD. PHI stays in Azure, never on the endpoint.</p>
+        </div>
+      </div>
+      <div class="message-card">
+        <div class="message-icon">&#128176;</div>
+        <div class="message-body">
+          <h3>Flex Licensing</h3>
+          <p>W365 Flex's 3:1 license ratio is a strong cost lever for shift-based claims and contact-center staff.</p>
+        </div>
+      </div>
+      <div class="message-card">
+        <div class="message-icon">&#9989;</div>
+        <div class="message-body">
+          <h3>Clinical-App Readiness</h3>
+          <p>AVD is a reference-architecture option for major EHR and claims platforms. Walk your app owners through vendor validation.</p>
+        </div>
+      </div>
+      <div class="message-card">
+        <div class="message-icon">&#9881;&#65039;</div>
+        <div class="message-body">
+          <h3>Nerdio + Intune for Day-2</h3>
+          <p>The recommended operating model for AVD at scale — directly addresses the "AVD is too complex to run" objection.</p>
+        </div>
+      </div>
+      <div class="message-card">
+        <div class="message-icon">&#128260;</div>
+        <div class="message-body">
+          <h3>No Lock-In Between the Two</h3>
+          <p>A user can move from W365 to AVD personal — or back — using the same golden image pipeline. No migration penalty.</p>
+        </div>
+      </div>
+      <div class="message-card">
+        <div class="message-icon">&#127961;&#65039;</div>
+        <div class="message-body">
+          <h3>BCP &amp; Resilience</h3>
+          <p>Cloud desktops give instant remote-work continuity during weather events, facility issues, or regional disruptions — critical for 24/7 healthcare.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Windows 365 + Azure Virtual Desktop &middot; Healthcare VDI Strategy &middot; Microsoft &copy; 2026</p>
+</footer>
+
+<script>
+// ===== SCROLL PROGRESS =====
+const progress = document.getElementById('scrollProgress');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progress.style.width = pct + '%';
+});
+
+// ===== NAV SCROLL STATE =====
+const navbar = document.getElementById('navbar');
+const navLinks = document.querySelectorAll('nav .nav-links a');
+const sections = document.querySelectorAll('section[id]');
+
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 10);
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+});
+
+// ===== REVEAL ON SCROLL =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // Animate meter fills inside visible persona panels
+      e.target.querySelectorAll('.meter-fill').forEach(f => {
+        f.style.width = f.style.getPropertyValue('--bar-width');
+      });
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .stagger').forEach(el => observer.observe(el));
+
+// ===== PERSONA TABS =====
+document.querySelectorAll('.persona-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.persona-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.persona-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    const panel = document.getElementById('persona-' + tab.dataset.persona);
+    panel.classList.add('active');
+    // Reset and re-trigger meter animations
+    panel.querySelectorAll('.meter-fill').forEach(f => {
+      f.style.width = '0';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          f.style.transition = 'width .8s ease-out';
+          f.style.width = f.style.getPropertyValue('--bar-width');
+        });
+      });
+    });
+  });
+});
+
+// ===== ARCHITECTURE TABS =====
+document.querySelectorAll('.arch-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.arch-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.arch-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('arch-' + tab.dataset.arch).classList.add('active');
+  });
+});
+
+// ===== DECISION TOOL =====
+const answers = [];
+function answerQ(step, val) {
+  answers[step] = val;
+  // Update dots
+  document.getElementById('dot-' + step).classList.remove('current');
+  document.getElementById('dot-' + step).classList.add('done');
+  document.getElementById('step-' + step).classList.remove('active');
+  if (step < 4) {
+    document.getElementById('dot-' + (step + 1)).classList.add('current');
+    document.getElementById('step-' + (step + 1)).classList.add('active');
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  const [persist, predict, admin, gpu, lean] = answers;
+  let rec, cls, desc;
+
+  if (gpu === 'yes') {
+    rec = 'AVD Personal or Windows 365 GPU';
+    cls = 'result-avd';
+    desc = 'GPU workloads can use either platform: Windows 365 offers GPU Cloud PCs, while AVD gives the broadest Azure GPU VM catalog and hardware-profile control. Use workload testing to choose the fit.';
+  } else if (persist === 'no' && admin === 'no') {
+    rec = 'AVD Pooled (Multi-Session)';
+    cls = 'result-avd';
+    desc = 'Stateless users without admin needs get the lowest cost per user on high-density pooled hosts. FSLogix handles profile roaming.';
+  } else if (predict === 'yes' && lean === 'yes') {
+    rec = 'Windows 365 Enterprise';
+    cls = 'result-w365';
+    desc = 'Predictable usage + lean IT = Windows 365. Fixed cost, Microsoft-managed infrastructure, zero Azure expertise required. Consider Flex licensing for shift workers.';
+  } else if (predict === 'no' && lean === 'no') {
+    rec = 'AVD Personal';
+    cls = 'result-avd';
+    desc = 'Variable usage with Azure maturity makes AVD personal the best fit. Autoscale optimizes costs, and you get full control over golden images and app layering.';
+  } else if (lean === 'yes') {
+    rec = 'Windows 365 (or Nerdio-managed AVD)';
+    cls = 'result-w365';
+    desc = 'Lean IT teams should start with Windows 365 for simplicity. If AVD features are needed, Nerdio provides a managed-service experience on top of AVD.';
+  } else {
+    rec = 'Either W365 or AVD — Both Fit';
+    cls = 'result-either';
+    desc = 'This persona could work on either platform. Use W365 for simplicity and fixed cost, or AVD for flexibility and optimization. Consider running a POC with both.';
+  }
+
+  const resultEl = document.getElementById('step-result');
+  resultEl.className = 'decision-step active';
+  resultEl.innerHTML = `
+    <div class="decision-result ${cls}">
+      <div class="result-icon">${cls === 'result-w365' ? '&#128187;' : cls === 'result-avd' ? '&#9729;&#65039;' : '&#10024;'}</div>
+      <h3>${rec}</h3>
+      <p>${desc}</p>
+      <button class="restart-btn" onclick="resetDecision()">Start Over</button>
+    </div>`;
+}
+
+function resetDecision() {
+  answers.length = 0;
+  document.querySelectorAll('.decision-dot').forEach((d, i) => {
+    d.classList.remove('done', 'current');
+    if (i === 0) d.classList.add('current');
+  });
+  document.querySelectorAll('.decision-step').forEach((s, i) => {
+    s.classList.toggle('active', i === 0);
+  });
+  document.getElementById('step-result').innerHTML = '';
+  document.getElementById('step-result').className = 'decision-step';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+name: Tag Original Submitter on Merge
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tag-submitter-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  tag-submitter:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Collect changed HTML files
+        id: changed
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh api \
+            --paginate \
+            "repos/${{ github.repository }}/pulls/${PR_NUMBER}/files" \
+            --jq '.[].filename' \
+            | grep -E '\.html$' \
+            | sort -u \
+            > changed-html.txt || true
+          echo "Changed HTML files:"
+          cat changed-html.txt || true
+          if [ ! -s changed-html.txt ]; then
+            echo "no_html=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Tag original submitter on merged HTML pages
+        if: steps.changed.outputs.no_html != 'true'
+        env:
+          ORIGINAL_SUBMITTER: ${{ github.event.pull_request.user.login }}
+        run: |
+          xargs -r -a changed-html.txt python3 scripts/tag-submitter.py --submitter "$ORIGINAL_SUBMITTER"
+
+      - name: Commit any tagged pages
+        if: steps.changed.outputs.no_html != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A -- '*.html'
+          if git diff --staged --quiet; then
+            echo "No submitter tags to commit."
+          else
+            git commit -m "chore: tag original submitter on merged pages"
+            git push
+          fi

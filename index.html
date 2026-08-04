@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SME&amp;C Infographics</title>
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ms-blue:        #0078D4;
+      --ms-blue-dark:   #005A9E;
+      --ms-blue-light:  #C7E0F4;
+      --ms-surface:     #FFFFFF;
+      --ms-canvas:      #F3F2F1;
+      --ms-border:      #EDEBE9;
+      --ms-text:        #201F1E;
+      --ms-text-muted:  #605E5C;
+      --ms-shadow:      0 2px 6px rgba(0,0,0,.12), 0 0 1px rgba(0,0,0,.08);
+      --ms-shadow-hover:0 8px 20px rgba(0,0,0,.16), 0 0 2px rgba(0,0,0,.1);
+      --radius:         4px;
+
+      /* per-category accent colours */
+      --c-azure-databases:      #0078D4;
+      --c-fabric:               #00B0F0;
+      --c-foundry:              #7FBA00;
+      --c-github-copilot:       #24292E;
+      --c-avd:                  #0078D4;
+      --c-app-platform-services:#E97000;
+      --c-azure-openai:         #5C2D91;
+      --c-defender-for-cloud:   #00BCF2;
+      --c-infrastructure:       #0078D4;
+      --c-conference-rollup:    #D83B01;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--ms-canvas);
+      color: var(--ms-text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─── Header ────────────────────────────────────────────── */
+    header {
+      background: var(--ms-blue);
+      color: #fff;
+      padding: 0 48px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      height: 64px;
+      box-shadow: 0 2px 4px rgba(0,0,0,.2);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-logo {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    .header-title {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    /* ─── Hero ──────────────────────────────────────────────── */
+    .hero {
+      background: var(--ms-surface);
+      border-bottom: 1px solid var(--ms-border);
+      padding: 56px 48px 48px;
+    }
+
+    .hero-inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ms-blue);
+      margin-bottom: 12px;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--ms-text);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 strong {
+      font-weight: 700;
+      color: var(--ms-blue);
+    }
+
+    .hero p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--ms-text-muted);
+      max-width: 660px;
+    }
+
+    /* ─── Main content ──────────────────────────────────────── */
+    main {
+      flex: 1;
+      padding: 40px 48px 64px;
+    }
+
+    .section-header {
+      max-width: 960px;
+      margin: 0 auto 24px;
+    }
+
+    .section-header h2 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--ms-text);
+    }
+
+    /* ─── Category grid ─────────────────────────────────────── */
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* ─── Category card ─────────────────────────────────────── */
+    .card {
+      background: var(--ms-surface);
+      border: 1px solid var(--ms-border);
+      border-radius: var(--radius);
+      box-shadow: var(--ms-shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.15s ease, transform 0.15s ease;
+    }
+
+    .card:hover {
+      box-shadow: var(--ms-shadow-hover);
+      transform: translateY(-2px);
+    }
+
+    .card-header {
+      padding: 16px 20px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--ms-border);
+    }
+
+    .card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .card-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: #fff;
+    }
+
+    .card-title {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--ms-text);
+    }
+
+    .card-body {
+      padding: 12px 20px 16px;
+      flex: 1;
+    }
+
+    .card-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .card-links li a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.875rem;
+      color: var(--ms-blue);
+      text-decoration: none;
+      padding: 4px 0;
+    }
+
+    .card-links li a:hover {
+      text-decoration: underline;
+      color: var(--ms-blue-dark);
+    }
+
+    .card-links li a::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+
+    .card-empty {
+      font-size: 0.8125rem;
+      color: var(--ms-text-muted);
+      font-style: italic;
+      padding: 4px 0;
+    }
+
+    /* ─── Accent colours applied per category ───────────────── */
+    [data-category="azure-databases"]      .card-header { border-top: 3px solid var(--c-azure-databases); }
+    [data-category="azure-databases"]      .card-icon   { background: var(--c-azure-databases); }
+
+    [data-category="fabric"]               .card-header { border-top: 3px solid var(--c-fabric); }
+    [data-category="fabric"]               .card-icon   { background: var(--c-fabric); }
+
+    [data-category="foundry"]              .card-header { border-top: 3px solid var(--c-foundry); }
+    [data-category="foundry"]              .card-icon   { background: var(--c-foundry); }
+
+    [data-category="github-copilot"]       .card-header { border-top: 3px solid var(--c-github-copilot); }
+    [data-category="github-copilot"]       .card-icon   { background: var(--c-github-copilot); }
+
+    [data-category="avd"]                  .card-header { border-top: 3px solid var(--c-avd); }
+    [data-category="avd"]                  .card-icon   { background: var(--c-avd); }
+
+    [data-category="app-platform-services"] .card-header { border-top: 3px solid var(--c-app-platform-services); }
+    [data-category="app-platform-services"] .card-icon   { background: var(--c-app-platform-services); }
+
+    [data-category="azure-openai"]         .card-header { border-top: 3px solid var(--c-azure-openai); }
+    [data-category="azure-openai"]         .card-icon   { background: var(--c-azure-openai); }
+
+    [data-category="defender-for-cloud"]   .card-header { border-top: 3px solid var(--c-defender-for-cloud); }
+    [data-category="defender-for-cloud"]   .card-icon   { background: var(--c-defender-for-cloud); }
+
+    [data-category="infrastructure"]       .card-header { border-top: 3px solid var(--c-infrastructure); }
+    [data-category="infrastructure"]       .card-icon   { background: var(--c-infrastructure); }
+
+    [data-category="conference-rollup"]    .card-header { border-top: 3px solid var(--c-conference-rollup); }
+    [data-category="conference-rollup"]    .card-icon   { background: var(--c-conference-rollup); }
+
+    /* ─── Footer ────────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 20px 48px;
+      font-size: 0.75rem;
+      color: var(--ms-text-muted);
+      border-top: 1px solid var(--ms-border);
+      background: var(--ms-surface);
+    }
+
+    /* ─── Contribute CTA ────────────────────────────────────── */
+    .cta {
+      background: linear-gradient(135deg, var(--ms-blue) 0%, var(--ms-blue-dark) 100%);
+      color: #fff;
+      padding: 56px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 15% 85%, rgba(255, 255, 255, 0.08) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 15%, rgba(255, 255, 255, 0.06) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .cta-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+    .cta-copy { flex: 1 1 360px; }
+    .cta-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.78);
+      margin-bottom: 10px;
+    }
+    .cta h2 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+    .cta-copy p {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.88);
+      max-width: 520px;
+    }
+    .cta-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 22px;
+      border-radius: var(--radius);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition:
+        transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.35s ease,
+        background 0.35s ease;
+    }
+    .cta-btn--primary {
+      background: #fff;
+      color: var(--ms-blue-dark);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+    }
+    .cta-btn--primary:hover,
+    .cta-btn--primary:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.24);
+      outline: none;
+    }
+    .cta-btn--primary:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+    .cta-arrow {
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .cta-btn--primary:hover .cta-arrow,
+    .cta-btn--primary:focus-visible .cta-arrow {
+      transform: translateX(4px);
+    }
+    .cta-btn--secondary {
+      color: #fff;
+      padding: 4px 0;
+      font-size: 0.875rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 0;
+      transition: border-color 0.3s ease, color 0.3s ease;
+    }
+    .cta-btn--secondary:hover,
+    .cta-btn--secondary:focus-visible {
+      border-bottom-color: #fff;
+      outline: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cta-btn, .cta-arrow { transition: none; }
+      .cta-btn--primary:hover, .cta-btn--primary:focus-visible { transform: none; }
+    }
+
+    /* ─── Loading / Error states ────────────────────────────── */
+    #status-message {
+      max-width: 960px;
+      margin: 0 auto 16px;
+      padding: 12px 20px;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+    }
+    #status-message.error {
+      background: #FDE7E9;
+      color: #A4262C;
+      border: 1px solid #F1707B;
+    }
+    #status-message.loading {
+      background: var(--ms-blue-light);
+      color: var(--ms-blue-dark);
+      border: 1px solid var(--ms-blue);
+    }
+    #status-message.hidden { display: none; }
+
+    /* ─── Responsive tweaks ─────────────────────────────────── */
+    @media (max-width: 640px) {
+      header { padding: 0 20px; }
+      .hero  { padding: 36px 20px 32px; }
+      main   { padding: 24px 20px 48px; }
+      .cta   { padding: 40px 20px; }
+      footer { padding: 16px 20px; }
+    }
+  </style>
+  <script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
+</head>
+<body>
+
+  <!-- ── Header ──────────────────────────────────────────────── -->
+  <header>
+    <!-- Microsoft grid logo (four coloured squares) -->
+    <svg class="header-logo" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x="0"  y="0"  width="11" height="11" fill="#F35325"/>
+      <rect x="12" y="0"  width="11" height="11" fill="#81BC06"/>
+      <rect x="0"  y="12" width="11" height="11" fill="#05A6F0"/>
+      <rect x="12" y="12" width="11" height="11" fill="#FFBA08"/>
+    </svg>
+    <span class="header-title">SME&amp;C Infographics</span>
+  </header>
+
+  <!-- ── Hero ────────────────────────────────────────────────── -->
+  <section class="hero" role="banner">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Sales, Marketing &amp; Commercial</p>
+      <h1>Explore our <strong>Infographic Library</strong></h1>
+      <p>
+        Welcome to the SME&amp;C Infographic Hub — your central resource for
+        visual learning across Microsoft&apos;s core cloud services and
+        solutions. Browse the categories below to find quick-reference
+        infographics that make complex topics easy to understand.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Category grid ───────────────────────────────────────── -->
+  <main>
+    <div class="section-header">
+      <h2>Infographic Categories</h2>
+    </div>
+
+    <div id="status-message" class="loading" role="status">Loading infographics…</div>
+
+    <div class="categories" id="categories-grid">
+      <!-- Cards injected by JavaScript -->
+    </div>
+  </main>
+
+  <!-- ── Contribute CTA ──────────────────────────────────────── -->
+  <section class="cta" aria-labelledby="cta-heading">
+    <div class="cta-inner">
+      <div class="cta-copy">
+        <p class="cta-eyebrow">Share your expertise</p>
+        <h2 id="cta-heading">Built something worth sharing?</h2>
+        <p>
+          This library grows when the SME&amp;C team contributes. If you&apos;ve made
+          an infographic, decision guide, or architecture diagram that helps the
+          field, add it to the repo and make it easy for the rest of us to find.
+        </p>
+      </div>
+      <div class="cta-actions">
+        <a class="cta-btn cta-btn--primary"
+           href="https://github.com/SME-C-Infographics/sme-c-infographics.github.io"
+           target="_blank" rel="noopener">
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18">
+            <path fill="currentColor" d="M12 .5C5.73.5.7 5.54.7 11.85c0 5.05 3.22 9.34 7.7 10.85.56.1.77-.25.77-.55v-2.12c-3.13.69-3.79-1.34-3.79-1.34-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.19 1.75 1.19 1.02 1.76 2.68 1.25 3.34.96.1-.74.4-1.25.72-1.54-2.5-.28-5.13-1.26-5.13-5.59 0-1.23.44-2.24 1.16-3.03-.12-.28-.5-1.43.11-2.99 0 0 .94-.3 3.09 1.15a10.72 10.72 0 0 1 5.62 0c2.14-1.45 3.09-1.15 3.09-1.15.61 1.56.23 2.71.11 2.99.72.79 1.16 1.8 1.16 3.03 0 4.34-2.63 5.31-5.14 5.59.41.36.78 1.06.78 2.14v3.17c0 .3.2.66.78.55 4.48-1.51 7.7-5.8 7.7-10.85C23.3 5.54 18.27.5 12 .5Z"/>
+          </svg>
+          Contribute on GitHub
+          <svg class="cta-arrow" aria-hidden="true" viewBox="0 0 24 24" width="14" height="14">
+            <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/>
+          </svg>
+        </a>
+        <a class="cta-btn cta-btn--secondary"
+           href="https://github.com/SME-C-Infographics/sme-c-infographics.github.io/blob/main/docs/adding-an-infographic-to-the-website.md"
+           target="_blank" rel="noopener">
+          Read the contributor guide →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ──────────────────────────────────────────────── -->
+  <footer>
+    <p>&copy; Microsoft Corporation. For internal use by the SME&amp;C team.</p>
+  </footer>
+
+  <script>
+    // ── Icon SVG paths keyed by category folder name ───────────
+    const ICONS = {
+      "azure-databases": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="12" cy="5" rx="9" ry="3"/>
+        <path d="M3 5v4c0 1.657 4.03 3 9 3s9-1.343 9-3V5"/>
+        <path d="M3 9v5c0 1.657 4.03 3 9 3s9-1.343 9-3V9"/>
+        <path d="M3 14v5c0 1.657 4.03 3 9 3s9-1.343 9-3v-5"/>
+      </svg>`,
+      "fabric": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2"  width="9" height="9" rx="1"/>
+        <rect x="13" y="2" width="9" height="9" rx="1"/>
+        <rect x="2" y="13" width="9" height="9" rx="1"/>
+        <rect x="13" y="13" width="9" height="9" rx="1"/>
+      </svg>`,
+      "foundry": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="12,2 22,20 2,20"/>
+      </svg>`,
+      "github-copilot": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="10" r="7"/>
+        <circle cx="9"  cy="9"  r="1.5" fill="#fff"/>
+        <circle cx="15" cy="9"  r="1.5" fill="#fff"/>
+        <path d="M9 13 Q12 16 15 13" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M5 17 Q12 22 19 17" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      </svg>`,
+      "avd": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="3" width="20" height="14" rx="2"/>
+        <path d="M8 21 h8 M12 17 v4"/>
+      </svg>`,
+      "app-platform-services": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2"  y="2"  width="9"  height="9"  rx="1"/>
+        <rect x="13" y="2"  width="9"  height="9"  rx="1"/>
+        <rect x="2"  y="13" width="20" height="9"  rx="1"/>
+      </svg>`,
+      "azure-openai": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2 v4 M12 18 v4 M2 12 h4 M18 12 h4"/>
+        <path d="M5.636 5.636 l2.828 2.828 M15.536 15.536 l2.828 2.828"/>
+        <path d="M18.364 5.636 l-2.828 2.828 M8.464 15.536 l-2.828 2.828"/>
+      </svg>`,
+      "defender-for-cloud": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2 L21 6 V12 C21 17 16.5 21.5 12 22 C7.5 21.5 3 17 3 12 V6 Z"/>
+        <path d="M8 12 l3 3 5-6" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>`,
+      "infrastructure": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="3" width="18" height="5" rx="1"/>
+        <rect x="3" y="10" width="18" height="5" rx="1"/>
+        <rect x="3" y="17" width="18" height="5" rx="1"/>
+        <circle cx="6" cy="5.5" r="1" fill="#fff"/>
+        <circle cx="6" cy="12.5" r="1" fill="#fff"/>
+        <circle cx="6" cy="19.5" r="1" fill="#fff"/>
+      </svg>`,
+      "conference-rollup": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="4" width="18" height="16" rx="2"/>
+        <path d="M7 2v4 M17 2v4" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M3 9h18" stroke="#fff" stroke-width="2" fill="none"/>
+        <circle cx="9" cy="13" r="1.2" fill="#fff"/>
+        <path d="M12 13h5 M7.8 17h8.2" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      </svg>`,
+    };
+
+    // ── Build a single category card ───────────────────────────
+    function buildCard(folder, data) {
+      const card = document.createElement("article");
+      card.className = "card";
+      card.setAttribute("data-category", folder);
+
+      const icon = ICONS[folder] || `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>`;
+
+      let bodyContent;
+      if (data.items.length === 0) {
+        bodyContent = `<p class="card-empty">No infographics available yet.</p>`;
+      } else {
+        const links = data.items.map(item => {
+          const href = `./${folder}/${item.file}`;
+          return `<li><a href="${href}">${escapeHtml(item.title)}</a></li>`;
+        }).join("\n");
+        bodyContent = `<ul class="card-links">${links}</ul>`;
+      }
+
+      card.innerHTML = `
+        <div class="card-header">
+          <div class="card-icon" aria-hidden="true">${icon}</div>
+          <h3 class="card-title">${escapeHtml(data.displayName)}</h3>
+        </div>
+        <div class="card-body">${bodyContent}</div>`;
+
+      return card;
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    // ── Load manifest and render cards ─────────────────────────
+    const grid   = document.getElementById("categories-grid");
+    const status = document.getElementById("status-message");
+
+    fetch("./manifest.json")
+      .then(response => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      })
+      .then(manifest => {
+        status.classList.add("hidden");
+        Object.entries(manifest).forEach(([folder, data]) => {
+          grid.appendChild(buildCard(folder, data));
+        });
+      })
+      .catch(err => {
+        status.textContent = "Unable to load the infographic manifest. Please try again later.";
+        status.classList.remove("loading");
+        status.classList.add("error");
+        console.error("Manifest load error:", err);
+      });
+  </script>
+</body>
+</html>

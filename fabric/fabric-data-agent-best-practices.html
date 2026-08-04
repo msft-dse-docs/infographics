@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fabric Data Agent — Modeling Best Practices</title>
+<style>
+  :root {
+    --primary: #0078D4;
+    --primary-dark: #005A9E;
+    --primary-light: #DEECF9;
+    --accent: #00B7C3;
+    --accent2: #8764B8;
+    --success: #107C10;
+    --warning: #FFB900;
+    --danger: #D13438;
+    --bg: #F5F7FA;
+    --card: #FFFFFF;
+    --text: #1B1B1B;
+    --text-secondary: #605E5C;
+    --border: #E1DFDD;
+    --shadow: 0 2px 8px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,.12);
+    --radius: 12px;
+    --transition: .3s cubic-bezier(.4,0,.2,1);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+  /* ─── Hero ─── */
+  .hero {
+    background: linear-gradient(135deg, #0078D4 0%, #005A9E 40%, #8764B8 100%);
+    color: #fff;
+    padding: 80px 24px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+  }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; position: relative; }
+  .hero .subtitle { font-size: 1.15rem; opacity: .9; margin-top: 12px; max-width: 680px; margin-inline: auto; position: relative; }
+  .hero .badge { display: inline-block; background: rgba(255,255,255,.18); backdrop-filter: blur(4px); border-radius: 24px; padding: 6px 18px; font-size: .85rem; margin-bottom: 20px; position: relative; }
+
+  /* ─── Nav ─── */
+  .nav-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255,255,255,.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+    overflow-x: auto; white-space: nowrap;
+    scrollbar-width: none;
+  }
+  .nav-bar::-webkit-scrollbar { display: none; }
+  .nav-bar nav { display: flex; gap: 4px; max-width: 1200px; margin: auto; padding: 8px 0; }
+  .nav-bar a {
+    color: var(--text-secondary); text-decoration: none; padding: 8px 16px;
+    border-radius: 8px; font-size: .875rem; font-weight: 500;
+    transition: var(--transition); flex-shrink: 0;
+  }
+  .nav-bar a:hover, .nav-bar a.active { background: var(--primary-light); color: var(--primary); }
+
+  /* ─── Layout ─── */
+  .container { max-width: 1200px; margin: auto; padding: 0 24px; }
+  section { padding: 64px 0; }
+  .section-header { text-align: center; margin-bottom: 48px; }
+  .section-header h2 { font-size: 1.75rem; font-weight: 700; margin-bottom: 8px; }
+  .section-header p { color: var(--text-secondary); max-width: 640px; margin: auto; }
+  .section-label {
+    display: inline-block; font-size: .75rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .08em; padding: 4px 12px; border-radius: 6px; margin-bottom: 12px;
+  }
+  .label-blue { background: var(--primary-light); color: var(--primary); }
+  .label-purple { background: #F3EEFB; color: var(--accent2); }
+  .label-teal { background: #E0F8F8; color: #00838F; }
+  .label-red { background: #FDE7E9; color: var(--danger); }
+  .label-green { background: #DFF6DD; color: var(--success); }
+
+  /* ─── Architecture Diagram ─── */
+  .arch-flow {
+    display: flex; align-items: center; justify-content: center;
+    gap: 12px; flex-wrap: wrap; margin: 32px 0;
+  }
+  .arch-node {
+    background: var(--card); border: 2px solid var(--border); border-radius: var(--radius);
+    padding: 18px 24px; text-align: center; min-width: 140px;
+    box-shadow: var(--shadow); transition: var(--transition); cursor: default;
+  }
+  .arch-node:hover { border-color: var(--primary); transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+  .arch-node .icon { font-size: 1.6rem; margin-bottom: 6px; }
+  .arch-node .label { font-weight: 600; font-size: .9rem; }
+  .arch-node .desc { font-size: .75rem; color: var(--text-secondary); margin-top: 4px; }
+  .arch-arrow { font-size: 1.4rem; color: var(--primary); flex-shrink: 0; }
+
+  /* ─── Cards Grid ─── */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+  .card {
+    background: var(--card); border-radius: var(--radius); padding: 28px;
+    box-shadow: var(--shadow); border: 1px solid var(--border);
+    transition: var(--transition); position: relative; overflow: hidden;
+  }
+  .card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+  .card h3 { font-size: 1.1rem; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+  .card p, .card li { font-size: .92rem; color: var(--text-secondary); }
+  .card ul { padding-left: 18px; margin-top: 8px; }
+  .card li { margin-bottom: 6px; }
+  .card .card-accent {
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  }
+
+  /* ─── Do / Don't ─── */
+  .compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+  .compare-card {
+    border-radius: var(--radius); padding: 24px; border: 1px solid;
+  }
+  .compare-card.do { background: #F6FFF6; border-color: #A7D8A7; }
+  .compare-card.dont { background: #FFF6F6; border-color: #EBB; }
+  .compare-card h4 { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 1rem; }
+  .compare-card code {
+    display: block; background: rgba(0,0,0,.04); padding: 12px 16px;
+    border-radius: 8px; font-size: .85rem; line-height: 1.5; white-space: pre-wrap;
+    font-family: 'Cascadia Code', 'Consolas', monospace;
+  }
+
+  /* ─── Accordion ─── */
+  .accordion { max-width: 800px; margin: auto; }
+  .acc-item { background: var(--card); border-radius: var(--radius); margin-bottom: 12px; box-shadow: var(--shadow); border: 1px solid var(--border); overflow: hidden; }
+  .acc-header {
+    padding: 18px 24px; cursor: pointer; display: flex; justify-content: space-between;
+    align-items: center; font-weight: 600; font-size: 1rem; user-select: none;
+    transition: var(--transition);
+  }
+  .acc-header:hover { background: var(--primary-light); }
+  .acc-header .chevron { transition: var(--transition); font-size: .85rem; }
+  .acc-item.open .acc-header .chevron { transform: rotate(180deg); }
+  .acc-body { max-height: 0; overflow: hidden; transition: max-height .4s ease; }
+  .acc-body-inner { padding: 0 24px 20px; color: var(--text-secondary); font-size: .92rem; line-height: 1.7; }
+  .acc-body-inner code { background: #EEE; padding: 2px 6px; border-radius: 4px; font-size: .85rem; }
+
+  /* ─── Workflow Steps ─── */
+  .workflow { position: relative; max-width: 800px; margin: auto; }
+  .workflow::before {
+    content: ''; position: absolute; left: 28px; top: 0; bottom: 0;
+    width: 3px; background: linear-gradient(to bottom, var(--primary), var(--accent2));
+    border-radius: 2px;
+  }
+  .wf-step {
+    display: flex; gap: 24px; margin-bottom: 28px; position: relative;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity .5s ease, transform .5s ease;
+  }
+  .wf-step.visible { opacity: 1; transform: translateY(0); }
+  .wf-num {
+    width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1.1rem; color: #fff; z-index: 1;
+    box-shadow: 0 2px 8px rgba(0,120,212,.3);
+  }
+  .wf-content {
+    background: var(--card); border-radius: var(--radius); padding: 20px 24px;
+    box-shadow: var(--shadow); border: 1px solid var(--border); flex: 1;
+  }
+  .wf-content h4 { margin-bottom: 6px; }
+  .wf-content p { font-size: .9rem; color: var(--text-secondary); }
+
+  /* ─── Pitfalls ─── */
+  .pitfall-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .pitfall {
+    background: var(--card); border-radius: var(--radius); padding: 22px;
+    border-left: 4px solid var(--danger); box-shadow: var(--shadow);
+    transition: var(--transition);
+  }
+  .pitfall:hover { box-shadow: var(--shadow-lg); }
+  .pitfall h4 { font-size: .95rem; margin-bottom: 6px; color: var(--danger); }
+  .pitfall p { font-size: .85rem; color: var(--text-secondary); }
+
+  /* ─── Checklist ─── */
+  .checklist { max-width: 700px; margin: auto; }
+  .check-item {
+    display: flex; align-items: flex-start; gap: 14px; padding: 14px 0;
+    border-bottom: 1px solid var(--border); cursor: pointer; user-select: none;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-box {
+    width: 24px; height: 24px; border-radius: 6px; border: 2px solid var(--border);
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    transition: var(--transition); margin-top: 2px;
+  }
+  .check-item.checked .check-box { background: var(--success); border-color: var(--success); }
+  .check-item.checked .check-box::after { content: '\2713'; color: #fff; font-size: .85rem; font-weight: 700; }
+  .check-item.checked .check-text { text-decoration: line-through; color: var(--text-secondary); }
+  .check-text { font-size: .95rem; }
+  .progress-bar { height: 8px; background: var(--border); border-radius: 4px; margin-bottom: 24px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--success), var(--accent)); border-radius: 4px; transition: width .4s ease; }
+  .progress-label { text-align: right; font-size: .8rem; color: var(--text-secondary); margin-bottom: 8px; }
+
+  /* ─── Tooltip ─── */
+  .tip {
+    position: relative; display: inline-block;
+    border-bottom: 1px dashed var(--primary); cursor: help; color: var(--primary);
+  }
+  .tip .tip-text {
+    visibility: hidden; opacity: 0; width: 260px;
+    background: #333; color: #fff; font-size: .8rem; line-height: 1.5;
+    border-radius: 8px; padding: 10px 14px;
+    position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%);
+    transition: opacity .2s; z-index: 10; pointer-events: none;
+  }
+  .tip:hover .tip-text { visibility: visible; opacity: 1; }
+
+  /* ─── Tabs ─── */
+  .tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 2px solid var(--border); }
+  .tab-btn {
+    padding: 10px 20px; border: none; background: none; cursor: pointer;
+    font-size: .9rem; font-weight: 600; color: var(--text-secondary);
+    border-bottom: 3px solid transparent; margin-bottom: -2px; transition: var(--transition);
+  }
+  .tab-btn:hover { color: var(--primary); }
+  .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; animation: fadeIn .3s ease; }
+
+  /* ─── Key Insight Callout ─── */
+  .callout {
+    background: linear-gradient(135deg, #FFF8E1, #FFF3CD);
+    border-left: 4px solid var(--warning);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 20px 24px; margin: 32px 0;
+  }
+  .callout strong { color: #8A6D00; }
+  .callout p { font-size: .92rem; color: #5D4E37; }
+
+  /* ─── Footer ─── */
+  footer {
+    text-align: center; padding: 40px 24px; color: var(--text-secondary);
+    font-size: .8rem; border-top: 1px solid var(--border);
+  }
+  footer a { color: var(--primary); text-decoration: none; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 640px) {
+    .hero { padding: 48px 16px 40px; }
+    section { padding: 40px 0; }
+    .arch-flow { flex-direction: column; }
+    .arch-arrow { transform: rotate(90deg); }
+    .cards { grid-template-columns: 1fr; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .pitfall-grid { grid-template-columns: 1fr; }
+  }
+</style>
+<script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
+<!-- smec-meta v1 -->
+<meta name="description" content="Fabric Data Agent — Modeling Best Practices — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:title" content="Fabric Data Agent — Modeling Best Practices">
+<meta property="og:description" content="Fabric Data Agent — Modeling Best Practices — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sme-c-infographics.github.io/fabric/fabric-data-agent-best-practices.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fabric Data Agent — Modeling Best Practices">
+<meta name="twitter:description" content="Fabric Data Agent — Modeling Best Practices — an interactive infographic from the SME&amp;C Infographic Hub.">
+<!-- smec-favicon v1 -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<!-- smec-accuracy v1 -->
+<meta name="smec:last-accuracy-check" content="2026-07-16">
+<style>/* smec-back-btn v2 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  box-sizing: border-box;
+  display: inline-flex; align-items: center; justify-content: flex-start;
+  gap: 8px; height: 40px; padding: 0 16px 0 12px; border-radius: 20px;
+  background: rgba(0, 120, 212, 0.92) !important; color: #fff !important;
+  text-decoration: none !important;
+  font: 600 14px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  transition:
+    padding 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto; display: inline-block;
+  width: 18px; height: 18px; }
+.smec-back-btn__label { display: inline-block; flex: 0 0 auto;
+  font: inherit; color: inherit; }
+.smec-back-btn__more { display: inline-block; max-width: 0; opacity: 0;
+  overflow: hidden; vertical-align: bottom;
+  font: inherit; color: inherit;
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.05s; }
+
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  background: rgba(0, 90, 158, 0.96) !important; color: #fff !important;
+  text-decoration: none !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22); }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__more,
+.smec-back-btn:focus-visible .smec-back-btn__more {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.25s ease 0.2s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn__more { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__more,
+  .smec-back-btn:hover .smec-back-btn__more,
+  .smec-back-btn:focus-visible .smec-back-btn__more {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<!-- smec-submitter v1 -->
+<meta name="smec:submitter" content="cbattlegear">
+</head>
+<body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v2" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<header class="hero">
+  <div class="badge">Microsoft Fabric &bull; Data Agents</div>
+  <h1>Modeling Best Practices<br>for Fabric Data Agents</h1>
+  <p class="subtitle">A visual guide to preparing your semantic models and configuring your data agents for accurate, context-rich AI responses.</p>
+</header>
+
+<!-- ═══════════════════ NAV ═══════════════════ -->
+<div class="nav-bar">
+  <nav>
+    <a href="#architecture">How It Works</a>
+    <a href="#prep-for-ai">Prep for AI</a>
+    <a href="#agent-config">Agent Configuration</a>
+    <a href="#do-dont">Do's &amp; Don'ts</a>
+    <a href="#workflow">Workflow</a>
+    <a href="#pitfalls">Pitfalls</a>
+    <a href="#checklist">Checklist</a>
+  </nav>
+</div>
+
+<!-- ═══════════════════ ARCHITECTURE ═══════════════════ -->
+<section id="architecture">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label label-blue">Architecture</span>
+      <h2>How the Fabric Data Agent Works</h2>
+      <p>User questions flow through a layered architecture. The Orchestrator routes to the right data source and invokes specialized tools — like the DAX generation tool for Power BI semantic models.</p>
+    </div>
+    <div class="arch-flow">
+      <div class="arch-node">
+        <div class="icon">💬</div>
+        <div class="label">User Question</div>
+        <div class="desc">Natural language</div>
+      </div>
+      <div class="arch-arrow">&#10140;</div>
+      <div class="arch-node">
+        <div class="icon">🔍</div>
+        <div class="label">Question Parsing</div>
+        <div class="desc">Azure OpenAI + security</div>
+      </div>
+      <div class="arch-arrow">&#10140;</div>
+      <div class="arch-node">
+        <div class="icon">🗂️</div>
+        <div class="label">Source Selection</div>
+        <div class="desc">Schema + AI instructions</div>
+      </div>
+      <div class="arch-arrow">&#10140;</div>
+      <div class="arch-node">
+        <div class="icon">⚙️</div>
+        <div class="label">Query Generation</div>
+        <div class="desc">DAX / SQL / KQL</div>
+      </div>
+      <div class="arch-arrow">&#10140;</div>
+      <div class="arch-node">
+        <div class="icon">📊</div>
+        <div class="label">Response</div>
+        <div class="desc">Tables, summaries, insights</div>
+      </div>
+    </div>
+    <div class="callout">
+      <strong>Key Insight:</strong>
+      <p>The DAX generation tool relies <em>solely</em> on the semantic model's metadata and Prep for AI configurations. It ignores any instructions you add at the data-agent level. Proper Prep for AI setup is essential.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PREP FOR AI ═══════════════════ -->
+<section id="prep-for-ai" style="background:#fff;">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label label-purple">Semantic Model</span>
+      <h2>Prep for AI — Three Pillars</h2>
+      <p>Power BI's "Prep for AI" feature has three components that directly impact how the data agent interprets your semantic model. Click each tab to explore.</p>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="schema" role="tab">AI Data Schemas</button>
+      <button class="tab-btn" data-tab="verified" role="tab">Verified Answers</button>
+      <button class="tab-btn" data-tab="instructions" role="tab">AI Instructions</button>
+    </div>
+
+    <!-- Tab 1: AI Data Schemas -->
+    <div class="tab-panel active" id="tab-schema">
+      <div class="cards">
+        <div class="card">
+          <div class="card-accent" style="background:var(--primary);"></div>
+          <h3>🎯 What It Does</h3>
+          <p>Defines a focused subset of your model — tables, columns, and measures — that the AI should prioritize when generating DAX queries.</p>
+          <ul>
+            <li>Reduces ambiguity &amp; improves accuracy</li>
+            <li>Decreases response latency</li>
+            <li>The DAX tool uses this schema, not the full model</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-accent" style="background:var(--accent);"></div>
+          <h3>💡 Tips</h3>
+          <ul>
+            <li>Select the <strong>same tables</strong> in both Prep for AI and the data agent</li>
+            <li>Include <strong>dependent objects</strong> — if a measure references other measures/columns, include them all</li>
+            <li>Use <tip class="tip">Semantic Link Labs<span class="tip-text">The get_measure_dependencies function helps you identify all dependencies for a measure.</span></tip> to find dependencies</li>
+            <li>Use the <strong>Power BI Modeling MCP server</strong> to auto-generate business-friendly names</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-accent" style="background:var(--accent2);"></div>
+          <h3>📋 Example</h3>
+          <p style="margin-bottom:8px;"><strong>Problem:</strong> Model has <em>Total Revenue, Gross Sales, Net Sales, Sales After Returns</em>. User asks "What were our sales last quarter?" — AI guesses wrong.</p>
+          <p><strong>Fix:</strong> Configure schema to include only <em>Net Sales</em> (the metric the team actually uses). The AI no longer has to guess.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: Verified Answers -->
+    <div class="tab-panel" id="tab-verified">
+      <div class="cards">
+        <div class="card">
+          <div class="card-accent" style="background:var(--success);"></div>
+          <h3>✅ What It Does</h3>
+          <p>User-approved visual responses that trigger for specific questions. Stored at the <strong>semantic model level</strong>, they work across any agent using the same model.</p>
+          <ul>
+            <li>Checks for exact or semantic match <em>before</em> generating a new response</li>
+            <li>Uses visual properties (columns, measures, filters) to guide DAX generation</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-accent" style="background:var(--accent);"></div>
+          <h3>💡 Configuration Tips</h3>
+          <ul>
+            <li>Use <strong>5–7 trigger questions</strong> per verified answer to cover natural phrasing variations</li>
+            <li>Include both formal and conversational phrasings</li>
+            <li>Configure up to <strong>3 filters</strong> for flexible slicing</li>
+            <li>If you rename objects, <strong>update &amp; re-save</strong> verified answers</li>
+            <li>Don't reference <strong>hidden columns</strong> — verified answers won't work with them</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-accent" style="background:var(--accent2);"></div>
+          <h3>📋 Example</h3>
+          <p style="margin-bottom:8px;"><strong>Problem:</strong> User asks "Show me performance by territory." AI interprets "territory" as a product category column.</p>
+          <p><strong>Fix:</strong> Create a verified answer using a regional sales visual with triggers like "sales by territory", "performance by region", etc.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 3: AI Instructions -->
+    <div class="tab-panel" id="tab-instructions">
+      <div class="cards">
+        <div class="card">
+          <div class="card-accent" style="background:var(--warning);"></div>
+          <h3>📝 What It Does</h3>
+          <p>Unstructured guidance on the semantic model that clarifies terminology, analysis approaches, and business context the AI wouldn't otherwise know.</p>
+          <ul>
+            <li>Interpreted by the LLM — clear &amp; specific is better than complex</li>
+            <li>Only Prep for AI instructions reach the DAX tool — agent-level instructions do <strong>not</strong></li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-accent" style="background:var(--accent);"></div>
+          <h3>💡 Effective Patterns</h3>
+          <ul>
+            <li><strong>Time periods:</strong> "Peak season = November–January"</li>
+            <li><strong>Metric preferences:</strong> "For profitability, use Contribution_Margin, not Gross_Profit"</li>
+            <li><strong>Routing:</strong> "For inventory, use Warehouse_Inventory over Sales_Orders"</li>
+            <li><strong>Defaults:</strong> "Analyze revenue by fiscal quarter unless otherwise specified"</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-accent" style="background:var(--accent2);"></div>
+          <h3>📋 Example</h3>
+          <p style="margin-bottom:8px;"><strong>Problem:</strong> User asks "Who were the top performers last month?" AI doesn't know what "top performer" means internally.</p>
+          <p><strong>Fix:</strong> Add instruction: <em>"A top performer is a sales rep who achieves ≥ 110% of monthly quota. Use Rep_Performance, filter Quota_Attainment ≥ 1.1"</em></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ AGENT CONFIGURATION ═══════════════════ -->
+<section id="agent-config">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label label-teal">Configuration</span>
+      <h2>Data Agent Configuration Best Practices</h2>
+      <p>Agent-level and data-source-level instructions control how the agent interprets queries, selects sources, and formats responses.</p>
+    </div>
+
+    <div class="accordion" id="configAccordion">
+
+      <div class="acc-item">
+        <div class="acc-header"><span>1 &nbsp; Create Specialized Agents for Specific Domains</span><span class="chevron">&#9660;</span></div>
+        <div class="acc-body"><div class="acc-body-inner">
+          Design agents focused on a <strong>specific domain or use case</strong> rather than trying to handle everything. A narrow focus lets you optimize instructions, select relevant sources, and use domain-specific terminology — making responses more accurate and reliable.<br><br>
+          <strong>Example:</strong> Instead of a general "customer Q&A" bot, build an agent tailored for the leadership team that combines CRM, finance, and project data for meeting prep.
+        </div></div>
+      </div>
+
+      <div class="acc-item">
+        <div class="acc-header"><span>2 &nbsp; Minimize Data Source Scope</span><span class="chevron">&#9660;</span></div>
+        <div class="acc-body"><div class="acc-body-inner">
+          Include only the data sources, tables, and columns necessary to answer expected questions. A focused scope = more accurate and efficient queries.<br><br>
+          <strong>Tip:</strong> Limit to <strong>25 or fewer tables</strong> per data source for optimal results.
+        </div></div>
+      </div>
+
+      <div class="acc-item">
+        <div class="acc-header"><span>3 &nbsp; Be Specific — Say What <em>To Do</em>, Not Just What <em>Not</em> To Do</span><span class="chevron">&#9660;</span></div>
+        <div class="acc-body"><div class="acc-body-inner">
+          Provide clear guidance on the <strong>correct approach</strong> rather than only listing prohibitions.<br><br>
+          <em>Less effective:</em> "Do not provide outdated pay information."<br>
+          <em>Better:</em> "Always use the most recent pay records from the official payroll system. If missing, inform the user and suggest they contact HR."
+        </div></div>
+      </div>
+
+      <div class="acc-item">
+        <div class="acc-header"><span>4 &nbsp; Define Business Terms, Abbreviations &amp; Synonyms</span><span class="chevron">&#9660;</span></div>
+        <div class="acc-body"><div class="acc-body-inner">
+          Clarify anything ambiguous or organization-specific:<br>
+          <ul style="margin-top:8px;">
+            <li><strong>Similar concepts:</strong> "calendar year" vs. "fiscal year"</li>
+            <li><strong>Business terms:</strong> "quarter", "SKU", "NPS"</li>
+            <li><strong>Abbreviations:</strong> "MAU" = Monthly Active Users</li>
+          </ul><br>
+          <strong>Where:</strong> Cross-source definitions → agent-level instructions. Source-specific definitions → data-source instructions.
+        </div></div>
+      </div>
+
+      <div class="acc-item">
+        <div class="acc-header"><span>5 &nbsp; Use Leading Words to Nudge Query Generation</span><span class="chevron">&#9660;</span></div>
+        <div class="acc-body"><div class="acc-body-inner">
+          Include SQL/DAX/KQL syntax fragments in data-source instructions to guide the model:<br><br>
+          <em>Less effective:</em> "Find products containing 'bike'."<br>
+          <em>Better:</em> "Find products containing 'bike' — <code>LIKE '%bike%'</code>"<br><br>
+          These hints help the model recognize the correct pattern-matching, filter, or join logic.
+        </div></div>
+      </div>
+
+      <div class="acc-item">
+        <div class="acc-header"><span>6 &nbsp; Write Clear, Focused Instructions — Skip the Noise</span><span class="chevron">&#9660;</span></div>
+        <div class="acc-body"><div class="acc-body-inner">
+          Be concise and purposeful. Avoid vague, outdated, or overly broad content.<br>
+          <ul style="margin-top:8px;">
+            <li>Define clear <strong>scope &amp; responsibilities</strong></li>
+            <li>Reference the <strong>correct data source</strong> without technical overload</li>
+            <li>Specify <strong>fallback behavior</strong> for missing data</li>
+            <li>Set <strong>tone &amp; style</strong></li>
+          </ul>
+        </div></div>
+      </div>
+
+      <div class="acc-item">
+        <div class="acc-header"><span>7 &nbsp; Write Detailed Agent-Level Instructions</span><span class="chevron">&#9660;</span></div>
+        <div class="acc-body"><div class="acc-body-inner">
+          Describe the agent's role, expected behavior, tone, and how it handles different query types. Include use cases, preferred data sources, and fallback behavior.<br><br>
+          <strong>Litmus test:</strong> <em>"Would someone unfamiliar with these data sources know which to use and how?"</em> If not, add the missing context.<br><br>
+          Structure with sections: <strong>Tone &amp; Style</strong>, <strong>General Knowledge</strong>, <strong>Data Source Descriptions</strong>, <strong>When Asked About…</strong> routing.
+        </div></div>
+      </div>
+
+      <div class="acc-item">
+        <div class="acc-header"><span>8 &nbsp; Provide Detailed Data Source Instructions</span><span class="chevron">&#9660;</span></div>
+        <div class="acc-body"><div class="acc-body-inner">
+          Guide the agent in forming accurate queries by defining:<br>
+          <ul style="margin-top:8px;">
+            <li>Purpose of the data source and which questions it answers</li>
+            <li>Required columns to include in responses</li>
+            <li><strong>Join logic</strong> between tables</li>
+            <li>Typical <strong>value formats</strong> (abbreviations vs. full names)</li>
+            <li><strong>Example values:</strong> e.g., State uses "CA", "NY", "TX"</li>
+          </ul><br>
+          <strong>Remember:</strong> The agent can't see individual row values before executing — include value examples to guide filtering.
+        </div></div>
+      </div>
+
+      <div class="acc-item">
+        <div class="acc-header"><span>9 &nbsp; Use Example Queries for Complex Logic</span><span class="chevron">&#9660;</span></div>
+        <div class="acc-body"><div class="acc-body-inner">
+          Example queries act as templates the agent generalizes from. For each user question, the agent performs a <strong>vector similarity search</strong> to retrieve the top 3 most relevant examples.<br><br>
+          Focus on queries involving:<br>
+          <ul style="margin-top:8px;">
+            <li>Filtering &amp; joins</li>
+            <li>Aggregations</li>
+            <li>Date handling</li>
+          </ul><br>
+          <strong>Tip:</strong> A well-formed query is often clearer than paragraphs of text trying to explain the same logic.
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ DO's & DON'Ts ═══════════════════ -->
+<section id="do-dont" style="background:#fff;">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label label-green">Comparison</span>
+      <h2>Do's &amp; Don'ts</h2>
+      <p>Side-by-side examples showing the impact of good vs. poor practices.</p>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card dont">
+        <h4><span style="font-size:1.2rem;">&#10060;</span> Vague Table &amp; Column Names</h4>
+        <code>Table:  Table1, Table2
+Columns: col1, status, flag</code>
+      </div>
+      <div class="compare-card do">
+        <h4><span style="font-size:1.2rem;">&#9989;</span> Descriptive, Business-Friendly Names</h4>
+        <code>Table:  CustomerOrders, SalesTransactions
+Columns: customer_email_address,
+         order_submission_date,
+         product_unit_price</code>
+      </div>
+    </div>
+
+    <div class="compare-grid" style="margin-top:24px;">
+      <div class="compare-card dont">
+        <h4><span style="font-size:1.2rem;">&#10060;</span> Overly Broad Agent Instructions</h4>
+        <code>You are an HR data agent who should
+try to help employees with all kinds
+of questions about work. You have access
+to many systems, like the HRIS platform,
+old payroll databases, archived files...</code>
+      </div>
+      <div class="compare-card do">
+        <h4><span style="font-size:1.2rem;">&#9989;</span> Focused, Structured Agent Instructions</h4>
+        <code>You are an HR Assistant Agent for
+employment status, job details, pay
+history, and leave balances.
+
+Use the official HR data warehouse.
+If data is missing, inform the user
+and recommend they contact HR.</code>
+      </div>
+    </div>
+
+    <div class="compare-grid" style="margin-top:24px;">
+      <div class="compare-card dont">
+        <h4><span style="font-size:1.2rem;">&#10060;</span> Vague Data Source Instructions</h4>
+        <code>Use the EmployeeData warehouse to
+find answers about employees. Try
+to get useful employee details.</code>
+      </div>
+      <div class="compare-card do">
+        <h4><span style="font-size:1.2rem;">&#9989;</span> Detailed Data Source Instructions</h4>
+        <code>Use EmployeeDim as primary table.
+Always include: EmployeeID, EmployeeName,
+EmploymentStatus, JobTitle, DepartmentName.
+Join on EmployeeID. Filter for most
+recent records.
+
+Values: Status = "Active", "On Leave"
+State = "CA", "NY", "TX"</code>
+      </div>
+    </div>
+
+    <div class="compare-grid" style="margin-top:24px;">
+      <div class="compare-card dont">
+        <h4><span style="font-size:1.2rem;">&#10060;</span> Model-Specific Instructions at Agent Level</h4>
+        <code>When users ask about sales, use the
+Net Sales measure and join to the
+Date table on OrderDate.
+(placed in data agent instructions)</code>
+      </div>
+      <div class="compare-card do">
+        <h4><span style="font-size:1.2rem;">&#9989;</span> Model Instructions in Prep for AI</h4>
+        <code>Same instructions ↑ placed in:
+Prep for AI → AI Instructions tab.
+
+Agent instructions = only cross-source
+guidance (tone, formatting, routing).</code>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ WORKFLOW ═══════════════════ -->
+<section id="workflow">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label label-blue">Implementation</span>
+      <h2>Recommended Workflow</h2>
+      <p>Follow these steps in order for the best results. Each step builds on the previous one.</p>
+    </div>
+
+    <div class="workflow" id="workflowTimeline">
+      <div class="wf-step">
+        <div class="wf-num" style="background:var(--primary);">1</div>
+        <div class="wf-content">
+          <h4>Optimize the Semantic Model</h4>
+          <p>Use <strong>Best Practice Analyzer</strong> and <strong>Semantic Model Memory Analyzer</strong> to fix data types, remove unnecessary columns, and improve DAX efficiency. Add descriptions to all objects in your AI schema.</p>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num" style="background:#106EBE;">2</div>
+        <div class="wf-content">
+          <h4>Define AI Data Schema</h4>
+          <p>In Prep for AI, select only the tables, columns, and measures relevant to your agent's scope. Include all dependent objects.</p>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num" style="background:#2D7D9A;">3</div>
+        <div class="wf-content">
+          <h4>Create Verified Answers</h4>
+          <p>Identify your most common questions and configure verified answers with 5–7 trigger question variations each.</p>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num" style="background:#005B70;">4</div>
+        <div class="wf-content">
+          <h4>Add Semantic Model to Agent &amp; Test</h4>
+          <p>Before adding AI instructions, test agent responses to understand where instructions are actually needed.</p>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num" style="background:#6B4FA0;">5</div>
+        <div class="wf-content">
+          <h4>Add AI Instructions in Prep for AI</h4>
+          <p>Based on testing, define business terminology, analysis preferences, and data source priorities. Keep them in Prep for AI — not at the agent level.</p>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num" style="background:#8764B8;">6</div>
+        <div class="wf-content">
+          <h4>Prepare Report Visuals</h4>
+          <p>Ensure visuals across connected reports have descriptive titles. The AI uses visual metadata (title, columns, measures, filters) to ground responses.</p>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num" style="background:#A6529E;">7</div>
+        <div class="wf-content">
+          <h4>Verify &amp; Review DAX</h4>
+          <p>When testing, review the generated DAX in each response. If results are wrong, analyze the DAX to identify which configuration needs adjustment.</p>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num" style="background:#C23B6A;">8</div>
+        <div class="wf-content">
+          <h4>Configure Agent-Level Instructions</h4>
+          <p>Add only cross-source guidance: response formatting, routing rules, abbreviations, tone. Do not add semantic-model-specific instructions here.</p>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num" style="background:#D13438;">9</div>
+        <div class="wf-content">
+          <h4>Validate, Iterate &amp; Deploy</h4>
+          <p>Use the <strong>Fabric Data Agent Python SDK</strong> for automated evaluations. Involve stakeholders. Use <strong>Git integration &amp; deployment pipelines</strong> for ALM across dev → test → prod.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PITFALLS ═══════════════════ -->
+<section id="pitfalls" style="background:#fff;">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label label-red">Avoid</span>
+      <h2>Common Pitfalls</h2>
+      <p>These issues are the most frequent causes of inaccurate or slow data agent responses.</p>
+    </div>
+    <div class="pitfall-grid">
+      <div class="pitfall">
+        <h4>Not Using Star Schema</h4>
+        <p>Flat or denormalized tables make DAX less efficient. DAX is optimized for <strong>star schema</strong> with clear fact and dimension tables. Unpivot wide tables into normalized structures.</p>
+      </div>
+      <div class="pitfall">
+        <h4>Relying on Hidden Fields</h4>
+        <p>Verified answers won't work if they reference hidden columns. Ensure all referenced objects are visible.</p>
+      </div>
+      <div class="pitfall">
+        <h4>Including Unnecessary Measures</h4>
+        <p>Helper measures and intermediate objects add noise. Include only measures that calculate <strong>actual business metrics</strong>.</p>
+      </div>
+      <div class="pitfall">
+        <h4>Duplicate / Overlapping Measures</h4>
+        <p><em>Total Sales, Sales Amount, Revenue</em> all calculating similar things = ambiguity. Consolidate or clearly differentiate and exclude duplicates.</p>
+      </div>
+      <div class="pitfall">
+        <h4>Non-Descriptive Naming</h4>
+        <p>Names like <code>TR_AMT</code>, <code>F_SLS</code>, <code>DIM_GEO_01</code> give the AI zero context. Use business-friendly names, or at minimum provide descriptions and synonyms.</p>
+      </div>
+      <div class="pitfall">
+        <h4>Relying on Implicit Measures</h4>
+        <p>Implicit measures produce unpredictable results. Create <strong>explicit DAX measures</strong> and set correct default summarization on numeric columns.</p>
+      </div>
+      <div class="pitfall">
+        <h4>Ambiguous Date Fields</h4>
+        <p>Multiple date columns without guidance confuse the AI. Use verified answers and AI instructions to specify which date field to use by default.</p>
+      </div>
+      <div class="pitfall">
+        <h4>Conflicting Instructions</h4>
+        <p>AI instructions contradicting verified answers create unpredictable behavior. Keep them aligned.</p>
+      </div>
+      <div class="pitfall">
+        <h4>Skipping Schema Refinement</h4>
+        <p>Large models with many similarly named fields need focused AI data schemas. Don't skip this step.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ CHECKLIST ═══════════════════ -->
+<section id="checklist">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label label-green">Interactive</span>
+      <h2>Readiness Checklist</h2>
+      <p>Click items to track your progress. Your state is saved in this browser session.</p>
+    </div>
+
+    <div class="checklist" id="checklistContainer">
+      <div class="progress-label"><span id="progressPct">0</span>% complete</div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%;"></div></div>
+
+      <div class="check-item" data-key="c1"><div class="check-box"></div><div class="check-text">Semantic model uses <strong>star schema</strong> with clear fact &amp; dimension tables</div></div>
+      <div class="check-item" data-key="c2"><div class="check-box"></div><div class="check-text">All tables, columns, and measures have <strong>business-friendly names</strong></div></div>
+      <div class="check-item" data-key="c3"><div class="check-box"></div><div class="check-text">Descriptions added to all objects in the AI schema</div></div>
+      <div class="check-item" data-key="c4"><div class="check-box"></div><div class="check-text">Unnecessary columns, helper measures, and duplicates <strong>excluded</strong></div></div>
+      <div class="check-item" data-key="c5"><div class="check-box"></div><div class="check-text">Explicit DAX measures created (no reliance on implicit measures)</div></div>
+      <div class="check-item" data-key="c6"><div class="check-box"></div><div class="check-text">Default summarization set correctly on numeric columns</div></div>
+      <div class="check-item" data-key="c7"><div class="check-box"></div><div class="check-text"><strong>AI Data Schema</strong> configured in Prep for AI with only relevant objects</div></div>
+      <div class="check-item" data-key="c8"><div class="check-box"></div><div class="check-text">Same tables selected in both Prep for AI and data agent config</div></div>
+      <div class="check-item" data-key="c9"><div class="check-box"></div><div class="check-text">All measure dependencies included in schema</div></div>
+      <div class="check-item" data-key="c10"><div class="check-box"></div><div class="check-text"><strong>Verified Answers</strong> created for top common questions (5–7 triggers each)</div></div>
+      <div class="check-item" data-key="c11"><div class="check-box"></div><div class="check-text">Verified answers don't reference hidden columns</div></div>
+      <div class="check-item" data-key="c12"><div class="check-box"></div><div class="check-text"><strong>AI Instructions</strong> added in Prep for AI (not at agent level)</div></div>
+      <div class="check-item" data-key="c13"><div class="check-box"></div><div class="check-text">Business terms, abbreviations, and date defaults defined</div></div>
+      <div class="check-item" data-key="c14"><div class="check-box"></div><div class="check-text">Report visuals have descriptive titles</div></div>
+      <div class="check-item" data-key="c15"><div class="check-box"></div><div class="check-text">Agent-level instructions limited to cross-source guidance only</div></div>
+      <div class="check-item" data-key="c16"><div class="check-box"></div><div class="check-text">Data source instructions include join logic, value formats, and examples</div></div>
+      <div class="check-item" data-key="c17"><div class="check-box"></div><div class="check-text">Example queries provided for complex logic</div></div>
+      <div class="check-item" data-key="c18"><div class="check-box"></div><div class="check-text">Generated DAX reviewed and validated during testing</div></div>
+      <div class="check-item" data-key="c19"><div class="check-box"></div><div class="check-text">Stakeholders involved in validation</div></div>
+      <div class="check-item" data-key="c20"><div class="check-box"></div><div class="check-text">Git integration &amp; deployment pipelines configured for ALM</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer>
+  <p>Sources: <a href="https://learn.microsoft.com/en-us/fabric/data-science/semantic-model-best-practices" target="_blank">Semantic Model Best Practices</a> &nbsp;|&nbsp; <a href="https://learn.microsoft.com/en-us/fabric/data-science/data-agent-configuration-best-practices" target="_blank">Data Agent Configuration Best Practices</a></p>
+  <p style="margin-top:8px;">Microsoft Fabric &bull; Data Agents &bull; Best Practice Guide</p>
+</footer>
+
+<!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+<script>
+(function() {
+  // ── Tabs ──
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.dataset.tab;
+      btn.closest('section').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.closest('section').querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + tab).classList.add('active');
+    });
+  });
+
+  // ── Accordion ──
+  document.querySelectorAll('.acc-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const item = header.parentElement;
+      const body = item.querySelector('.acc-body');
+      const inner = body.querySelector('.acc-body-inner');
+      const isOpen = item.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.acc-item').forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.acc-body').style.maxHeight = '0';
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        body.style.maxHeight = inner.scrollHeight + 40 + 'px';
+      }
+    });
+  });
+
+  // ── Checklist ──
+  const items = document.querySelectorAll('.check-item');
+  const fill = document.getElementById('progressFill');
+  const pct = document.getElementById('progressPct');
+  function loadChecks() {
+    try { return JSON.parse(sessionStorage.getItem('fabricChecks') || '{}'); } catch { return {}; }
+  }
+  function saveChecks(state) { sessionStorage.setItem('fabricChecks', JSON.stringify(state)); }
+  function updateProgress() {
+    const state = loadChecks();
+    const total = items.length;
+    const done = Object.values(state).filter(Boolean).length;
+    const p = Math.round(done / total * 100);
+    fill.style.width = p + '%';
+    pct.textContent = p;
+  }
+  items.forEach(item => {
+    const key = item.dataset.key;
+    const state = loadChecks();
+    if (state[key]) item.classList.add('checked');
+    item.addEventListener('click', () => {
+      item.classList.toggle('checked');
+      const s = loadChecks();
+      s[key] = item.classList.contains('checked');
+      saveChecks(s);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  // ── Scroll-spy nav ──
+  const navLinks = document.querySelectorAll('.nav-bar a');
+  const sections = [...navLinks].map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  function onScroll() {
+    let current = '';
+    sections.forEach(sec => {
+      if (sec.getBoundingClientRect().top <= 120) current = sec.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // ── Workflow step reveal ──
+  const steps = document.querySelectorAll('.wf-step');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  steps.forEach(s => observer.observe(s));
+})();
+</script>
+</body>
+</html>

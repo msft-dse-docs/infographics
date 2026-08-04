@@ -1,0 +1,60 @@
+{
+  "description": "Data-driven deprecated-terminology map for check-deprecated-terms.py. Each rule has a regex pattern, a replacement, and optional severity. Edit this file -- not the script -- to add/remove rules.",
+  "version": 1,
+  "_warnings": [
+    "Running `check-deprecated-terms.py --apply` applies rules in order. Cascading edits can produce awkward output: e.g. 'Azure Active Directory (Azure AD)' becomes 'Microsoft Entra ID (Microsoft Entra ID)' after both AAD rules fire. Review apply output before committing.",
+    "Rules at severity=low require human judgement; they are listed for awareness but should usually be reviewed in context before `--apply`.",
+    "Per-page exception: wrap an intentional use of a deprecated term inline with `<!-- smec-keep-term -->...<!-- /smec-keep-term -->` to exempt it from both --check and --apply. Use this for pages that teach a rename or otherwise need the legacy term verbatim. Do NOT nest the marker inside another HTML comment (the outer comment will terminate early). Exempted matches are still listed under the report's top-level `exempted` map for audit."
+  ],
+  "rules": [
+    {
+      "id": "azure-ad-long-to-entra-id",
+      "pattern": "\\bAzure Active Directory\\b(?:\\s*\\(\\s*Azure AD\\s*\\))?",
+      "replacement": "Microsoft Entra ID",
+      "note": "Renamed July 2023. Pattern also consumes a trailing '(Azure AD)' parenthetical when present to avoid double-replacement. First mention of the rename should usually be written by hand as 'Microsoft Entra ID (previously Azure Active Directory)'; automation replaces plain occurrences.",
+      "severity": "high"
+    },
+    {
+      "id": "azure-ad-short-to-entra-id",
+      "pattern": "\\bAzure AD\\b",
+      "replacement": "Microsoft Entra ID",
+      "note": "Short form of the old name. The 'is_already_fixed' guard in the checker skips cases immediately following 'Microsoft Entra ID (previously'.",
+      "severity": "high"
+    },
+    {
+      "id": "synapse-to-fabric",
+      "pattern": "\\bAzure Synapse Analytics\\b",
+      "replacement": "Microsoft Fabric",
+      "note": "Synapse capabilities are now part of Fabric. Review context before auto-replacing in migration / historical content.",
+      "severity": "medium"
+    },
+    {
+      "id": "cognitive-services-to-ai-services",
+      "pattern": "\\bAzure Cognitive Services\\b",
+      "replacement": "Azure AI Services",
+      "note": "Renamed July 2023.",
+      "severity": "high"
+    },
+    {
+      "id": "form-recognizer-to-doc-intelligence",
+      "pattern": "\\bAzure Form Recognizer\\b",
+      "replacement": "Azure AI Document Intelligence",
+      "note": "Renamed July 2023.",
+      "severity": "high"
+    },
+    {
+      "id": "azure-openai-service",
+      "pattern": "\\bAzure OpenAI Service\\b",
+      "replacement": "Azure OpenAI in Foundry Models",
+      "note": "Branding shift as of 2025. Review before auto-applying on pages that explain product history.",
+      "severity": "low"
+    },
+    {
+      "id": "power-bi-premium-per-user",
+      "pattern": "\\bPower BI Premium Per User\\b",
+      "replacement": "Microsoft Fabric Premium Per User",
+      "note": "Licensing consolidation under Fabric. Verify commercial context before applying.",
+      "severity": "low"
+    }
+  ]
+}

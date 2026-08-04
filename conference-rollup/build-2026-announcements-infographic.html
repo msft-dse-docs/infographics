@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microsoft Build 2026 — All Announcements by Category</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:ital,opsz@0,6..72;1,6..72&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0c0d;
+    --panel:#141416;
+    --panel-2:#19191c;
+    --ink:#f4f1ea;
+    --muted:#9a948a;
+    --faint:#6d6962;
+    --line:rgba(255,255,255,.08);
+    --line-2:rgba(255,255,255,.14);
+    --ctx:#E8B04B;      /* Context & Knowledge   */
+    --model:#D2694A;    /* AI Models             */
+    --agent:#57B6A6;    /* Agents                */
+    --dev:#A9B86A;      /* Dev Tools & Devices   */
+    --data:#D9A05B;     /* Data & Backend        */
+    --sec:#C97FA0;      /* Security & Governance */
+    --frontier:#8A93A0; /* Frontier & Infra      */
+    --maxw:1140px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Newsreader",Georgia,serif;
+    font-size:17px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(circle at 12% -5%, rgba(232,176,75,.07), transparent 42%),
+      radial-gradient(circle at 92% 8%, rgba(87,182,166,.06), transparent 40%);
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:48px 48px;
+    -webkit-mask-image:radial-gradient(circle at 50% 30%,#000,transparent 80%);
+            mask-image:radial-gradient(circle at 50% 30%,#000,transparent 80%);
+  }
+  .wrap{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+  /* ---------- HERO ---------- */
+  header{padding:64px 0 28px;border-bottom:1px solid var(--line)}
+  .eyebrow{
+    font-family:"JetBrains Mono",monospace;font-size:12.5px;letter-spacing:.34em;
+    text-transform:uppercase;color:var(--ctx);display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+  }
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--ctx);box-shadow:0 0 12px var(--ctx)}
+  h1{
+    font-family:"Archivo",sans-serif;font-weight:900;letter-spacing:-.02em;line-height:.96;
+    font-size:clamp(44px,8.5vw,104px);margin:18px 0 10px;
+  }
+  h1 .stroke{color:transparent;-webkit-text-stroke:1.5px var(--ink)}
+  .lede{font-size:clamp(18px,2.4vw,23px);color:#d8d3c8;max-width:780px;margin-top:8px}
+  .meta-row{
+    margin-top:26px;display:flex;gap:10px 26px;flex-wrap:wrap;
+    font-family:"JetBrains Mono",monospace;font-size:12.5px;letter-spacing:.06em;color:var(--muted);
+  }
+  .meta-row span b{color:var(--ink);font-weight:500}
+  .equalizer{display:flex;align-items:flex-end;gap:5px;height:74px;margin:34px 0 4px;}
+  .equalizer i{width:9px;border-radius:2px 2px 0 0;display:block;
+    animation:eq 2.6s ease-in-out infinite alternate;transform-origin:bottom}
+  @keyframes eq{from{transform:scaleY(.32)}to{transform:scaleY(1)}}
+
+  /* ---------- THEMES BAND ---------- */
+  .themes{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);
+    border:1px solid var(--line);margin:44px 0 8px;border-radius:14px;overflow:hidden}
+  .theme{background:var(--panel);padding:26px 24px}
+  .theme .n{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--faint);letter-spacing:.2em}
+  .theme h3{font-family:"Archivo",sans-serif;font-weight:800;font-size:19px;margin:10px 0 7px;letter-spacing:-.01em}
+  .theme p{font-size:15px;color:var(--muted);line-height:1.5}
+
+  /* ---------- SECTION HEADS ---------- */
+  .sec-head{display:flex;align-items:baseline;gap:18px;margin:58px 0 6px;flex-wrap:wrap}
+  .sec-head .tag{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.26em;
+    text-transform:uppercase;color:#0c0c0d;background:var(--sc,var(--ink));padding:5px 11px;border-radius:5px;font-weight:700}
+  .sec-head h2{font-family:"Archivo",sans-serif;font-weight:800;font-size:clamp(23px,3.6vw,34px);letter-spacing:-.02em}
+  .sec-head .count{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--faint);letter-spacing:.1em}
+  .sec-sub{color:var(--muted);font-size:15.5px;max-width:740px;margin:4px 0 22px}
+
+  /* ---------- CARD GRID ---------- */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-bottom:8px}
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px 24px 18px;
+    position:relative;overflow:hidden;display:flex;flex-direction:column;
+    opacity:0;transform:translateY(18px);
+    animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  @keyframes rise{to{opacity:1;transform:none}}
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c,var(--ctx))}
+  .card:hover{border-color:var(--line-2);background:var(--panel-2);transition:.25s}
+  .c-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+  .cat{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--c,var(--ctx));display:flex;align-items:center;gap:8px;font-weight:500}
+  .cat .sq{width:9px;height:9px;border-radius:2px;background:var(--c,var(--ctx))}
+  .pill{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;
+    padding:3px 9px;border-radius:20px;white-space:nowrap;text-transform:uppercase;font-weight:500}
+  .pill.ga{background:var(--c,var(--ctx));color:#0c0c0d;font-weight:700}
+  .pill.prev{border:1px solid var(--c,var(--ctx));color:var(--c,var(--ctx))}
+  .pill.pp{border:1px dashed var(--c,var(--ctx));color:var(--c,var(--ctx))}
+  .pill.soon{border:1px solid var(--line-2);color:var(--muted)}
+  .num{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--faint);margin-right:2px}
+  .card h4{font-family:"Archivo",sans-serif;font-weight:800;font-size:21px;letter-spacing:-.01em;
+    line-height:1.12;margin-bottom:9px}
+  .card p.sum{font-size:15.5px;line-height:1.5;color:#cfcabf;flex:1}
+  .links{margin-top:16px;padding-top:13px;border-top:1px solid var(--line);
+    display:flex;flex-wrap:wrap;gap:8px 18px}
+  .links a{
+    font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.04em;
+    color:var(--c,var(--ctx));text-decoration:none;display:inline-flex;align-items:center;gap:6px;
+  }
+  .links a::after{content:"↗";font-size:11px;transition:transform .2s}
+  .links a:hover{text-decoration:underline}
+  .links a:hover::after{transform:translate(2px,-2px)}
+
+  /* category color setters */
+  .ctx{--c:var(--ctx)} .model{--c:var(--model)} .agent{--c:var(--agent)}
+  .dev{--c:var(--dev)} .data{--c:var(--data)} .sec{--c:var(--sec)} .frontier{--c:var(--frontier)}
+  .s-ctx{--sc:var(--ctx)} .s-model{--sc:var(--model)} .s-agent{--sc:var(--agent)}
+  .s-dev{--sc:var(--dev)} .s-data{--sc:var(--data)} .s-sec{--sc:var(--sec)} .s-frontier{--sc:var(--frontier)}
+
+  /* ---------- TOC ---------- */
+  .toc{display:flex;gap:8px;flex-wrap:wrap;margin:26px 0 4px}
+  .toc a{
+    font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:20px;
+    padding:6px 13px;display:inline-flex;align-items:center;gap:8px;transition:.2s;
+  }
+  .toc a i{width:8px;height:8px;border-radius:2px;display:block}
+  .toc a:hover{color:var(--ink);border-color:var(--line-2);background:var(--panel)}
+
+  /* ---------- FOOTER ---------- */
+  footer{margin:64px 0 40px;padding-top:26px;border-top:1px solid var(--line);
+    font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--faint);line-height:1.8}
+  footer b{color:var(--muted);font-weight:500}
+  footer a{color:var(--muted);text-decoration:none;border-bottom:1px solid var(--line-2)}
+
+  @media(max-width:760px){
+    .themes{grid-template-columns:1fr}
+    .grid{grid-template-columns:1fr}
+    header{padding:46px 0 22px}
+  }
+</style>
+<script defer src="https://a.ndme.sh/script.js" data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"></script>
+<style>/* smec-back-btn v2 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  box-sizing: border-box;
+  display: inline-flex; align-items: center; justify-content: flex-start;
+  gap: 8px; height: 40px; padding: 0 16px 0 12px; border-radius: 20px;
+  background: rgba(0, 120, 212, 0.92) !important; color: #fff !important;
+  text-decoration: none !important;
+  font: 600 14px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  transition:
+    padding 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto; display: inline-block;
+  width: 18px; height: 18px; }
+.smec-back-btn__label { display: inline-block; flex: 0 0 auto;
+  font: inherit; color: inherit; }
+.smec-back-btn__more { display: inline-block; max-width: 0; opacity: 0;
+  overflow: hidden; vertical-align: bottom;
+  font: inherit; color: inherit;
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.05s; }
+
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  background: rgba(0, 90, 158, 0.96) !important; color: #fff !important;
+  text-decoration: none !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22); }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__more,
+.smec-back-btn:focus-visible .smec-back-btn__more {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.25s ease 0.2s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn__more { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__more,
+  .smec-back-btn:hover .smec-back-btn__more,
+  .smec-back-btn:focus-visible .smec-back-btn__more {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<!-- smec-meta v1 -->
+<meta name="description" content="Microsoft Build 2026 — All Announcements by Category — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:title" content="Microsoft Build 2026 — All Announcements by Category">
+<meta property="og:description" content="Microsoft Build 2026 — All Announcements by Category — an interactive infographic from the SME&amp;C Infographic Hub.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sme-c-infographics.github.io/conference-rollup/build-2026-announcements-infographic.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Microsoft Build 2026 — All Announcements by Category">
+<meta name="twitter:description" content="Microsoft Build 2026 — All Announcements by Category — an interactive infographic from the SME&amp;C Infographic Hub.">
+<!-- smec-favicon v1 -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<!-- smec-accuracy -->
+<meta name="smec:last-accuracy-check" content="2026-07-16">
+<meta name="smec:accuracy-check-by" content="copilot">
+</head>
+<body>
+<a href="/" class="smec-back-btn" data-smec-back-button="v2" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
+
+<div class="wrap">
+
+  <!-- ===== HERO ===== -->
+  <header>
+    <div class="eyebrow"><span class="dot"></span> Microsoft Build 2026 · Developer Conference Recap</div>
+    <h1>Everything<br><span class="stroke">Announced.</span></h1>
+    <p class="lede">Every major announcement from Build 2026, organized by category — a short summary of what shipped, what state it's in, and a link to read more on each.</p>
+
+    <div class="equalizer" id="eq"></div>
+
+    <div class="meta-row">
+      <span>EVENT&nbsp; <b>June 2–3, 2026</b></span>
+      <span>VENUE&nbsp; <b>Fort Mason, San Francisco + Online</b></span>
+      <span>KEYNOTE&nbsp; <b>Satya Nadella · Mustafa Suleyman · Kyle Daigle</b></span>
+      <span>ANNOUNCEMENTS&nbsp; <b>22 across 7 categories</b></span>
+    </div>
+
+    <nav class="toc">
+      <a href="#ctx"><i style="background:var(--ctx)"></i>Context &amp; Knowledge</a>
+      <a href="#models"><i style="background:var(--model)"></i>AI Models</a>
+      <a href="#agents"><i style="background:var(--agent)"></i>Agents</a>
+      <a href="#dev"><i style="background:var(--dev)"></i>Dev Tools &amp; Devices</a>
+      <a href="#data"><i style="background:var(--data)"></i>Data &amp; Backend</a>
+      <a href="#secgov"><i style="background:var(--sec)"></i>Security &amp; Governance</a>
+      <a href="#frontier"><i style="background:var(--frontier)"></i>Frontier &amp; Infrastructure</a>
+    </nav>
+  </header>
+
+  <!-- ===== THREE KEYNOTE THEMES ===== -->
+  <div class="themes">
+    <div class="theme">
+      <div class="n">THEME 01</div>
+      <h3>Intelligence that's truly yours</h3>
+      <p>Build agents in GitHub, deploy to Foundry, ground them in your own context with Microsoft IQ — ownership of expertise &amp; data, not just access to a model.</p>
+    </div>
+    <div class="theme">
+      <div class="n">THEME 02</div>
+      <h3>The full stack, your way</h3>
+      <p>Silicon → OS → dev tools → cloud, model-diverse and open at every layer. "Windows for developers, period," plus agent-native runtimes and backends.</p>
+    </div>
+    <div class="theme">
+      <div class="n">THEME 03</div>
+      <h3>What comes next</h3>
+      <p>Agentic systems move from code to human progress — accelerating science and R&amp;D, on the same developer platform underneath.</p>
+    </div>
+  </div>
+
+  <!-- ============ 1. CONTEXT & KNOWLEDGE ============ -->
+  <div class="sec-head s-ctx" id="ctx">
+    <span class="tag">01</span>
+    <h2>Context &amp; Knowledge</h2>
+    <span class="count">5 ANNOUNCEMENTS</span>
+  </div>
+  <p class="sec-sub">The new "IQ" family — a context layer that grounds agents in enterprise knowledge, business data, and the live web.</p>
+
+  <div class="grid">
+
+    <div class="card ctx" style="animation-delay:.04s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Context Layer</span>
+        <span class="pill ga">GA</span>
+      </div>
+      <h4><span class="num">1.1</span>Microsoft IQ</h4>
+      <p class="sum">A new context layer that grounds agents in both enterprise knowledge and world knowledge, generally available across GitHub Copilot, Microsoft Foundry and Copilot Studio. The umbrella over Work IQ, Fabric IQ, Foundry IQ and Web IQ.</p>
+      <div class="links">
+        <a href="https://blogs.microsoft.com/blog/2026/06/02/microsoft-build-2026-be-yourself-at-work/" target="_blank">Official Build blog</a>
+      </div>
+    </div>
+
+    <div class="card ctx" style="animation-delay:.08s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Workplace Context</span>
+        <span class="pill ga">GA</span>
+      </div>
+      <h4><span class="num">1.2</span>Work IQ + Work IQ APIs</h4>
+      <p class="sum">The workplace-intelligence layer capturing how work actually happens across Microsoft 365, organizational systems and external sources — people, emails, documents, meetings and how they connect. New APIs give agents programmatic access to that context.</p>
+      <div class="links">
+        <a href="https://aka.ms/MBJ02yr26" target="_blank">Work IQ announcement</a>
+      </div>
+    </div>
+
+    <div class="card ctx" style="animation-delay:.12s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Semantic Data</span>
+        <span class="pill prev">New</span>
+      </div>
+      <h4><span class="num">1.3</span>Fabric IQ</h4>
+      <p class="sum">A shared semantic foundation over structured business data — so agents reason over the same definitions, metrics and entities the business already uses in Microsoft Fabric.</p>
+      <div class="links">
+        <a href="https://aka.ms/azure-data-Build26" target="_blank">Azure Data at Build</a>
+      </div>
+    </div>
+
+    <div class="card ctx" style="animation-delay:.16s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Retrieval</span>
+        <span class="pill ga">GA</span>
+      </div>
+      <h4><span class="num">1.4</span>Foundry IQ</h4>
+      <p class="sum">Unified knowledge with serverless retrieval and retrieval planning across both enterprise knowledge and the live web. Microsoft reports up to ~20% better answers on agentic RAG benchmarks, plus new governance and enterprise-security capabilities.</p>
+      <div class="links">
+        <a href="https://aka.ms/BuildFoundryIQ" target="_blank">Foundry IQ announcement</a>
+      </div>
+    </div>
+
+    <div class="card ctx" style="animation-delay:.20s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Web Grounding</span>
+        <span class="pill prev">New</span>
+      </div>
+      <h4><span class="num">1.5</span>Web IQ</h4>
+      <p class="sum">An AI-first web search stack for grounding agents in real-world, real-time information — model-agnostic and MCP-native, returning relevant passages at roughly 2.5x the speed of the next best alternative.</p>
+      <div class="links">
+        <a href="https://aka.ms/nextgengrounding" target="_blank">Web IQ announcement</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ 2. AI MODELS ============ -->
+  <div class="sec-head s-model" id="models">
+    <span class="tag">02</span>
+    <h2>AI Models</h2>
+    <span class="count">3 ANNOUNCEMENTS</span>
+  </div>
+  <p class="sec-sub">Microsoft's in-house MAI family expands to seven new models, with reinforcement-learning customization and broader third-party model access on Foundry.</p>
+
+  <div class="grid">
+
+    <div class="card model" style="animation-delay:.04s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Model Family</span>
+        <span class="pill pp">Mixed / Preview</span>
+      </div>
+      <h4><span class="num">2.1</span>Seven new MAI models</h4>
+      <p class="sum">Headlined by MAI-Thinking-1 — Microsoft AI's first reasoning model: 35B active parameters, 256K context, trained from scratch on clean, commercially-licensed data. Human raters prefer it to Sonnet 4.6, and it matches Opus 4.6 on SWE Bench Pro coding. Also: MAI-Image-2.5 (+flash, live in PowerPoint and rolling into OneDrive), MAI-Transcribe-1.5 (43 languages), MAI-Voice-2 (+flash, 15+ new languages) and MAI-Code-1-Flash (in Copilot + VS Code). MAI models will also be available on Fireworks AI, Baseten and OpenRouter.</p>
+      <div class="links">
+        <a href="https://aka.ms/MAI-Build" target="_blank">MAI models announcement</a>
+      </div>
+    </div>
+
+    <div class="card model" style="animation-delay:.08s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Customization</span>
+        <span class="pill pp">Private Preview</span>
+      </div>
+      <h4><span class="num">2.2</span>Frontier Tuning</h4>
+      <p class="sum">Applies reinforcement learning inside the customer's compliance boundary so agents learn how the business actually works — using their own data, domain knowledge and workflows in a loop that keeps sharpening as agents run.</p>
+      <div class="links">
+        <a href="https://aka.ms/frontiertuningblog" target="_blank">Frontier Tuning blog</a>
+      </div>
+    </div>
+
+    <div class="card model" style="animation-delay:.12s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Model Catalog</span>
+        <span class="pill ga">GA</span>
+      </div>
+      <h4><span class="num">2.3</span>Fireworks AI on Foundry</h4>
+      <p class="sum">Fireworks AI is now generally available on Microsoft Foundry, giving developers a single platform experience — with enterprise governance and Azure data residency — regardless of which model they choose.</p>
+      <div class="links">
+        <a href="https://aka.ms/BuildFoundryModels" target="_blank">Foundry models announcement</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ 3. AGENTS ============ -->
+  <div class="sec-head s-agent" id="agents">
+    <span class="tag">03</span>
+    <h2>Agents</h2>
+    <span class="count">2 ANNOUNCEMENTS</span>
+  </div>
+  <p class="sec-sub">New form factors for agents — cloud-hosted runtimes with persistent memory, and an always-on personal agent for work.</p>
+
+  <div class="grid">
+
+    <div class="card agent" style="animation-delay:.04s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Agent Runtime</span>
+        <span class="pill prev">Preview</span>
+      </div>
+      <h4><span class="num">3.1</span>Hosted agents in Foundry Agent Service</h4>
+      <p class="sum">Instant-on sandboxes per session with isolated execution, persistent memory and elastic scale — positioned as "the primitive for agents the way containers were for cloud-native apps."</p>
+      <div class="links">
+        <a href="https://aka.ms/BuildFoundryAgents" target="_blank">Foundry agents announcement</a>
+      </div>
+    </div>
+
+    <div class="card agent" style="animation-delay:.08s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Personal Agent</span>
+        <span class="pill soon">Frontier (early)</span>
+      </div>
+      <h4><span class="num">3.2</span>Microsoft Scout</h4>
+      <p class="sum">An always-on personal work agent built on OpenClaw + Work IQ, rolling out first to Frontier customers. It lives in the tools people already use — Teams and Outlook — and proactively handles meeting prep, scheduling conflicts and routine tasks without being asked.</p>
+      <div class="links">
+        <a href="https://aka.ms/ProjectLobster-Blog" target="_blank">Microsoft Scout blog</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ 4. DEV TOOLS & DEVICES ============ -->
+  <div class="sec-head s-dev" id="dev">
+    <span class="tag">04</span>
+    <h2>Developer Tools &amp; Devices</h2>
+    <span class="count">3 ANNOUNCEMENTS</span>
+  </div>
+  <p class="sec-sub">Agent-native development from the desktop down to the silicon — and a Windows that's becoming an agent-native runtime.</p>
+
+  <div class="grid">
+
+    <div class="card dev" style="animation-delay:.04s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Desktop App</span>
+        <span class="pill prev">Preview</span>
+      </div>
+      <h4><span class="num">4.1</span>GitHub Copilot app</h4>
+      <p class="sum">An agent-native desktop experience. Start from an idea, issue or PR, orchestrate multiple agent sessions in parallel (each on its own git worktree), and keep changes moving through review, CI and merge — Copilot executes while the developer stays in control.</p>
+      <div class="links">
+        <a href="https://github.blog/news-insights/product-news/github-copilot-app-the-agent-native-desktop-experience/" target="_blank">GitHub blog</a>
+      </div>
+    </div>
+
+    <div class="card dev" style="animation-delay:.08s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Hardware</span>
+        <span class="pill soon">Later 2026 · US</span>
+      </div>
+      <h4><span class="num">4.2</span>Surface RTX Spark Dev Box</h4>
+      <p class="sum">Built for sustained workloads — long-running training jobs, agentic pipelines and local fine-tuning. Powered by NVIDIA RTX Spark: up to 1 petaflop of AI compute and 128 GB unified memory, running up to 120B-parameter LLMs with up to 1M-token context locally. WSL2 with native GPU passthrough and full CUDA pre-configured; VS Code and Copilot pre-installed.</p>
+      <div class="links">
+        <a href="https://blogs.windows.com/devices/?p=263819" target="_blank">Windows devices blog</a>
+      </div>
+    </div>
+
+    <div class="card dev" style="animation-delay:.12s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>OS Runtime</span>
+        <span class="pill prev">Preview</span>
+      </div>
+      <h4><span class="num">4.3</span>Microsoft Execution Containers (MXC)</h4>
+      <p class="sum">OS-enforced sandboxed environments for agents on Windows — describe requirements once and Windows enforces them everywhere agents run. Already powering OpenClaw on Windows, and NVIDIA's OpenShell secure runtime builds on MXC with policy management, inference routing and PII obfuscation.</p>
+      <div class="links">
+        <a href="https://aka.ms/Windows-Build2026" target="_blank">Windows at Build 2026</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ 5. DATA & BACKEND ============ -->
+  <div class="sec-head s-data" id="data">
+    <span class="tag">05</span>
+    <h2>Data &amp; Backend</h2>
+    <span class="count">3 ANNOUNCEMENTS</span>
+  </div>
+  <p class="sec-sub">From prototype to production — managed backends, an AI-era Postgres service, and a GPU-accelerated warehouse.</p>
+
+  <div class="grid">
+
+    <div class="card data" style="animation-delay:.04s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Backend-as-a-Service</span>
+        <span class="pill prev">Preview</span>
+      </div>
+      <h4><span class="num">5.1</span>Rayfin</h4>
+      <p class="sum">A managed backend-as-a-service on Microsoft Fabric, defined through GitHub-based workflows — databases, APIs, authentication and infrastructure without managing them. A Replit integration creates a fast path from prototype to enterprise-grade deployment with governance from day one.</p>
+      <div class="links">
+        <a href="https://www.microsoft.com/en-us/microsoft-fabric/features/rayfin" target="_blank">Rayfin overview</a>
+      </div>
+    </div>
+
+    <div class="card data" style="animation-delay:.08s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Database</span>
+        <span class="pill prev">New</span>
+      </div>
+      <h4><span class="num">5.2</span>Azure HorizonDB</h4>
+      <p class="sum">A fully managed PostgreSQL service on Azure, engineered for the AI era — Microsoft reports more than 3x the throughput of comparable self-managed setups in internal testing, with the performance and reliability scaling agentic applications demand.</p>
+      <div class="links">
+        <a href="https://news.microsoft.com/build-2026/" target="_blank">Build 2026 news hub</a>
+      </div>
+    </div>
+
+    <div class="card data" style="animation-delay:.12s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Analytics</span>
+        <span class="pill prev">New</span>
+      </div>
+      <h4><span class="num">5.3</span>GPU-accelerated Fabric Data Warehouse</h4>
+      <p class="sum">In internal benchmarking (May 2026), the GPU-accelerated Fabric Data Warehouse ran up to 7x faster than three other major cloud warehouses across common reporting and application workloads.</p>
+      <div class="links">
+        <a href="https://news.microsoft.com/build-2026/" target="_blank">Build 2026 news hub</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ 6. SECURITY & GOVERNANCE ============ -->
+  <div class="sec-head s-sec" id="secgov">
+    <span class="tag">06</span>
+    <h2>Security &amp; Governance</h2>
+    <span class="count">3 ANNOUNCEMENTS</span>
+  </div>
+  <p class="sec-sub">A control plane, an open trust stack, and an agentic security system — governance designed to keep pace with agent adoption.</p>
+
+  <div class="grid">
+
+    <div class="card sec" style="animation-delay:.04s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Control Plane</span>
+        <span class="pill prev">Available</span>
+      </div>
+      <h4><span class="num">6.1</span>Agent 365 for local agents</h4>
+      <p class="sum">Extends Entra, Defender and Purview into a single control plane to observe, govern and secure agents across the estate — regardless of where they're hosted or what framework they're built on.</p>
+      <div class="links">
+        <a href="https://aka.ms/Build2026/SecureLocalAgents" target="_blank">Agent 365 announcement</a>
+      </div>
+    </div>
+
+    <div class="card sec" style="animation-delay:.08s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Open Trust Stack</span>
+        <span class="pill prev">Open Source</span>
+      </div>
+      <h4><span class="num">6.2</span>ASSERT + Agent Control Specification</h4>
+      <p class="sum">An open, end-to-end trust stack for AI agents on any framework, anchored by two open-source projects: ASSERT (Adaptive Spec-driven Scoring for Evaluation and Regression Testing) for policy-driven safety evaluation, and the Agent Control Specification to standardize where and how controls apply in the agent loop.</p>
+      <div class="links">
+        <a href="https://commandline.microsoft.com/assert-written-intent-executable-evals/" target="_blank">ASSERT</a>
+        <a href="https://commandline.microsoft.com/agent-control-specification-runtime-governance/" target="_blank">Agent Control Spec</a>
+      </div>
+    </div>
+
+    <div class="card sec" style="animation-delay:.12s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Agentic Security</span>
+        <span class="pill prev">New</span>
+      </div>
+      <h4><span class="num">6.3</span>Codename MDASH</h4>
+      <p class="sum">A multi-model agentic security system that deploys 100+ agents to find exploitable bugs by reasoning about data flow, business logic and exploit chains — delivering context-aware fixes directly in the Defender Portal.</p>
+      <div class="links">
+        <a href="https://aka.ms/AgenticDevSecOps" target="_blank">MDASH announcement</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ 7. FRONTIER & INFRASTRUCTURE ============ -->
+  <div class="sec-head s-frontier" id="frontier">
+    <span class="tag">07</span>
+    <h2>Frontier &amp; Infrastructure</h2>
+    <span class="count">3 ANNOUNCEMENTS</span>
+  </div>
+  <p class="sec-sub">New silicon for agentic workloads, agentic AI for science, and the next step toward scalable quantum computing.</p>
+
+  <div class="grid">
+
+    <div class="card frontier" style="animation-delay:.04s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Compute</span>
+        <span class="pill prev">New</span>
+      </div>
+      <h4><span class="num">7.1</span>Azure Cobalt 200 VMs</h4>
+      <p class="sum">A new VM generation delivering a ~50% performance improvement, fully optimized for modern agentic AI workloads.</p>
+      <div class="links">
+        <a href="https://news.microsoft.com/build-2026/" target="_blank">Build 2026 news hub</a>
+      </div>
+    </div>
+
+    <div class="card frontier" style="animation-delay:.08s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Science</span>
+        <span class="pill ga">GA</span>
+      </div>
+      <h4><span class="num">7.2</span>Microsoft Discovery</h4>
+      <p class="sum">An enterprise-grade agentic AI platform on Azure for the full science workflow — BHP is finding copper-leaching solutions in months instead of years, Syensqo is accelerating semiconductor R&amp;D, and GSK is iterating on drug discovery. A free Discovery local app (requiring only a GitHub Copilot account) is also in preview.</p>
+      <div class="links">
+        <a href="https://aka.ms/MicrosoftDiscoveryBlog" target="_blank">Microsoft Discovery blog</a>
+      </div>
+    </div>
+
+    <div class="card frontier" style="animation-delay:.12s">
+      <div class="c-top">
+        <span class="cat"><span class="sq"></span>Quantum</span>
+        <span class="pill soon">Research</span>
+      </div>
+      <h4><span class="num">7.3</span>Majorana 2</h4>
+      <p class="sum">The next-generation quantum chip: ~20-second average qubit lifetime (instances up to a minute), 1,000x higher reliability than the previous generation, and a path to one million qubits on a palm-sized chip. Microsoft targets a scalable quantum machine by 2029.</p>
+      <div class="links">
+        <a href="https://aka.ms/m2blog" target="_blank">Majorana 2 blog</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <b>Sources:</b> Official Microsoft Blog — <a href="https://blogs.microsoft.com/blog/2026/06/02/microsoft-build-2026-be-yourself-at-work/" target="_blank">"Microsoft Build 2026: Be yourself at work"</a> (Kyle Daigle, Jun 2 2026) · <a href="https://news.microsoft.com/build-2026/" target="_blank">Microsoft Build 2026 news hub</a> · <a href="https://news.microsoft.com/build-2026-live-blog/microsoft-build-2026-live/" target="_blank">Microsoft Build Live blog</a>.<br>
+    <b>Note:</b> Status labels (GA / Preview / Private Preview) reflect Microsoft's framing at Build 2026. Benchmark and performance figures are Microsoft-reported, some via internal testing or third-party raters. Compiled June 4, 2026.
+  </footer>
+
+</div>
+
+<script>
+  // Build the equalizer bar motif (the Build 2026 visual identity)
+  (function(){
+    var colors=['#E8B04B','#D2694A','#57B6A6','#A9B86A','#C97FA0','#8A93A0'];
+    var eq=document.getElementById('eq');
+    var n = window.innerWidth < 640 ? 22 : 42;
+    for(var i=0;i<n;i++){
+      var b=document.createElement('i');
+      b.style.background=colors[i%colors.length];
+      b.style.height=(28+Math.random()*46)+'px';
+      b.style.animationDelay=(Math.random()*2.6).toFixed(2)+'s';
+      b.style.animationDuration=(1.8+Math.random()*1.6).toFixed(2)+'s';
+      b.style.opacity=0.55+Math.random()*0.45;
+      eq.appendChild(b);
+    }
+  })();
+</script>
+</body>
+</html>
