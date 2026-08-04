@@ -88,7 +88,7 @@ EOL_RE = re.compile(
 
 # Markers from existing chrome scripts.
 TRACKING_MARKER = 'data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"'
-BACK_BUTTON_MARKER = 'data-smec-back-button="v2"'
+BACK_BUTTON_MARKER = 'data-smec-back-button="v3"'
 
 
 def _read(path: str) -> str:

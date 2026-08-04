@@ -32,19 +32,20 @@ import sys
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT_INDEX = os.path.join(REPO_ROOT, "index.html")
 
-MARKER = 'data-smec-back-button="v2"'
-STYLE_MARKER = "/* smec-back-btn v2 */"
+MARKER = 'data-smec-back-button="v3"'
+STYLE_MARKER = "/* smec-back-btn v3 */"
 
-# Legacy v1 markers — when found, the v1 style block and anchor are
-# stripped so the current v2 versions can replace them cleanly.
+# Legacy v1/v2 markers — when found, their style blocks and anchors are
+# stripped so the current version can replace them cleanly.
 OLD_STYLE_MARKER = "/* smec-back-btn v1 */"
 OLD_ANCHOR_RE = re.compile(
-    r'[ \t]*<a\b[^>]*\bdata-smec-back-button\s*=\s*["\']v1["\'][^>]*>'
+    r'[ \t]*<a\b[^>]*\bdata-smec-back-button\s*=\s*["\']v[12]["\'][^>]*>'
     r'.*?</a>\s*\r?\n?',
     re.IGNORECASE | re.DOTALL,
 )
 OLD_STYLE_RE = re.compile(
-    r'[ \t]*<style>\s*/\*\s*smec-back-btn v1\s*\*/.*?</style>\s*\r?\n?',
+    r'[ \t]*<style>\s*/\*\s*smec-back-btn v[12]\s*\*/'
+    r'(?:(?!</style>).)*?</style>\s*\r?\n?',
     re.IGNORECASE | re.DOTALL,
 )
 
@@ -108,7 +109,7 @@ BACK_BUTTON_STYLE = (
 )
 
 BACK_BUTTON_ANCHOR = (
-    '<a href="/" class="smec-back-btn" ' + MARKER
+    '<a href="../" class="smec-back-btn" ' + MARKER
     + ' aria-label="Back to SME&amp;C Infographics">'
     '<svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24"'
     ' width="18" height="18"><path fill="currentColor"'
@@ -125,7 +126,7 @@ META_REFRESH_RE = re.compile(
     r'<meta\s+http-equiv=["\']refresh["\']', re.IGNORECASE
 )
 ANCHOR_RE = re.compile(
-    r'<a\b[^>]*\bdata-smec-back-button\s*=\s*["\']v2["\']', re.IGNORECASE
+    r'<a\b[^>]*\bdata-smec-back-button\s*=\s*["\']v3["\']', re.IGNORECASE
 )
 
 SKIP_DIRS = {".git", "node_modules", ".github"}
@@ -162,17 +163,10 @@ def ensure_button(filepath: str, check_only: bool = False) -> str:
     if has_anchor and has_style:
         return "present"
 
-    # Strip any v1 leftovers before re-injecting the v2 button.
-    if OLD_STYLE_MARKER in content:
+    # Strip outdated button markup before re-injecting the current version.
+    if OLD_STYLE_MARKER in content or "/* smec-back-btn v2 */" in content:
         content = OLD_STYLE_RE.sub("", content)
     content = OLD_ANCHOR_RE.sub("", content)
-
-    head_match = HEAD_CLOSE_RE.search(content)
-    if not head_match:
-        return "nohead"
-    body_match = BODY_OPEN_RE.search(content)
-    if not body_match:
-        return "nobody"
 
     if check_only:
         return "missing"
@@ -181,6 +175,13 @@ def ensure_button(filepath: str, check_only: bool = False) -> str:
     nl = "\r\n" if "\r\n" in content else "\n"
 
     new_content = content
+
+    head_match = HEAD_CLOSE_RE.search(new_content)
+    if not head_match:
+        return "nohead"
+    body_match = BODY_OPEN_RE.search(new_content)
+    if not body_match:
+        return "nobody"
 
     if not has_style:
         indent = head_match.group("indent")

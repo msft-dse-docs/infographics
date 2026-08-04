@@ -158,7 +158,7 @@ def _render(rel: str,
     )
     parts.append(
         "- Preserve all idempotency markers verbatim: "
-        "`data-website-id=...`, `data-smec-back-button=\"v2\"`, "
+        "`data-website-id=...`, `data-smec-back-button=\"v3\"`, "
         "`<!-- smec-meta v1 -->`, `<!-- smec-favicon v1 -->`, "
         "`<!-- smec-tmpl:<id> -->`."
     )
