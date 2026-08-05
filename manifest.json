@@ -53,10 +53,6 @@
         "title": "The Anatomy of an AI Agent — A Field Guide, Second Edition"
       },
       {
-        "file": "ai-agent-maturity-spectrum.html",
-        "title": "AI Agents: From Chatbot to Autonomous Workflow — Microsoft"
-      },
-      {
         "file": "ai-gateway-apim.html",
         "title": "AI Gateway in Azure API Management — One Front Door for Every Model"
       },
