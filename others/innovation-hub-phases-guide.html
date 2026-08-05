@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Find Your Phase — Microsoft Innovation Hub Decision Guide</title>
+<style>
+  :root {
+    --bg: #fafbfc;
+    --surface: #ffffff;
+    --ink: #0c1222;
+    --ink-soft: #3d4461;
+    --muted: #6b7290;
+    --line: #e6e9ef;
+    --line-strong: #c9cdd9;
+    --ms-blue: #0078d4;
+    --ms-blue-dark: #005a9e;
+    --purple: #8661c5;
+    --cyan: #00a4ef;
+    --green: #107c10;
+    --orange: #d83b01;
+    --amber: #ca5010;
+    --shadow-sm: 0 1px 3px rgba(12, 18, 34, 0.06), 0 1px 2px rgba(12, 18, 34, 0.04);
+    --shadow-md: 0 10px 30px -10px rgba(12, 18, 34, 0.18);
+    --shadow-lg: 0 25px 60px -20px rgba(12, 18, 34, 0.25);
+    --sans: "Segoe UI", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.55; -webkit-font-smoothing: antialiased; }
+
+  .progress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--purple), var(--ms-blue), var(--cyan), var(--green), var(--orange)); width: 0%; z-index: 9999; transition: width 0.1s ease; }
+
+  nav.top {
+    position: sticky; top: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line); z-index: 100; padding: 0.9rem 2rem;
+    display: flex; gap: 1.2rem; align-items: center; overflow-x: auto; white-space: nowrap;
+  }
+  nav.top .brand { font-weight: 700; font-size: 0.95rem; color: var(--ink); margin-right: auto; display: flex; align-items: center; gap: 0.5rem; }
+  nav.top .brand::before { content: ""; width: 18px; height: 18px; border-radius: 3px; background: linear-gradient(135deg, var(--ms-blue), var(--cyan)); display: inline-block; }
+  nav.top a { color: var(--muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; padding: 0.35rem 0.8rem; border-radius: 6px; transition: all 0.2s; }
+  nav.top a:hover, nav.top a.active { background: var(--ms-blue); color: #fff; }
+
+  .container { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+  section { padding: 5rem 0; position: relative; }
+  .section-tag { display: inline-block; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ms-blue); font-weight: 700; margin-bottom: 0.8rem; }
+  h1, h2, h3, h4 { color: var(--ink); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+  h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+  h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+  p { color: var(--ink-soft); }
+  .lead { font-size: 1.15rem; color: var(--ink-soft); max-width: 780px; }
+
+  /* HERO */
+  .hero { padding: 6rem 0 4rem; background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%); position: relative; overflow: hidden; }
+  .hero::before { content: ""; position: absolute; top: -100px; right: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(0,120,212,0.08), transparent 70%); pointer-events: none; }
+  .hero::after { content: ""; position: absolute; bottom: -200px; left: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(134,97,197,0.08), transparent 70%); pointer-events: none; }
+  .hero-inner { position: relative; z-index: 1; max-width: 900px; }
+  .hero-pill { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.4rem 1rem; background: rgba(0,120,212,0.08); color: var(--ms-blue); border-radius: 999px; font-size: 0.82rem; font-weight: 600; margin-bottom: 1.5rem; }
+  .hero-pill::before { content: ""; width: 8px; height: 8px; background: var(--ms-blue); border-radius: 50%; }
+  .hero h1 { font-size: 4rem; margin-bottom: 1.5rem; letter-spacing: -0.035em; line-height: 1.02; }
+  .hero h1 .grad { background: linear-gradient(135deg, var(--ms-blue), var(--purple)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero-sub { font-size: 1.25rem; color: var(--ink-soft); margin-bottom: 2rem; max-width: 720px; }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+  .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: all 0.2s; }
+  .btn-primary { background: var(--ms-blue); color: #fff; }
+  .btn-primary:hover { background: var(--ms-blue-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line-strong); }
+  .btn-ghost:hover { background: #fff; border-color: var(--ink); }
+
+  /* Journey strip */
+  .journey-strip { margin-top: 4rem; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 2rem; box-shadow: var(--shadow-sm); overflow-x: auto; }
+  .journey-strip-title { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 1.5rem; }
+  .journey { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; align-items: stretch; min-width: 960px; }
+  .journey-node { position: relative; padding: 1.2rem 1rem; text-align: center; }
+  .journey-node:not(:last-child)::after {
+    content: "→"; position: absolute; right: -12px; top: 50%; transform: translateY(-50%);
+    font-size: 1.4rem; color: var(--line-strong); z-index: 2;
+  }
+  .journey-node .dot {
+    width: 40px; height: 40px; border-radius: 50%; margin: 0 auto 0.7rem;
+    background: var(--phase-color, var(--ms-blue)); color: #fff; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1.1rem; box-shadow: 0 4px 12px -4px var(--phase-color, var(--ms-blue));
+  }
+  .journey-node h4 { font-size: 0.95rem; margin-bottom: 0.2rem; }
+  .journey-node .dur { font-size: 0.78rem; color: var(--muted); }
+  .journey-node .maturity { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--phase-color); font-weight: 700; margin-top: 0.5rem; }
+
+  /* Decision helper */
+  .decision { background: var(--surface); border-top: 1px solid var(--line); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; margin-top: 2.5rem; }
+  .decision-intro h2 { margin-bottom: 1rem; }
+  .decision-intro .tip { margin-top: 1.5rem; padding: 1rem 1.2rem; background: rgba(0,120,212,0.06); border-left: 3px solid var(--ms-blue); border-radius: 4px; font-size: 0.92rem; }
+  .decision-intro .tip strong { color: var(--ms-blue); }
+
+  .quiz {
+    background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 2rem;
+    box-shadow: var(--shadow-md); position: sticky; top: 90px;
+  }
+  .quiz h3 { margin-bottom: 0.3rem; }
+  .quiz .quiz-sub { color: var(--muted); font-size: 0.88rem; margin-bottom: 1.5rem; }
+  .quiz-q { margin-bottom: 1.2rem; }
+  .quiz-q label { display: block; font-weight: 600; font-size: 0.88rem; color: var(--ink); margin-bottom: 0.5rem; }
+  .quiz-opts { display: flex; flex-direction: column; gap: 0.4rem; }
+  .quiz-opt { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.8rem; border: 1px solid var(--line); border-radius: 6px; cursor: pointer; font-size: 0.88rem; transition: all 0.15s; }
+  .quiz-opt:hover { background: rgba(0,120,212,0.04); border-color: var(--ms-blue); }
+  .quiz-opt input { accent-color: var(--ms-blue); }
+  .quiz-opt.selected { background: rgba(0,120,212,0.08); border-color: var(--ms-blue); }
+  .quiz-result {
+    margin-top: 1.5rem; padding: 1.2rem; background: linear-gradient(135deg, rgba(0,120,212,0.06), rgba(134,97,197,0.06));
+    border: 1px solid var(--line); border-radius: 10px; text-align: center; min-height: 90px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .quiz-result .rec-label { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+  .quiz-result .rec-phase { font-size: 1.3rem; font-weight: 700; color: var(--ms-blue); margin: 0.3rem 0; }
+  .quiz-result .rec-desc { font-size: 0.85rem; color: var(--ink-soft); }
+  .quiz-result.empty .rec-label { color: var(--muted); }
+  .quiz-result.empty .rec-phase { color: var(--muted); font-size: 1rem; font-weight: 500; font-style: italic; }
+
+  /* Phase cards */
+  .phase-cards { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-top: 3rem; }
+  .phase-card {
+    background: #fff; border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+    display: grid; grid-template-columns: 90px 1fr; box-shadow: var(--shadow-sm); transition: all 0.3s;
+  }
+  .phase-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .phase-stripe {
+    background: linear-gradient(180deg, var(--phase-color), var(--phase-color-dark));
+    color: #fff; padding: 2rem 1rem; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+  }
+  .phase-stripe .num { font-size: 3rem; font-weight: 700; line-height: 1; letter-spacing: -0.05em; }
+  .phase-stripe .rune { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.85; margin-top: 0.3rem; }
+  .phase-body { padding: 2rem; }
+  .phase-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+  .phase-head h3 { font-size: 1.5rem; margin: 0; color: var(--ink); }
+  .phase-head .pitch { font-size: 0.9rem; color: var(--phase-color); font-weight: 600; }
+  .phase-meta { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.2rem; font-size: 0.82rem; color: var(--muted); }
+  .phase-meta span { display: inline-flex; align-items: center; gap: 0.35rem; }
+  .phase-meta strong { color: var(--ink); font-weight: 600; }
+  .phase-card .tagline { color: var(--ink-soft); margin-bottom: 1.2rem; }
+  .phase-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+  .phase-grid .col h5 { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 0.5rem; }
+  .phase-grid .col ul { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+  .phase-grid .col ul li { font-size: 0.85rem; color: var(--ink-soft); padding-left: 1rem; position: relative; line-height: 1.4; }
+  .phase-grid .col ul li::before { content: "●"; position: absolute; left: 0; color: var(--phase-color); font-size: 0.5rem; top: 0.55rem; }
+  .phase-card .ideal {
+    margin-top: 1.2rem; padding: 0.8rem 1rem; background: rgba(0,0,0,0.02); border-left: 3px solid var(--phase-color); border-radius: 4px;
+    font-size: 0.85rem; color: var(--ink-soft);
+  }
+  .phase-card .ideal strong { color: var(--ink); display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.3rem; }
+
+  .p-exec { --phase-color: var(--purple); --phase-color-dark: #6744a3; }
+  .p-biz { --phase-color: var(--ms-blue); --phase-color-dark: var(--ms-blue-dark); }
+  .p-sol { --phase-color: var(--cyan); --phase-color-dark: #0080bf; }
+  .p-arch { --phase-color: var(--green); --phase-color-dark: #0c5e0c; }
+  .p-proto { --phase-color: var(--orange); --phase-color-dark: #a82c00; }
+
+  /* Maturity matrix */
+  .matrix-wrap { background: #fff; border-radius: 14px; padding: 2rem; box-shadow: var(--shadow-sm); border: 1px solid var(--line); overflow-x: auto; margin-top: 2.5rem; }
+  table.matrix { width: 100%; border-collapse: collapse; min-width: 820px; }
+  table.matrix th { text-align: left; padding: 1rem 0.8rem; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; color: var(--muted); border-bottom: 2px solid var(--line-strong); }
+  table.matrix td { padding: 1.1rem 0.8rem; border-bottom: 1px solid var(--line); font-size: 0.9rem; color: var(--ink-soft); vertical-align: top; }
+  table.matrix td:first-child { font-weight: 600; color: var(--ink); }
+  table.matrix .pill {
+    display: inline-block; padding: 0.25rem 0.65rem; border-radius: 999px; font-size: 0.72rem; font-weight: 700;
+    background: rgba(0,0,0,0.04); color: var(--ink);
+  }
+  table.matrix .pill.exec { background: rgba(134,97,197,0.12); color: var(--purple); }
+  table.matrix .pill.biz { background: rgba(0,120,212,0.12); color: var(--ms-blue); }
+  table.matrix .pill.sol { background: rgba(0,164,239,0.12); color: #0080bf; }
+  table.matrix .pill.arch { background: rgba(16,124,16,0.12); color: var(--green); }
+  table.matrix .pill.proto { background: rgba(216,59,1,0.12); color: var(--orange); }
+
+  /* Sequencing */
+  .seq-section { background: linear-gradient(180deg, var(--bg) 0%, #fff 100%); }
+  .seq-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 2.5rem; }
+  .seq-card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 1.8rem; box-shadow: var(--shadow-sm); transition: all 0.3s; }
+  .seq-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+  .seq-card .persona { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 0.4rem; }
+  .seq-card h4 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+  .seq-card .state { font-size: 0.88rem; color: var(--ink-soft); margin-bottom: 1.2rem; font-style: italic; }
+  .seq-card .path { display: flex; align-items: center; flex-wrap: wrap; gap: 0.4rem; font-size: 0.82rem; }
+  .seq-card .path .step { padding: 0.3rem 0.7rem; border-radius: 4px; background: #f4f6fa; color: var(--ink); font-weight: 600; border: 1px solid var(--line); }
+  .seq-card .path .arrow { color: var(--muted); }
+  .seq-card .outcome { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: 0.85rem; color: var(--ms-blue); font-weight: 600; }
+
+  /* FAQ */
+  .faq-list { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 2.5rem; max-width: 900px; }
+  .faq-item { background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .faq-item summary { padding: 1.2rem 1.5rem; cursor: pointer; font-weight: 600; color: var(--ink); font-size: 1rem; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+  .faq-item summary::after { content: "+"; color: var(--ms-blue); font-size: 1.5rem; font-weight: 400; transition: transform 0.2s; }
+  .faq-item[open] summary::after { transform: rotate(45deg); }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item .faq-a { padding: 0 1.5rem 1.3rem; color: var(--ink-soft); font-size: 0.92rem; line-height: 1.6; }
+
+  /* CTA */
+  .cta { background: linear-gradient(135deg, var(--ms-blue) 0%, var(--purple) 100%); color: #fff; padding: 5rem 0; text-align: center; }
+  .cta h2 { color: #fff; font-size: 2.5rem; margin-bottom: 1rem; }
+  .cta p { color: rgba(255,255,255,0.88); font-size: 1.1rem; max-width: 680px; margin: 0 auto 2rem; }
+  .cta .btn { background: #fff; color: var(--ms-blue); padding: 1rem 2rem; font-size: 1rem; }
+  .cta .btn:hover { background: #fff; color: var(--ms-blue-dark); }
+
+  footer { background: #0b1220; color: rgba(255,255,255,0.7); padding: 3rem 0 2rem; text-align: center; }
+  footer .brand-mark { color: #fff; font-weight: 700; font-size: 1.1rem; margin-bottom: 0.4rem; }
+  footer p { color: rgba(255,255,255,0.55); font-size: 0.85rem; max-width: 700px; margin: 0.4rem auto; }
+  footer a { color: var(--cyan); text-decoration: none; }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 960px) {
+    .hero h1 { font-size: 2.6rem; }
+    .decision-grid { grid-template-columns: 1fr; }
+    .quiz { position: static; }
+    .phase-card { grid-template-columns: 1fr; }
+    .phase-stripe { padding: 1rem; flex-direction: row; gap: 1rem; }
+    .phase-grid { grid-template-columns: 1fr; }
+    .seq-grid { grid-template-columns: 1fr; }
+    nav.top { padding: 0.6rem 1rem; gap: 0.8rem; }
+    section { padding: 3rem 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<nav class="top">
+  <span class="brand">Innovation Hub · Phase Guide</span>
+  <a href="#framework">Framework</a>
+  <a href="#decide">Decide</a>
+  <a href="#phases">Phases</a>
+  <a href="#matrix">Maturity</a>
+  <a href="#sequences">Sequences</a>
+  <a href="#faq">FAQ</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero-inner">
+    <span class="hero-pill">Microsoft Innovation Hub · Decision guide for customers</span>
+    <h1>Great ideas need the <span class="grad">right room</span> — at the right time.</h1>
+    <p class="hero-sub">The Microsoft Innovation Hub offers a proven envisioning framework with five engagement phases. This guide helps you find the one that fits <em>where you are today</em> — not where someone assumed you should be — so your first day at the Hub actually moves your business forward.</p>
+    <div class="hero-ctas">
+      <a href="#decide" class="btn btn-primary">Find my phase →</a>
+      <a href="#phases" class="btn btn-ghost">Compare all five</a>
+    </div>
+
+    <div class="journey-strip reveal">
+      <p class="journey-strip-title">The common envisioning framework — left to right</p>
+      <div class="journey">
+        <div class="journey-node" style="--phase-color: #8661c5;">
+          <div class="dot">0</div>
+          <h4>Executive Briefing</h4>
+          <p class="dur">½ day</p>
+          <p class="maturity">Curious</p>
+        </div>
+        <div class="journey-node" style="--phase-color: #0078d4;">
+          <div class="dot">1</div>
+          <h4>Business Envisioning</h4>
+          <p class="dur">1 day</p>
+          <p class="maturity">Exploring</p>
+        </div>
+        <div class="journey-node" style="--phase-color: #00a4ef;">
+          <div class="dot">2</div>
+          <h4>Solution Envisioning</h4>
+          <p class="dur">1 day</p>
+          <p class="maturity">Narrowing</p>
+        </div>
+        <div class="journey-node" style="--phase-color: #107c10;">
+          <div class="dot">3</div>
+          <h4>Architecture Design</h4>
+          <p class="dur">1–2 days</p>
+          <p class="maturity">Designing</p>
+        </div>
+        <div class="journey-node" style="--phase-color: #d83b01;">
+          <div class="dot">4</div>
+          <h4>Rapid Prototype</h4>
+          <p class="dur">Multi-week</p>
+          <p class="maturity">Proving</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DECISION SECTION -->
+<section class="decision" id="decide">
+  <div class="container">
+    <div class="decision-grid">
+      <div class="decision-intro">
+        <span class="section-tag">Find your fit</span>
+        <h2>Pick your phase in 30 seconds.</h2>
+        <p class="lead">Answer three quick questions. We'll recommend the phase that matches your current state — plus suggest what comes next.</p>
+        <div class="tip">
+          <strong>No wrong answers.</strong> The framework is designed so any phase is a valid starting point. The goal isn't to start at phase 1 — it's to start where your organization is ready to get value today.
+        </div>
+      </div>
+
+      <div class="quiz" id="quiz">
+        <h3>Phase selector</h3>
+        <p class="quiz-sub">Three questions. Live recommendation.</p>
+
+        <div class="quiz-q">
+          <label>1. How clear is your use case?</label>
+          <div class="quiz-opts" data-q="usecase">
+            <label class="quiz-opt"><input type="radio" name="usecase" value="none"><span>We haven't picked one yet — still exploring the art of the possible</span></label>
+            <label class="quiz-opt"><input type="radio" name="usecase" value="vague"><span>We have a theme (e.g. "use AI in support") but haven't chosen a specific use case</span></label>
+            <label class="quiz-opt"><input type="radio" name="usecase" value="clear"><span>We've named a specific use case and the business outcome we want</span></label>
+            <label class="quiz-opt"><input type="radio" name="usecase" value="scoped"><span>The use case is scoped and we need to pick a technical approach</span></label>
+            <label class="quiz-opt"><input type="radio" name="usecase" value="designed"><span>Design is done — we need to prove it works before committing</span></label>
+          </div>
+        </div>
+
+        <div class="quiz-q">
+          <label>2. Who's driving the conversation?</label>
+          <div class="quiz-opts" data-q="audience">
+            <label class="quiz-opt"><input type="radio" name="audience" value="exec"><span>Executives / business leadership — building the case for action</span></label>
+            <label class="quiz-opt"><input type="radio" name="audience" value="biz"><span>Business + IT mixed — exploring opportunities together</span></label>
+            <label class="quiz-opt"><input type="radio" name="audience" value="tech"><span>Technical architects + product owners — deciding the "how"</span></label>
+            <label class="quiz-opt"><input type="radio" name="audience" value="dev"><span>Engineers + developers — ready to build hands-on</span></label>
+          </div>
+        </div>
+
+        <div class="quiz-q">
+          <label>3. What outcome would make this engagement a win?</label>
+          <div class="quiz-opts" data-q="outcome">
+            <label class="quiz-opt"><input type="radio" name="outcome" value="inspire"><span>Executive alignment and a bias to act</span></label>
+            <label class="quiz-opt"><input type="radio" name="outcome" value="prioritize"><span>A prioritized shortlist of use cases with first-step clarity</span></label>
+            <label class="quiz-opt"><input type="radio" name="outcome" value="direction"><span>A shared technical direction with Microsoft + partners mapped in</span></label>
+            <label class="quiz-opt"><input type="radio" name="outcome" value="architecture"><span>A target architecture and risk-aware migration plan</span></label>
+            <label class="quiz-opt"><input type="radio" name="outcome" value="proof"><span>Working code proving the hard part is tractable</span></label>
+          </div>
+        </div>
+
+        <div class="quiz-result empty" id="result">
+          <div class="rec-label">Your recommended phase</div>
+          <div class="rec-phase">Answer the questions above…</div>
+          <div class="rec-desc"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE DEEP DIVES -->
+<section id="phases">
+  <div class="container">
+    <span class="section-tag">The five phases</span>
+    <h2>Each phase, explained.</h2>
+    <p class="lead">Every Hub phase has a specific job. Match the phase to the job you need done — not the other way around.</p>
+
+    <div class="phase-cards">
+
+      <!-- Executive Briefing -->
+      <div class="phase-card p-exec reveal">
+        <div class="phase-stripe">
+          <div>
+            <div class="num">0</div>
+            <div class="rune">Awareness</div>
+          </div>
+        </div>
+        <div class="phase-body">
+          <div class="phase-head">
+            <h3>Executive Briefing</h3>
+            <span class="pitch">Build trust. Set the agenda.</span>
+          </div>
+          <div class="phase-meta">
+            <span>⏱ <strong>½ day</strong></span>
+            <span>👥 <strong>Execs, sponsors</strong></span>
+            <span>📍 <strong>Experience Center One · Regional Experience Centers</strong></span>
+          </div>
+          <p class="tagline">A strategic, curated conversation to show what's possible, frame Microsoft's POV on your industry, and align leadership on <em>why now</em>. Not a demo tour — a directed, decision-ready dialogue.</p>
+          <div class="phase-grid">
+            <div class="col">
+              <h5>What you get</h5>
+              <ul>
+                <li>Industry-specific Microsoft POV</li>
+                <li>AI trends and peer benchmarks</li>
+                <li>Executive-level Q&A with leaders</li>
+                <li>Bias to act and named next step</li>
+              </ul>
+            </div>
+            <div class="col">
+              <h5>You bring</h5>
+              <ul>
+                <li>C-suite and VP-level sponsors</li>
+                <li>Top 2–3 strategic questions</li>
+                <li>A willingness to challenge and be challenged</li>
+              </ul>
+            </div>
+            <div class="col">
+              <h5>You leave with</h5>
+              <ul>
+                <li>Shared language around the opportunity</li>
+                <li>Agreement on whether to proceed</li>
+                <li>A name, a date, and a phase for next step</li>
+              </ul>
+            </div>
+          </div>
+          <div class="ideal"><strong>Ideal if</strong>Leadership is aware of AI pressure but hasn't committed. You need inspiration and alignment before you can justify scoped investment.</div>
+        </div>
+      </div>
+
+      <!-- Business Envisioning -->
+      <div class="phase-card p-biz reveal">
+        <div class="phase-stripe">
+          <div>
+            <div class="num">1</div>
+            <div class="rune">Discovery</div>
+          </div>
+        </div>
+        <div class="phase-body">
+          <div class="phase-head">
+            <h3>Business Envisioning</h3>
+            <span class="pitch">Explore wide. Narrow with intent.</span>
+          </div>
+          <div class="phase-meta">
+            <span>⏱ <strong>1 day</strong></span>
+            <span>👥 <strong>Business + IT, mixed roles</strong></span>
+            <span>📍 <strong>Microsoft Innovation Hub</strong></span>
+          </div>
+          <p class="tagline">A facilitated human-centered design thinking workshop. Your Technical Architect guides your team through divergent exploration, then convergent prioritization — ending with a ranked shortlist of use cases and a clear next move.</p>
+          <div class="phase-grid">
+            <div class="col">
+              <h5>What you get</h5>
+              <ul>
+                <li>Design thinking workshop (full day)</li>
+                <li>Persona and journey mapping</li>
+                <li>Opportunity framing and prioritization</li>
+                <li>Shortlist of 2–4 use cases ranked by value × feasibility</li>
+              </ul>
+            </div>
+            <div class="col">
+              <h5>You bring</h5>
+              <ul>
+                <li>6–12 cross-functional participants</li>
+                <li>A broad business theme, not a solution</li>
+                <li>Authority to pick winners by end of day</li>
+              </ul>
+            </div>
+            <div class="col">
+              <h5>You leave with</h5>
+              <ul>
+                <li>Prioritized use case(s) with articulated value</li>
+                <li>A persona-driven problem statement per use case</li>
+                <li>Defined next step — usually Solution Envisioning</li>
+              </ul>
+            </div>
+          </div>
+          <div class="ideal"><strong>Ideal if</strong>You know you want to do "something with AI" in a domain, but haven't picked the specific use case or aligned stakeholders on why it matters.</div>
+        </div>
+      </div>
+
+      <!-- Solution Envisioning -->
+      <div class="phase-card p-sol reveal">
+        <div class="phase-stripe">
+          <div>
+            <div class="num">2</div>
+            <div class="rune">Direction</div>
+          </div>
+        </div>
+        <div class="phase-body">
+          <div class="phase-head">
+            <h3>Solution Envisioning</h3>
+            <span class="pitch">Agree on the "how."</span>
+          </div>
+          <div class="phase-meta">
+            <span>⏱ <strong>1 day</strong></span>
+            <span>👥 <strong>Business owners + tech leads</strong></span>
+            <span>📍 <strong>Microsoft Innovation Hub · Envisioning Theater</strong></span>
+          </div>
+          <p class="tagline">A strategic business-and-technical day: discovery in the morning, immersive demos in the envisioning theater, then use-case-to-solution mapping after lunch. You leave with a picture of how Microsoft + partners can actually deliver the outcome.</p>
+          <div class="phase-grid">
+            <div class="col">
+              <h5>What you get</h5>
+              <ul>
+                <li>Deep business + technical discovery</li>
+                <li>Envisioning theater: immersive solution tours</li>
+                <li>Partner / ISV fit analysis</li>
+                <li>Actionable solution direction</li>
+              </ul>
+            </div>
+            <div class="col">
+              <h5>You bring</h5>
+              <ul>
+                <li>A named use case and owner</li>
+                <li>Business goals and success metrics</li>
+                <li>Technical constraints (data, regulation, existing stack)</li>
+              </ul>
+            </div>
+            <div class="col">
+              <h5>You leave with</h5>
+              <ul>
+                <li>Shared solution vision across biz + IT</li>
+                <li>Microsoft + partner mapping for your scenario</li>
+                <li>Inputs ready for Architecture Design</li>
+              </ul>
+            </div>
+          </div>
+          <div class="ideal"><strong>Ideal if</strong>You've picked the use case and need to align business + IT on the shape of the solution before committing architecture or vendor decisions.</div>
+        </div>
+      </div>
+
+      <!-- Architecture Design -->
+      <div class="phase-card p-arch reveal">
+        <div class="phase-stripe">
+          <div>
+            <div class="num">3</div>
+            <div class="rune">Blueprint</div>
+          </div>
+        </div>
+        <div class="phase-body">
+          <div class="phase-head">
+            <h3>Architecture Design</h3>
+            <span class="pitch">Build confidence. De-risk the decision.</span>
+          </div>
+          <div class="phase-meta">
+            <span>⏱ <strong>1–2 days (custom)</strong></span>
+            <span>👥 <strong>CTOs, enterprise architects, senior devs</strong></span>
+            <span>📍 <strong>Microsoft Innovation Hub</strong></span>
+          </div>
+          <p class="tagline">A custom technical session where Microsoft architects synthesize your business and technical requirements into a high-level architecture — aligned to reference architectures, with preferred-practice guidance and explicit risk analysis.</p>
+          <div class="phase-grid">
+            <div class="col">
+              <h5>What you get</h5>
+              <ul>
+                <li>Target architecture diagram</li>
+                <li>Alignment to Microsoft reference architectures</li>
+                <li>Preferred-practice guidance</li>
+                <li>Risk register + mitigation recommendations</li>
+              </ul>
+            </div>
+            <div class="col">
+              <h5>You bring</h5>
+              <ul>
+                <li>Agreed solution scope and non-functional reqs</li>
+                <li>Current-state architecture artifacts</li>
+                <li>Your architect(s), CTO, and tech decision-makers</li>
+              </ul>
+            </div>
+            <div class="col">
+              <h5>You leave with</h5>
+              <ul>
+                <li>Architecture-ready brief for your delivery team</li>
+                <li>Go/no-go signal on technical feasibility</li>
+                <li>Prototype scope if further validation is needed</li>
+              </ul>
+            </div>
+          </div>
+          <div class="ideal"><strong>Ideal if</strong>The business case and solution shape are agreed, and now you need a credible, risk-aware technical blueprint before committing delivery budget.</div>
+        </div>
+      </div>
+
+      <!-- Rapid Prototype -->
+      <div class="phase-card p-proto reveal">
+        <div class="phase-stripe">
+          <div>
+            <div class="num">4</div>
+            <div class="rune">Proof</div>
+          </div>
+        </div>
+        <div class="phase-body">
+          <div class="phase-head">
+            <h3>Rapid Prototype</h3>
+            <span class="pitch">Prove the hard part. Fast.</span>
+          </div>
+          <div class="phase-meta">
+            <span>⏱ <strong>Multi-week, co-delivered</strong></span>
+            <span>👥 <strong>Your engineers + Microsoft architects</strong></span>
+            <span>📍 <strong>Hub dev suite · Private, preconfigured</strong></span>
+          </div>
+          <p class="tagline">An in-depth co-development engagement. Microsoft architects work shoulder-to-shoulder with your technical staff in a private, fully-loaded Hub dev suite — building a working prototype that proves the riskiest technical capability.</p>
+          <div class="phase-grid">
+            <div class="col">
+              <h5>What you get</h5>
+              <ul>
+                <li>Working prototype on your data / scenario</li>
+                <li>Hands-on knowledge transfer</li>
+                <li>Targeted demos and training</li>
+                <li>Private, preconfigured dev suite</li>
+              </ul>
+            </div>
+            <div class="col">
+              <h5>You bring</h5>
+              <ul>
+                <li>A sharply scoped technical hypothesis to test</li>
+                <li>Dedicated engineers (not part-time)</li>
+                <li>Realistic test data and access to systems</li>
+              </ul>
+            </div>
+            <div class="col">
+              <h5>You leave with</h5>
+              <ul>
+                <li>Code, not slides</li>
+                <li>Validated technical feasibility</li>
+                <li>An internal team that has built it once</li>
+              </ul>
+            </div>
+          </div>
+          <div class="ideal"><strong>Ideal if</strong>You're ready to commit — but the single biggest risk is a technical unknown. A prototype retires that risk in weeks, not quarters.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MATURITY MATRIX -->
+<section id="matrix" style="background: #f4f6fa;">
+  <div class="container">
+    <span class="section-tag">Maturity signals</span>
+    <h2>Match your state to the right phase.</h2>
+    <p class="lead">If these statements sound like your organization today, start here. The matrix reads top-to-bottom — each row is one dimension of readiness.</p>
+
+    <div class="matrix-wrap">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th style="width: 18%;">Readiness dimension</th>
+            <th>If this sounds like you…</th>
+            <th style="width: 20%;">Start here</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Executive alignment</td>
+            <td>"Our board is asking what we're doing about AI. We need a credible, senior-level perspective before we allocate budget."</td>
+            <td><span class="pill exec">Executive Briefing</span></td>
+          </tr>
+          <tr>
+            <td>Use-case clarity</td>
+            <td>"We know we want to use AI in [supply chain / customer service / HR], but haven't picked the exact use case or built the business case."</td>
+            <td><span class="pill biz">Business Envisioning</span></td>
+          </tr>
+          <tr>
+            <td>Stakeholder consensus</td>
+            <td>"Business and IT are pulling in different directions. We need facilitated alignment with real prioritization."</td>
+            <td><span class="pill biz">Business Envisioning</span></td>
+          </tr>
+          <tr>
+            <td>Solution direction</td>
+            <td>"The use case is picked and the value is clear — now we need to align on which Microsoft + partner products to bet on."</td>
+            <td><span class="pill sol">Solution Envisioning</span></td>
+          </tr>
+          <tr>
+            <td>Vendor / platform fit</td>
+            <td>"We're comparing Copilot Studio vs Foundry vs building in-house and want an expert view of the trade-offs."</td>
+            <td><span class="pill sol">Solution Envisioning</span></td>
+          </tr>
+          <tr>
+            <td>Architecture confidence</td>
+            <td>"The solution shape is agreed. We need a target architecture and an honest risk review before we green-light delivery."</td>
+            <td><span class="pill arch">Architecture Design</span></td>
+          </tr>
+          <tr>
+            <td>Integration complexity</td>
+            <td>"Our hard questions are about data boundaries, identity, and governance — not the app layer."</td>
+            <td><span class="pill arch">Architecture Design</span></td>
+          </tr>
+          <tr>
+            <td>Technical unknowns</td>
+            <td>"Business wants to commit, but there's one technical capability we haven't proven works on our data."</td>
+            <td><span class="pill proto">Rapid Prototype</span></td>
+          </tr>
+          <tr>
+            <td>Build team readiness</td>
+            <td>"We have engineers ready to go — but we want Microsoft architects alongside us on the first build so patterns stick."</td>
+            <td><span class="pill proto">Rapid Prototype</span></td>
+          </tr>
+          <tr>
+            <td>Procurement / commercial pressure</td>
+            <td>"We need executive sign-off on a material AI investment and need to de-risk the story to finance + legal."</td>
+            <td><span class="pill exec">Executive Briefing</span> → <span class="pill biz">Business Envisioning</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- COMMON SEQUENCES -->
+<section id="sequences" class="seq-section">
+  <div class="container">
+    <span class="section-tag">Proven sequences</span>
+    <h2>How customers actually move through the framework.</h2>
+    <p class="lead">You rarely do just one phase. Most successful Hub engagements string together 2–3 phases over 4–12 weeks. Three common paths:</p>
+
+    <div class="seq-grid">
+      <div class="seq-card reveal">
+        <p class="persona">The curious executive</p>
+        <h4>"We know AI matters. We don't know where to start."</h4>
+        <p class="state">State: exec-led curiosity, no picked use case, mixed internal opinions.</p>
+        <div class="path">
+          <span class="step">Executive Briefing</span>
+          <span class="arrow">→</span>
+          <span class="step">Business Envisioning</span>
+          <span class="arrow">→</span>
+          <span class="step">Solution Envisioning</span>
+        </div>
+        <p class="outcome">→ From "should we?" to a funded, scoped pilot in under 8 weeks.</p>
+      </div>
+
+      <div class="seq-card reveal">
+        <p class="persona">The scoped builder</p>
+        <h4>"We picked the use case. Now we need to build it right."</h4>
+        <p class="state">State: business case approved, solution direction emerging, technical leadership engaged.</p>
+        <div class="path">
+          <span class="step">Solution Envisioning</span>
+          <span class="arrow">→</span>
+          <span class="step">Architecture Design</span>
+          <span class="arrow">→</span>
+          <span class="step">Rapid Prototype</span>
+        </div>
+        <p class="outcome">→ From approved idea to working code on your data in 6–10 weeks.</p>
+      </div>
+
+      <div class="seq-card reveal">
+        <p class="persona">The de-risker</p>
+        <h4>"One technical unknown is blocking a major commitment."</h4>
+        <p class="state">State: leadership is ready, architecture is drafted, but a hard technical question is creating risk.</p>
+        <div class="path">
+          <span class="step">Architecture Design</span>
+          <span class="arrow">→</span>
+          <span class="step">Rapid Prototype</span>
+        </div>
+        <p class="outcome">→ Binary "works / doesn't" evidence before the next funding gate.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <span class="section-tag">Before you request a visit</span>
+    <h2>Common questions, honest answers.</h2>
+
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Do I have to start at phase 0 and go in order?</summary>
+        <div class="faq-a">No. The framework is designed so any phase is a valid entry point. Starting at Solution Envisioning or Architecture Design is common when the use case is already picked. The only rule: pick the phase that matches your <em>current</em> state, not the one that looks most impressive.</div>
+      </details>
+      <details class="faq-item">
+        <summary>How much does a Hub engagement cost?</summary>
+        <div class="faq-a">Innovation Hub engagements are delivered by invitation to strategic Microsoft customers and are funded by Microsoft for qualified scenarios. Your Microsoft account team can confirm eligibility and scheduling. Travel and your own team's time are yours to plan for.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Who needs to attend from my side?</summary>
+        <div class="faq-a">It depends on the phase. Executive Briefing → C-suite and VPs. Business Envisioning → cross-functional (biz + IT), 6–12 people. Solution Envisioning → business owners + tech leads. Architecture Design → CTOs, enterprise architects, senior engineers. Rapid Prototype → dedicated engineers, not part-time observers. Right people at the right phase is the single biggest driver of value.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Can I combine phases in a single visit?</summary>
+        <div class="faq-a">Sometimes — for example, an Executive Briefing in the morning followed by Business Envisioning the next day, or Solution Envisioning leading into an Architecture Design session. Your Technical Architect will scope this with you. Stacking too many phases into one compressed visit usually reduces value; each phase has its own cadence for a reason.</div>
+      </details>
+      <details class="faq-item">
+        <summary>What if we don't know which phase we're in?</summary>
+        <div class="faq-a">Use the selector at the top of this page, then talk to your Microsoft account team. They'll run a short readiness conversation with you to confirm — it's a ~30-minute pre-call, not another workshop. Getting the phase right is their job, not yours.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Do I get a deliverable I can take back to my team?</summary>
+        <div class="faq-a">Yes. Every phase produces tangible outputs — prioritized use cases, solution maps, architecture diagrams, risk registers, or working prototype code. Hub engagements are designed to be decision-ready, not conversation-only.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Is the Innovation Hub the same as a Microsoft Technology Center?</summary>
+        <div class="faq-a">Yes — the Microsoft Innovation Hub is the new name for what used to be called the Microsoft Technology Center (MTC) network. Same mission, refreshed spaces, expanded AI focus. There are roughly 50 locations worldwide.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container reveal">
+    <h2>Ready to pick a phase?</h2>
+    <p>Talk to your Microsoft account team — they'll confirm your phase, scope the engagement, and schedule your day at the nearest Innovation Hub. Go in knowing what you want; walk out with what you need.</p>
+    <a class="btn" href="https://www.microsoft.com/en-us/hub" target="_blank" rel="noopener">Explore Innovation Hub →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="brand-mark">Microsoft Innovation Hub — Phase Decision Guide</div>
+    <p>Built on the common envisioning framework shared across Microsoft Innovation Hub engagements: Executive Briefing, Business Envisioning, Solution Envisioning, Architecture Design, and Rapid Prototype.</p>
+    <p style="margin-top: 1rem;">Learn more at <a href="https://www.microsoft.com/en-us/hub" target="_blank" rel="noopener">microsoft.com/hub</a> · <a href="https://www.microsoft.com/en-us/hub/offerings" target="_blank" rel="noopener">Engagement offerings</a></p>
+  </div>
+</footer>
+
+<script>
+  // Scroll progress
+  const prog = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    prog.style.width = pct + '%';
+  });
+
+  // Reveal on scroll
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Nav active
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav.top a');
+  const navObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  sections.forEach(s => navObs.observe(s));
+
+  // Quiz logic
+  const phases = {
+    exec: { name: "Executive Briefing", desc: "Start with a ½-day strategic session to align leadership and build the case to act.", color: "#8661c5" },
+    biz:  { name: "Business Envisioning", desc: "A 1-day design thinking workshop to explore, prioritize, and pick your use cases.", color: "#0078d4" },
+    sol:  { name: "Solution Envisioning", desc: "A 1-day session to map your use case to Microsoft + partner solutions.", color: "#00a4ef" },
+    arch: { name: "Architecture Design", desc: "A 1–2 day session to produce a target architecture and risk-aware blueprint.", color: "#107c10" },
+    proto:{ name: "Rapid Prototype", desc: "A multi-week co-build to prove the hardest technical capability on your data.", color: "#d83b01" }
+  };
+
+  // Scoring — each answer adds weight to phases
+  const scoreMap = {
+    usecase: {
+      none:     { exec: 3, biz: 2 },
+      vague:    { biz: 3, exec: 1 },
+      clear:    { sol: 3, biz: 1 },
+      scoped:   { sol: 2, arch: 3 },
+      designed: { proto: 3, arch: 2 }
+    },
+    audience: {
+      exec: { exec: 3, biz: 1 },
+      biz:  { biz: 3, sol: 1 },
+      tech: { sol: 2, arch: 3 },
+      dev:  { proto: 3, arch: 1 }
+    },
+    outcome: {
+      inspire:      { exec: 3 },
+      prioritize:   { biz: 3 },
+      direction:    { sol: 3 },
+      architecture: { arch: 3 },
+      proof:        { proto: 3 }
+    }
+  };
+
+  function updateResult() {
+    const scores = { exec: 0, biz: 0, sol: 0, arch: 0, proto: 0 };
+    let answered = 0;
+    document.querySelectorAll('.quiz-q').forEach(q => {
+      const qKey = q.querySelector('.quiz-opts').dataset.q;
+      const selected = q.querySelector('input[type=radio]:checked');
+      if (selected) {
+        answered++;
+        const map = scoreMap[qKey][selected.value] || {};
+        Object.keys(map).forEach(k => scores[k] += map[k]);
+      }
+    });
+
+    const result = document.getElementById('result');
+    if (answered < 3) {
+      result.classList.add('empty');
+      result.querySelector('.rec-label').textContent = 'Your recommended phase';
+      result.querySelector('.rec-phase').textContent = `Answer ${3 - answered} more question${3-answered===1?'':'s'}…`;
+      result.querySelector('.rec-desc').textContent = '';
+      return;
+    }
+
+    const top = Object.entries(scores).sort((a,b) => b[1] - a[1])[0][0];
+    const phase = phases[top];
+    result.classList.remove('empty');
+    result.querySelector('.rec-label').textContent = 'Your recommended phase';
+    result.querySelector('.rec-phase').textContent = phase.name;
+    result.querySelector('.rec-phase').style.color = phase.color;
+    result.querySelector('.rec-desc').textContent = phase.desc;
+  }
+
+  // Visual selection + scoring
+  document.querySelectorAll('.quiz-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const input = opt.querySelector('input');
+      const group = opt.closest('.quiz-opts');
+      group.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      input.checked = true;
+      updateResult();
+    });
+  });
+</script>
+
+</body>
+</html>

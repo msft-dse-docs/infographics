@@ -45,7 +45,7 @@ CATEGORIES = {
     "app-platform-services": "App Platform Services",
     "defender-for-cloud": "Defender for Cloud",
     "infrastructure": "Infrastructure",
-    "conference-rollup": "Conference Rollup",
+    "others": "Others",
 }
 
 TITLE_RE = re.compile(r"<title[^>]*>(.*?)</title>", re.IGNORECASE | re.DOTALL)

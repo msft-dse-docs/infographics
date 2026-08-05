@@ -50,7 +50,11 @@
       },
       {
         "file": "ai-agent-anatomy.html",
-        "title": "The Anatomy of an AI Agent — A Field Guide"
+        "title": "The Anatomy of an AI Agent — A Field Guide, Second Edition"
+      },
+      {
+        "file": "ai-agent-maturity-spectrum.html",
+        "title": "AI Agents: From Chatbot to Autonomous Workflow — Microsoft"
       },
       {
         "file": "ai-gateway-apim.html",
@@ -74,7 +78,7 @@
       },
       {
         "file": "microsoft-iq-platforms-guide.html",
-        "title": "Microsoft IQ Platforms — Foundry IQ, Fabric IQ, Work IQ, Web IQ: The Knowledge Layer for Smarter Agents"
+        "title": "Smarter Agents with Microsoft IQ — Foundry IQ, Fabric IQ, Work IQ, Web IQ"
       }
     ]
   },
@@ -151,12 +155,16 @@
       }
     ]
   },
-  "conference-rollup": {
-    "displayName": "Conference Rollup",
+  "others": {
+    "displayName": "Others",
     "items": [
       {
         "file": "build-2026-announcements-infographic.html",
         "title": "Microsoft Build 2026 — All Announcements by Category"
+      },
+      {
+        "file": "innovation-hub-phases-guide.html",
+        "title": "Find Your Phase — Microsoft Innovation Hub Decision Guide"
       }
     ]
   }
