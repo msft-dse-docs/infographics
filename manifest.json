@@ -132,6 +132,10 @@
         "title": "Azure API Management v2 — Public & Private Networking Guide"
       },
       {
+        "file": "azure-app-modernization-decision-map.html",
+        "title": "Modernize With Intent — Azure Application Modernization Decision Map"
+      },
+      {
         "file": "azure-communication-services-guide.html",
         "title": "Azure Communication Services — The future of customer communication"
       }
