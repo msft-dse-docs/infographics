@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Powered Intelligent Document Management — Microsoft Azure for Financial Services</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; color-scheme: light; }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #111827 !important; background: #f5f5f7 !important; line-height: 1.65; overflow-x: hidden;
+  }
+  a { color: #0078d4; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── NAV ── */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(10,10,25,.92); backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    display: flex; align-items: center; height: 56px; padding: 0 2rem;
+    transition: box-shadow .3s;
+  }
+  .nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,.3); }
+  .nav-logo {
+    font-weight: 700; font-size: .95rem; color: #fff;
+    white-space: nowrap; margin-inline-end: 2rem;
+    display: flex; align-items: center; gap: .6rem;
+  }
+  .nav-logo-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(135deg, #50e6ff, #0078d4);
+    box-shadow: 0 0 12px #50e6ff;
+    animation: navpulse 2s infinite;
+  }
+  @keyframes navpulse {
+    0%, 100% { box-shadow: 0 0 12px #50e6ff; }
+    50% { box-shadow: 0 0 20px #0078d4; }
+  }
+  .nav-links { display: flex; gap: .2rem; overflow-x: auto; scrollbar-width: none; }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a {
+    padding: .4rem .7rem; border-radius: 6px; font-size: .78rem;
+    white-space: nowrap; color: #aaa; transition: all .2s;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    background: rgba(0,120,212,.15); color: #50e6ff; text-decoration: none;
+  }
+  .progress-bar {
+    position: fixed; top: 56px; inset-inline-start: 0; height: 3px;
+    background: linear-gradient(90deg, #50e6ff, #0078d4, #b48cde);
+    z-index: 999; width: 0; transition: width .1s;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: 6rem 2rem 4rem;
+    background: #05050f;
+    color: #fff; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 15% 85%, rgba(80,230,255,.12) 0%, transparent 45%),
+      radial-gradient(ellipse at 85% 15%, rgba(0,120,212,.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(180,140,222,.06) 0%, transparent 70%);
+  }
+  .hero::after {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: radial-gradient(ellipse at center, rgba(0,0,0,.8) 0%, transparent 70%);
+  }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .45rem 1.2rem; border-radius: 20px;
+    background: rgba(255,255,255,.06); font-size: .82rem;
+    margin-block-end: 1.75rem; backdrop-filter: blur(6px);
+    border: 1px solid rgba(0,120,212,.4);
+    animation: fadeDown .7s ease-out;
+    color: #50e6ff; font-weight: 600; letter-spacing: .03em;
+  }
+  .hero-badge::before {
+    content: '⬤'; font-size: .55rem; color: #50e6ff;
+    animation: blink 1.5s infinite;
+  }
+  @keyframes blink { 50% { opacity: .3; } }
+  .hero h1 {
+    font-size: clamp(2.4rem, 6vw, 4.5rem); font-weight: 800;
+    max-width: 1020px; animation: fadeDown .7s ease-out .1s both; line-height: 1.05;
+    letter-spacing: -.02em;
+  }
+  .hero h1 .accent {
+    background: linear-gradient(135deg, #50e6ff 0%, #0078d4 50%, #b48cde 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-tag {
+    font-size: clamp(1rem, 2vw, 1.25rem); max-width: 760px;
+    margin-block-start: 1.5rem; color: rgba(255,255,255,.86);
+    animation: fadeDown .7s ease-out .2s both; font-weight: 400;
+  }
+  .hero-quote {
+    margin-block-start: 2.25rem; padding: 1rem 1.75rem;
+    border-inline-start: 3px solid #0078d4;
+    font-size: 1.05rem; font-style: italic; opacity: .9;
+    max-width: 680px; text-align: start;
+    animation: fadeDown .7s ease-out .3s both;
+  }
+  .hero-quote strong { color: #50e6ff; font-style: normal; font-weight: 700; }
+  .hero-cta {
+    margin-block-start: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap;
+    justify-content: center; animation: fadeDown .7s ease-out .4s both;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .85rem 2rem; border-radius: 8px; font-size: .95rem;
+    font-weight: 700; transition: transform .2s, box-shadow .2s;
+    cursor: pointer; border: none; letter-spacing: .02em;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,120,212,.3); text-decoration: none; }
+  .btn-primary { background: linear-gradient(135deg, #0078d4, #50e6ff); color: #05050f; }
+  .btn-outline { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.25); }
+  .hero-stats {
+    display: flex; gap: 3rem; margin-block-start: 3rem;
+    animation: fadeDown .7s ease-out .5s both;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .stat-num {
+    font-size: 2.2rem; font-weight: 800;
+    background: linear-gradient(135deg, #50e6ff, #0078d4);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-stat .stat-label { font-size: .78rem; color: rgba(255,255,255,.78); margin-block-start: .2rem; letter-spacing: .04em; }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 6rem 2rem; position: relative; }
+  .container { max-width: 1200px; margin-inline: auto; }
+  .section-label {
+    display: inline-block; font-size: .72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .12em; color: #5C2D91;
+    margin-block-end: .6rem;
+  }
+  .section-title {
+    font-size: clamp(1.6rem, 3.5vw, 2.6rem); font-weight: 800; margin-block-end: .75rem;
+    letter-spacing: -.01em; line-height: 1.15; color: #111827;
+  }
+  .section-sub { font-size: 1.1rem; color: #374151; max-width: 760px; margin-block-end: 3rem; }
+  .dark-section { background: #0a0a1a; color: #fff; }
+  .dark-section .section-label { color: #50e6ff; }
+  .dark-section .section-sub { color: rgba(255,255,255,.82); }
+  .dark-section .section-title { color: #fff; }
+
+  /* ── REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease-out, transform .7s ease-out; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── PROVOCATION ── */
+  .provoc {
+    background: linear-gradient(135deg, #0a0a1a 0%, #00142e 50%, #0a0a2a 100%);
+    padding: 5rem 2rem; text-align: center; color: #fff;
+    position: relative; overflow: hidden;
+  }
+  .provoc::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 50%, rgba(0,120,212,.2) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 50%, rgba(80,230,255,.1) 0%, transparent 50%);
+  }
+  .provoc-content { position: relative; z-index: 1; max-width: 900px; margin-inline: auto; }
+  .provoc h2 {
+    font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; line-height: 1.2;
+    margin-block-end: 1.25rem; letter-spacing: -.01em;
+  }
+  .provoc h2 .hl {
+    background: linear-gradient(135deg, #50e6ff, #0078d4);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .provoc p { font-size: 1.15rem; opacity: .85; max-width: 740px; margin-inline: auto; }
+
+  /* ── FOUR LAYERS ── */
+  .layers-wrap {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1rem; margin-block-start: 2rem;
+  }
+  .layer-card {
+    background: #fff; border-radius: 18px; padding: 2rem 1.75rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,.06); border-top: 5px solid;
+    position: relative; transition: transform .3s, box-shadow .3s;
+  }
+  .layer-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(0,0,0,.12); }
+  .layer-card.l1 { border-top-color: #0078d4; }
+  .layer-card.l2 { border-top-color: #008575; }
+  .layer-card.l3 {
+    border-top-color: #b48cde;
+    background: linear-gradient(180deg, #fff 0%, #faf7ff 100%);
+    box-shadow: 0 6px 30px rgba(180,140,222,.15);
+  }
+  .layer-card.l3::before {
+    content: 'KEY DIFFERENTIATOR';
+    position: absolute; top: -13px; right: 20px;
+    background: linear-gradient(135deg, #b48cde, #0078d4);
+    color: #fff; font-size: .58rem; font-weight: 800;
+    padding: .3rem .7rem; border-radius: 10px;
+    letter-spacing: .06em; box-shadow: 0 4px 12px rgba(180,140,222,.3);
+  }
+  .layer-card.l4 { border-top-color: #5C2D91; }
+  .layer-num {
+    display: flex; width: 36px; height: 36px; border-radius: 50%;
+    font-size: .85rem; font-weight: 800; color: #fff;
+    align-items: center; justify-content: center;
+    margin-block-end: 1rem;
+  }
+  .l1 .layer-num { background: #0078d4; }
+  .l2 .layer-num { background: #008575; }
+  .l3 .layer-num { background: linear-gradient(135deg, #b48cde, #0078d4); }
+  .l4 .layer-num { background: #5C2D91; }
+  .layer-card h3 { font-size: 1.15rem; font-weight: 700; color: #002050; margin-block-end: .5rem; }
+  .layer-tag { font-size: .75rem; font-weight: 700; color: #59616c; text-transform: uppercase; letter-spacing: .06em; margin-block-end: .9rem; }
+  .layer-card p { font-size: .9rem; color: #374151; line-height: 1.6; margin-block-end: .75rem; }
+  .layer-services {
+    font-size: .78rem; color: #005A9E; font-weight: 700;
+    padding-block-start: .35rem; border-top: 1px dashed #e0e0e0; margin-block-start: .75rem;
+  }
+
+  /* ── SIX CAPABILITIES (dark) ── */
+  .pillar-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem; margin-block-start: 1rem;
+  }
+  .pillar-card {
+    background: rgba(255,255,255,.075); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,.18); border-radius: 16px;
+    padding: 1.75rem; transition: all .3s; position: relative;
+  }
+  .pillar-card:hover {
+    transform: translateY(-4px); border-color: rgba(80,230,255,.4);
+    background: rgba(80,230,255,.06);
+  }
+  .pillar-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    background: linear-gradient(135deg, rgba(0,120,212,.2), rgba(80,230,255,.12));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; margin-block-end: 1rem;
+  }
+  .pillar-num {
+    position: absolute; top: 1rem; right: 1.25rem;
+    font-size: 2rem; font-weight: 800; opacity: .1; color: #50e6ff;
+  }
+  .pillar-card h4 { font-size: 1rem; margin-block-end: .5rem; color: #fff; }
+  .pillar-card p { font-size: .87rem; color: rgba(255,255,255,.84); line-height: 1.55; }
+
+  /* ── NATIVE VS CUSTOM ── */
+  .wheel-wrap {
+    background: #fff; border-radius: 20px; padding: 2.5rem;
+    box-shadow: 0 3px 16px rgba(0,0,0,.06);
+  }
+  .wheel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .wheel-item {
+    background: #f7fbff; border-radius: 14px; padding: 1.5rem 1.25rem;
+    border-inline-start: 4px solid; transition: all .3s;
+  }
+  .wheel-item:hover { transform: translateX(4px); box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+  .wheel-item.w1 { border-inline-start-color: #0078d4; }
+  .wheel-item.w2 { border-inline-start-color: #008575; }
+  .wheel-item.w3 { border-inline-start-color: #5C2D91; }
+  .wheel-item.w4 { border-inline-start-color: #c19a00; }
+  .wheel-item.w5 { border-inline-start-color: #b48cde; }
+  .wheel-item.w6 { border-inline-start-color: #107c10; }
+  .wheel-tag { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-block-end: .4rem; }
+  .w1 .wheel-tag { color: #0078d4; }
+  .w2 .wheel-tag { color: #008575; }
+  .w3 .wheel-tag { color: #5C2D91; }
+  .w4 .wheel-tag { color: #735C00; }
+  .w5 .wheel-tag { color: #5C2D91; }
+  .w6 .wheel-tag { color: #107c10; }
+  .wheel-item h4 { font-size: 1rem; color: #002050; margin-block-end: .4rem; }
+  .wheel-item p { font-size: .85rem; color: #374151; line-height: 1.5; }
+  .wheel-caveat { font-size: .78rem; color: #59616c; margin-block-start: .6rem; font-style: italic; }
+  .badge-native {
+    display: inline-block; margin-block-start: .75rem;
+    font-size: .72rem; font-weight: 700; padding: .25rem .6rem; border-radius: 6px;
+  }
+  .badge-strong { background: rgba(16,124,16,.1); color: #107c10; }
+  .badge-azure  { background: rgba(0,120,212,.1);  color: #0078d4; }
+  .badge-design { background: rgba(92,45,145,.1);  color: #5C2D91; }
+
+  /* ── ARCHITECTURE MATRIX ── */
+  .matrix-wrap {
+    background: #fff; border-radius: 20px; padding: 2.5rem;
+    box-shadow: 0 3px 16px rgba(0,0,0,.06); overflow-x: auto;
+  }
+  .matrix-subtitle {
+    text-align: center; font-size: .9rem; color: #374151;
+    margin-block-end: 1.5rem; font-weight: 600;
+  }
+  .matrix-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+    min-width: 780px;
+  }
+  .matrix-tier {
+    border-radius: 14px; padding: 1.75rem 1.5rem; color: #fff;
+    position: relative; overflow: hidden;
+  }
+  .matrix-tier.t1 { background: linear-gradient(135deg, #003087, #0078d4); }
+  .matrix-tier.t2 { background: linear-gradient(135deg, #5C2D91, #8661c5); }
+  .matrix-tier.t3 { background: linear-gradient(135deg, #008575, #00b294); }
+  .matrix-inner { position: relative; z-index: 1; }
+  .matrix-level {
+    font-size: .68rem; font-weight: 800; letter-spacing: .08em;
+    text-transform: uppercase; opacity: .8; margin-block-end: .4rem;
+  }
+  .matrix-tier h4 { font-size: 1.15rem; font-weight: 700; margin-block-end: .35rem; }
+  .matrix-services { font-size: .82rem; opacity: .88; margin-block-end: 1rem; font-weight: 600; }
+  .matrix-tier ul { list-style: none; margin-block-end: 1rem; }
+  .matrix-tier li {
+    font-size: .82rem; line-height: 1.5; padding: .2rem 0 .2rem 1rem;
+    position: relative; opacity: .92;
+  }
+  .matrix-tier li::before {
+    content: '●'; position: absolute; inset-inline-start: 0; font-size: .5rem; top: .55rem;
+  }
+  .matrix-note {
+    margin-block-start: 1rem; padding: .6rem .85rem; border-radius: 8px;
+    background: rgba(0,0,0,.18); font-size: .78rem; font-weight: 600;
+  }
+
+  /* ── PRINCIPLES ── */
+  .principles-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1rem; margin-block-start: 1rem;
+  }
+  .principle {
+    display: flex; gap: 1rem; padding: 1.25rem;
+    background: #fff; border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.04); transition: transform .2s;
+  }
+  .principle:hover { transform: translateY(-2px); }
+  .principle-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, #0078d4, #50e6ff);
+    color: #fff; font-weight: 800; font-size: .85rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .principle h4 { font-size: .95rem; color: #002050; margin-block-end: .25rem; line-height: 1.3; }
+  .principle p  { font-size: .83rem; color: #374151; line-height: 1.5; }
+
+  /* ── Q&amp;A CARDS ── */
+  .qa-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+  .qa-card {
+    background: rgba(255,255,255,.075); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,.18); border-radius: 14px;
+    padding: 1.5rem; transition: all .3s;
+  }
+  .qa-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(80,230,255,.35);
+    background: rgba(80,230,255,.05);
+  }
+  .qa-q {
+    color: #50e6ff; font-size: .95rem; font-weight: 700;
+    margin-block-end: .75rem; display: flex; align-items: flex-start; gap: .5rem;
+  }
+  .qa-q::before {
+    content: 'Q'; font-size: .72rem; flex-shrink: 0;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: rgba(80,230,255,.15); color: #50e6ff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 800; margin-block-start: 1px;
+  }
+  .qa-a-label {
+    font-size: .68rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing: .08em; color: #9AF2FF; margin-block-end: .3rem;
+  }
+  .qa-card p { font-size: .85rem; color: rgba(255,255,255,.86); line-height: 1.55; }
+
+  /* ── FINAL CTA ── */
+  .final-cta {
+    background: linear-gradient(135deg, rgba(0,10,26,.96), rgba(0,30,80,.96)),
+      radial-gradient(ellipse at 20% 80%, rgba(80,230,255,.2), transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(0,120,212,.2), transparent 60%);
+    border-radius: 24px; padding: 4rem 3rem; text-align: center; color: #fff;
+    position: relative; overflow: hidden; margin-block-start: 2.5rem;
+  }
+  .final-cta::before {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .final-cta-inner { position: relative; z-index: 1; }
+  .final-cta h3 {
+    font-size: clamp(1.5rem, 3vw, 2.2rem); margin-block-end: 1rem;
+    font-weight: 800; line-height: 1.2;
+  }
+  .final-cta h3 .hl {
+    background: linear-gradient(135deg, #50e6ff, #0078d4);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .final-cta p {
+    font-size: 1.05rem; opacity: .85; margin-block-end: 2rem;
+    max-width: 700px; margin-inline: auto;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center; padding: 2rem; color: #59616c; font-size: .82rem;
+    border-top: 1px solid #e0e0e0; margin-block-start: 2rem;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1100px) {
+    .layers-wrap { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 900px) {
+    .wheel-grid { grid-template-columns: 1fr; }
+    .matrix-grid { grid-template-columns: 1fr; min-width: auto; }
+  }
+  @media (max-width: 768px) {
+    .nav { padding: 0 1rem; }
+    section { padding: 3.5rem 1rem; }
+    .hero-stats { gap: 1.5rem; }
+    .hero-stat .stat-num { font-size: 1.5rem; }
+    .final-cta { padding: 2.5rem 1.5rem; }
+    .layers-wrap { grid-template-columns: 1fr; }
+  }
+
+  /* Light presentation palette is intentionally fixed to preserve accessible contrast. */
+
+  @media print {
+    .nav, .progress-bar { display: none; }
+    body { background: #fff; color: #000; }
+    .hero, .dark-section, .provoc { background: #fff !important; color: #000 !important; }
+    .hero h1 .accent, .provoc h2 .hl, .final-cta h3 .hl { -webkit-text-fill-color: #0078d4; }
+    section { padding: 2rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-logo">
+    <span class="nav-logo-dot"></span>
+    Document Intelligence &middot; Azure AI Foundry
+  </div>
+  <div class="nav-links">
+    <a href="#top">Overview</a>
+    <a href="#layers">4 Layers</a>
+    <a href="#capabilities">Capabilities</a>
+    <a href="#nativevscustom">Native vs. Custom</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#keypoints">Key Points</a>
+    <a href="#questions">Q&amp;A Ready</a>
+    <a href="#nextsteps">Next Steps</a>
+  </div>
+</nav>
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="hero-content">
+    <div class="hero-badge">Microsoft Azure AI Foundry &middot; Financial Services Discovery Briefing</div>
+    <h1>Your Documents Have the Answers.<br><span class="accent">Now They Can Speak.</span></h1>
+    <p class="hero-tag">Modernizing enterprise document management with generative AI extraction via Azure Content Understanding, enriched search using GA skillsets, LLM-powered retrieval through Knowledge Bases, and Microsoft Purview compliance &mdash; across SharePoint Online and shared file systems.</p>
+    <div class="hero-quote">
+      &ldquo;The right solution spans four connected layers: <strong>document understanding</strong>, metadata and search enrichment, <strong>LLM-grounded retrieval</strong>, and compliance governance. Microsoft has native capabilities at each layer &mdash; the architecture design determines how they connect.&rdquo;
+    </div>
+    <div class="hero-cta">
+      <a href="#layers" class="btn btn-primary">See the 4 Layers &rarr;</a>
+      <a href="#nextsteps" class="btn btn-outline">Recommended Next Steps</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="stat-num">4</div><div class="stat-label">Solution layers</div></div>
+      <div class="hero-stat"><div class="stat-num">6</div><div class="stat-label">Azure capabilities</div></div>
+      <div class="hero-stat"><div class="stat-num">Apr&nbsp;2026</div><div class="stat-label">Knowledge Bases GA</div></div>
+      <div class="hero-stat"><div class="stat-num">1</div><div class="stat-label">Governance control plane</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- PROVOCATION -->
+<div class="provoc">
+  <div class="provoc-content">
+    <h2>Your best investment insights live in documents.<br><span class="hl">So does your biggest compliance exposure.</span></h2>
+    <p>Investment memos, regulatory filings, research notes, client documents &mdash; siloed, unclassified, and unsearchable isn&rsquo;t a technology problem. It&rsquo;s a business risk that compounds daily. Microsoft has a layered, enterprise-grade architecture designed to address it without forcing a choice between native simplicity and configurable power.</p>
+  </div>
+</div>
+
+<!-- FOUR LAYERS -->
+<section id="layers">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">The Architecture</span>
+      <h2 class="section-title">Four Layers from Documents to Intelligence</h2>
+      <p class="section-sub">A complete intelligent document management solution addresses four interdependent layers. Microsoft has native capabilities at each &mdash; the architecture design determines how they connect and how far each layer needs to extend into Azure.</p>
+    </div>
+    <div class="layers-wrap">
+
+      <div class="layer-card l1 reveal">
+        <div class="layer-num">1</div>
+        <div class="layer-tag">Foundation &middot; Classify at the source</div>
+        <h3>Ingest &amp; Classify</h3>
+        <p>Azure Content Understanding (available in Azure AI Foundry) uses generative AI to extract structured data, tables, figures, and semantic content from documents &mdash; including cross-page tables and image descriptions, with no retraining as layouts change. Azure AI Document Intelligence remains a strong GA option for forms-based pipelines. Apply content-type and security classification before documents enter downstream systems.</p>
+        <div class="layer-services">Azure Content Understanding (Foundry) &middot; Azure AI Document Intelligence &middot; M365 Document Processing</div>
+      </div>
+
+      <div class="layer-card l2 reveal">
+        <div class="layer-num">2</div>
+        <div class="layer-tag">Findability &middot; Enrich the index</div>
+        <h3>Search &amp; Enrich</h3>
+        <p>Index SharePoint content and metadata with incremental freshness. Enrich at indexing time using three GA skillsets: the <strong>Content Understanding Skill</strong> for semantic chunking and rich Markdown, the <strong>GenAI Prompt Skill</strong> for LLM-powered summarization and image verbalization, and the <strong>Document Layout Skill</strong> for structure-aware parsing. Build a metadata-rich, hybrid-search-capable index.</p>
+        <div class="layer-services">Azure AI Search &middot; Content Understanding Skill (GA) &middot; GenAI Prompt Skill (GA) &middot; Document Layout Skill (GA)</div>
+      </div>
+
+      <div class="layer-card l3 reveal">
+        <div class="layer-num">3</div>
+        <div class="layer-tag">Intelligence &middot; Answer with citations</div>
+        <h3>Retrieve &amp; Synthesize</h3>
+        <p>Ground LLM responses in enterprise documents using <strong>Knowledge Bases</strong> &mdash; Azure AI Search&rsquo;s GA agentic retrieval framework. Knowledge Bases use an LLM to plan and execute multi-source queries and return citation-backed grounding data. Classic RAG with hybrid search and semantic ranking remains the right starting point for simpler, GA-oriented pipelines.</p>
+        <div class="layer-services">Knowledge Bases (GA Apr 2026) &middot; Azure OpenAI &middot; Classic RAG &middot; Foundry IQ (preview)</div>
+      </div>
+
+      <div class="layer-card l4 reveal">
+        <div class="layer-num">4</div>
+        <div class="layer-tag">Trust &middot; Enforce at every layer</div>
+        <h3>Govern &amp; Protect</h3>
+        <p>Apply sensitivity labels, data classification, DLP, and access control across the document lifecycle &mdash; including AI agent interactions, search result trimming, and downstream LLM outputs.</p>
+        <div class="layer-services">Microsoft Purview &middot; Sensitivity Labels &middot; DLP &middot; AI Interaction Governance &middot; Label Metadata in Retrieve (preview)</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SIX CAPABILITIES (dark) -->
+<section id="capabilities" class="dark-section">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">The Microsoft Stack</span>
+      <h2 class="section-title">Six Azure Capabilities Powering This Solution</h2>
+      <p class="section-sub">Microsoft brings a layered ecosystem &mdash; native SharePoint content services, configurable Azure AI, and Purview as the compliance control plane. Each capability plays a specific, non-overlapping role in the architecture.</p>
+    </div>
+    <div class="pillar-grid">
+
+      <div class="pillar-card reveal">
+        <div class="pillar-num">01</div>
+        <div class="pillar-icon">&#x1F9E0;</div>
+        <h4>Azure Content Understanding</h4>
+        <p>Available in Azure AI Foundry Tools, Content Understanding uses generative AI to process documents, images, video, and audio into structured output. Handles cross-page tables, figure analysis, and annotation detection that traditional OCR misses. Outputs clean Markdown for RAG pipelines or schema-aligned JSON for automation &mdash; with confidence scores and source grounding per extracted field. The <strong>Content Understanding Skill</strong> in Azure AI Search is GA (April 2026). Azure AI Document Intelligence remains the GA choice for established forms-based extraction pipelines.</p>
+      </div>
+
+      <div class="pillar-card reveal">
+        <div class="pillar-num">02</div>
+        <div class="pillar-icon">&#x1F3F7;&#xFE0F;</div>
+        <h4>Microsoft 365 Document Processing</h4>
+        <p>SharePoint-native AI services including taxonomy tagging, OCR, prebuilt document processing, structured and unstructured document models, autofill columns, and content assembly for document libraries.</p>
+      </div>
+
+      <div class="pillar-card reveal">
+        <div class="pillar-num">03</div>
+        <div class="pillar-icon">&#x2728;</div>
+        <h4>AI in SharePoint</h4>
+        <p>Native AI features built into SharePoint document libraries: summarize files, compare documents side-by-side, ask questions about file content, create autofill columns, and trigger rules and workflows from file content.</p>
+      </div>
+
+      <div class="pillar-card reveal">
+        <div class="pillar-num">04</div>
+        <div class="pillar-icon">&#x1F50D;</div>
+        <h4>Azure AI Search</h4>
+        <p>Enterprise search with the SharePoint Online indexer, a GA suite of enrichment skillsets &mdash; <strong>Content Understanding Skill</strong>, <strong>GenAI Prompt Skill</strong>, and <strong>Document Layout Skill</strong> (all GA April 2026 or earlier) &mdash; hybrid keyword and vector search, semantic ranking, and document-level security trimming. <strong>Knowledge Bases</strong> (GA April 2026) provide the agentic retrieval framework with LLM-assisted multi-source query planning. SharePoint ACL support for document-level permissions is in preview.</p>
+      </div>
+
+      <div class="pillar-card reveal">
+        <div class="pillar-num">05</div>
+        <div class="pillar-icon">&#x1F916;</div>
+        <h4>Azure OpenAI + RAG</h4>
+        <p>Two retrieval approaches. <strong>Classic RAG</strong> with hybrid search and semantic ranking is the GA starting point for controlled pipelines. <strong>Knowledge Bases</strong> (GA April 2026) &mdash; Azure AI Search&rsquo;s agentic retrieval framework &mdash; use an LLM to plan multi-source queries and synthesize citation-backed answers from search index, blob, OneLake, and web sources. Connect Knowledge Bases to Azure AI Foundry agents via <strong>Foundry IQ</strong> (preview) for end-to-end agentic document workflows.</p>
+      </div>
+
+      <div class="pillar-card reveal">
+        <div class="pillar-num">06</div>
+        <div class="pillar-icon">&#x1F6E1;&#xFE0F;</div>
+        <h4>Microsoft Purview</h4>
+        <p>The compliance and governance control plane: sensitivity labels and label policies, data classification, DLP, auditing, eDiscovery, data lifecycle management, and governance of AI agent interactions across Microsoft 365 and Azure. In preview, Knowledge Base retrieve responses can include <strong>sensitivity label metadata per retrieved document</strong> &mdash; surfacing Purview classification directly alongside grounded content at query time.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- NATIVE VS CUSTOM -->
+<section id="nativevscustom" style="background:#f5f5f7;">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Honest Capability Map</span>
+      <h2 class="section-title">Native Microsoft vs. Where Architecture Is Expected</h2>
+      <p class="section-sub">Microsoft is strong natively in several key areas &mdash; and transparent about where solution design and customization are required. Understanding this distinction shapes the right first-call conversation.</p>
+    </div>
+    <div class="wheel-wrap reveal">
+      <div class="wheel-grid">
+
+        <div class="wheel-item w1">
+          <div class="wheel-tag">Area 01 &middot; SharePoint</div>
+          <h4>SharePoint Document Productivity</h4>
+          <p>AI in SharePoint can summarize files, compare documents, ask questions about content, create autofill columns, and support library rules and workflows out of the box.</p>
+          <span class="badge-native badge-strong">&#x2713; Strong native</span>
+          <p class="wheel-caveat">Cross-repository orchestration, custom UX, and advanced workflow routing require architecture decisions.</p>
+        </div>
+
+        <div class="wheel-item w2">
+          <div class="wheel-tag">Area 02 &middot; M365</div>
+          <h4>Microsoft 365 Document Processing</h4>
+          <p>Taxonomy tagging, OCR, prebuilt models, structured and unstructured document processing, autofill columns, and content assembly are available natively within SharePoint document libraries.</p>
+          <span class="badge-native badge-strong">&#x2713; Strong native</span>
+          <p class="wheel-caveat">Complex multi-system ingestion and enterprise-wide operationalization may require Power Automate or Azure integration patterns.</p>
+        </div>
+
+        <div class="wheel-item w3">
+          <div class="wheel-tag">Area 03 &middot; Extraction</div>
+          <h4>Advanced Document Extraction</h4>
+          <p><strong>Azure Content Understanding</strong> (available in Azure AI Foundry) uses generative AI for high-accuracy extraction from complex documents, images, and PDFs &mdash; including cross-page tables, figure analysis, and annotation detection, with no retraining as layouts change. <strong>Azure AI Document Intelligence</strong> remains the GA choice for forms-based and structured document extraction.</p>
+          <span class="badge-native badge-azure">&#x2699; Azure configurable (Foundry AI)</span>
+          <p class="wheel-caveat">Custom analyzers, business-specific validation, exception handling, and human-in-the-loop review workflows still require solution design.</p>
+        </div>
+
+        <div class="wheel-item w4">
+          <div class="wheel-tag">Area 04 &middot; Search</div>
+          <h4>Search &amp; Dynamic Indexing</h4>
+          <p><strong>Knowledge Bases</strong> reached GA in April 2026, providing the supported agentic retrieval framework. The <strong>Content Understanding Skill</strong>, <strong>GenAI Prompt Skill</strong>, and <strong>Document Layout Skill</strong> are all GA for enrichment pipelines. Azure AI Search indexes SharePoint content with hybrid search and semantic ranking. SharePoint ACL support for document-level permissions is in preview.</p>
+          <span class="badge-native badge-azure">&#x2699; Azure configurable</span>
+          <p class="wheel-caveat">On-prem connectors, ACL normalization for complex permission models, chunking strategy, embedding model selection, and ranking tuning require architecture design.</p>
+        </div>
+
+        <div class="wheel-item w5">
+          <div class="wheel-tag">Area 05 &middot; AI Retrieval</div>
+          <h4>LLM Retrieval &amp; Summarization</h4>
+          <p>Azure AI Search supports classic RAG and agentic retrieval with Azure OpenAI. Grounded, citation-aware answers from enterprise documents with permission-aware access controls at query time.</p>
+          <span class="badge-native badge-design">&#x25C6; Architecture design required</span>
+          <p class="wheel-caveat">Prompt orchestration, citation policy, answer evaluation, grounding strategy, model selection, and agent UX require implementation decisions.</p>
+        </div>
+
+        <div class="wheel-item w6">
+          <div class="wheel-tag">Area 06 &middot; Compliance</div>
+          <h4>Compliance &amp; DLP</h4>
+          <p>Microsoft Purview provides sensitivity labels, label policies, data classification, DLP, and governance of AI agent interactions. Label enforcement in Azure AI Search is in preview for supported sources.</p>
+          <span class="badge-native badge-strong">&#x2713; Strong native (Purview)</span>
+          <p class="wheel-caveat">Aligning labels, indexing, encryption access, AI scope, and operating model requires governance design.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="architecture" style="background:#fff;">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Strawman Architecture</span>
+      <h2 class="section-title">A Reference Architecture Across Three Tiers</h2>
+      <p class="section-sub">This strawman maps the flow from source systems through processing and enrichment to governed retrieval. Use it as a discussion framework &mdash; the right architecture design should be validated against your specific source systems, access model, and compliance requirements.</p>
+    </div>
+    <div class="matrix-wrap reveal">
+      <div class="matrix-subtitle">Source Systems &rarr; Processing &amp; Enrichment &rarr; Retrieval &amp; Governance</div>
+      <div class="matrix-grid">
+
+        <div class="matrix-tier t1">
+          <div class="matrix-inner">
+            <div class="matrix-level">Tier 1 &mdash; Source &amp; Ingest</div>
+            <h4>Documents In</h4>
+            <div class="matrix-services">SharePoint Online &middot; Shared File Systems &middot; Microsoft Graph / Connectors</div>
+            <ul>
+              <li>SharePoint Online document libraries</li>
+              <li>On-premises and legacy file shares via connectors</li>
+              <li>Microsoft Graph as API surface for M365 content</li>
+              <li>Staged storage for pre-processing workflows</li>
+            </ul>
+            <div class="matrix-note">Key question: What sources must be indexed first, and what is the permissions model?</div>
+          </div>
+        </div>
+
+        <div class="matrix-tier t2">
+          <div class="matrix-inner">
+            <div class="matrix-level">Tier 2 &mdash; Process &amp; Index</div>
+            <h4>Intelligence Built</h4>
+            <div class="matrix-services">Content Understanding (Foundry) &middot; Doc Intelligence &middot; M365 Processing &middot; Azure AI Search &middot; GA Skillsets</div>
+            <ul>
+              <li>Content Understanding Skill (GA): semantic chunking, cross-page tables, image descriptions</li>
+              <li>GenAI Prompt Skill (GA): LLM-powered summarization and image verbalization at index time</li>
+              <li>Document Layout Skill (GA): structure-aware parsing for headings, tables, sections</li>
+              <li>Metadata enrichment: taxonomy, entities, embeddings, security tags</li>
+            </ul>
+            <div class="matrix-note">Key question: Which GA skillsets address the enrichment requirements, and what is the freshness and latency target?</div>
+          </div>
+        </div>
+
+        <div class="matrix-tier t3">
+          <div class="matrix-inner">
+            <div class="matrix-level">Tier 3 &mdash; Retrieve &amp; Govern</div>
+            <h4>Answers Delivered</h4>
+            <div class="matrix-services">Knowledge Bases (GA) &middot; Azure OpenAI &middot; Classic RAG &middot; Purview Labels &middot; DLP &middot; Audit</div>
+            <ul>
+              <li>Knowledge Bases (GA): LLM-assisted multi-source query planning and answer synthesis</li>
+              <li>Classic RAG: hybrid search + semantic ranking for simpler, controlled pipelines</li>
+              <li>Permission-aware result trimming via document-level access control</li>
+              <li>Purview sensitivity label metadata in retrieve responses (preview)</li>
+            </ul>
+            <div class="matrix-note">Key question: How are user permissions surfaced at retrieval time, and what audit trail is required for LLM interactions?</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEY POINTS -->
+<section id="keypoints" style="background:#f8f4ff;">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Meeting Preparation</span>
+      <h2 class="section-title">Six Points to Lead the Conversation</h2>
+      <p class="section-sub">The first call should be a discovery and solution-mapping session &mdash; not a product demo. These six principles define the right posture for a productive first engagement.</p>
+    </div>
+    <div class="principles-grid">
+
+      <div class="principle reveal">
+        <div class="principle-num">1</div>
+        <div>
+          <h4>Lead with the operating model, not products</h4>
+          <p>The challenge spans content lifecycle, governance, search, and AI retrieval &mdash; not just any single service. Open by aligning on the document lifecycle: source systems, classification needs, search and retrieval goals, and compliance boundaries.</p>
+        </div>
+      </div>
+
+      <div class="principle reveal">
+        <div class="principle-num">2</div>
+        <div>
+          <h4>Clarify &ldquo;classification&rdquo; early</h4>
+          <p>Security classification, content classification, taxonomy tagging, document-type detection, and retention classification are related but distinct design decisions. Surface this distinction in the first 15 minutes to avoid misaligned architecture assumptions.</p>
+        </div>
+      </div>
+
+      <div class="principle reveal">
+        <div class="principle-num">3</div>
+        <div>
+          <h4>Position Microsoft as a layered ecosystem</h4>
+          <p>Microsoft 365 and SharePoint handle native content services. <strong>Azure AI Foundry</strong> houses Content Understanding, model deployments, and the GenAI Prompt Skill that power enrichment pipelines. <strong>Azure AI Search</strong> provides indexing, GA skillsets, and agentic retrieval via Knowledge Bases. <strong>Purview</strong> handles compliance and information protection. Each layer has a defined, non-overlapping role.</p>
+        </div>
+      </div>
+
+      <div class="principle reveal">
+        <div class="principle-num">4</div>
+        <div>
+          <h4>Know what is GA vs. what is still preview</h4>
+          <p>Several capabilities reached GA in 2025&ndash;2026: <strong>Knowledge Bases</strong> (April 2026), <strong>Content Understanding Skill</strong>, <strong>GenAI Prompt Skill</strong>, and <strong>Document Layout Skill</strong> in Azure AI Search (April 2026 or earlier). Still in preview: SharePoint ACL document-level permissions, Purview sensitivity label metadata in retrieve responses, and some SharePoint list and page indexing scenarios. Validate each against their production requirements before committing architecturally.</p>
+        </div>
+      </div>
+
+      <div class="principle reveal">
+        <div class="principle-num">5</div>
+        <div>
+          <h4>Emphasize security trimming and provenance</h4>
+          <p>For financial-services document retrieval, every LLM answer must be grounded, permission-aware, and traceable to source documents. Enforce access at retrieval time &mdash; not only in the UI. Citations are a must-have compliance requirement, not a nice-to-have.</p>
+        </div>
+      </div>
+
+      <div class="principle reveal">
+        <div class="principle-num">6</div>
+        <div>
+          <h4>Recommend a pilot with representative documents</h4>
+          <p>Retrieval quality, metadata strategy, classification accuracy, and governance behavior should all be validated using real documents and policies &mdash; not generic demos. Start with a representative corpus and evaluate before committing to a broad rollout architecture.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Q&A READY (dark) -->
+<section id="questions" class="dark-section">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Anticipated Questions</span>
+      <h2 class="section-title">Six Questions to Be Ready to Answer</h2>
+      <p class="section-sub">These are the most likely technical and architectural questions to emerge in the first call &mdash; with recommended answers grounded in current Microsoft documentation and architecture guidance.</p>
+    </div>
+    <div class="qa-grid">
+
+      <div class="qa-card reveal">
+        <div class="qa-q">Can Microsoft classify documents at ingestion time?</div>
+        <div class="qa-a-label">A &mdash;</div>
+        <p>Yes &mdash; three patterns, combinable. (1) <strong>M365 document processing</strong> for SharePoint-native taxonomy tagging and autofill columns. (2) <strong>Azure Content Understanding</strong> (available in Azure AI Foundry) for generative AI-powered extraction from complex, unstructured docs &mdash; confidence scores, source grounding, no retraining as layouts change. (3) <strong>Azure AI Document Intelligence</strong> for established, forms-based GA pipelines. Content Understanding and Document Intelligence can be used together: unstructured documents through Content Understanding, high-volume structured forms through Document Intelligence.</p>
+      </div>
+
+      <div class="qa-card reveal">
+        <div class="qa-q">Can Azure AI Search index SharePoint and preserve permissions?</div>
+        <div class="qa-a-label">A &mdash;</div>
+        <p>Yes. The SharePoint in Microsoft 365 indexer indexes files and metadata from document libraries, incrementally picks up changes, detects deletions, and supports document-level security trimming at query time. Some newer SharePoint list and page scenarios are documented as preview under the 2026-05-01-preview REST API.</p>
+      </div>
+
+      <div class="qa-card reveal">
+        <div class="qa-q">Classic RAG or Knowledge Bases &mdash; which should we use?</div>
+        <div class="qa-a-label">A &mdash;</div>
+        <p><strong>Classic RAG</strong> with hybrid search and semantic ranking is the recommended starting point: simple, GA, and easy to validate retrieval quality against your documents. <strong>Knowledge Bases</strong> &mdash; the agentic retrieval framework in Azure AI Search &mdash; reached GA in April 2026. They add LLM-assisted query planning, multi-source retrieval across search index, blob, OneLake, and web sources, and configurable reasoning effort. Start with classic RAG, then evaluate Knowledge Bases for scenarios requiring multi-source access or answer synthesis workflows.</p>
+      </div>
+
+      <div class="qa-card reveal">
+        <div class="qa-q">Can Purview sensitivity labels work in Azure AI Search?</div>
+        <div class="qa-a-label">A &mdash;</div>
+        <p>Azure AI Search has documented preview support for extracting Purview sensitivity labels during indexing and enforcing label-based access control at query time for supported sources, including SharePoint in Microsoft 365. This is a preview capability &mdash; validate fit and production readiness for specific requirements before designing around it.</p>
+      </div>
+
+      <div class="qa-card reveal">
+        <div class="qa-q">Can DLP apply to AI agents and LLM interactions?</div>
+        <div class="qa-a-label">A &mdash;</div>
+        <p>Microsoft Purview documents support for AI interaction governance across data classification, sensitivity labels, DLP, auditing, eDiscovery, and compliance management for Microsoft 365 agents. For Azure AI Foundry agents, Purview support includes data classification, sensitivity labels, DLP, and Insider Risk Management in the documented capability matrix.</p>
+      </div>
+
+      <div class="qa-card reveal">
+        <div class="qa-q">How do we prevent the LLM from hallucinating on confidential documents?</div>
+        <div class="qa-a-label">A &mdash;</div>
+        <p>The architecture must enforce source permissions and sensitivity policies before content reaches the LLM context. Every answer should be grounded in retrieved, permission-trimmed content from Azure AI Search. Citations to source documents are required &mdash; both for compliance auditing and for user trust in financial-services retrieval workflows.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- NEXT STEPS -->
+<section id="nextsteps">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">First-Call Outcomes</span>
+      <h2 class="section-title">Four Recommended Next Steps</h2>
+      <p class="section-sub">The first call is a discovery and solution-mapping session. From there, one of these four focused engagements is the right next move &mdash; chosen based on which layer the customer identifies as the highest-value starting point.</p>
+    </div>
+
+    <div class="principles-grid">
+
+      <div class="principle reveal">
+        <div class="principle-num" style="background:linear-gradient(135deg,#5C2D91,#b48cde);">A</div>
+        <div>
+          <h4>Purview + DLP Deep Dive</h4>
+          <p>Recommended if Purview maturity, DLP scope, and sensitivity-label taxonomy are the primary blockers. Covers label governance, label policies, DLP for Microsoft 365 and AI agents, and the path to label enforcement in Azure AI Search.</p>
+        </div>
+      </div>
+
+      <div class="principle reveal">
+        <div class="principle-num" style="background:linear-gradient(135deg,#008575,#00b294);">B</div>
+        <div>
+          <h4>Azure AI Search / RAG Architecture Session</h4>
+          <p>Recommended if search quality, indexing strategy, and LLM grounding are the primary focus. Covers SharePoint indexer configuration, skillset design, hybrid search, RAG patterns, citation architecture, and security trimming.</p>
+        </div>
+      </div>
+
+      <div class="principle reveal">
+        <div class="principle-num" style="background:linear-gradient(135deg,#0078d4,#50e6ff);">C</div>
+        <div>
+          <h4>Content Understanding + Extraction Deep Dive</h4>
+          <p>Recommended if document extraction, content-type classification, and metadata enrichment are the highest-value area. Covers Azure Content Understanding in Azure AI Foundry alongside Azure AI Document Intelligence &mdash; with hands-on analysis of representative document types from the customer&rsquo;s corpus to assess model accuracy, confidence scores, and extraction coverage.</p>
+        </div>
+      </div>
+
+      <div class="principle reveal">
+        <div class="principle-num" style="background:linear-gradient(135deg,#c42d38,#ff6b9d);">D</div>
+        <div>
+          <h4>Pilot Design Workshop</h4>
+          <p>Recommended when the team is ready to move from discovery to design. Scopes a focused pilot using representative documents to validate classification accuracy, indexing latency, retrieval quality, security trimming, and compliance behavior against real requirements.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="final-cta reveal">
+      <div class="final-cta-inner">
+        <h3>Start with the document lifecycle.<br><span class="hl">The architecture follows from there.</span></h3>
+        <p>Align on source systems, classification needs, search and retrieval goals, and compliance boundaries in the first call &mdash; then map those requirements to the layer of the Microsoft stack that addresses them. A focused discovery session is more valuable than a demo for a requirements space this broad.</p>
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+          <a href="https://learn.microsoft.com/en-us/azure/search/retrieval-augmented-generation-overview" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Azure AI Search + RAG Docs &rarr;</a>
+          <a href="https://learn.microsoft.com/en-us/purview/create-sensitivity-labels" class="btn btn-outline" target="_blank" rel="noopener noreferrer">Microsoft Purview Labels</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>AI-Powered Intelligent Document Management &middot; Azure AI Foundry &middot; IR+M Discovery Briefing &middot; Updated June 2026 &mdash; includes Azure Content Understanding, Knowledge Bases GA (April 2026), and GA enrichment skillsets</p>
+</footer>
+
+<script>
+(function () {
+  var bar = document.getElementById('progressBar');
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function () {
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (window.scrollY / max * 100) + '%';
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  var sections = document.querySelectorAll('section, header');
+  var navLinks = document.querySelectorAll('.nav-links a');
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        navLinks.forEach(function (l) { l.classList.remove('active'); });
+        var id = entry.target.id;
+        var active = document.querySelector('.nav-links a[href="#' + id + '"]');
+        if (active) { active.classList.add('active'); }
+      }
+    });
+  }, { rootMargin: '-40% 0px -60% 0px' });
+  sections.forEach(function (s) { io.observe(s); });
+
+  var reveals = document.querySelectorAll('.reveal');
+  var rio = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        rio.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(function (r) { rio.observe(r); });
+}());
+</script>
+
+</body>
+</html>
