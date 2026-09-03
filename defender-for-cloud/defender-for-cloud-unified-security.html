@@ -1435,7 +1435,7 @@ footer a:hover { text-decoration: underline; }
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-07-16">
+<meta name="smec:last-accuracy-check" content="2026-09-03">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="hjamal-git">
 <style>/* smec-back-btn v3 */
@@ -1783,11 +1783,11 @@ footer a:hover { text-decoration: underline; }
             <span class="plan-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
             Defender for Servers
           </h3>
-          <p>Protects Windows and Linux machines across Azure, AWS (EC2), GCP (Compute Engine), and on-premises via Azure Arc. Offered in two plans: <strong>Plan 1</strong> for entry-level EDR via native Defender for Endpoint integration, and <strong>Plan 2</strong> which adds agentless scanning, file integrity monitoring, JIT access, and more. The Log Analytics/AMA agents are no longer required. Agentless scanning and MDE replace them.</p>
+          <p>Protects Windows and Linux machines across Azure, AWS, GCP, and on-premises. <strong>Plan 1</strong> focuses on EDR through Defender for Endpoint; <strong>Plan 2</strong> adds agentless scanning, file integrity monitoring, JIT access, and more. Most features no longer use AMA, but some capabilities require agents, extensions, Azure Arc, or a Log Analytics workspace.</p>
           <div class="capability-list">
             <div class="capability"><div><strong>Native Defender for Endpoint integration</strong><span>Auto-onboarded EDR, integrated alerts &amp; incidents, and software inventory discovery across Azure, AWS, and GCP.</span></div></div>
             <div class="capability"><div><strong>Agentless machine scanning </strong><span>Scans software inventory, vulnerabilities, secrets, and malware with no endpoint agent required.</span></div></div>
-            <div class="capability"><div><strong>File integrity monitoring </strong><span>Detects changes to critical system files and registry keys — available on Azure, AWS, and GCP.</span></div></div>
+            <div class="capability"><div><strong>File integrity monitoring </strong><span>Plan 2 feature using MDE and agentless scanning; change logs require a Log Analytics workspace.</span></div></div>
             <div class="capability"><div><strong>Just-in-time VM access </strong><span>Reduces attack surface by granting on-demand port access on Azure and AWS.</span></div></div>
           </div>
           <div class="platform-chips">
@@ -2006,7 +2006,7 @@ footer a:hover { text-decoration: underline; }
             <span class="plan-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0018 0V5"/><path d="M3 12a9 3 0 0018 0"/></svg></span>
             Defender for Databases
           </h3>
-          <p>Protects your crown jewels: customer records, financial data, intellectual property, and AI grounding data. Covers Azure SQL, Cosmos DB, MySQL, PostgreSQL, and SQL on any cloud or on-prem via Azure Arc.</p>
+          <p>Defender for Databases includes specialized plans for Azure SQL, Cosmos DB, SQL Server on Azure or Arc-enabled machines, and open-source relational databases. The open-source plan covers supported Azure PaaS services and AWS RDS; it doesn't use Azure Arc.</p>
           <div class="capability-list">
             <div class="capability"><div><strong>SQL Injection detection</strong><span>Catches classic and blind injection attempts in query patterns.</span></div></div>
             <div class="capability"><div><strong>Brute force attack detection</strong><span>Identifies repeated failed sign-ins from same or distributed sources.</span></div></div>
@@ -2061,12 +2061,12 @@ footer a:hover { text-decoration: underline; }
             <span class="plan-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
             Defender for Storage
           </h3>
-          <p>Azure-native, agentless protection that prevents three major impacts: malicious file uploads, sensitive data exfiltration, and data corruption. Enable at the subscription level; existing and new accounts included automatically.</p>
+          <p>Azure-native, agentless protection for malicious uploads, sensitive data exfiltration, and data corruption. Subscription-level enablement protects existing and new storage accounts unless they are excluded.</p>
           <div class="capability-list">
             <div class="capability"><div><strong>Activity monitoring</strong><span>Data-plane and control-plane telemetry without diagnostic logs.</span></div></div>
-            <div class="capability"><div><strong>Malware scanning</strong><span>Near real-time scanning on-upload, powered by Microsoft Defender AV, with automated quarantine.</span></div></div>
+            <div class="capability"><div><strong>Malware scanning</strong><span>Paid per-GB on-upload scanning; optional GA remediation soft-deletes malicious blobs for recoverable quarantine.</span></div></div>
             <div class="capability"><div><strong>Sensitive data threat detection</strong><span>Built-in DLP for storage that identifies PII, secrets, and credentials in blobs.</span></div></div>
-            <div class="capability"><div><strong>Cost-predictable</strong><span>Per storage account pricing with configurable monthly scanning caps.</span></div></div>
+            <div class="capability"><div><strong>Cost controls</strong><span>Base protection is billed per account; malware scanning is billed per GB with configurable monthly caps.</span></div></div>
           </div>
           <div class="platform-chips">
             <span class="platform-chip azure">Blob Storage</span>
@@ -2116,7 +2116,7 @@ footer a:hover { text-decoration: underline; }
           <p>Cloud-native, lifecycle-wide protection for Kubernetes: AKS, EKS, GKE, and on-prem. Covers the cluster and the registry in one plan, with shift-left CI/CD security and runtime detection.</p>
           <div class="capability-list">
             <div class="capability"><div><strong>Posture management</strong><span>Continuous monitoring across cloud APIs, Kubernetes APIs, and workloads.</span></div></div>
-            <div class="capability"><div><strong>Vulnerability assessment</strong><span>Agentless daily scans across registry images, running containers, and Kubernetes nodes.</span></div></div>
+            <div class="capability"><div><strong>Vulnerability assessment</strong><span>Agentless assessment for supported registry images, running containers, and Kubernetes nodes; coverage varies by cloud.</span></div></div>
             <div class="capability"><div><strong>Runtime threat protection</strong><span>60+ Kubernetes-aware analytics mapped to MITRE ATT&CK.</span></div></div>
             <div class="capability"><div><strong>Supply chain security</strong><span>Gated deployment rules block risky images from reaching production.</span></div></div>
           </div>
@@ -2142,7 +2142,7 @@ footer a:hover { text-decoration: underline; }
             <div class="coverage-items">
               <span class="coverage-pill">Azure Container Registry</span>
               <span class="coverage-pill">Amazon ECR</span>
-              <span class="coverage-pill">Docker Hub</span>
+              <span class="coverage-pill">Supported external registries</span>
             </div>
           </div>
           <div class="coverage-layer">
@@ -2170,19 +2170,19 @@ footer a:hover { text-decoration: underline; }
         <div class="coverage-info">
           <h3>
             <span class="plan-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.663 17h4.673M12 3v1M12 20v1M4.22 4.22l.71.71M18.36 18.36l.71.71M1 12h1M22 12h1M4.22 19.78l.71-.71M18.36 5.64l.71-.71"/><circle cx="12" cy="12" r="5"/></svg></span>
-            Defender for AI Workloads
+            Microsoft Defender for AI Services
           </h3>
-          <p>Purpose-built detections for GenAI, aligned to the OWASP Top 10 for LLMs. Discover your full AI stack, identify toxic combinations, and stop prompt injection, data poisoning, and wallet abuse.</p>
+          <p>GA threat protection identifies risks in supported Azure OpenAI and Azure AI Model Inference text traffic. Defender CSPM separately discovers and assesses AI workloads across Azure, AWS, and GCP.</p>
           <div class="capability-list">
-            <div class="capability"><div><strong>AI Security Posture Management</strong><span>Unified inventory of orchestrators, datasets, models, plugins, and agents across Azure, AWS, and GCP.</span></div></div>
+            <div class="capability"><div><strong>AI Security Posture Management</strong><span>Defender CSPM discovers AI applications across Azure, AWS, and GCP; agent-level posture now requires Microsoft Agent 365.</span></div></div>
             <div class="capability"><div><strong>Content analysis</strong><span>Detects jailbreak attempts, malicious URLs, secrets in prompts, and encoding manipulations.</span></div></div>
-            <div class="capability"><div><strong>Behavioral analysis</strong><span>Catches crescendo attacks, intent manipulation, and wallet abuse via user/app/tool patterns.</span></div></div>
+            <div class="capability"><div><strong>Behavioral analysis</strong><span>Surfaces supported access, application, tool, and wallet-abuse anomalies.</span></div></div>
             <div class="capability"><div><strong>Azure AI Content Safety Prompt Shields</strong><span>Built-in integration with Azure AI Content Safety.</span></div></div>
           </div>
           <div class="platform-chips">
             <span class="platform-chip azure">Azure OpenAI</span>
-            <span class="platform-chip azure">AI Foundry Models</span>
-            <span class="platform-chip azure">Copilot Studio</span>
+            <span class="platform-chip azure">Azure AI Model Inference</span>
+            <span class="platform-chip azure">Text tokens only</span>
           </div>
         </div>
         <div class="coverage-visual">
@@ -2214,7 +2214,7 @@ footer a:hover { text-decoration: underline; }
           <div class="coverage-layer new-capabilities">
             <div class="coverage-layer-title">New capabilities</div>
             <div class="coverage-items">
-              <span class="coverage-pill">AI model security</span>
+              <span class="coverage-pill">AI model security (Preview)</span>
             </div>
           </div>
         </div>
@@ -2260,7 +2260,7 @@ footer a:hover { text-decoration: underline; }
           <img src="https://ts4.mm.bing.net/th?id=OIP.L-mLmJuFjIXXJ4RQf5_P-QHaHa&pid=15.1" alt="Microsoft Security Copilot logo">
         </div>
         <h4>Security Copilot</h4>
-        <p>Ask natural-language questions across your cloud findings; no KQL required. Included in M365 E5/E7.</p>
+        <p>Ask natural-language questions across supported cloud findings. Security Copilot licensing and capacity are purchased separately.</p>
       </div>
       <div class="ecosystem-card eco-purview reveal reveal-delay-2">
         <div class="ecosystem-icon">
@@ -2274,7 +2274,7 @@ footer a:hover { text-decoration: underline; }
           <img src="https://ts1.mm.bing.net/th?id=OIP.RL1Ox4fOLgqaQ2Rtn9y1cwHaHa&pid=15.1" alt="Microsoft Defender for Endpoint logo">
         </div>
         <h4>Defender for Endpoint</h4>
-        <p>EDR and vulnerability management for every protected server; no separate agent to deploy or manage.</p>
+        <p>EDR and vulnerability management through the Defender for Endpoint integration; onboarding deploys the endpoint extension on supported machines.</p>
       </div>
       <div class="ecosystem-card eco-foundry reveal reveal-delay-3">
         <div class="ecosystem-icon">
@@ -2309,14 +2309,14 @@ footer a:hover { text-decoration: underline; }
         <div>
           <span class="trial-eyebrow">Free 30-Day Trial</span>
           <h2>Start protecting your cloud in minutes</h2>
-          <p class="lead">Enable Defender for Cloud on your Azure subscription and get 30 days of free access to posture management, workload protection, and DevOps security across Azure, AWS, GCP, and on-prem.</p>
+          <p class="lead">Defender for Cloud paid plans include a 30-day trial, subject to plan eligibility and documented limits. Foundational CSPM remains available at no cost.</p>
           <ul class="trial-features">
-            <li><span class="check-icon">✓</span>Full access to all Defender plans for 30 days</li>
-            <li><span class="check-icon">✓</span>No separate agent install; native Azure integration</li>
-            <li><span class="check-icon">✓</span>Flexible pricing: pay-as-you-go or commitment tiers</li>
+            <li><span class="check-icon">✓</span>Most paid plans are free for the first 30 days; exceptions apply</li>
+            <li><span class="check-icon">✓</span>Malware scanning for Storage is billed from day one</li>
+            <li><span class="check-icon">✓</span>Pay-as-you-go or one-year Commit Unit pre-purchase</li>
             <li><span class="check-icon">✓</span>Your account team helps with onboarding & setup</li>
           </ul>
-          <a href="https://azure.microsoft.com/en-us/products/defender-for-cloud" class="btn btn-trial" target="_blank" rel="noopener">Start Your Free Trial →</a>
+          <a href="https://azure.microsoft.com/pricing/details/defender-for-cloud/" class="btn btn-trial" target="_blank" rel="noopener">Review Pricing &amp; Trial Terms →</a>
         </div>
       </div>
     </div>
@@ -2367,7 +2367,7 @@ footer a:hover { text-decoration: underline; }
 <!-- ========== FOOTER ========== -->
 <footer>
   <p><strong>Microsoft Defender for Cloud</strong> · Interactive learning experience</p>
-  <p>Ready to learn more? Talk to your Microsoft account team or visit <a href="https://azure.microsoft.com/en-us/products/defender-for-cloud" target="_blank" rel="noopener">azure.microsoft.com/defender-for-cloud</a></p>
+  <p>Ready to learn more? Visit <a href="https://learn.microsoft.com/azure/defender-for-cloud/defender-for-cloud-introduction" target="_blank" rel="noopener">Microsoft Learn</a>, review <a href="https://learn.microsoft.com/azure/defender-for-cloud/release-notes" target="_blank" rel="noopener">release notes</a>, or check <a href="https://azure.microsoft.com/pricing/details/defender-for-cloud/" target="_blank" rel="noopener">current pricing</a>.</p>
   <p style="margin-top:14px; font-size:11px; color:rgba(255,255,255,0.55);">© Microsoft Corporation. All rights reserved.</p>
 </footer>
 
@@ -2478,15 +2478,15 @@ const quizData = [
     explain: "DevSecOps Security scans Terraform, Bicep, ARM, Kubernetes manifests, Dockerfiles, plus OSS dependencies and secrets, across GitHub, Azure DevOps, and GitLab."
   },
   {
-    q: "What's included in the Defender for Cloud free trial?",
+    q: "Which Defender for Cloud trial statement is accurate?",
     options: [
       "14 days of limited access",
-      "30 days of full access to all Defender plans",
+      "Most paid plans have a 30-day trial, with documented exceptions and caps",
       "Access to Defender for Servers only",
       "No trial is available"
     ],
     correct: 1,
-    explain: "You get a 30-day free trial of Defender for Cloud with a new or existing Azure account, with full access to every Defender plan."
+    explain: "Most paid Defender for Cloud plans have a 30-day trial. Storage malware scanning is billed from day one, and Defender for AI Services also has a plan-specific scanned-token cap."
   }
 ];
 

@@ -646,7 +646,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-06-27">
+<meta name="smec:last-accuracy-check" content="2026-09-02">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="Harry Arce">
 <style>/* smec-back-btn v3 */
@@ -732,12 +732,12 @@
   <div class="container">
     <div class="hero-grid">
       <div>
-        <span class="hero-eyebrow"><span class="dot"></span> Generally Available · Ignite 2025</span>
+        <span class="hero-eyebrow"><span class="dot"></span> Preview reference implementation</span>
         <h1>The runway before <span class="accent-cyan">takeoff</span>.<br>Build it once, <span class="accent-amber">fly</span> many.</h1>
-        <p class="hero-sub">Every enterprise AI workload needs the same secure, governed foundation — networking, identity, observability, policy, and the right Foundry plumbing. The <strong>Azure AI Landing Zone</strong> ships that foundation as Bicep, Terraform, and Portal — built on Azure Verified Modules — so your first agent ships in days, not quarters.</p>
+        <p class="hero-sub">Enterprise AI workloads need a secure, governed foundation spanning networking, identity, observability, policy, and Foundry resources. The <strong>AI Landing Zone</strong> provides Portal, Bicep, and Terraform implementation options based on Azure Verified Modules.</p>
         <div class="hero-meta">
           <span class="chip"><strong>2</strong> reference patterns</span>
-          <span class="chip"><strong>3</strong> IaC formats</span>
+          <span class="chip"><strong>3</strong> deployment options</span>
           <span class="chip"><strong>7</strong> design pillars</span>
           <span class="chip">Azure Verified Modules</span>
         </div>
@@ -911,9 +911,9 @@
     </div>
 
     <div class="hero-callouts reveal">
-      <div class="cell"><div class="num">GA</div><div class="lbl">Generally available · Nov 17, 2025</div></div>
+      <div class="cell"><div class="num">Preview</div><div class="lbl">Confirm current limitations before deployment</div></div>
       <div class="cell"><div class="num">2</div><div class="lbl">Reference patterns: Foundry &amp; APIM Gateway</div></div>
-      <div class="cell"><div class="num">100%</div><div class="lbl">Built on Azure Verified Modules</div></div>
+      <div class="cell"><div class="num">AVM</div><div class="lbl">Bicep and Terraform use Azure Verified Modules</div></div>
       <div class="cell"><div class="num">8+</div><div class="lbl">Anchored use cases ready to deploy</div></div>
     </div>
   </div>
@@ -976,7 +976,7 @@
           <div class="tile"><strong>Chat &amp; Copilots</strong><span>Foundry-grounded conversational</span></div>
           <div class="tile"><strong>AI Agents</strong><span>Foundry Agent Service</span></div>
           <div class="tile"><strong>Agent Runtime</strong><span>Hosted agents on MXC sandboxes</span></div>
-          <div class="tile"><strong>RAG Apps</strong><span>AI Search + Cosmos / HorizonDB</span></div>
+          <div class="tile"><strong>RAG Apps</strong><span>AI Search + Cosmos DB</span></div>
           <div class="tile"><strong>Content Processing</strong><span>Document &amp; knowledge mining</span></div>
         </div>
       </div>
@@ -986,7 +986,7 @@
         <div class="row-content">
           <div class="tile"><strong>Microsoft Foundry</strong><span>Account · Projects · Agent Service</span></div>
           <div class="tile"><strong>AI Search</strong><span>Vector + keyword retrieval</span></div>
-          <div class="tile"><strong>Cosmos DB / HorizonDB</strong><span>Agent state, memory &amp; Postgres for agents</span></div>
+          <div class="tile"><strong>Cosmos DB</strong><span>Agent state and memory</span></div>
           <div class="tile"><strong>Storage Account</strong><span>Blobs · grounding sources</span></div>
         </div>
       </div>
@@ -1118,9 +1118,9 @@
         <ul>
           <li>Foundry Account + Projects + Agent Service</li>
           <li>Azure AI Search for RAG retrieval</li>
-          <li>Cosmos DB for agent state &amp; memory — or <strong>Azure HorizonDB</strong> (Postgres reimagined for agents) <span style="background:#f0f7ff;border:1px solid #cfe1ff;color:#0d4a8a;padding:.1rem .4rem;border-radius:6px;font-size:.7rem;font-weight:700;">Build 2026</span></li>
+          <li>Cosmos DB for agent state &amp; memory</li>
           <li>Storage Account for blobs &amp; grounding sources</li>
-          <li>Optional compute targets: <strong>Maia 200</strong> AI accelerators for inference, and <strong>Cobalt 200</strong> Arm VMs (preview, ~50% performance gain on Microsoft's fastest Arm processor yet, optimized for agentic workloads) <span style="background:#f0f7ff;border:1px solid #cfe1ff;color:#0d4a8a;padding:.1rem .4rem;border-radius:6px;font-size:.7rem;font-weight:700;">Build 2026</span></li>
+          <li>Optional compute targets should be selected by workload requirements and regional availability</li>
         </ul>
       </div>
 
@@ -1161,7 +1161,7 @@
   <div class="container reveal">
     <span class="section-tag">What Actually Ships</span>
     <h2>Inside the Azure/AI-Landing-Zones repo.</h2>
-    <p class="lede">Two reference implementations, three IaC formats, every component built on Azure Verified Modules. Here's exactly what you get when you clone the repo.</p>
+    <p class="lede">Two reference architectures with Bicep and Terraform implementations, plus a Portal deployment for the Foundry pattern. Review the repository for current feature parity and regional support.</p>
 
     <div class="repo-card">
       <div class="repo-head">
@@ -1178,6 +1178,7 @@
           <p>The Foundry-centric pattern for AI Apps &amp; Agents — a turnkey foundation for teams shipping conversational AI, agents, RAG, and copilots on Microsoft Foundry.</p>
           <div class="iac-badges">
             <span class="iac-badge">Bicep</span>
+            <span class="iac-badge">Terraform</span>
             <span class="iac-badge">Terraform</span>
             <span class="iac-badge">Portal</span>
           </div>
@@ -1208,7 +1209,7 @@
           <ul>
             <li>Key Vault</li>
             <li>Storage Account</li>
-            <li>Cosmos DB <em>or</em> <a href="https://techcommunity.microsoft.com/blog/adforpostgresql/azure-horizondb-enterprise-ready-postgres-engineered-for-the-ai-era/4524094" target="_blank" rel="noopener">Azure HorizonDB</a> (Postgres for agents)</li>
+            <li>Cosmos DB</li>
             <li>Azure AI Search</li>
             <li>Existing or new — your choice</li>
           </ul>
@@ -1337,8 +1338,8 @@
 <section class="timeline-section" id="timeline">
   <div class="container reveal">
     <span class="section-tag">The Dates That Matter</span>
-    <h2>How we got from Build to GA.</h2>
-    <p class="lede">The AI Landing Zone didn't appear from nowhere — it landed at Ignite 2025 after a year of foundational work on Foundry, Entra Agent ID, and Azure Verified Modules.</p>
+    <h2>How the preview evolved.</h2>
+    <p class="lede">The AI Landing Zone continues to evolve as an open preview reference implementation. Treat repository updates as implementation history, not product-release milestones.</p>
 
     <div class="timeline">
       <div class="tl-item flag">
@@ -1349,7 +1350,7 @@
       <div class="tl-item">
         <div class="tl-date">Oct 8, 2025</div>
         <h4>"Accelerating Enterprise AI Adoption" published</h4>
-        <p>Microsoft Tech Community lays out the AI Landing Zone story and signals imminent GA on the Azure Architecture Blog.</p>
+        <p>Microsoft Tech Community describes the AI Landing Zone approach and its alignment with Azure architecture guidance.</p>
       </div>
       <div class="tl-item">
         <div class="tl-date">Nov 5, 2025</div>
@@ -1361,10 +1362,10 @@
         <h4>Terraform implementation guide published</h4>
         <p>The Terraform variant catches up to Bicep — multi-cloud platform teams get a first-class option.</p>
       </div>
-      <div class="tl-item ga">
+      <div class="tl-item">
         <div class="tl-date">Nov 17, 2025 · Ignite</div>
-        <h4>AI Landing Zones graduate to GA</h4>
-        <p>Generally available. Foundry Control Plane, Agent 365, and native Defender + GitHub Advanced Security integration ship alongside.</p>
+        <h4>AI Landing Zones preview expands</h4>
+        <p>The project remains in preview. Check the repository roadmap and current documentation before making production commitments.</p>
       </div>
     </div>
 
@@ -1460,7 +1461,7 @@
   <div class="container">
     <div class="brand-mark">Azure AI Landing Zones</div>
     <p>The runway before takeoff. Build it once, fly many.</p>
-    <p class="small">Based on the official <a href="https://github.com/Azure/AI-Landing-Zones" target="_blank" rel="noopener">Azure/AI-Landing-Zones</a> reference architecture, the <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ai/" target="_blank" rel="noopener">Cloud Adoption Framework for AI</a>, and the <a href="https://learn.microsoft.com/en-us/azure/well-architected/ai/" target="_blank" rel="noopener">Well-Architected Framework AI workload</a> guidance. GA: November 17, 2025 · Updated June 2026 (Build 2026). New compute &amp; data primitives: <a href="https://azure.microsoft.com/en-us/blog/new-azure-cobalt-200-vms-deliver-50-performance-improvement-fully-optimized-for-modern-agentic-ai-workloads/" target="_blank" rel="noopener">Cobalt 200 VMs</a> · <a href="https://techcommunity.microsoft.com/blog/adforpostgresql/azure-horizondb-enterprise-ready-postgres-engineered-for-the-ai-era/4524094" target="_blank" rel="noopener">Azure HorizonDB</a>.</p>
+    <p class="small">Based on the official <a href="https://github.com/Azure/AI-Landing-Zones" target="_blank" rel="noopener">Azure/AI-Landing-Zones</a> preview reference implementation, the <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ai/" target="_blank" rel="noopener">Cloud Adoption Framework for AI</a>, and the <a href="https://learn.microsoft.com/en-us/azure/well-architected/ai/" target="_blank" rel="noopener">Well-Architected Framework AI workload</a> guidance. Review repository limitations, regional support, and the roadmap before production use.</p>
   </div>
 </footer>
 

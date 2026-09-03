@@ -332,6 +332,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The Anatomy of an AI Agent — A Field Guide, Second Edition">
 <meta name="twitter:description" content="The Anatomy of an AI Agent — A Field Guide, Second Edition — an interactive infographic from the SME&amp;C Infographic Hub.">
+<!-- smec-accuracy v1 -->
+<meta name="smec:last-accuracy-check" content="2026-09-02">
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 </head>
@@ -487,11 +489,11 @@
 
   <div class="container">
     <div class="callout-row reveal">
-      <div class="cell"><div class="num">~40%</div><div class="lbl">of "agents" are just chatbots in disguise</div></div>
-      <div class="cell"><div class="num">10</div><div class="lbl">organs every real agent needs</div></div>
-      <div class="cell"><div class="num">1:1</div><div class="lbl">each organ ≈ one failure mode</div></div>
-      <div class="cell"><div class="num">0</div><div class="lbl">skippable parts in production</div></div>
-      <div class="cell"><div class="num">∞</div><div class="lbl">agents you can build once you see them</div></div>
+      <div class="cell"><div class="num">16</div><div class="lbl">design concerns in this field guide</div></div>
+      <div class="cell"><div class="num">1</div><div class="lbl">agent loop connecting the system</div></div>
+      <div class="cell"><div class="num">ID</div><div class="lbl">identity for attributable actions</div></div>
+      <div class="cell"><div class="num">HITL</div><div class="lbl">approval for high-stakes actions</div></div>
+      <div class="cell"><div class="num">EVAL</div><div class="lbl">evidence before production changes</div></div>
     </div>
   </div>
 </section>
@@ -521,20 +523,20 @@
     <h3 style="font-family: var(--serif); font-size: 1.4rem; margin-top: 2.5rem;">Hold the model perfectly still, change only the scaffold &mdash; and the score still moves.</h3>
     <div class="evidence-band">
       <div class="ev-stat">
-        <div class="n">42% &rarr; 78%</div>
-        <p>Same Claude Opus 4.5 on CORE-Bench. Only the scaffold changed.</p>
+        <div class="n">Trace</div>
+        <p>Inspect model calls, tool calls, latency, and decisions end to end.</p>
       </div>
       <div class="ev-stat">
-        <div class="n">+10.7 pts</div>
-        <p>Same GPT-4 on SWE-bench, from the agent interface alone &mdash; 3.8% to 12.5%.</p>
+        <div class="n">Evaluate</div>
+        <p>Measure quality, safety, groundedness, and task success against datasets.</p>
       </div>
       <div class="ev-stat">
-        <div class="n">79%</div>
-        <p>of multi-agent failures trace to system design, not model limitations.</p>
+        <div class="n">Optimize</div>
+        <p>Use evaluation evidence to improve instructions, tools, skills, and model choice.</p>
       </div>
     </div>
-    <p class="ev-quote">&ldquo;Same weights. Same capabilities. Same training data. That gap comes from agent architecture.&rdquo;</p>
-    <p class="ev-src">Sources: Kapoor / HAL CORE-Bench &middot; SWE-agent, arXiv 2405.15793 &middot; MAST, arXiv 2503.13657 &middot; quote from Augment Code</p>
+    <p class="ev-quote">The model is one component; the surrounding runtime, tools, knowledge, identity, and evaluation system determine production behavior.</p>
+    <p class="ev-src">Source: Microsoft Foundry Agent Service overview and observability documentation</p>
   </div>
 </section>
 
@@ -585,7 +587,7 @@
           <li><strong>Small & local</strong> — Phi-class for edge, low-latency, on-device</li>
           <li><strong>Fine-tuned</strong> — when domain idioms matter more than raw IQ</li>
         </ul>
-        <div class="without"><strong>Without the right one</strong>Either overpaying 10× for simple tasks, or watching your agent face-plant on the ones that matter.</div>
+        <div class="without"><strong>Without the right one</strong>Either paying more than needed for simple tasks, or losing quality on the ones that require deeper reasoning.</div>
       </div>
 
       <!-- 3. Knowledge -->
@@ -624,7 +626,7 @@
         <ul class="bits">
           <li><strong>Function calls</strong> — typed, schema-defined capabilities</li>
           <li><strong>MCP servers</strong> — reusable, portable tool catalogs</li>
-          <li><strong>Connectors</strong> — Logic Apps, Graph, Power Platform (~1,400+)</li>
+          <li><strong>Connectors</strong> — Logic Apps, Microsoft Graph, and Power Platform</li>
           <li><strong>Code interpreter</strong> — sandboxed compute for ad-hoc work</li>
         </ul>
         <div class="without"><strong>Without them</strong>A chatbot. Can describe the fix. Can't apply it.</div>
@@ -770,7 +772,7 @@
         <p class="tagline">Triggers, schedules and events replace the chat box. The agent perceives, decides and acts with nobody watching.</p>
         <ul class="bits">
           <li><strong>Copilot Studio autonomous agents</strong> &mdash; GA</li>
-          <li><strong>Foundry Routines</strong> &mdash; Preview, Jun 2026</li>
+          <li><strong>Foundry Routines</strong> &mdash; Preview</li>
           <li><strong>Microsoft 365 Workflows agent</strong> &mdash; event-driven work</li>
           <li><strong>The test</strong> &mdash; does anything happen when nobody types?</li>
         </ul>
@@ -790,7 +792,7 @@
         </div>
         <p class="tagline">Computer use and browser control let an agent drive the systems that never got an API &mdash; by looking at the screen.</p>
         <ul class="bits">
-          <li><strong>Copilot Studio computer use</strong> &mdash; GA, 26 May 2026</li>
+          <li><strong>Copilot Studio computer use</strong> &mdash; Preview</li>
           <li><strong>Foundry Browser Automation</strong> &mdash; Preview</li>
           <li><strong>Windows 365 for Agents</strong> &mdash; Preview, isolated sessions</li>
           <li><strong>Pair with</strong> &mdash; identity + approval gates, always</li>
@@ -811,9 +813,9 @@
         </div>
         <p class="tagline">Checkpointing and hydration let a run pause, fail, resume and finish hours or days later &mdash; exactly where it stopped.</p>
         <ul class="bits">
-          <li><strong>Agent Framework workflows</strong> &mdash; GA, 3 Apr 2026</li>
+          <li><strong>Agent Framework workflows</strong> &mdash; graph-based orchestration with checkpoint support</li>
           <li><strong>Foundry hosted agents</strong> &mdash; managed session state</li>
-          <li><strong>Azure Durable Functions</strong> &mdash; Preview</li>
+          <li><strong>Durable Extension</strong> &mdash; Azure Functions or self-hosted durable execution</li>
           <li><strong>The test</strong> &mdash; kill the process mid-run; does it finish?</li>
         </ul>
         <div class="without"><strong>Without it</strong>Every crash restarts from zero &mdash; so nothing long or valuable can ever be trusted to an agent.</div>
@@ -832,10 +834,10 @@
         </div>
         <p class="tagline">The agent budgets its own energy. Route to the cheapest capable model, search for tools instead of loading them all, expire what it no longer needs.</p>
         <ul class="bits">
-          <li><strong>Foundry model router</strong> &mdash; GA, routes 28 models</li>
-          <li><strong>Tool Search</strong> &mdash; Preview; 97%+ fewer tokens at 1,000 tools</li>
-          <li><strong>98.7% fewer tokens</strong> &mdash; MCP tools invoked as code, not loaded as schemas (150,000 &rarr; 2,000)</li>
-          <li><strong>Memory TTL</strong> &mdash; Preview; context that expires</li>
+          <li><strong>Foundry model router</strong> &mdash; per-request routing across an evolving pool of eligible models</li>
+          <li><strong>Tool discovery</strong> &mdash; expose only relevant tools and toolboxes for the task</li>
+          <li><strong>Compact tool context</strong> &mdash; avoid loading every schema into every request</li>
+          <li><strong>Memory lifecycle</strong> &mdash; retain useful context and expire what is no longer needed</li>
         </ul>
         <div class="without"><strong>Without it</strong>The pilot works beautifully and the invoice quietly kills the programme.</div>
       </div>
@@ -853,7 +855,7 @@
         </div>
         <p class="tagline">Speech-to-speech and streaming generative UI replace the chat transcript as the primary surface. Interruption is the proof it changed.</p>
         <ul class="bits">
-          <li><strong>Copilot Studio voice agents</strong> &mdash; GA, May 2026</li>
+          <li><strong>Copilot Studio real-time voice agents</strong> &mdash; check current availability for the target channel</li>
           <li><strong>Foundry Voice Live API</strong> &mdash; Preview</li>
           <li><strong>MCP Apps, AG-UI, A2UI</strong> &mdash; emerging UI protocols</li>
           <li><strong>Barge-in</strong> &mdash; talk over it mid-sentence and it yields</li>
@@ -954,7 +956,7 @@
     </div>
 
     <h3 style="font-family: var(--serif); font-size: 1.4rem; margin-top: 2.5rem;">Why this outlasts any one stack</h3>
-    <p style="max-width: 820px;">The plumbing between agents moved to the <strong>Linux Foundation</strong> &mdash; MCP and A2A are both governed under the Agentic AI Foundation. There are <strong>10,000+ published MCP servers</strong> across half a billion SDK downloads a month, and on <strong>28 July 2026</strong> MCP&rsquo;s stateless core shipped, so any request can land on any instance behind a plain load balancer. Your tools now outlive your platform choice &mdash; the protocol under them is production infrastructure, not an experiment.</p>
+    <p style="max-width: 820px;">Open protocols such as MCP and A2A reduce coupling between agents, tools, and runtimes. Treat protocol support as one interoperability layer, then apply identity, authorization, policy, observability, and lifecycle controls around every connection.</p>
   </div>
 </section>
 
@@ -963,7 +965,7 @@
   <div class="container reveal">
     <span class="section-tag">Diagnostic</span>
     <h2>Is your agent fully formed?</h2>
-    <p style="max-width: 820px;">Score yourself. Sixteen boxes, no partial credit. <strong>0&ndash;8 = prototype</strong> (impressive on Friday, dangerous on Monday). <strong>9&ndash;13 = production-shaped</strong> (works until something unexpected happens). <strong>14&ndash;16 = actually autonomous</strong> (you can leave it running and sleep). The organ you are least sure about is the one that will page you at 3am.</p>
+    <p style="max-width: 820px;">Use the sixteen concerns as a design review, not a certification score. The required set depends on the workload, but identity, least privilege, guardrails, observability, and evaluation become more important as autonomy and impact increase.</p>
 
     <div class="checklist-wrap">
       <h3>The Sixteen-Point Exam</h3>
@@ -1116,7 +1118,7 @@
       <a class="ms-card" href="https://learn.microsoft.com/en-us/azure/foundry/" target="_blank" rel="noopener">
         <div class="eyebrow">For developers</div>
         <h4>Microsoft Foundry</h4>
-        <p>Models, tools (MCP + Logic Apps), Foundry IQ knowledge, hosted agents, traces, evals — the full stack with Entra-scoped agent identities. GA at Ignite 2025.</p>
+        <p>Models, toolboxes and MCP tools, hosted and prompt agents, traces, evaluations, optimization, and managed identity integration.</p>
         <div class="arrow">Explore the platform →</div>
       </a>
       <a class="ms-card" href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/" target="_blank" rel="noopener">
@@ -1140,7 +1142,7 @@
   <div class="container">
     <div class="brand-mark">The Anatomy of an AI Agent</div>
     <p>A field guide for builders who want agents that survive Monday morning — not just the Friday demo.</p>
-    <p style="margin-top: 1.2rem; font-size: 0.75rem; color: rgba(253,251,247,0.4);">Built on the working definition of an agent shared across Microsoft Foundry, Copilot Studio, and the Microsoft Agent Framework. April 2026.</p>
+    <p style="margin-top: 1.2rem; font-size: 0.75rem; color: rgba(253,251,247,0.4);">Microsoft product capabilities reviewed against Microsoft Learn on September 2, 2026.</p>
   </div>
 </footer>
 

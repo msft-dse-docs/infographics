@@ -542,7 +542,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-07-16">
+<meta name="smec:last-accuracy-check" content="2026-09-03">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="cbattlegear">
 <style>/* smec-back-btn v3 */
@@ -648,7 +648,7 @@
         <ul>
           <li>Full SQL Server instance running on a Windows or Linux VM in Azure</li>
           <li>You manage the OS, patching, backups, HA, and the SQL Server engine</li>
-          <li>100% feature parity with on-premises SQL Server</li>
+          <li>Full SQL Server feature set with OS-level access</li>
         </ul>
 
         <h4 class="vm-accent">Best For</h4>
@@ -659,7 +659,7 @@
           <span class="tag vm-tag">SSIS / SSRS / SSAS</span>
         </div>
         <ul>
-          <li>Migrating on-prem SQL Server with zero code changes</li>
+          <li>Lift-and-shift migrations that need minimal application changes</li>
           <li>Workloads requiring OS-level access or custom agents</li>
           <li>Apps using SQL Server features not yet in PaaS (CLR, linked servers to non-SQL sources, etc.)</li>
           <li>Running SSIS, SSRS, or SSAS alongside the engine</li>
@@ -669,7 +669,7 @@
         <div class="meter-group">
           <div class="meter-label"><span>Your Management Effort</span><span>High</span></div>
           <div class="meter"><div class="meter-fill vm-fill" style="width:90%"></div></div>
-          <div class="meter-label"><span>SQL Compatibility</span><span>100%</span></div>
+          <div class="meter-label"><span>SQL Compatibility</span><span>Full feature set</span></div>
           <div class="meter"><div class="meter-fill vm-fill" style="width:100%"></div></div>
           <div class="meter-label"><span>Scaling Flexibility</span><span>Medium</span></div>
           <div class="meter"><div class="meter-fill vm-fill" style="width:55%"></div></div>
@@ -712,7 +712,7 @@
         <div class="meter-group">
           <div class="meter-label"><span>Your Management Effort</span><span>Low–Medium</span></div>
           <div class="meter"><div class="meter-fill mi-fill" style="width:35%"></div></div>
-          <div class="meter-label"><span>SQL Compatibility</span><span>~99%</span></div>
+          <div class="meter-label"><span>SQL Compatibility</span><span>Almost all features</span></div>
           <div class="meter"><div class="meter-fill mi-fill" style="width:95%"></div></div>
           <div class="meter-label"><span>Scaling Flexibility</span><span>Medium</span></div>
           <div class="meter"><div class="meter-fill mi-fill" style="width:60%"></div></div>
@@ -732,9 +732,9 @@
       <div class="card-body">
         <h4 class="db-accent">What It Is</h4>
         <ul>
-          <li>A fully managed, <em>single database</em> service built on the latest stable SQL Server engine</li>
-          <li>Automated patching, backups, tuning, and geo-replication</li>
-          <li>Multiple purchasing models including serverless with auto-pause for cost efficiency</li>
+          <li>A fully managed database service offering single databases and elastic pools</li>
+          <li>Automated patching and backups, with built-in tuning and optional geo-replication</li>
+          <li>Provisioned and serverless compute; auto-pause is available for General Purpose serverless</li>
         </ul>
 
         <h4 class="db-accent">Best For</h4>
@@ -755,7 +755,7 @@
         <div class="meter-group">
           <div class="meter-label"><span>Your Management Effort</span><span>Minimal</span></div>
           <div class="meter"><div class="meter-fill db-fill" style="width:15%"></div></div>
-          <div class="meter-label"><span>SQL Compatibility</span><span>~95%</span></div>
+          <div class="meter-label"><span>SQL Compatibility</span><span>Most DB features</span></div>
           <div class="meter"><div class="meter-fill db-fill" style="width:85%"></div></div>
           <div class="meter-label"><span>Scaling Flexibility</span><span>High</span></div>
           <div class="meter"><div class="meter-fill db-fill" style="width:90%"></div></div>
@@ -781,9 +781,9 @@
         <tbody>
           <tr>
             <td>SQL Server Compatibility</td>
-            <td><span class="check">✔ 100%</span></td>
-            <td><span class="check">✔ ~99%</span></td>
-            <td><span class="partial">◐ ~95%</span></td>
+            <td><span class="check">✔ Full SQL Server feature set</span></td>
+            <td><span class="check">✔ Almost all instance &amp; DB features</span></td>
+            <td><span class="partial">◐ Most database-level features</span></td>
           </tr>
           <tr>
             <td>OS Access</td>
@@ -806,19 +806,19 @@
           <tr>
             <td>Linked Servers</td>
             <td><span class="check">✔ Any provider</span></td>
-            <td><span class="partial">◐ SQL Server, SQL DB &amp; Synapse only</span></td>
+            <td><span class="partial">◐ SQL Server, SQL DB, MI &amp; Synapse SQL</span></td>
             <td><span class="no">✘ No</span></td>
           </tr>
           <tr>
             <td>CLR / .NET Integration</td>
             <td><span class="check">✔ Unrestricted</span></td>
-            <td><span class="check">✔ Safe assemblies</span></td>
+            <td><span class="partial">◐ Yes; binary assemblies, no file access</span></td>
             <td><span class="no">✘ No</span></td>
           </tr>
           <tr>
             <td>Service Broker</td>
             <td><span class="check">✔ Yes</span></td>
-            <td><span class="check">✔ Yes (within instance)</span></td>
+            <td><span class="partial">◐ Yes, with constraints</span></td>
             <td><span class="no">✘ No</span></td>
           </tr>
           <tr>
@@ -836,26 +836,26 @@
           <tr>
             <td>Automated Backups</td>
             <td><span class="partial">◐ You configure</span></td>
-            <td><span class="check">✔ Built-in, up to 35 days</span></td>
+            <td><span class="check">✔ Built-in, up to 35 days (Basic: 7)</span></td>
             <td><span class="check">✔ Built-in, up to 35 days</span></td>
           </tr>
           <tr>
             <td>Auto-Tuning</td>
             <td><span class="no">✘ Manual</span></td>
-            <td><span class="partial">◐ Limited</span></td>
+            <td><span class="partial">◐ Plan correction; no auto-indexing</span></td>
             <td><span class="check">✔ Automatic indexing &amp; plans</span></td>
           </tr>
           <tr>
             <td>High Availability</td>
             <td><span class="partial">◐ You build (FCI / AG)</span></td>
-            <td><span class="check">✔ Built-in (99.99% / 99.995% zone-redundant)</span></td>
-            <td><span class="check">✔ Built-in (99.99% / 99.995% zone-redundant)</span></td>
+            <td><span class="check">✔ Built-in; higher SLA with zone redundancy</span></td>
+            <td><span class="check">✔ Built-in; higher SLA with zone redundancy</span></td>
           </tr>
           <tr>
             <td>Serverless Tier</td>
             <td><span class="no">✘ No</span></td>
             <td><span class="no">✘ No</span></td>
-            <td><span class="check">✔ Yes (auto-pause)</span></td>
+            <td><span class="check">✔ GP &amp; Hyperscale; auto-pause in GP only</span></td>
           </tr>
           <tr>
             <td>Geo-Replication</td>
@@ -865,9 +865,9 @@
           </tr>
           <tr>
             <td>Max Database Size</td>
-            <td>256 TB (disk dependent)</td>
-            <td>up to 32 TB (Next-gen GP)</td>
-            <td>128 TB (Hyperscale)</td>
+            <td>Up to 256 TB instance storage</td>
+            <td>Up to 16 TB; 32 TB with Next-gen GP</td>
+            <td>Up to 128 TB with Hyperscale</td>
           </tr>
         </tbody>
       </table>
@@ -969,7 +969,7 @@
       <div class="scenario-card mi-border">
         <div class="sc-label">Managed Instance</div>
         <h3>Regulated Industry Migration</h3>
-        <p>A financial services firm needs VNet isolation, no public endpoints, and near-100% SQL compatibility. MI checks every box with minimal re-architecture.</p>
+        <p>A financial services firm needs VNet isolation, no public endpoints, and broad SQL Server compatibility. MI checks every box with minimal re-architecture.</p>
       </div>
 
       <div class="scenario-card db-border">

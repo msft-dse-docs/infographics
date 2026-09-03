@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- smec-accuracy v1 -->
+<meta name="smec:last-accuracy-check" content="2026-09-02">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Smarter Agents with Microsoft IQ — Foundry IQ, Fabric IQ, Work IQ, Web IQ</title>
@@ -636,14 +638,14 @@
   </div>
   <h1>Smarter Agents Start With Better Knowledge</h1>
   <p>Agents without context produce generic answers. Microsoft's four IQ platforms &mdash; <strong>Foundry IQ</strong>, <strong>Fabric IQ</strong>, <strong>Work IQ</strong>, and <strong>Web IQ</strong> &mdash; give your agents deep, governed understanding of your business, your data, your people, and the live world outside your walls.</p>
-  <div class="preview-pill">Work IQ APIs GA 16 June 2026 &middot; Fabric IQ core GA &middot; Foundry IQ mixed GA/preview &middot; Web IQ limited access</div>
+  <div class="preview-pill">Work IQ CLI GA &middot; Work IQ MCP integrations preview &middot; Fabric IQ preview &middot; Foundry IQ mixed GA/preview &middot; Web IQ limited access</div>
   <div class="hero-cta">
     <a href="#platforms" class="btn btn-primary">Explore the 4 IQs</a>
     <a href="#decide" class="btn btn-outline">Which IQ Do I Need?</a>
   </div>
   <div class="hero-stat">
     <div><div class="stat-num">4</div><div class="stat-label">IQ Platforms</div></div>
-    <div><div class="stat-num">1</div><div class="stat-label">Unified Agent Endpoint</div></div>
+    <div><div class="stat-num">3</div><div class="stat-label">Standalone IQ workloads</div></div>
     <div><div class="stat-num">8+</div><div class="stat-label">Work IQ MCP Servers</div></div>
     <div><div class="stat-num">6</div><div class="stat-label">Fabric IQ Items</div></div>
   </div>
@@ -666,7 +668,7 @@
       <div class="why-card">
         <div class="why-ico">&#x1F511;</div>
         <h4>Permissions Honored</h4>
-        <p>Agents see only what the user is allowed to see. Entra ID and data-source ACLs enforced end-to-end across all four IQs.</p>
+        <p>Use each product's documented identity, permission, and data-governance controls. Enforcement boundaries differ by source and integration.</p>
       </div>
       <div class="why-card">
         <div class="why-ico">&#x1F4A1;</div>
@@ -676,7 +678,7 @@
       <div class="why-card">
         <div class="why-ico">&#x1F500;</div>
         <h4>Cross-Source Retrieval</h4>
-        <p>One agent call reaches across Microsoft 365, Fabric, Azure AI Search, and external systems &mdash; coherent answers from scattered data.</p>
+        <p>Combine the appropriate IQ workload and agent tools when a scenario needs Microsoft 365, Fabric, indexed enterprise content, or web context.</p>
       </div>
     </div>
   </div>
@@ -688,11 +690,11 @@
     <div class="reveal">
       <span class="section-label">How They Fit Together</span>
       <h2 class="section-title">The IQ Architecture at a Glance</h2>
-      <p class="section-sub">Foundry IQ sits at the center as the <strong>unified knowledge endpoint</strong> your agents call. It aggregates and routes queries across Work IQ, Fabric IQ, and other governed sources.</p>
+      <p class="section-sub">Foundry IQ, Fabric IQ, and Work IQ are standalone workloads that can be used together. Choose the product boundary that matches the knowledge source and agent experience you need.</p>
     </div>
 
     <div class="arch-wrap reveal">
-      <div class="arch-title">&#x1F50D; Single endpoint, many sources, governed by design</div>
+      <div class="arch-title">&#x1F50D; Complementary knowledge products with distinct boundaries</div>
 
       <!-- Agent Layer -->
       <div class="arch-layer">
@@ -703,18 +705,18 @@
       </div>
 
       <div class="arch-connector">
-        <span class="arch-ctag">One API call</span>
+        <span class="arch-ctag">Choose a knowledge or tool integration</span>
       </div>
 
       <!-- Foundry IQ Aggregator -->
       <div class="arch-foundry-box">
-        <span class="arch-prev">Public Preview</span>
+        <span class="arch-prev">Mixed GA / preview</span>
         <h4>&#x2728; Foundry IQ</h4>
         <div class="arch-sub">Unified retrieval, agentic planning, permission-aware answers</div>
       </div>
 
       <div class="arch-connector multi">
-        <span class="arch-ctag">Pulls from knowledge sources</span>
+        <span class="arch-ctag">Indexed and remote knowledge sources</span>
       </div>
 
       <!-- Knowledge Sources -->
@@ -750,7 +752,7 @@
     <!-- WORK IQ -->
     <div class="iq-card work-card reveal">
       <div class="iq-hdr work-bg">
-        <span class="iq-ga">GA &middot; 16 June 2026</span>
+        <span class="iq-mixed">CLI GA &middot; MCP integrations preview</span>
         <div class="iq-icon-box">&#x1F4BC;</div>
         <div>
           <h3>Work IQ</h3>
@@ -769,7 +771,7 @@
             <li>Intelligence layer for agents working over Microsoft 365 signals and activity</li>
             <li>Three layers: <strong>Data</strong> (who, what, where), <strong>Memory</strong> (personal context), <strong>Inference</strong> (reasoning over work)</li>
             <li>Catalog of MCP servers agents can call: Copilot, Calendar, Mail, SharePoint, OneDrive, Teams, User, Word</li>
-            <li>Available via Copilot Studio, Agent 365, or standalone CLI</li>
+            <li>Standalone CLI is GA; Copilot Studio and Agent 365 MCP integrations can be preview features</li>
           </ul>
         </div>
         <div class="iq-col">
@@ -804,7 +806,7 @@
     <!-- FABRIC IQ -->
     <div class="iq-card fabric-card reveal">
       <div class="iq-hdr fabric-bg">
-        <span class="iq-mixed">Core GA &middot; Ontologies preview</span>
+        <span class="iq-mixed">Fabric IQ workload &middot; Preview</span>
         <div class="iq-icon-box">&#x1F9F5;</div>
         <div>
           <h3>Fabric IQ</h3>
@@ -843,7 +845,7 @@
             <li>Analytic / BI copilots with correct terminology and metric definitions</li>
             <li>Cross-domain questions: "Which customers with open support tickets also have renewals this quarter?"</li>
             <li>Operational automation: auto-detect inventory risks, trigger reorder workflows</li>
-            <li>When you're already on Microsoft Fabric &mdash; Fabric IQ is included in your SKU</li>
+            <li>When you're already on Microsoft Fabric &mdash; confirm capacity, region, and preview requirements</li>
           </ul>
         </div>
       </div>
@@ -851,7 +853,7 @@
         <span class="iq-links-label">Learn:</span>
         <a href="https://learn.microsoft.com/en-us/fabric/iq/overview" target="_blank" class="iq-link-btn">Fabric IQ Overview &rarr;</a>
         <a href="https://learn.microsoft.com/en-us/fabric/iq/ontology/overview" target="_blank" class="iq-link-btn">Ontology Docs &rarr;</a>
-        <a href="https://blog.fabric.microsoft.com/en-us/blog/from-data-platform-to-intelligence-platform-introducing-microsoft-fabric-iq" target="_blank" class="iq-link-btn">Launch Announcement &rarr;</a>
+        <a href="https://learn.microsoft.com/fabric/iq/overview" target="_blank" class="iq-link-btn">Fabric IQ overview &rarr;</a>
       </div>
     </div>
 
@@ -876,7 +878,7 @@
           <ul>
             <li><strong>Context engineering platform</strong> in Microsoft Foundry &mdash; one retrieval endpoint across every knowledge source your agent needs</li>
             <li>Built on Azure AI Search, extends it with <strong>agentic retrieval</strong>, query planning, and ranking</li>
-            <li>Concepts: <strong>Knowledge Bases</strong> (collections of sources) and <strong>Knowledge Sources</strong> (indexed files, Fabric IQ, Work IQ, web, SharePoint)</li>
+            <li>Concepts: <strong>Knowledge Bases</strong> and <strong>Knowledge Sources</strong>, including supported Azure, SharePoint, OneLake, and web sources</li>
             <li>Three retrieval reasoning tiers: <strong>minimal</strong>, <strong>low</strong>, <strong>medium</strong> &mdash; trade latency for depth</li>
           </ul>
         </div>
@@ -885,7 +887,7 @@
           <ul>
             <li>Agent makes one call to a Foundry IQ knowledge base</li>
             <li>A <strong>query-planning LLM</strong> (GPT-4o, GPT-4.1, or GPT-5) decomposes the question into sub-queries</li>
-            <li>Sub-queries fan out across indexed content, Fabric IQ, Work IQ, web, and remote sources in parallel</li>
+            <li>Sub-queries fan out across the knowledge sources configured for the knowledge base</li>
             <li>Results are ranked, deduplicated, and consolidated with citations</li>
             <li>Entra ID, Purview, and data-source ACLs enforced on every hop</li>
           </ul>
@@ -895,7 +897,7 @@
           <ul>
             <li>Any agent that needs <strong>knowledge from more than one source</strong> (the vast majority)</li>
             <li>Enterprise RAG patterns &mdash; replace hand-written retrieval orchestration</li>
-            <li>Multi-domain agents: combines M365 context (Work IQ) + business data (Fabric IQ) + domain docs</li>
+            <li>Multi-source agents that need reusable knowledge bases over supported enterprise content</li>
             <li>When you need a single governed, auditable retrieval layer with Purview monitoring</li>
             <li>Pro-code agents on Foundry or low-code agents in Copilot Studio</li>
           </ul>
@@ -1025,15 +1027,15 @@
           </tr>
           <tr>
             <td>Licensing</td>
-            <td>M365 Copilot license or consumption billing</td>
-            <td>Included in Microsoft Fabric SKU</td>
-            <td>Token-based + underlying Azure AI Search capacity</td>
+            <td>Depends on the Work IQ experience; review current prerequisites</td>
+            <td>Consumes Microsoft Fabric capacity; preview requirements apply</td>
+            <td>Underlying Azure AI Search and model usage</td>
           </tr>
           <tr>
             <td>Status</td>
-            <td><span class="preview-inline">Public Preview</span></td>
-            <td><span class="preview-inline">Public Preview</span></td>
-            <td><span class="preview-inline">Public Preview</span></td>
+            <td><span class="preview-inline">CLI GA; integrations vary</span></td>
+            <td><span class="preview-inline">Preview</span></td>
+            <td><span class="preview-inline">Mixed GA / preview</span></td>
           </tr>
         </tbody>
       </table>
@@ -1183,23 +1185,23 @@
     <div class="reveal">
       <span class="section-label">Commercial</span>
       <h2 class="section-title">Licensing &amp; Availability</h2>
-      <p class="section-sub">Quick look at how each IQ is priced today. All three are in public preview &mdash; terms may evolve at GA.</p>
+      <p class="section-sub">Commercial terms and prerequisites differ by product and integration. Confirm the linked documentation and pricing pages for your tenant, region, and workload.</p>
     </div>
     <div class="lic-grid reveal">
       <div class="lic-card work-b">
         <h4>Work IQ</h4>
-        <p>Available through <strong>Microsoft 365 Copilot</strong> licenses and as a standalone consumption option. CLI lets developers experiment locally.</p>
-        <span class="lic-price">M365 Copilot + consumption</span>
+        <p>The CLI and MCP integrations have different prerequisites and billing paths. Some experiences require Microsoft 365 Copilot; others use Copilot Credits and a configured billing plan.</p>
+        <span class="lic-price">Check experience-specific prerequisites</span>
       </div>
       <div class="lic-card fabric-b">
         <h4>Fabric IQ</h4>
-        <p>Included in your <strong>Microsoft Fabric capacity</strong>. Consumption against your existing Fabric SKU &mdash; no separate purchase required today.</p>
-        <span class="lic-price">Included with Fabric SKU</span>
+        <p>Fabric IQ items consume Microsoft Fabric capacity. Confirm supported capacity, region, tenant setting, and preview requirements before use.</p>
+        <span class="lic-price">Microsoft Fabric capacity</span>
       </div>
       <div class="lic-card foundry-b">
         <h4>Foundry IQ</h4>
-        <p>Billed on <strong>tokens</strong> for the query-planning model plus the underlying <strong>Azure AI Search</strong> capacity. Pay as you go.</p>
-        <span class="lic-price">Tokens + Azure AI Search</span>
+        <p>Costs can include the underlying <strong>Azure AI Search</strong> service and supported model usage for agentic retrieval. Use the current pricing guidance for estimates.</p>
+        <span class="lic-price">Azure AI Search + model usage</span>
       </div>
     </div>
   </div>
@@ -1231,7 +1233,7 @@
           <li><a href="https://learn.microsoft.com/en-us/fabric/iq/" target="_blank">Fabric IQ Documentation Hub</a></li>
           <li><a href="https://learn.microsoft.com/en-us/fabric/iq/overview" target="_blank">Fabric IQ Overview</a></li>
           <li><a href="https://learn.microsoft.com/en-us/fabric/iq/ontology/overview" target="_blank">Ontology Overview</a></li>
-          <li><a href="https://blog.fabric.microsoft.com/en-us/blog/from-data-platform-to-intelligence-platform-introducing-microsoft-fabric-iq" target="_blank">From Data Platform to Intelligence Platform (Launch Blog)</a></li>
+          <li><a href="https://learn.microsoft.com/fabric/iq/overview" target="_blank">What is Fabric IQ?</a></li>
         </ul>
       </div>
 
@@ -1249,7 +1251,7 @@
 
     <div class="cta-banner reveal">
       <h3>Ready to Build a Smarter Agent?</h3>
-      <p>Start with Foundry IQ as your unified knowledge layer, then add Work IQ and Fabric IQ as your agents grow up. All three platforms are in public preview today.</p>
+      <p>Choose Foundry IQ for managed knowledge bases, Work IQ for Microsoft 365 work context, and Fabric IQ for business semantics and Fabric data. They are standalone products that can be combined when the documented integrations fit your scenario.</p>
       <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
         <a href="https://azure.microsoft.com/en-us/products/ai-foundry/iq/" class="btn btn-primary" target="_blank">Get Started with Foundry IQ</a>
         <a href="https://www.microsoft.com/en-us/microsoft-copilot/microsoft-copilot-studio" class="btn btn-outline" target="_blank">Build in Copilot Studio</a>
@@ -1259,7 +1261,7 @@
 </section>
 
 <footer class="footer">
-  <p>Microsoft IQ Platforms Guide &bull; Updated April 2026 &bull; Foundry IQ, Fabric IQ, and Work IQ are all in Public Preview &mdash; validate capabilities against the latest <a href="https://learn.microsoft.com/en-us/azure/foundry/" target="_blank">Microsoft Foundry</a>, <a href="https://learn.microsoft.com/en-us/fabric/" target="_blank">Microsoft Fabric</a>, and <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/" target="_blank">Microsoft 365 Copilot</a> documentation.</p>
+  <p>Microsoft IQ Platforms Guide &bull; Accuracy reviewed 2 September 2026 &bull; Availability differs by product and integration; validate capabilities against the latest <a href="https://learn.microsoft.com/en-us/azure/foundry/" target="_blank">Microsoft Foundry</a>, <a href="https://learn.microsoft.com/en-us/fabric/" target="_blank">Microsoft Fabric</a>, and <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/" target="_blank">Microsoft 365 Copilot</a> documentation.</p>
 </footer>
 
 <script>

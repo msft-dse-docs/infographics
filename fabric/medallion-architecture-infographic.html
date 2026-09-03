@@ -944,7 +944,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-07-23">
+<meta name="smec:last-accuracy-check" content="2026-09-02">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="cbattlegear">
 <style>/* smec-back-btn v3 */
@@ -1117,8 +1117,8 @@
               <div class="detail-item">
                 <h4>Best Practices</h4>
                 <ul>
-                  <li>Never delete bronze data</li>
-                  <li>Partition by ingestion date</li>
+                  <li>Retain source data according to recovery and compliance requirements</li>
+                  <li>Use ingestion-date folders where they improve manageability</li>
                   <li>Add audit columns (_ingestion_ts)</li>
                   <li>Use shortcuts instead of copying</li>
                   <li>Handle schema evolution</li>
@@ -1186,7 +1186,7 @@
                   <li>Apply data quality rules here</li>
                   <li>Resolve heavy logic before Gold</li>
                   <li>Use MERGE for upserts</li>
-                  <li>Target 128-256 MB file sizes</li>
+                  <li>Use moderate file sizes that balance writes and reads</li>
                   <li>Enforce conformed dimensions</li>
                 </ul>
               </div>
@@ -1243,7 +1243,7 @@
                   <li>Delta tables (optimized)</li>
                   <li>Warehouse tables for SQL</li>
                   <li>V-Order for fast reads</li>
-                  <li>Large file sizes (400 MB–1 GB)</li>
+                  <li>Larger files and row groups for read-heavy consumption</li>
                 </ul>
               </div>
               <div class="detail-item">
@@ -1490,7 +1490,7 @@
       </div>
       <div class="security-item">
         <h4><span style="color:#8BC34A">&#9679;</span> Delta Time Travel</h4>
-        <p>Roll back to any previous state for audit, compliance, and debugging purposes.</p>
+        <p>Query or restore earlier table versions while the required history and data files remain available.</p>
       </div>
       <div class="security-item">
         <h4><span style="color:#FF5722">&#9679;</span> Domains (Data Mesh)</h4>
@@ -1512,13 +1512,13 @@
         <div class="practice-number">01</div>
         <div class="practice-icon">&#128230;</div>
         <h3>Optimize File Sizes</h3>
-        <p>Target 128-256 MB files in the Silver layer, 400 MB–1 GB in the Gold layer. Smaller files are fine in Bronze. Use OPTIMIZE command to compact small files.</p>
+        <p>Target files between 128 MB and 1 GB based on table size and consumption pattern. Silver typically uses moderate files; Gold favors larger files and row groups. Use OPTIMIZE to compact small files.</p>
       </div>
       <div class="practice-card">
         <div class="practice-number">02</div>
         <div class="practice-icon">&#128218;</div>
         <h3>Use Liquid Clustering</h3>
-        <p>Prefer Liquid Clustering over partitioning in Silver/Gold layers for better query performance. Partitioning works well in Bronze for ingestion patterns.</p>
+        <p>Use Liquid Clustering instead of partitioning in Silver and Gold. Partitioning is acceptable in Bronze but discouraged for new implementations.</p>
       </div>
       <div class="practice-card">
         <div class="practice-number">03</div>
@@ -1530,7 +1530,7 @@
         <div class="practice-number">04</div>
         <div class="practice-icon">&#128336;</div>
         <h3>Manage History Retention</h3>
-        <p>Use VACUUM to clean up old Delta history. Default 7-day retention prevents accidental data loss while controlling storage costs.</p>
+        <p>Use VACUUM to remove unreferenced files older than the retention threshold. The default is seven days; choose retention from recovery, audit, and time-travel requirements before shortening it.</p>
       </div>
       <div class="practice-card">
         <div class="practice-number">05</div>
@@ -1542,7 +1542,7 @@
         <div class="practice-number">06</div>
         <div class="practice-icon">&#9889;</div>
         <h3>Use V-Order Selectively</h3>
-        <p>V-Order is disabled by default in new Fabric workspaces. Enable it on Silver and Gold tables — especially those serving Power BI Direct Lake and SQL analytics endpoints — for significantly faster reads.</p>
+        <p>V-Order is disabled by default in new Fabric workspaces. Consider enabling it for read-heavy Silver or Gold tables, and measure the read benefit against its write overhead for your workload.</p>
       </div>
     </div>
   </div>

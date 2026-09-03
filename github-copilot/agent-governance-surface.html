@@ -115,7 +115,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-06-27">
+<meta name="smec:last-accuracy-check" content="2026-09-02">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="Antonio Montez">
 <style>/* smec-back-btn v3 */
@@ -184,8 +184,8 @@
     Governance · Audit surface
   </div>
   <h1>Where does the agent's audit trail live?</h1>
-  <p>Six governance surfaces — policy, audit log, secrets, rulesets, metrics, content exclusions. For each, which control plane owns the source of truth?</p>
-  <div class="hero-meta">Accurate as of June 27, 2026 · Surfaces an InfoSec reviewer will ask about</div>
+  <p>Six governance surfaces — policy, audit log, secrets, rulesets, metrics, and repository scope. For each, which control plane owns the source of truth?</p>
+  <div class="hero-meta">Accurate as of September 2, 2026 · Surfaces an InfoSec reviewer will ask about</div>
 </header>
 
 <section>
@@ -207,7 +207,7 @@
       <div class="gov-row">
         <div class="surface">Enablement policy<small>Who can turn it on</small></div>
         <div data-label="Copilot"><span class="loc loc-gh">GitHub</span><span class="cell-note">Copilot plan eligibility, account/org policy, repo opt-out.</span></div>
-        <div data-label="Desktop app"><span class="loc loc-gh">GitHub</span><span class="cell-note">Public preview · Copilot plan + desktop install; org/repo policy still routes through GitHub.</span></div>
+        <div data-label="Desktop app"><span class="loc loc-gh">GitHub</span><span class="cell-note">Technical preview · all Copilot plans or BYOK; a separate app policy applies to Business/Enterprise.</span></div>
         <div data-label="GitHub-hosted"><span class="loc loc-gh">GitHub</span><span class="cell-note">Third-party agent policy inside GitHub/Copilot; public preview.</span></div>
         <div data-label="Standalone"><span class="loc loc-mix">Mixed</span><span class="cell-note">Claude App/workflow or ChatGPT Codex per-repo settings.</span></div>
         <div data-label="Cursor"><span class="loc loc-vendor">Vendor</span><span class="cell-note">Cursor team dashboard; per-repo connect.</span></div>
@@ -216,7 +216,7 @@
       <div class="gov-row">
         <div class="surface">Audit log<small>Who did what, when</small></div>
         <div data-label="Copilot"><span class="loc loc-gh">GitHub</span><span class="cell-note">GitHub agent activity plus Copilot usage and PR metrics.</span></div>
-        <div data-label="Desktop app"><span class="loc loc-gh">GitHub</span><span class="cell-note">PR/commit events stay in GitHub; Agent Merge and Rubber Duck pre-merge checks surface in the app and in PR conversation.</span></div>
+        <div data-label="Desktop app"><span class="loc loc-mix">Mixed</span><span class="cell-note">Repository PR/review/CI events stay in GitHub; local session history and agent activity also surface in the app.</span></div>
         <div data-label="GitHub-hosted"><span class="loc loc-gh">GitHub</span><span class="cell-note">Agent starts, PRs, and review comments stay in GitHub surfaces.</span></div>
         <div data-label="Standalone"><span class="loc loc-mix">Mixed</span><span class="cell-note">GitHub PR events plus Actions logs, Anthropic usage, or ChatGPT Codex settings/history.</span></div>
         <div data-label="Cursor"><span class="loc loc-mix">Mixed</span><span class="cell-note">PR events in GitHub; agent runs in Cursor dashboard.</span></div>
@@ -225,7 +225,7 @@
       <div class="gov-row">
         <div class="surface">Secrets management<small>API keys, tokens</small></div>
         <div data-label="Copilot"><span class="loc loc-gh">GitHub</span><span class="cell-note">No repo API key needed for default use.</span></div>
-        <div data-label="Desktop app"><span class="loc loc-gh">GitHub</span><span class="cell-note">Reuses GitHub identity and Copilot subscription; no repo workflow secret for the default loop.</span></div>
+        <div data-label="Desktop app"><span class="loc loc-mix">Mixed</span><span class="cell-note">A Copilot plan needs no repo API key; BYOK requires credentials for the selected model provider.</span></div>
         <div data-label="GitHub-hosted"><span class="loc loc-gh">GitHub</span><span class="cell-note">No repo workflow secret for the GitHub-hosted agent path.</span></div>
         <div data-label="Standalone"><span class="loc loc-mix">Mixed</span><span class="cell-note">Claude Action uses GitHub secrets; standalone Codex uses ChatGPT/GitHub connection settings.</span></div>
         <div data-label="Cursor"><span class="loc loc-vendor">Vendor</span><span class="cell-note">Cursor holds credentials; repo R/W via OAuth.</span></div>
@@ -234,7 +234,7 @@
       <div class="gov-row">
         <div class="surface">Rulesets &amp; branch protection<small>Who can bypass</small></div>
         <div data-label="Copilot"><span class="loc loc-gh">GitHub</span><span class="cell-note">Native Copilot bypass actor option.</span></div>
-        <div data-label="Desktop app"><span class="loc loc-gh">GitHub</span><span class="cell-note">Same Copilot identity · Agent Merge respects branch protection / required checks before merging.</span></div>
+        <div data-label="Desktop app"><span class="loc loc-gh">GitHub</span><span class="cell-note">PRs remain subject to GitHub checks, reviews, and merge conditions; the app displays those results.</span></div>
         <div data-label="GitHub-hosted"><span class="loc loc-gh">GitHub</span><span class="cell-note">Same compatible-ruleset constraint as Copilot cloud agent.</span></div>
         <div data-label="Standalone"><span class="loc loc-gh">GitHub</span><span class="cell-note">Depends on GitHub App/OAuth identity and ruleset bypass configuration.</span></div>
         <div data-label="Cursor"><span class="loc loc-gh">GitHub</span><span class="cell-note">Add App as bypass actor manually.</span></div>
@@ -243,17 +243,17 @@
       <div class="gov-row">
         <div class="surface">Usage metrics<small>PRs created, merge rate</small></div>
         <div data-label="Copilot"><span class="loc loc-gh">GitHub</span><span class="cell-note">Copilot usage metrics and PR-outcome reporting.</span></div>
-        <div data-label="Desktop app"><span class="loc loc-mix">Mixed</span><span class="cell-note">PR-outcome metrics in GitHub; per-worktree Agent Merge / Rubber Duck activity surfaces in the desktop app (preview).</span></div>
+        <div data-label="Desktop app"><span class="loc loc-mix">Mixed</span><span class="cell-note">Copilot usage metrics include agent-app activity; PR lifecycle data comes from repository activity.</span></div>
         <div data-label="GitHub-hosted"><span class="loc loc-gh">GitHub</span><span class="cell-note">GitHub/Copilot usage metrics, AI credit billing, and agent session reporting.</span></div>
         <div data-label="Standalone"><span class="loc loc-mix">Mixed</span><span class="cell-note">GitHub plus Anthropic/API, Actions, or ChatGPT Codex usage views.</span></div>
         <div data-label="Cursor"><span class="loc loc-mix">Mixed</span><span class="cell-note">GitHub + Cursor dashboard usage views.</span></div>
       </div>
 
       <div class="gov-row">
-        <div class="surface">Content exclusions<small>Files the agent can’t read</small></div>
-        <div data-label="Copilot"><span class="loc loc-vendor">Not honored</span><span class="cell-note">Copilot cloud agent does <strong>not</strong> honor Copilot content exclusions.</span></div>
-        <div data-label="Desktop app"><span class="loc loc-vendor">Not honored</span><span class="cell-note">Shares the Copilot cloud agent’s exclusion limitation; treat the same as the cloud agent for sensitive code.</span></div>
-        <div data-label="GitHub-hosted"><span class="loc loc-vendor">Not honored</span><span class="cell-note">GitHub docs say third-party agents share Copilot cloud agent’s protections and limitations.</span></div>
+        <div class="surface">Repository/content scope<small>What the agent can reach</small></div>
+        <div data-label="Copilot"><span class="loc loc-gh">GitHub</span><span class="cell-note">Cloud agent is scoped to the selected repository by default; repository MCP settings can broaden context.</span></div>
+        <div data-label="Desktop app"><span class="loc loc-mix">Mixed</span><span class="cell-note">Scope follows the connected project, session workspace, configured tools, and model provider.</span></div>
+        <div data-label="GitHub-hosted"><span class="loc loc-gh">GitHub</span><span class="cell-note">Third-party coding agents share the cloud agent’s protections, mitigations, and limitations.</span></div>
         <div data-label="Standalone"><span class="loc loc-mix">Mixed</span><span class="cell-note">Depends on App permissions, runner filesystem, repo scope, and vendor config.</span></div>
         <div data-label="Cursor"><span class="loc loc-vendor">Vendor</span><span class="cell-note">Governed by Cursor’s GitHub integration scope.</span></div>
       </div>
@@ -283,10 +283,9 @@
           Where this story gets complicated
         </h3>
         <ul>
-          <li><strong>Content exclusion is the key caveat.</strong> Copilot cloud agent does not honor Copilot content exclusions, and GitHub-hosted third-party agents share those limitations. The Copilot desktop app inherits the same exclusion gap.</li>
+          <li><strong>Validate content scope per surface.</strong> GitHub's current content-exclusion matrix explicitly covers web chat, code review, and supported IDE features; it does not list cloud agent or the Copilot app.</li>
           <li><strong>Claude Code Action can be attractive for runner control.</strong> The tradeoff is workflow and secret management per repo.</li>
           <li><strong>“Mixed” is not automatically bad.</strong> Vendor-side usage views may be valuable; they just add another evidence surface.</li>
-          <li><strong>Agent 365 is the cross-cutting governance plane Microsoft is building.</strong> Announced at Build 2026, it unifies Entra identity, Defender threat signals, and Purview data-handling controls over agent activity — worth tracking even if it doesn’t replace these per-product surfaces today.</li>
           <li><strong>Agent governance changes quickly.</strong> Re-check this table before reusing it after major product updates.</li>
         </ul>
       </div>
@@ -304,14 +303,15 @@
     <div>
       <h4>Primary sources</h4>
       <ul class="sources-list">
-        <li><a href="https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent">Copilot cloud agent (incl. content-exclusion limitation)</a></li>
-        <li><a href="https://docs.github.com/en/copilot/concepts/agents/about-third-party-agents">GitHub third-party agents</a></li>
+        <li><a href="https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent">Copilot cloud agent</a></li>
+        <li><a href="https://docs.github.com/en/copilot/concepts/agents/about-third-party-coding-agents">GitHub third-party agents</a></li>
+        <li><a href="https://docs.github.com/en/copilot/concepts/content-exclusion">GitHub Copilot content exclusion</a></li>
+        <li><a href="https://docs.github.com/en/copilot/concepts/copilot-usage-metrics/copilot-metrics">GitHub Copilot usage metrics</a></li>
         <li><a href="https://code.claude.com/docs/en/github-actions">Claude Code GitHub Actions</a></li>
         <li><a href="https://developers.openai.com/codex/integrations/github">Codex GitHub integration</a></li>
         <li><a href="https://cursor.com/blog/cloud-agents">Cursor Cloud Agents</a></li>
         <li><a href="https://cursor.com/pricing">Cursor pricing and plans</a></li>
-        <li><a href="https://github.blog/news-insights/product-news/github-copilot-app-the-agent-native-desktop-experience/">GitHub Copilot desktop app announcement</a></li>
-        <li><a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/">Foundry @ Build 2026 (Agent 365 context)</a></li>
+        <li><a href="https://docs.github.com/en/copilot/concepts/agents/github-copilot-app">GitHub Copilot app</a></li>
       </ul>
     </div>
   </div>

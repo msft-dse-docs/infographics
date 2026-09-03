@@ -615,7 +615,7 @@ footer a:hover{text-decoration:underline}
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-07-16">
+<meta name="smec:last-accuracy-check" content="2026-09-03">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="cbattlegear">
 <style>/* smec-back-btn v3 */
@@ -736,7 +736,7 @@ footer a:hover{text-decoration:underline}
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3>Regulated Data Everywhere</h3>
-        <p>PHI and PII flow through claims platforms, EHRs, care-management tools, and provider portals. Centralizing the desktop keeps data off endpoints — a direct HIPAA and HITRUST benefit.</p>
+        <p>PHI and PII flow through claims platforms, EHRs, care-management tools, and provider portals. Centralized desktops can reduce data stored on endpoints when redirection and access controls are configured, supporting — but not establishing — an organization's HIPAA compliance program.</p>
       </div>
       <div class="why-card">
         <div class="why-icon">
@@ -757,7 +757,7 @@ footer a:hover{text-decoration:underline}
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2"/></svg>
         </div>
         <h3>Clinical &amp; Claims App Certification</h3>
-        <p>EHRs and claims platforms publish VDI reference architectures. AVD is a named deployment option in several major vendor guides (e.g., Epic Client Systems).</p>
+        <p>Validate each EHR and claims application against the vendor's current support matrix, latency requirements, and virtual desktop guidance before choosing a delivery model.</p>
       </div>
     </div>
   </div>
@@ -790,8 +790,8 @@ footer a:hover{text-decoration:underline}
           <tr><td>Model</td><td>SaaS — Microsoft-managed</td><td>PaaS — customer-managed on Azure</td></tr>
           <tr><td>Session</td><td>1:1 dedicated, persistent</td><td>Pooled multi-session or personal</td></tr>
           <tr><td>Pricing</td><td>Fixed per-user / month</td><td>Consumption (compute + storage + network)</td></tr>
-          <tr><td>Management</td><td>Intune only</td><td>Intune + ARM + Nerdio / partners</td></tr>
-          <tr><td>Scale</td><td>Manual license adds</td><td>Autoscale — schedule + load-based</td></tr>
+          <tr><td>Management</td><td>Microsoft Intune admin center</td><td>Azure Resource Manager plus session-host management through Intune or Group Policy</td></tr>
+          <tr><td>Scale</td><td>License and provisioning-policy based</td><td>Power-management autoscale; dynamic autoscale preview for eligible pooled host pools</td></tr>
           <tr><td>GPU / Large SKUs</td><td>Preconfigured GPU Cloud PC sizes</td><td>Full Azure VM catalog incl. GPU</td></tr>
           <tr><td>Best Fit</td><td>Predictable persona, lean IT</td><td>Variable usage, specialized workloads, scale</td></tr>
         </tbody>
@@ -816,7 +816,7 @@ footer a:hover{text-decoration:underline}
           <li><span class="check">&#10003;</span> IT team is lean — simplicity outweighs flexibility</li>
           <li><span class="check">&#10003;</span> Persistent, 1:1 desktop is non-negotiable</li>
           <li><span class="check">&#10003;</span> Fixed, forecastable cost matters more than optimization</li>
-          <li><span class="check">&#10003;</span> Flex licensing (3:1) fits shift-based populations</li>
+          <li><span class="check">&#10003;</span> Flex Dedicated mode can provision up to three nonconcurrent Cloud PCs per license</li>
         </ul>
       </div>
       <div class="together-col reveal-right">
@@ -871,7 +871,7 @@ footer a:hover{text-decoration:underline}
           </div>
           <div class="rule-thumb">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 19.5h20L12 2zm0 4l7 12.5H5L12 6z"/><rect x="11" y="10" width="2" height="4"/><rect x="11" y="15.5" width="2" height="2"/></svg>
-            ~0.5 vCPU and ~2 GB RAM per concurrent light user on a pooled host
+            Size pooled hosts with workload testing and observed concurrency; Microsoft sizing guidance is a starting point
           </div>
         </div>
         <div class="persona-visual" style="background:linear-gradient(135deg,#E0F7FA,#B2EBF2)">
@@ -912,7 +912,7 @@ footer a:hover{text-decoration:underline}
           <div class="persona-detail-text">Full EHR or claims rich client, Office desktop, multiple browsers, Power BI, Teams video. Persistence and add-ins matter.</div>
           <div class="persona-rec">
             <strong>Recommendation:</strong>
-            <p>W365 Enterprise 4 vCPU / 16 GB or AVD personal when admin rights / plug-ins required</p>
+            <p>W365 Enterprise 4 vCPU / 16 GB or AVD personal; validate application, plug-in, and least-privilege requirements</p>
           </div>
           <div class="rule-thumb">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 19.5h20L12 2zm0 4l7 12.5H5L12 6z"/><rect x="11" y="10" width="2" height="4"/><rect x="11" y="15.5" width="2" height="2"/></svg>
@@ -957,7 +957,7 @@ footer a:hover{text-decoration:underline}
           <div class="persona-detail-text">SAS, R, Python notebooks, large datasets, DICOM rendering, IDEs, multi-monitor 4K. GPU and fast storage often required.</div>
           <div class="persona-rec">
             <strong>Recommendation:</strong>
-            <p>AVD personal with GPU (NVadsA10 v5 / NVads-v710 v5) or Windows 365 GPU Cloud PCs for workload-aligned sizing</p>
+            <p>AVD with a supported GPU-optimized VM size such as NVadsA10 v5, or a Windows 365 GPU Cloud PC, after workload testing</p>
           </div>
           <div class="rule-thumb">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 19.5h20L12 2zm0 4l7 12.5H5L12 6z"/><rect x="11" y="10" width="2" height="4"/><rect x="11" y="15.5" width="2" height="2"/></svg>
@@ -1063,7 +1063,7 @@ footer a:hover{text-decoration:underline}
           </div>
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:24px">
-          <div class="flow-node node-azure" style="min-width:auto;padding:10px 14px;font-size:12px">FSLogix Profiles<small>HIPAA-scoped</small></div>
+          <div class="flow-node node-azure" style="min-width:auto;padding:10px 14px;font-size:12px">FSLogix Profiles<small>Customer configured</small></div>
           <div class="flow-node node-azure" style="min-width:auto;padding:10px 14px;font-size:12px">Azure Files / ANF<small>Premium encrypted</small></div>
           <div class="flow-node node-azure" style="min-width:auto;padding:10px 14px;font-size:12px">Custom Images<small>Clinical / claims client</small></div>
           <div class="flow-node node-onprem" style="min-width:auto;padding:10px 14px;font-size:12px">On-Prem<small>ExpressRoute / VPN</small></div>
@@ -1097,14 +1097,14 @@ footer a:hover{text-decoration:underline}
           </div>
           <div class="hybrid-col" style="background:linear-gradient(135deg,#EDE5F5,#D1C4E9)">
             <h4 style="color:#5B3F8C">AVD Personal + GPU</h4>
-            <p style="color:#4A148C">NVadsA10 v5 / NVads-v710 v5</p>
+            <p style="color:#4A148C">Supported GPU-optimized VM size</p>
             <div class="hybrid-users">Actuaries, devs, imaging / PACS</div>
           </div>
         </div>
         <div class="hybrid-bar">
           <div class="bar-title">Shared Identity &amp; Security Plane</div>
           <div class="bar-items">
-            <span>Entra ID</span><span>Intune</span><span>Defender</span><span>Conditional Access</span><span>Purview DLP</span><span>HIPAA / HITRUST</span>
+            <span>Entra ID</span><span>Intune</span><span>Defender</span><span>Conditional Access</span><span>Purview DLP</span><span>Customer compliance controls</span>
           </div>
         </div>
       </div>
@@ -1194,14 +1194,14 @@ footer a:hover{text-decoration:underline}
         <div class="message-icon">&#128274;</div>
         <div class="message-body">
           <h3>One Security Perimeter</h3>
-          <p>Entra ID + Conditional Access + Defender + Purview apply identically across W365 and AVD. PHI stays in Azure, never on the endpoint.</p>
+          <p>Entra ID, Conditional Access, Defender, and Purview can support both platforms, but available controls and configuration differ. Restrict clipboard, drive, printer, and device redirection where PHI must remain in the hosted environment.</p>
         </div>
       </div>
       <div class="message-card">
         <div class="message-icon">&#128176;</div>
         <div class="message-body">
           <h3>Flex Licensing</h3>
-          <p>W365 Flex's 3:1 license ratio is a strong cost lever for shift-based claims and contact-center staff.</p>
+          <p>Windows 365 Flex Dedicated mode allows up to three assigned Cloud PCs to share one concurrent session license; Shared mode provides one nonpersistent Cloud PC per license for a user group.</p>
         </div>
       </div>
       <div class="message-card">
@@ -1214,15 +1214,15 @@ footer a:hover{text-decoration:underline}
       <div class="message-card">
         <div class="message-icon">&#9881;&#65039;</div>
         <div class="message-body">
-          <h3>Nerdio + Intune for Day-2</h3>
-          <p>The recommended operating model for AVD at scale — directly addresses the "AVD is too complex to run" objection.</p>
+          <h3>Day-2 Operations</h3>
+          <p>Use Azure Virtual Desktop's native management, Intune or Group Policy for supported session-host settings, and optional partner tooling according to operational requirements.</p>
         </div>
       </div>
       <div class="message-card">
         <div class="message-icon">&#128260;</div>
         <div class="message-body">
-          <h3>No Lock-In Between the Two</h3>
-          <p>A user can move from W365 to AVD personal — or back — using the same golden image pipeline. No migration penalty.</p>
+          <h3>Plan Platform Transitions</h3>
+          <p>Windows 365 and AVD can share identity and management foundations, but moving users still requires application, profile, image, licensing, and data-migration planning.</p>
         </div>
       </div>
       <div class="message-card">
@@ -1342,15 +1342,15 @@ function showResult() {
   } else if (predict === 'yes' && lean === 'yes') {
     rec = 'Windows 365 Enterprise';
     cls = 'result-w365';
-    desc = 'Predictable usage + lean IT = Windows 365. Fixed cost, Microsoft-managed infrastructure, zero Azure expertise required. Consider Flex licensing for shift workers.';
+    desc = 'Predictable usage + lean IT often favors Windows 365. It offers fixed per-user pricing and Microsoft-hosted infrastructure; Intune, identity, networking, and application administration skills are still required. Consider Flex for nonconcurrent workers.';
   } else if (predict === 'no' && lean === 'no') {
     rec = 'AVD Personal';
     cls = 'result-avd';
     desc = 'Variable usage with Azure maturity makes AVD personal the best fit. Autoscale optimizes costs, and you get full control over golden images and app layering.';
   } else if (lean === 'yes') {
-    rec = 'Windows 365 (or Nerdio-managed AVD)';
+    rec = 'Windows 365 or Partner-Managed AVD';
     cls = 'result-w365';
-    desc = 'Lean IT teams should start with Windows 365 for simplicity. If AVD features are needed, Nerdio provides a managed-service experience on top of AVD.';
+    desc = 'Lean IT teams can evaluate Windows 365 for its Microsoft-hosted infrastructure. If AVD-specific flexibility is required, compare qualified partner tooling and services against native AVD operations.';
   } else {
     rec = 'Either W365 or AVD — Both Fit';
     cls = 'result-either';

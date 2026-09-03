@@ -517,7 +517,7 @@ section{padding:80px 20px}
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-06-27">
+<meta name="smec:last-accuracy-check" content="2026-09-03">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="pjbhakta-outlook">
 <style>/* smec-back-btn v3 */
@@ -828,7 +828,7 @@ section{padding:80px 20px}
               <div class="step"><div class="step-num-circle">2</div><div class="step-body"><strong>Create an NSG for the integration subnet</strong><p>Name it <code>apim-integration-nsg</code> in the same region.</p></div></div>
 
               <div class="step"><div class="step-num-circle">3</div><div class="step-body"><strong>Attach the NSG and add outbound rules</strong><p>Open the NSG → <strong>Subnets</strong> → <strong>Associate</strong> with <code>apim-integration-subnet</code>. An NSG <strong>must</strong> be associated with the integration subnet.</p>
-              <p class="step-detail">Add two outbound rules — both TCP/443, Action: Allow:<br>• <strong>AllowStorage</strong> → Service Tag <code>Storage</code>, priority 100<br>• <strong>AllowKeyVault</strong> → Service Tag <code>AzureKeyVault</code>, priority 110</p>
+              <p class="step-detail">Add an outbound TCP/443 allow rule for the <code>AzureKeyVault</code> service tag, which is an APIM dependency. Add any other outbound rules required for your backends and organization.</p>
               <p class="step-detail">Inbound NSG rules are not enforced for v2 integration. To enforce inbound NSG, use injection (Scenario 4).</p></div></div>
 
               <div class="step"><div class="step-num-circle">4</div><div class="step-body"><strong>Create the APIM instance with Private Endpoint + Integration</strong><p>Create resource → API Management → Pricing tier <strong>Standard v2</strong>.</p>
@@ -878,7 +878,7 @@ section{padding:80px 20px}
               <li>You need higher scale-out (up to <strong>30 units</strong>) than Standard v2 offers</li>
               <li>You want availability-zone support or premium features</li>
               <li>You may evolve into private inbound later via Private Endpoint</li>
-              <li>SLA, multi-region, or advanced policy needs justify Premium pricing</li>
+              <li>Availability zones, higher scale, or other Premium v2 features justify Premium pricing</li>
             </ul>
           </div>
           <div class="scenario-block pros">
@@ -900,7 +900,7 @@ section{padding:80px 20px}
             </ul>
           </div>
 
-          <div class="callout info"><strong>When to choose Premium v2 over Standard v2 for public:</strong> when you need full VNet injection later, higher scale (up to 30 units), or availability-zone support. Otherwise Standard v2 gives the same public functionality at a lower cost.</div>
+          <div class="callout info"><strong>When to choose Premium v2 over Standard v2 for public:</strong> when you need higher scale (up to 30 units) or availability-zone support. If you require full VNet injection, select it when creating the Premium v2 instance; it can't be enabled later. Multi-region deployment isn't currently available in v2 tiers.</div>
 
           <div class="steps-section">
             <h4>Step-by-step setup (Azure portal)</h4>
@@ -930,7 +930,7 @@ section{padding:80px 20px}
         <div class="scenario-header prem-int">
           <span class="tag">Scenario 4</span>
           <h3>Premium v2 — Internal (Full VNet Injection)</h3>
-          <p>The most secure configuration. APIM lives entirely inside your VNet with a private IP only — no public endpoint at all.</p>
+          <p>The most isolated v2 configuration. The APIM gateway is reachable through your VNet at a private IP, with inbound and outbound gateway traffic isolated from the public internet.</p>
           <div class="diagram">
             <span class="node-box">🏢 Private Network</span>
             <span class="arrow">→</span>
@@ -985,7 +985,7 @@ section{padding:80px 20px}
               <div class="step"><div class="step-num-circle">2</div><div class="step-body"><strong>Create an NSG for the injection subnet</strong><p>Name it <code>apim-injection-nsg</code> in the same region.</p></div></div>
 
               <div class="step"><div class="step-num-circle">3</div><div class="step-body"><strong>Attach NSG and add outbound rules</strong><p>NSG → <strong>Subnets</strong> → <strong>Associate</strong> with <code>apim-injection-subnet</code>. NSG association is mandatory.</p>
-              <p class="step-detail">Add two outbound rules — TCP/443, Action: Allow:<br>• <strong>AllowStorage</strong> → Service Tag <code>Storage</code>, priority 100<br>• <strong>AllowKeyVault</strong> → Service Tag <code>AzureKeyVault</code>, priority 110</p>
+              <p class="step-detail">Add an outbound TCP/443 allow rule for the <code>AzureKeyVault</code> service tag, which is an APIM dependency. Add any other outbound rules required for your backends and organization.</p>
               <p class="step-detail">You can additionally restrict outbound to internet and only allow VNet/peered destinations.</p></div></div>
 
               <div class="step"><div class="step-num-circle">4</div><div class="step-body"><strong>Create APIM (Premium v2) with VNet Injection</strong><p>Create resource → API Management → <strong>Pricing tier = Premium v2</strong>.</p>
@@ -1045,7 +1045,7 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
           <tr><td>Inbound NSG enforcement (integration)</td><td><span class="cross">✕</span></td><td><span class="cross">✕</span></td></tr>
           <tr><td>Inbound NSG enforcement (injection)</td><td>N/A</td><td><span class="check">✓</span></td></tr>
           <tr><td>Min subnet / recommended</td><td>/27 min · /24 recommended</td><td>/27 min · /24 recommended</td></tr>
-          <tr><td>Max scale-out units</td><td>Lower</td><td><strong>30</strong></td></tr>
+          <tr><td>Max scale-out units</td><td><strong>10</strong></td><td><strong>30</strong> <span class="partial">(injection also depends on subnet size)</span></td></tr>
           <tr><td>Dedicated subnet required</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
           <tr><td>Best for</td><td>Cost-efficient public or semi-private APIs</td><td>Full isolation, high scale, premium features</td></tr>
         </tbody>
@@ -1069,11 +1069,11 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
       </div>
       <div class="stat-card reveal">
         <div class="stat-num" data-target="30">0</div>
-        <div class="stat-label">Max scale-out units for Premium v2 injection</div>
+        <div class="stat-label">Premium v2 maximum units; an injected instance needs at least a /25 subnet to reach 30</div>
       </div>
       <div class="stat-card reveal">
         <div class="stat-num">/27</div>
-        <div class="stat-label">Minimum subnet size for integration &amp; injection (32 addresses)</div>
+        <div class="stat-label">Minimum subnet size for integration &amp; injection; /27 injection supports up to 13 total units</div>
       </div>
       <div class="stat-card reveal">
         <div class="stat-num">/24</div>
@@ -1163,10 +1163,8 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
   <div class="footer-divider"></div>
   <p>Pick the scenario that matches your security posture today, but plan for where you’ll be in 12 months — VNet injection is a creation-time-only decision, and you can’t switch between injection and integration. When in doubt, start with Standard v2 Public and evolve.</p>
   <div style="max-width:760px;margin:24px auto 0;padding:16px 18px;border:1px solid rgba(255,255,255,.18);border-radius:10px;background:rgba(255,255,255,.04);font-size:.92rem;line-height:1.55;text-align:left;">
-    <strong style="display:block;margin-bottom:6px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;opacity:.75;">Build 2026 — AI Gateway pairings</strong>
-    When this APIM v2 instance is also acting as an <strong>AI Gateway</strong>, two new patterns are worth wiring into the same private-network design: (1) <strong>Foundry hosted agents</strong> publishing through APIM as their front door for both inbound MCP traffic and outbound model calls, and (2) <strong>Web IQ</strong> connecting as an MCP-native upstream through the same private-network paths. See the <a href="../foundry/ai-gateway-apim.html" style="color:#9bd1ff;">AI Gateway for Foundry</a> companion for routing details.
-    <br><br>
-    <span style="font-size:.78rem;opacity:.7;">Maximum-units (Premium v2 = 30) and the injection-vs-integration irreversibility claims above are based on Microsoft Learn as of June 2026 — re-verify with <a href="https://learn.microsoft.com/en-us/azure/api-management/v2-service-tiers-overview" style="color:#9bd1ff;">v2 service tiers</a> and <a href="https://learn.microsoft.com/en-us/azure/api-management/api-management-using-with-vnet" style="color:#9bd1ff;">VNet integration</a> before quoting in customer-facing decks.</span>
+    <strong style="display:block;margin-bottom:6px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;opacity:.75;">Current Microsoft Learn references</strong>
+    <span style="font-size:.78rem;opacity:.7;">Review the canonical guidance for <a href="https://learn.microsoft.com/en-us/azure/api-management/v2-service-tiers-overview" style="color:#9bd1ff;">v2 service tiers</a>, <a href="https://learn.microsoft.com/en-us/azure/api-management/integrate-vnet-outbound" style="color:#9bd1ff;">outbound VNet integration</a>, <a href="https://learn.microsoft.com/en-us/azure/api-management/inject-vnet-v2" style="color:#9bd1ff;">Premium v2 VNet injection</a>, and <a href="https://learn.microsoft.com/en-us/azure/api-management/private-endpoint" style="color:#9bd1ff;">inbound private endpoints</a> before deployment.</span>
   </div>
 </footer>
 

@@ -98,7 +98,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-07-23">
+<meta name="smec:last-accuracy-check" content="2026-09-02">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="Cameron Battagler">
 <style>/* smec-back-btn v3 */
@@ -166,8 +166,8 @@
     <p class="lede">
       Generate a tracked link that routes through
       <code>redirect.htm</code> so Umami records the click before
-      forwarding the visitor to the destination URL with UTM parameters
-      appended.
+      forwarding the visitor to the clean destination URL. The UTM values
+      identify the redirect event; they are not appended to the destination.
     </p>
 
     <form id="builder" autocomplete="off">
@@ -190,7 +190,7 @@
             <option value="newsletter">
             <option value="email">
             <option value="linkedin">
-            <option value="twitter">
+            <option value="x">
             <option value="blog">
           </datalist>
         </div>
@@ -211,6 +211,9 @@
       <label for="campaign">utm_campaign <span class="hint">(required)</span></label>
       <input type="text" id="campaign" name="campaign" required
              placeholder="april-2026-monthly" />
+      <p class="hint" style="margin-top:6px; margin-left:0;">
+        Use a consistent lowercase naming convention so reporting does not split equivalent values.
+      </p>
 
       <div class="row">
         <div>

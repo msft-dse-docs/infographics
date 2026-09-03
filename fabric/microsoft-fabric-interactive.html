@@ -481,7 +481,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-07-23">
+<meta name="smec:last-accuracy-check" content="2026-09-02">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="sebamfor">
 <style>/* smec-back-btn v3 */
@@ -602,20 +602,20 @@
 <div class="container">
   <div class="stats-bar">
     <div class="stat-card" data-animate>
-      <div class="stat-number" data-count="7">0</div>
-      <div class="stat-label">Core Workloads</div>
+      <div class="stat-number">SaaS</div>
+      <div class="stat-label">Managed Platform</div>
     </div>
     <div class="stat-card" data-animate>
       <div class="stat-number">1</div>
       <div class="stat-label">Unified Platform</div>
     </div>
     <div class="stat-card" data-animate>
-      <div class="stat-number">100%</div>
-      <div class="stat-label">Azure Integrated</div>
+      <div class="stat-number">1</div>
+      <div class="stat-label">OneLake Foundation</div>
     </div>
     <div class="stat-card" data-animate>
-      <div class="stat-number">&infin;</div>
-      <div class="stat-label">Scale Potential</div>
+      <div class="stat-number">AI</div>
+      <div class="stat-label">Copilot Support</div>
     </div>
   </div>
 </div>
@@ -643,10 +643,12 @@
         <div class="spoke-item" data-animate><span class="spoke-dot"></span>Data Engineering</div>
         <div class="spoke-item" data-animate><span class="spoke-dot"></span>Data Science</div>
         <div class="spoke-item" data-animate><span class="spoke-dot"></span>Real-Time Intelligence</div>
-        <div class="spoke-item" data-animate><span class="spoke-dot"></span>Business Intelligence</div>
+        <div class="spoke-item" data-animate><span class="spoke-dot"></span>Power BI</div>
         <div class="spoke-item" data-animate><span class="spoke-dot"></span>Data Warehouse</div>
         <div class="spoke-item" data-animate><span class="spoke-dot"></span>Data Factory</div>
         <div class="spoke-item" data-animate><span class="spoke-dot"></span>Databases</div>
+        <div class="spoke-item" data-animate><span class="spoke-dot"></span>Fabric IQ (Preview)</div>
+        <div class="spoke-item" data-animate><span class="spoke-dot"></span>Industry Solutions</div>
         <div class="spoke-item" data-animate><span class="spoke-dot"></span>OneLake Storage</div>
         <div class="spoke-item" data-animate><span class="spoke-dot"></span>Governance</div>
       </div>
@@ -656,12 +658,12 @@
       <div class="feature-card theme-blue" data-animate style="--delay: 0.1s">
         <div class="feature-icon">&#x1F517;</div>
         <h3>Seamless Integration</h3>
-        <p>All analytics services connect natively &mdash; no glue code, no complex pipelines between tools. Data flows effortlessly from ingestion to insight.</p>
+        <p>Fabric workloads share a SaaS environment, common platform services, and OneLake access, reducing the integration required between analytics experiences.</p>
       </div>
       <div class="feature-card theme-blue" data-animate style="--delay: 0.2s">
         <div class="feature-icon">&#x1F4CA;</div>
         <h3>Shared Data Foundation</h3>
-        <p>OneLake provides a single copy of data accessible to all workloads, eliminating duplication and ensuring every team works from the same source of truth.</p>
+        <p>OneLake provides a unified logical data lake and enables shared, zero-copy access patterns across Fabric workloads without requiring data movement or duplication.</p>
       </div>
       <div class="feature-card theme-blue" data-animate style="--delay: 0.3s">
         <div class="feature-icon">&#x1F6E1;</div>
@@ -701,10 +703,10 @@
         <div class="compare-label">&#x2705; With Fabric</div>
         <ul>
           <li>Single integrated platform for all workloads</li>
-          <li>Automatic data orchestration via OneLake</li>
+          <li>Shared data access and orchestration across Fabric workloads</li>
           <li>Unified security and compliance everywhere</li>
           <li>Low-code / no-code pipeline creation</li>
-          <li>Fully managed SaaS &mdash; zero infra management</li>
+          <li>Managed SaaS platform with reduced infrastructure management</li>
         </ul>
       </div>
     </div>
@@ -737,48 +739,16 @@
       <p>High-performance, elastic data warehousing that separates compute from storage &mdash; scale resources independently to match any workload without over-provisioning.</p>
     </div>
 
-    <!-- Metric Bars -->
-    <div class="metric-bars theme-teal">
-      <div class="metric-item" data-animate>
-        <div class="metric-header">
-          <span class="metric-name">Query Performance</span>
-          <span class="metric-value">95%</span>
-        </div>
-        <div class="metric-track"><div class="metric-fill" data-width="95"></div></div>
-      </div>
-      <div class="metric-item" data-animate>
-        <div class="metric-header">
-          <span class="metric-name">Storage Efficiency</span>
-          <span class="metric-value">90%</span>
-        </div>
-        <div class="metric-track"><div class="metric-fill" data-width="90"></div></div>
-      </div>
-      <div class="metric-item" data-animate>
-        <div class="metric-header">
-          <span class="metric-name">Auto-Scale Responsiveness</span>
-          <span class="metric-value">88%</span>
-        </div>
-        <div class="metric-track"><div class="metric-fill" data-width="88"></div></div>
-      </div>
-      <div class="metric-item" data-animate>
-        <div class="metric-header">
-          <span class="metric-name">Cost Optimization</span>
-          <span class="metric-value">85%</span>
-        </div>
-        <div class="metric-track"><div class="metric-fill" data-width="85"></div></div>
-      </div>
-    </div>
-
     <div class="features-grid" style="margin-top: 3rem;">
       <div class="feature-card theme-teal" data-animate>
         <div class="feature-icon">&#x26A1;</div>
-        <h3>Elastic Compute</h3>
-        <p>Scale compute resources up or down in seconds. Only pay for what you use, with automatic pause and resume for idle workloads.</p>
+        <h3>Distributed Compute</h3>
+        <p>Fabric Data Warehouse separates compute from storage and uses autonomous workload management with distributed query processing.</p>
       </div>
       <div class="feature-card theme-teal" data-animate>
         <div class="feature-icon">&#x1F4BE;</div>
         <h3>Open Format Storage</h3>
-        <p>Data stored in Delta Lake / Parquet format in OneLake &mdash; no vendor lock-in. Query with T-SQL, Spark, or any compatible engine.</p>
+        <p>Warehouse data is stored in Delta tables backed by Parquet files in OneLake and can be used across supported Fabric engines.</p>
       </div>
       <div class="feature-card theme-teal" data-animate>
         <div class="feature-icon">&#x1F504;</div>
@@ -823,8 +793,8 @@
         <p>Track every experiment run with automatic parameter, metric, and artifact logging. Compare models side-by-side and identify the best-performing configuration with visual dashboards.</p>
       </div>
       <div class="tab-panel" id="tab-deployment">
-        <h4>Seamless Model Deployment</h4>
-        <p>Deploy models directly to Power BI for real-time scoring, or publish REST endpoints for application integration. Built-in monitoring tracks model performance and detects drift automatically.</p>
+        <h4>Batch Scoring and BI Integration</h4>
+        <p>Operationalize MLflow-packaged models with Fabric's PREDICT function for batch scoring, write predictions to OneLake, and consume them in Power BI.</p>
       </div>
     </div>
 
@@ -844,7 +814,7 @@
       </div>
       <div class="timeline-item" data-animate>
         <h4>Production Deployment</h4>
-        <p>Register models in MLflow, deploy to endpoints, and integrate predictions directly into BI reports.</p>
+        <p>Register models with MLflow, schedule batch scoring, and integrate predictions into BI reports through OneLake.</p>
       </div>
     </div>
   </div>
@@ -867,13 +837,13 @@
     <div class="kpi-grid theme-orange">
       <div class="kpi-card" data-animate>
         <div class="kpi-icon">&#x23F1;</div>
-        <div class="kpi-number">&lt;1s</div>
-        <div class="kpi-desc">Ingestion Latency</div>
+        <div class="kpi-number">Stream</div>
+        <div class="kpi-desc">Continuous Ingestion</div>
       </div>
       <div class="kpi-card" data-animate>
         <div class="kpi-icon">&#x1F4E1;</div>
-        <div class="kpi-number">M+</div>
-        <div class="kpi-desc">Events per Second</div>
+        <div class="kpi-number">Route</div>
+        <div class="kpi-desc">Multiple Destinations</div>
       </div>
       <div class="kpi-card" data-animate>
         <div class="kpi-icon">&#x1F50D;</div>
@@ -896,12 +866,12 @@
       <div class="feature-card theme-orange" data-animate>
         <div class="feature-icon">&#x1F9E0;</div>
         <h3>Eventhouse</h3>
-        <p>Purpose-built for time-series and log analytics. Each Eventhouse is a scalable container that hosts multiple KQL databases, enabling lightning-fast queries across billions of rows with intuitive KQL syntax.</p>
+        <p>Purpose-built for time-series and log analytics. Each Eventhouse is a scalable container for KQL databases and supports fast queries over large volumes of event data.</p>
       </div>
       <div class="feature-card theme-orange" data-animate>
         <div class="feature-icon">&#x1F4C8;</div>
         <h3>Real-Time Dashboards</h3>
-        <p>Build live dashboards that auto-refresh in seconds. Set data-driven alerts to notify your team the moment thresholds are crossed.</p>
+        <p>Build Real-Time dashboards for data in motion and use Fabric Activator to alert or take action when defined conditions are met.</p>
       </div>
     </div>
   </div>
@@ -929,7 +899,7 @@
       <div class="feature-card theme-pink" data-animate>
         <div class="feature-icon">&#x1F4AC;</div>
         <h3>Copilot for Power BI</h3>
-        <p>Generate reports, create DAX measures, and summarize insights using natural language. AI-powered assistance makes BI accessible to every business user.</p>
+        <p>Use natural-language assistance to create and edit report pages, write DAX queries, and summarize semantic models and reports, subject to Copilot licensing and capacity requirements.</p>
       </div>
       <div class="feature-card theme-pink" data-animate>
         <div class="feature-icon">&#x1F465;</div>
@@ -949,7 +919,7 @@
       <div class="feature-card theme-pink" data-animate>
         <div class="feature-icon">&#x1F512;</div>
         <h3>Row-Level Security</h3>
-        <p>Define data access rules so each user sees only what they're authorized to. Security follows the data across all reports and apps automatically.</p>
+        <p>Define roles and row filters on semantic models so report consumers see only the data authorized for their identity and assigned role.</p>
       </div>
     </div>
   </div>
@@ -969,7 +939,7 @@
 <!-- ========== FOOTER ========== -->
 <footer>
   <div class="container">
-    <p>&copy; Microsoft Corporation. All rights reserved. Microsoft Fabric &mdash; Unified Analytics Platform.</p>
+    <p>Source: <a href="https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview" target="_blank" rel="noopener">What is Microsoft Fabric?</a> &mdash; Microsoft Learn</p>
   </div>
 </footer>
 

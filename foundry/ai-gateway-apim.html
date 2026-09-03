@@ -566,7 +566,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-06-27">
+<meta name="smec:last-accuracy-check" content="2026-09-02">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="Harry Arce">
 <style>/* smec-back-btn v3 */
@@ -650,14 +650,14 @@
   <div class="container">
     <div class="hero-grid">
       <div>
-        <span class="hero-eyebrow"><span class="dot"></span> Generally Available · Ignite 2025</span>
+        <span class="hero-eyebrow"><span class="dot"></span> Azure API Management · AI gateway capabilities</span>
         <h1>One front door for <span class="accent-cyan">every model</span>.<br>One control plane for the <span class="accent-amber">agent era</span>.</h1>
-        <p class="hero-sub">Azure API Management’s <strong>AI Gateway</strong> is not a separate product — it’s the same gateway you already use for APIs, taught new tricks for LLMs, agents, and tools. Token-aware throttling, semantic caching, multi-backend load balancing, content safety, native MCP, and rich telemetry — all governed with the platform you already operate. At <strong>Build 2026</strong>, it became the recommended front door for <strong>Foundry hosted agents</strong> and <strong>Web IQ</strong> (MCP-native, model-agnostic open-web search), too.</p>
+        <p class="hero-sub">Azure API Management’s <strong>AI gateway capabilities</strong> extend the gateway you already use for APIs with controls for LLMs, agents, and tools. Token-aware throttling, semantic caching, multi-backend load balancing, content safety, MCP governance, and telemetry are configured through API Management policies. Microsoft Foundry can also integrate with an API Management-backed gateway for ingress to a Foundry resource.</p>
         <div class="hero-meta">
-          <span class="chip"><strong>14</strong> capabilities</span>
+          <span class="chip"><strong>Policy-driven</strong> controls</span>
           <span class="chip"><strong>5</strong> WAF pillars</span>
-          <span class="chip"><strong>1,200+</strong> enterprise customers</span>
-          <span class="chip">No new infrastructure</span>
+          <span class="chip"><strong>Multiple</strong> AI backends</span>
+          <span class="chip">Built on API Management</span>
         </div>
       </div>
       <div class="gw-fig">
@@ -826,9 +826,9 @@
 
     <div class="hero-callouts">
       <div class="cell">
-        <div class="num">14</div>
-        <div class="lbl">Named Capabilities</div>
-        <div class="src">Across the AI Gateway surface</div>
+        <div class="num">TPM</div>
+        <div class="lbl">Token Controls</div>
+        <div class="src">Rate limits and quotas</div>
       </div>
       <div class="cell">
         <div class="num">5</div>
@@ -836,9 +836,9 @@
         <div class="src">Security · Reliability · Perf · Ops · Cost</div>
       </div>
       <div class="cell">
-        <div class="num">1,200+</div>
-        <div class="lbl">Enterprise Customers</div>
-        <div class="src">Microsoft, Nov 18, 2025</div>
+        <div class="num">MI</div>
+        <div class="lbl">Managed Identity</div>
+        <div class="src">Keyless Azure backends</div>
       </div>
       <div class="cell">
         <div class="num">/mcp</div>
@@ -876,7 +876,7 @@
       <div class="why-card w2 reveal">
         <div class="why-glyph">!</div>
         <h3>Prompts are user input</h3>
-        <p>Every prompt deserves the same scrutiny as any other inbound payload. Native Azure AI Content Safety integration moderates LLM input — and supports patterns for output — before it reaches the model.</p>
+        <p>Every prompt deserves the same scrutiny as any other inbound payload. The <code>llm-content-safety</code> policy sends LLM prompts to Azure AI Content Safety before forwarding accepted requests to the backend.</p>
       </div>
       <div class="why-card w3 reveal">
         <div class="why-glyph">∞</div>
@@ -897,8 +897,8 @@
   <div class="container">
     <div class="reveal">
       <span class="section-tag">The Capabilities</span>
-      <h2>14 capabilities, organized as 5 pillars.</h2>
-      <p class="lede">The Azure-Samples AI Gateway repo groups capabilities under the same Well-Architected pillars you already use elsewhere on Azure. Each policy below is named exactly as it appears in Microsoft Learn — the orange <em>Preview</em> tags mark features still in public preview at the time of writing.</p>
+      <h2>AI gateway capabilities, organized as 5 pillars.</h2>
+      <p class="lede">This guide groups API Management capabilities under familiar Well-Architected concerns. Policy names below follow Microsoft Learn; availability can vary by API Management tier, API type, and region.</p>
     </div>
 
     <div class="pillars-grid">
@@ -917,7 +917,7 @@
           <li><strong>Content safety</strong> — Azure AI Content Safety policy moderates LLM prompts</li>
           <li><strong>Managed identity</strong> to Foundry / Azure OpenAI — eliminates API keys</li>
           <li><strong>OAuth 2.0 / Entra ID</strong> via Credential Manager (inbound + outbound) — see <a href="https://learn.microsoft.com/en-us/azure/api-management/genai-gateway-capabilities" target="_blank" style="color:var(--accent);">APIM AI gateway capabilities</a></li>
-          <li><strong>OAuth 2.1 native MCP auth</strong> — <strong>GA in March 2026 APIM release, aligned with MCP spec 2025-06-18</strong> (<a href="https://learn.microsoft.com/en-us/azure/api-management/mcp-server-overview" target="_blank" style="color:var(--accent);">MCP server overview</a>) <span class="pv">GA</span></li>
+          <li><strong>MCP authentication and authorization</strong> — validate incoming JWTs and configure key-based or OAuth access as appropriate (<a href="https://learn.microsoft.com/en-us/azure/api-management/secure-mcp-servers" target="_blank" style="color:var(--accent);">secure MCP servers</a>)</li>
           <li><strong>Private connectivity</strong> via APIM private endpoints &amp; VNets</li>
         </ul>
       </div>
@@ -937,7 +937,7 @@
           <li><strong>Backend load balancing</strong> — round-robin, weighted, priority, session-aware</li>
           <li><strong>Circuit breaker</strong> — dynamic trip honoring backend <code>Retry-After</code></li>
           <li><strong>Token rate limit &amp; quota</strong> — <code>llm-token-limit</code>, returns 429/403</li>
-          <li><strong>Multi-region gateway</strong> — automatic capacity scaling, regional fan-out</li>
+          <li><strong>Gateway scaling and multi-region deployment</strong> — capabilities depend on the API Management tier</li>
           <li><strong>Deployment-level token limits</strong> per model deployment <span class="pv">2026</span></li>
         </ul>
       </div>
@@ -1016,9 +1016,8 @@
         <ul>
           <li><strong>MCP server hosting</strong> — REST API → MCP tools at <code>/mcp</code></li>
           <li><strong>External MCP pass-through</strong> for Logic Apps, Functions, custom</li>
-          <li><strong>A2A (Agent2Agent)</strong> communication for multi-agent workflows <span class="pv">Preview</span></li>
           <li>Rate-limit-by-key on <code>Mcp-Session-Id</code></li>
-          <li><strong>AI Gateway in Microsoft Foundry</strong> control plane <span class="pv">Preview</span></li>
+          <li><strong>Microsoft Foundry integration</strong> — configure an API Management-backed gateway for a Foundry resource</li>
         </ul>
       </div>
     </div>
@@ -1065,7 +1064,7 @@
           </li>
           <li>
             <strong>Multi-region gateway deployment</strong>
-            APIM scales gateway capacity automatically and supports regional gateway addition; pair with backends in matching regions for geo-resilience.
+            API Management supports scale units and, on eligible tiers, regional gateways; pair gateways with appropriately distributed backends for resilience.
           </li>
           <li>
             <strong>Deployment-level token limits</strong>
@@ -1196,9 +1195,9 @@
       <h4>⚠ Important caveats — don't overclaim</h4>
       <ul>
         <li>For <strong>REST-derived MCP servers</strong> in APIM, only <strong>MCP tools</strong> are supported — <strong>resources and prompts are not supported today</strong>, and MCP capabilities are <strong>not supported in workspaces</strong>.</li>
-        <li>MCP support in <strong>v2 SKUs</strong> (Basic v2 / Standard v2 / Premium v2) is now <strong>generally available</strong> across all classic and v2 APIM tiers.</li>
+        <li>Policy and MCP capabilities vary by API Management tier and workspace support. Check the policy reference and MCP overview before selecting a tier.</li>
         <li>The <strong>MCP tool limit per server</strong> was previously hardcoded at 20 — removed in the March 2026 release. Now bounded by the APIM SKU operation limit.</li>
-        <li><strong>A2A</strong> support and <strong>AI Gateway in Microsoft Foundry</strong> are <strong>preview</strong>. Show a "Preview" badge wherever your design depends on them.</li>
+        <li>Foundry's built-in API Management integration is designed for ingress to a single Foundry resource. Use a standalone API Management instance when the gateway must span resources or non-Foundry backends.</li>
       </ul>
     </div>
   </div>
@@ -1210,7 +1209,7 @@
     <div class="reveal">
       <span class="section-tag">2025 → 2026</span>
       <h2>The arc — how the story landed.</h2>
-      <p class="lede">From the first public REST-as-MCP reveal at Build 2025 through Ignite 2025's "AI Gateway in Foundry" preview and the March 2026 release that brought OAuth 2.1, A2A, and OpenTelemetry conventions to GA-quality maturity.</p>
+      <p class="lede">A historical view of announcements that expanded API Management from model governance into MCP and Foundry integration. Confirm current support in Microsoft Learn before relying on any dated announcement.</p>
     </div>
 
     <div class="timeline">
@@ -1332,7 +1331,7 @@
   <div class="container">
     <div class="brand-mark">AI Gateway · Azure API Management</div>
     <p>One front door for every model. One control plane for the agent era.</p>
-    <p>Status snapshot is accurate at time of writing — confirm GA / Preview state on Microsoft Learn before designing dependencies on preview features.</p>
+    <p>Reviewed September 2, 2026. Confirm tier, region, and preview support on Microsoft Learn before designing dependencies.</p>
     <div class="sources-line">
       <strong style="color: rgba(255,255,255,0.75);">Primary sources:</strong><br>
       <a href="https://learn.microsoft.com/en-us/azure/api-management/genai-gateway-capabilities" target="_blank">AI gateway capabilities</a> ·

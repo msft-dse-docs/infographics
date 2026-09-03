@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Microsoft App, AI &amp; Data Stack — A Top-to-Bottom Map</title>
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-06-27">
+<meta name="smec:last-accuracy-check" content="2026-09-02">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; font-size: 16px; }
@@ -619,7 +619,7 @@
           <a class="slab-link" href="#layer-3">
             <rect x="90" y="234" width="380" height="62" rx="10" fill="url(#g3)"/>
             <text x="280" y="262" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="15" font-weight="700">AI Platform &amp; Models</text>
-            <text x="280" y="282" text-anchor="middle" fill="rgba(255,255,255,0.82)" font-family="Segoe UI" font-size="11">Microsoft Foundry &middot; 1,900+ models &middot; AI Gateway</text>
+            <text x="280" y="282" text-anchor="middle" fill="rgba(255,255,255,0.82)" font-family="Segoe UI" font-size="11">Microsoft Foundry &middot; 10,000+ models &middot; AI Gateway</text>
           </a>
 
           <!-- Layer 2 -->
@@ -718,10 +718,10 @@
         <div>
           <h3>Where intelligence is built</h3>
           <div class="role">The model catalog, the gateway, and the lifecycle tools that turn raw LLMs into governed services.</div>
-          <p><strong>Microsoft Foundry</strong> (rebranded from Azure AI Foundry) gives you 1,900+ models &mdash; GPT-5.5, GPT-5.4 family, Mistral Large 3, Llama, Phi &mdash; with fine-tuning, evaluation, and observability. <strong>AI Gateway in Azure API Management</strong> is the front door: token-aware throttling, semantic caching, content safety, OAuth 2.1 for MCP, and PTU-first load balancing.</p>
+          <p><strong>Microsoft Foundry</strong> (formerly Azure AI Foundry) provides access to more than 10,000 models from Microsoft, OpenAI, Anthropic, Meta, Mistral, and others, with evaluation, observability, and model-specific fine-tuning options. <strong>AI Gateway in Azure API Management</strong> can add token limits, semantic caching, content safety, and resilient backend routing.</p>
           <ul class="examples">
             <li>Microsoft Foundry &middot; Foundry Tools (Azure AI Services)</li>
-            <li><!-- smec-keep-term -->Azure OpenAI Service<!-- /smec-keep-term --> (migration to Foundry recommended)</li>
+            <li><!-- smec-keep-term -->Azure OpenAI Service<!-- /smec-keep-term --> (existing resources can be upgraded to Foundry)</li>
             <li>AI Gateway in APIM &middot; <code>llm-token-limit</code> &middot; semantic cache</li>
             <li>Foundry Local (GA) for edge inference &middot; Continuous Evaluation</li>
           </ul>
@@ -745,7 +745,7 @@
             <li>Microsoft Fabric &middot; OneLake (the OneDrive for data)</li>
             <li>Power BI &middot; semantic models &middot; verified answers</li>
             <li>Azure AI Search &middot; vector + semantic + hybrid retrieval</li>
-            <li>Foundry IQ &middot; Fabric IQ &middot; Work IQ &middot; Web IQ (Public Preview)</li>
+            <li>Foundry IQ &middot; Fabric IQ &middot; Work IQ &middot; Web IQ (availability varies)</li>
           </ul>
         </div>
         <div class="next">
@@ -761,7 +761,7 @@
         <div>
           <h3>Where it all runs</h3>
           <div class="role">The opinionated Azure foundation every layer above depends on.</div>
-          <p>The <strong>Azure AI Landing Zone</strong> (GA Nov 17, 2025) is Microsoft's reference architecture for production AI workloads: secure networking, private endpoints, identity-first access, observability, and a Cloud Adoption Framework-aligned operating model. Every layer above is more robust and more compliant when it lands here.</p>
+          <p>The <strong>AI Landing Zone</strong> (preview) is Microsoft's reference architecture and implementation for secure, resilient AI workloads: networking, private endpoints, identity-first access, observability, and alignment with the Cloud Adoption Framework and Well-Architected Framework.</p>
           <ul class="examples">
             <li>Azure regions &middot; availability zones &middot; PTU capacity</li>
             <li>Azure AI Landing Zone reference architecture (7 layers)</li>
@@ -853,7 +853,7 @@
       <div class="trace-step t4 reveal">
         <div class="num">4</div>
         <h5>The model</h5>
-        <p>Foundry routes the call to <strong>GPT-5.5</strong> on reserved PTU capacity. Overflow lands on PAYGO via priority-based load balancing.</p>
+        <p>Foundry routes the call to a supported model on reserved provisioned capacity. API Management can prioritize that backend and fail over to a pay-as-you-go deployment.</p>
         <div class="meta">Layer 3 &middot; PTU-first</div>
       </div>
       <div class="trace-step t5 reveal">
@@ -977,7 +977,7 @@
       <details class="gl" data-cat="agent">
         <summary><span class="term-cat">Agent</span> A2A (Agent2Agent)</summary>
         <div class="body">
-          Microsoft's protocol for agent-to-agent communication, letting multiple agents collaborate on a single workflow. Currently in preview as part of the March 2026 APIM AI Gateway release.
+          An open protocol for agent-to-agent communication. Azure API Management can import and govern A2A agent APIs; capability availability varies by API Management tier.
           <div class="where">See: <a href="ai-gateway-apim.html">AI Gateway in APIM</a> (timeline section)</div>
         </div>
       </details>
@@ -1017,7 +1017,7 @@
       <details class="gl" data-cat="data">
         <summary><span class="term-cat">Data</span> Foundry IQ</summary>
         <div class="body">
-          The retrieval layer for AI Foundry &mdash; multi-source grounding, indexing, and reranking under one API. Public Preview at time of writing.
+          A managed knowledge layer for Microsoft Foundry. It creates reusable, permission-aware knowledge bases on Azure AI Search; some capabilities are generally available and others remain in preview.
           <div class="where">See: <a href="microsoft-iq-platforms-guide.html">IQ Platforms Guide</a></div>
         </div>
       </details>
@@ -1025,7 +1025,7 @@
       <details class="gl" data-cat="data">
         <summary><span class="term-cat">Data</span> Fabric IQ</summary>
         <div class="body">
-          The semantic-model layer for Microsoft Fabric &mdash; verified, governed business semantics that grounding can trust. Public Preview.
+          The Microsoft Fabric intelligence workload for business semantics and operational context. The Fabric IQ workload and ontology item are currently in preview.
           <div class="where">See: <a href="microsoft-iq-platforms-guide.html">IQ Platforms Guide</a></div>
         </div>
       </details>
@@ -1033,7 +1033,7 @@
       <details class="gl" data-cat="data">
         <summary><span class="term-cat">Data</span> Work IQ</summary>
         <div class="body">
-          The M365 context layer &mdash; signals about the user's work patterns, calendar, files, and collaborators that personalize Copilot answers. Public Preview.
+          The Microsoft 365 context layer for work data such as email, meetings, files, and Teams messages. The Work IQ CLI is generally available; Work IQ integrations and MCP experiences can still be preview features.
           <div class="where">See: <a href="microsoft-iq-platforms-guide.html">IQ Platforms Guide</a></div>
         </div>
       </details>
@@ -1041,7 +1041,7 @@
       <details class="gl" data-cat="data">
         <summary><span class="term-cat">Data</span> Web IQ</summary>
         <div class="body">
-          The open-web grounding layer for every agent &mdash; model-agnostic, MCP-native search built for the AI era. Announced at Build 2026; Public Preview.
+          Microsoft's web-grounding member of the Microsoft IQ family. Access is limited, so confirm eligibility and current terms before planning a workload around it.
           <div class="where">See: <a href="microsoft-iq-platforms-guide.html">IQ Platforms Guide</a> &middot; <a href="https://webiq.microsoft.ai/" target="_blank">webiq.microsoft.ai</a></div>
         </div>
       </details>
@@ -1049,7 +1049,7 @@
       <details class="gl" data-cat="platform">
         <summary><span class="term-cat">Platform</span> Microsoft Foundry</summary>
         <div class="body">
-          Microsoft’s unified AI development platform (rebranded from Azure AI Foundry). 12,000+ models including GPT-5.5, GPT-5.2, Claude Opus 4.8, the new Microsoft <strong>MAI</strong> family, Mistral, Llama, Phi, plus open-weight models via the Fireworks AI partnership (Build 2026). Fine-tuning &mdash; including new <strong>Frontier Tuning</strong> with RLEs &mdash; evaluation, observability, and Agent Service all in one control plane.
+          Microsoft's unified AI development platform (formerly Azure AI Foundry), with more than 10,000 models from Microsoft and third-party providers. It brings agents, models, tools, evaluation, observability, identity, networking, and policy under one management plane; individual capabilities and models have their own availability terms.
           <div class="where">Docs: <a href="https://learn.microsoft.com/en-us/azure/ai-foundry/" target="_blank">Microsoft Foundry</a> &middot; <a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/" target="_blank">What’s New @ Build 2026</a></div>
         </div>
       </details>
@@ -1057,7 +1057,7 @@
       <details class="gl" data-cat="platform">
         <summary><span class="term-cat">Platform</span> AI Landing Zone</summary>
         <div class="body">
-          The Microsoft reference architecture (GA Nov 17, 2025) for production AI workloads on Azure &mdash; networking, identity, security, observability, operating model. The Layer 1 foundation everything else depends on.
+          Microsoft's preview reference architecture and implementation for secure, resilient AI workloads on Azure, with Portal, Bicep, and Terraform options. Review the repository's regional and feature limitations before deployment.
           <div class="where">See: <a href="ai-landing-zones.html">Azure AI Landing Zones</a></div>
         </div>
       </details>

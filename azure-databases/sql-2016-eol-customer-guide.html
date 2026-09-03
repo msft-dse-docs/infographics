@@ -239,7 +239,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-07-16">
+<meta name="smec:last-accuracy-check" content="2026-09-02">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="copilot-swe-agent[bot]">
 <style>/* smec-back-btn v3 */
@@ -326,8 +326,8 @@
 <!-- Hero -->
 <section class="hero">
   <div class="hero-badge">Microsoft Azure &bull; SQL Server</div>
-  <h1>SQL Server 2016 Is Reaching<br>End of Support</h1>
-  <p>Do you know your options? Security updates end <strong>July 14, 2026</strong>. Plan your path forward&mdash;modernize, upgrade, or extend.</p>
+  <h1>SQL Server 2016 Has Reached<br>End of Support</h1>
+  <p>Extended Security Updates are available through <strong>July 17, 2029</strong>. Modernize or upgrade where possible, and use ESUs only as a temporary bridge.</p>
   <div class="countdown" id="countdown">
     <div class="cd-item"><div class="cd-num" id="cd-d">--</div><div class="cd-lbl">Days</div></div>
     <div class="cd-item"><div class="cd-num" id="cd-h">--</div><div class="cd-lbl">Hours</div></div>
@@ -345,13 +345,13 @@
   <div class="container">
     <div class="reveal">
       <span class="section-label">End of Support</span>
-      <h2 class="section-title">What Does End of Support Mean?</h2>
-      <p class="section-sub">After the end-of-support date, Microsoft will no longer provide security updates for SQL Server 2016&mdash;leaving your databases exposed to unpatched vulnerabilities.</p>
+      <h2 class="section-title">SQL Server 2016 Is Now Out of Support</h2>
+      <p class="section-sub">SQL Server 2016 reached end of support on July 14, 2026. Without Extended Security Updates, Microsoft no longer provides security updates, leaving workloads exposed to unpatched vulnerabilities.</p>
     </div>
     <div class="eol-banner reveal">
       <h3>End of Support Date</h3>
       <div class="date">July 14, 2026</div>
-      <p style="margin-top:.5rem;opacity:.9;">No more critical or important security patches after this date</p>
+      <p style="margin-top:.5rem;opacity:.9;">Extended Security Updates are available through July 17, 2029</p>
     </div>
     <div class="reveal" style="transition-delay:.15s">
       <h3 style="font-size:1.05rem;margin-bottom:1rem;">Security Updates You Will Lose</h3>
@@ -588,7 +588,7 @@
     </div>
     <div class="price-card reveal" style="transition-delay:.1s">
       <h3 style="font-size:1.1rem;margin-bottom:.75rem;">ESU Pricing</h3>
-      <p style="font-size:.88rem;color:#555;margin-bottom:1rem;">Consistent pricing at 100% of full annual license price. Per 2-core pack (minimum 4 cores). No price increase from SQL 2014 ESUs.</p>
+      <p style="font-size:.88rem;color:#555;margin-bottom:1rem;">SQL Server 2016 ESUs are paid across deployment environments. Azure Arc provides a pay-as-you-go subscription model; contact your Microsoft account team for licensing options and current pricing.</p>
       <table class="price-tbl">
         <thead><tr><th>Environment</th><th>SQL 2014 ESU</th><th>SQL 2016 ESU</th></tr></thead>
         <tbody>
@@ -600,8 +600,7 @@
         </tbody>
       </table>
       <div style="margin-top:1rem;padding:.75rem;background:#fff4ce;border-radius:8px;font-size:.85rem;">
-        <strong>Key change:</strong> SQL 2016 ESUs are now paid across all environments, including Azure VMs&mdash;creating consistent pricing.
-        <br>List price: <strong>Standard $3,353/yr</strong> &middot; <strong>Enterprise $12,854/yr</strong> &middot; Same price across all 3 years.
+        <strong>Important:</strong> If you enable an Azure Arc ESU subscription after July 14, 2026, Azure bills back to the beginning of the current ESU year. Plan enrollment before a coverage gap occurs.
       </div>
     </div>
   </div>
@@ -680,11 +679,11 @@
     <div class="accordion reveal">
       <div class="acc-item">
         <div class="acc-hdr">What happens after July 14, 2026? <span class="chev">&#9660;</span></div>
-        <div class="acc-body"><div class="acc-inner">Microsoft stops providing security updates for SQL Server 2016. No more critical or important patches, leaving databases vulnerable to newly discovered threats and potentially out of compliance.</div></div>
+        <div class="acc-body"><div class="acc-inner">SQL Server 2016 is out of support. ESUs provide Critical security updates when available, but do not include new features, nonsecurity updates, or general technical support. ESUs are a temporary bridge while you migrate or upgrade.</div></div>
       </div>
       <div class="acc-item">
         <div class="acc-hdr">Are ESUs free on Azure VMs for SQL 2016? <span class="chev">&#9660;</span></div>
-        <div class="acc-body"><div class="acc-inner">No. Unlike SQL Server 2014, ESU for SQL Server 2016 is <strong>paid across all environments</strong>&mdash;including Azure VMs, Azure Local, and Azure VMware Solution. This creates consistent pricing across all channels.</div></div>
+        <div class="acc-body"><div class="acc-inner">No. SQL Server 2016 ESUs are paid across deployment environments, including Azure VMs. Azure Arc provides pay-as-you-go ESU subscriptions; verify current pricing and eligibility for your licensing agreement.</div></div>
       </div>
       <div class="acc-item">
         <div class="acc-hdr">What is the Savings Plan for Databases? <span class="chev">&#9660;</span></div>
@@ -715,7 +714,7 @@
 // Countdown
 (function(){
   const eol=new Date('2026-07-14T00:00:00').getTime();
-  function u(){const n=Date.now(),d=eol-n;if(d<=0){document.getElementById('cd-d').textContent='0';return;}
+  function u(){const n=Date.now(),d=eol-n;if(d<=0){document.getElementById('cd-d').textContent='ESU';document.getElementById('cd-h').textContent='NOW';document.getElementById('cd-m').textContent='';document.getElementById('cd-s').textContent='';return;}
   document.getElementById('cd-d').textContent=Math.floor(d/864e5);
   document.getElementById('cd-h').textContent=Math.floor((d%864e5)/36e5);
   document.getElementById('cd-m').textContent=Math.floor((d%36e5)/6e4);
@@ -755,7 +754,7 @@ const tree={id:'s',question:'Can your workload migrate to Azure?',choices:[
     {label:'Yes',next:{id:'r4',result:{type:'green',title:'Upgrade to SQL Server 2025 On-Premises',desc:'Built-in AI, industry-leading security, Fabric integration. No ESU needed. Use Azure Arc for ongoing management.'}}},
     {label:'Not yet',next:{id:'w',question:'How would you like to purchase ESU?',choices:[
       {label:'Azure Arc (monthly, flexible)',next:{id:'r5',result:{type:'blue',title:'ESU via Azure Arc',desc:'Pay monthly, no upfront commitment, stop anytime. Enroll in Azure Portal. Centralized management across all servers.'}}},
-      {label:'Volume Licensing',next:{id:'r6',result:{type:'yellow',title:'ESU via Volume Licensing',desc:'100% of full annual license price. Standard: $3,353/yr, Enterprise: $12,854/yr per 2-core pack. Contact your Microsoft account team.'}}}
+      {label:'Volume Licensing',next:{id:'r6',result:{type:'yellow',title:'ESU via Volume Licensing',desc:'Contact your Microsoft account team for current pricing, eligibility, and coverage terms. If coverage has lapsed, review any applicable back-billing before enrolling.'}}}
     ]}}
   ]}}
 ]};

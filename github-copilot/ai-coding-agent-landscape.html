@@ -103,7 +103,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-06-27">
+<meta name="smec:last-accuracy-check" content="2026-09-02">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="Antonio Montez">
 <style>/* smec-back-btn v3 */
@@ -172,8 +172,8 @@
     Platform engineering · Agent control planes
   </div>
   <h1>Which AI coding agent fits which team?</h1>
-  <p>Not a ranking. A decision tree for choosing the control plane first: GitHub-native (web or new desktop app), GitHub-hosted third-party, standalone vendor workflow, or Cursor’s cloud surface.</p>
-  <div class="hero-meta">Accurate as of June 27, 2026 · Async GitHub-connected agents, not local IDE copilots</div>
+  <p>Not a ranking. A decision tree for choosing the control plane first: GitHub-native web or desktop app, GitHub-hosted third-party, standalone vendor workflow, or Cursor’s cloud surface.</p>
+  <div class="hero-meta">Accurate as of September 2, 2026 · Async GitHub-connected agents, not local IDE copilots</div>
 </header>
 
 <section>
@@ -216,7 +216,7 @@
         <header><h3>GitHub Copilot cloud agent</h3><div class="sub">GitHub-native · Pro, Pro+, Max, Business, Enterprise</div></header>
         <div class="body">
           <div class="fit"><strong>Best fit:</strong> GitHub is the control plane, Copilot is already approved, and platform wants low-friction issue-to-PR adoption across many repos.</div>
-          <div class="not-fit"><strong>Watch-outs:</strong> Copilot cloud agent still uses Actions minutes and AI credits, and it does not honor Copilot content exclusions.</div>
+          <div class="not-fit"><strong>Watch-outs:</strong> Copilot cloud agent uses Actions minutes and AI credits; each session is limited to one repository, one branch, one pull request, and 59 minutes.</div>
           <ul>
             <li>Zero per-repo files required</li>
             <li>First-party GitHub agent identity</li>
@@ -269,15 +269,15 @@
       </div>
 
       <div class="tool-card">
-        <header><h3>GitHub Copilot desktop app <span style="display:inline-block;background:#dafbe1;color:#0a3622;border:1px solid #6fdd8b;padding:.05rem .4rem;border-radius:6px;font-size:.62rem;font-weight:800;letter-spacing:.06em;margin-left:.4rem;vertical-align:middle;">NEW</span></h3><div class="sub">GitHub-native · macOS/Windows desktop · Public preview</div></header>
+        <header><h3>GitHub Copilot desktop app <span style="display:inline-block;background:#dafbe1;color:#0a3622;border:1px solid #6fdd8b;padding:.05rem .4rem;border-radius:6px;font-size:.62rem;font-weight:800;letter-spacing:.06em;margin-left:.4rem;vertical-align:middle;">NEW</span></h3><div class="sub">GitHub-native · macOS/Linux/Windows · Technical preview</div></header>
         <div class="body">
-          <div class="fit"><strong>Best fit:</strong> developers who want an agent-native desktop surface for parallel work — Agent Merge for CI/review babysitting, worktrees for multi-task isolation, Rubber Duck review for second-opinion critique, Canvases for visual planning — with multi-model choice (OpenAI, Anthropic, Google) on a GitHub identity.</div>
-          <div class="not-fit"><strong>Watch-outs:</strong> public preview; behavior, policy surface, and billing details are still evolving. Pair with existing repo policies (rulesets, content exclusion) until enterprise controls catch up.</div>
+          <div class="fit"><strong>Best fit:</strong> developers who want an agent-native desktop surface for parallel sessions, isolated worktrees, pull request lifecycle management, rubber duck critique, Canvases, and multi-model choice including BYOK providers.</div>
+          <div class="not-fit"><strong>Watch-outs:</strong> technical preview; review generated changes and CI results before enabling agent merge or merging. Business/Enterprise app access has its own policy.</div>
           <ul>
-            <li>Agent Merge, worktrees, Rubber Duck review, Canvases</li>
-            <li>Multi-model: OpenAI, Anthropic, Google</li>
+            <li>Agent merge, worktrees, rubber duck agent, Canvases</li>
+            <li>Model selection plus bring your own provider</li>
             <li>Source: <a href="https://github.com/github/app" target="_blank" rel="noopener">github/app</a></li>
-            <li>Reuses Copilot subscription + GitHub identity</li>
+            <li>Available on all Copilot plans; BYOK is also supported</li>
           </ul>
         </div>
       </div>
@@ -309,12 +309,13 @@
       <h4>Primary sources</h4>
       <ul class="sources-list">
         <li><a href="https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent">Copilot cloud agent</a></li>
-        <li><a href="https://docs.github.com/en/copilot/concepts/agents/about-third-party-agents">GitHub third-party agents</a></li>
+        <li><a href="https://docs.github.com/en/copilot/concepts/agents/about-third-party-coding-agents">GitHub third-party agents</a></li>
+        <li><a href="https://docs.github.com/en/copilot/concepts/agents/github-copilot-app">GitHub Copilot app</a></li>
+        <li><a href="https://docs.github.com/en/copilot/get-started/plans">GitHub Copilot plans</a></li>
         <li><a href="https://code.claude.com/docs/en/github-actions">Claude Code GitHub Actions</a></li>
         <li><a href="https://developers.openai.com/codex/integrations/github">Codex GitHub integration</a></li>
         <li><a href="https://cursor.com/blog/cloud-agents">Cursor Cloud Agents</a></li>
         <li><a href="https://cursor.com/pricing">Cursor pricing and plans</a></li>
-        <li><a href="https://github.blog/news-insights/product-news/github-copilot-app-the-agent-native-desktop-experience/">GitHub Copilot desktop app announcement</a></li>
         <li><a href="https://github.com/github/app">github/app repo</a></li>
       </ul>
     </div>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Find Your Phase — Microsoft Innovation Hub Decision Guide</title>
+<title>Find Your Engagement — Microsoft Innovation Hub Decision Guide</title>
 <style>
   :root {
     --bg: #fafbfc;
@@ -70,7 +70,7 @@
   /* Journey strip */
   .journey-strip { margin-top: 4rem; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 2rem; box-shadow: var(--shadow-sm); overflow-x: auto; }
   .journey-strip-title { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 1.5rem; }
-  .journey { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; align-items: stretch; min-width: 960px; }
+  .journey { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; align-items: stretch; min-width: 760px; }
   .journey-node { position: relative; padding: 1.2rem 1rem; text-align: center; }
   .journey-node:not(:last-child)::after {
     content: "→"; position: absolute; right: -12px; top: 50%; transform: translateY(-50%);
@@ -148,7 +148,6 @@
   }
   .phase-card .ideal strong { color: var(--ink); display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.3rem; }
 
-  .p-exec { --phase-color: var(--purple); --phase-color-dark: #6744a3; }
   .p-biz { --phase-color: var(--ms-blue); --phase-color-dark: var(--ms-blue-dark); }
   .p-sol { --phase-color: var(--cyan); --phase-color-dark: #0080bf; }
   .p-arch { --phase-color: var(--green); --phase-color-dark: #0c5e0c; }
@@ -287,6 +286,8 @@
 <meta name="twitter:description" content="Find Your Phase — Microsoft Innovation Hub Decision Guide — an interactive infographic from the SME&amp;C Infographic Hub.">
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<!-- smec-accuracy v1 -->
+<meta name="smec:last-accuracy-check" content="2026-09-02">
 </head>
 <body>
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
@@ -295,10 +296,10 @@
 <div class="progress" id="progress"></div>
 
 <nav class="top">
-  <span class="brand">Innovation Hub · Phase Guide</span>
+  <span class="brand">Innovation Hub · Engagement Guide</span>
   <a href="#framework">Framework</a>
   <a href="#decide">Decide</a>
-  <a href="#phases">Phases</a>
+  <a href="#phases">Engagements</a>
   <a href="#matrix">Maturity</a>
   <a href="#sequences">Sequences</a>
   <a href="#faq">FAQ</a>
@@ -309,21 +310,15 @@
   <div class="container hero-inner">
     <span class="hero-pill">Microsoft Innovation Hub · Decision guide for customers</span>
     <h1>Great ideas need the <span class="grad">right room</span> — at the right time.</h1>
-    <p class="hero-sub">The Microsoft Innovation Hub offers a proven envisioning framework with five engagement phases. This guide helps you find the one that fits <em>where you are today</em> — not where someone assumed you should be — so your first day at the Hub actually moves your business forward.</p>
+    <p class="hero-sub">Microsoft Innovation Hub offers four tailored engagement types, from problem exploration through technical proof. This guide helps you compare the documented offerings and identify the conversation to start with your Microsoft account team.</p>
     <div class="hero-ctas">
-      <a href="#decide" class="btn btn-primary">Find my phase →</a>
-      <a href="#phases" class="btn btn-ghost">Compare all five</a>
+      <a href="#decide" class="btn btn-primary">Find my engagement →</a>
+      <a href="#phases" class="btn btn-ghost">Compare all four</a>
     </div>
 
     <div class="journey-strip reveal">
-      <p class="journey-strip-title">The common envisioning framework — left to right</p>
+      <p class="journey-strip-title">Current public Innovation Hub engagement offerings</p>
       <div class="journey">
-        <div class="journey-node" style="--phase-color: #8661c5;">
-          <div class="dot">0</div>
-          <h4>Executive Briefing</h4>
-          <p class="dur">½ day</p>
-          <p class="maturity">Curious</p>
-        </div>
         <div class="journey-node" style="--phase-color: #0078d4;">
           <div class="dot">1</div>
           <h4>Business Envisioning</h4>
@@ -339,7 +334,7 @@
         <div class="journey-node" style="--phase-color: #107c10;">
           <div class="dot">3</div>
           <h4>Architecture Design</h4>
-          <p class="dur">1–2 days</p>
+          <p class="dur">Custom session</p>
           <p class="maturity">Designing</p>
         </div>
         <div class="journey-node" style="--phase-color: #d83b01;">
@@ -359,15 +354,15 @@
     <div class="decision-grid">
       <div class="decision-intro">
         <span class="section-tag">Find your fit</span>
-        <h2>Pick your phase in 30 seconds.</h2>
-        <p class="lead">Answer three quick questions. We'll recommend the phase that matches your current state — plus suggest what comes next.</p>
+        <h2>Identify a likely engagement.</h2>
+        <p class="lead">Answer three quick questions for a starting recommendation, then confirm scope and availability with your Microsoft account team.</p>
         <div class="tip">
-          <strong>No wrong answers.</strong> The framework is designed so any phase is a valid starting point. The goal isn't to start at phase 1 — it's to start where your organization is ready to get value today.
+          <strong>This is a guide, not an eligibility check.</strong> Innovation Hub engagements are tailored, and Microsoft describes them as single- or multi-day engagements selected around the business outcome.
         </div>
       </div>
 
       <div class="quiz" id="quiz">
-        <h3>Phase selector</h3>
+        <h3>Engagement selector</h3>
         <p class="quiz-sub">Three questions. Live recommendation.</p>
 
         <div class="quiz-q">
@@ -394,7 +389,6 @@
         <div class="quiz-q">
           <label>3. What outcome would make this engagement a win?</label>
           <div class="quiz-opts" data-q="outcome">
-            <label class="quiz-opt"><input type="radio" name="outcome" value="inspire"><span>Executive alignment and a bias to act</span></label>
             <label class="quiz-opt"><input type="radio" name="outcome" value="prioritize"><span>A prioritized shortlist of use cases with first-step clarity</span></label>
             <label class="quiz-opt"><input type="radio" name="outcome" value="direction"><span>A shared technical direction with Microsoft + partners mapped in</span></label>
             <label class="quiz-opt"><input type="radio" name="outcome" value="architecture"><span>A target architecture and risk-aware migration plan</span></label>
@@ -403,7 +397,7 @@
         </div>
 
         <div class="quiz-result empty" id="result">
-          <div class="rec-label">Your recommended phase</div>
+          <div class="rec-label">Your suggested engagement</div>
           <div class="rec-phase">Answer the questions above…</div>
           <div class="rec-desc"></div>
         </div>
@@ -415,61 +409,11 @@
 <!-- PHASE DEEP DIVES -->
 <section id="phases">
   <div class="container">
-    <span class="section-tag">The five phases</span>
-    <h2>Each phase, explained.</h2>
-    <p class="lead">Every Hub phase has a specific job. Match the phase to the job you need done — not the other way around.</p>
+    <span class="section-tag">The four offerings</span>
+    <h2>Each engagement, explained.</h2>
+    <p class="lead">These summaries follow Microsoft's current public descriptions. Exact scope, participants, and outputs are tailored with your account team.</p>
 
     <div class="phase-cards">
-
-      <!-- Executive Briefing -->
-      <div class="phase-card p-exec reveal">
-        <div class="phase-stripe">
-          <div>
-            <div class="num">0</div>
-            <div class="rune">Awareness</div>
-          </div>
-        </div>
-        <div class="phase-body">
-          <div class="phase-head">
-            <h3>Executive Briefing</h3>
-            <span class="pitch">Build trust. Set the agenda.</span>
-          </div>
-          <div class="phase-meta">
-            <span>⏱ <strong>½ day</strong></span>
-            <span>👥 <strong>Execs, sponsors</strong></span>
-            <span>📍 <strong>Experience Center One · Regional Experience Centers</strong></span>
-          </div>
-          <p class="tagline">A strategic, curated conversation to show what's possible, frame Microsoft's POV on your industry, and align leadership on <em>why now</em>. Not a demo tour — a directed, decision-ready dialogue.</p>
-          <div class="phase-grid">
-            <div class="col">
-              <h5>What you get</h5>
-              <ul>
-                <li>Industry-specific Microsoft POV</li>
-                <li>AI trends and peer benchmarks</li>
-                <li>Executive-level Q&A with leaders</li>
-                <li>Bias to act and named next step</li>
-              </ul>
-            </div>
-            <div class="col">
-              <h5>You bring</h5>
-              <ul>
-                <li>C-suite and VP-level sponsors</li>
-                <li>Top 2–3 strategic questions</li>
-                <li>A willingness to challenge and be challenged</li>
-              </ul>
-            </div>
-            <div class="col">
-              <h5>You leave with</h5>
-              <ul>
-                <li>Shared language around the opportunity</li>
-                <li>Agreement on whether to proceed</li>
-                <li>A name, a date, and a phase for next step</li>
-              </ul>
-            </div>
-          </div>
-          <div class="ideal"><strong>Ideal if</strong>Leadership is aware of AI pressure but hasn't committed. You need inspiration and alignment before you can justify scoped investment.</div>
-        </div>
-      </div>
 
       <!-- Business Envisioning -->
       <div class="phase-card p-biz reveal">
@@ -497,13 +441,13 @@
                 <li>Design thinking workshop (full day)</li>
                 <li>Persona and journey mapping</li>
                 <li>Opportunity framing and prioritization</li>
-                <li>Shortlist of 2–4 use cases ranked by value × feasibility</li>
+                <li>Prioritized opportunities and actionable next steps</li>
               </ul>
             </div>
             <div class="col">
               <h5>You bring</h5>
               <ul>
-                <li>6–12 cross-functional participants</li>
+                <li>Cross-functional business and technical participants</li>
                 <li>A broad business theme, not a solution</li>
                 <li>Authority to pick winners by end of day</li>
               </ul>
@@ -585,7 +529,7 @@
             <span class="pitch">Build confidence. De-risk the decision.</span>
           </div>
           <div class="phase-meta">
-            <span>⏱ <strong>1–2 days (custom)</strong></span>
+            <span>⏱ <strong>Custom session</strong></span>
             <span>👥 <strong>CTOs, enterprise architects, senior devs</strong></span>
             <span>📍 <strong>Microsoft Innovation Hub</strong></span>
           </div>

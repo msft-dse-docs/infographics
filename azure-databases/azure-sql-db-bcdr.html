@@ -1183,7 +1183,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-07-16">
+<meta name="smec:last-accuracy-check" content="2026-09-03">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="cbattlegear">
 <style>/* smec-back-btn v3 */
@@ -1276,16 +1276,16 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
     </div>
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="hero-stat-value">&lt;30s</div>
-        <div class="hero-stat-label">HA Recovery (RTO)</div>
+        <div class="hero-stat-value">Typically &lt;30s</div>
+        <div class="hero-stat-label">Zone-Redundant HA RTO</div>
       </div>
       <div class="hero-stat">
         <div class="hero-stat-value">Zero</div>
         <div class="hero-stat-label">HA Data Loss (RPO)</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-value">35d / 10y</div>
-        <div class="hero-stat-label">PITR / LTR Retention</div>
+        <div class="hero-stat-value">Up to 35d / 10y</div>
+        <div class="hero-stat-label">PITR (Basic: 7d) / LTR</div>
       </div>
     </div>
   </div>
@@ -1380,18 +1380,18 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
       </div>
       <div class="table-row">
         <div class="label">High Availability<small>Zone-redundant configuration</small></div>
-        <div><span class="pill pill-fast">&lt; 30 seconds</span></div>
+        <div><span class="pill pill-fast">Typically &lt; 30 seconds</span></div>
         <div><span class="pill pill-fast">Zero</span></div>
       </div>
       <div class="table-row">
         <div class="label">Disaster Recovery<small>Failover groups / Active geo-replication</small></div>
-        <div><span class="pill pill-fast">&lt; 60 seconds</span></div>
+        <div><span class="pill pill-fast">Typically &lt; 60 seconds</span></div>
         <div><span class="pill pill-med">Potential data loss (async)</span></div>
       </div>
       <div class="table-row">
         <div class="label">Disaster Recovery<small>Geo-restore from geo-redundant backups</small></div>
-        <div><span class="pill pill-slow">Minutes to hours</span></div>
-        <div><span class="pill pill-slow">Minutes to hours</span></div>
+        <div><span class="pill pill-slow">Typically minutes to hours</span></div>
+        <div><span class="pill pill-slow">Typically minutes to hours</span></div>
       </div>
     </div>
   </div>
@@ -1422,7 +1422,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
           <h3>High Availability with Zone Redundancy</h3>
           <p>Availability Zones are physically separate datacenters inside a single Azure region, each with independent power, cooling, and networking. Zone redundancy uses <strong>synchronous</strong> replication across availability zones within the region. When a zone fails, a continuously synchronized replica takes over automatically.</p>
           <div class="feature-metrics">
-            <div class="metric-chip"><div class="m-label">RTO</div><div class="m-value">&lt; 30s</div></div>
+            <div class="metric-chip"><div class="m-label">Typical RTO</div><div class="m-value">&lt; 30s</div></div>
             <div class="metric-chip"><div class="m-label">RPO</div><div class="m-value">0</div></div>
             <div class="metric-chip"><div class="m-label">Scope</div><div class="m-value">Zone</div></div>
           </div>
@@ -1431,7 +1431,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
             <li>This RPO of zero applies only to in-region HA failover. Backup-based recovery (PITR, geo-restore) always carries a data loss window equal to the time since the last log backup</li>
             <li>Transparent failover within the region, with no app changes required</li>
             <li>Higher SLA than the default enterprise-class SLA</li>
-            <li>Available across most Azure regions that support Availability Zones</li>
+            <li>Region and tier availability varies; verify current zone-redundancy support before deployment</li>
           </ul>
         </div>
         <div class="diagram">
@@ -1451,17 +1451,17 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
       <div class="feature-showcase">
         <div class="feature-text">
           <h3>Automated Backups</h3>
-          <p>Backups are taken continuously and automatically. You can't turn them off, and you don't need to configure them. The service balances the backup schedule against your workload.</p>
+          <p>Backups are taken automatically and can't be disabled. The weekly full, differential, and log schedule below applies to non-Hyperscale databases; Hyperscale uses storage snapshots.</p>
           <div class="feature-metrics">
             <div class="metric-chip"><div class="m-label">Full</div><div class="m-value">Weekly</div></div>
             <div class="metric-chip"><div class="m-label">Differential</div><div class="m-value">12 / 24h</div></div>
             <div class="metric-chip"><div class="m-label">Log</div><div class="m-value">~10 min</div></div>
           </div>
           <ul class="feature-list">
-            <li>Geo-redundant storage (GRS) by default, replicated to a paired region</li>
+            <li>GRS is the default; the portal's development workload preset selects LRS unless overridden</li>
             <li>Options for LRS, ZRS, GRS, GZRS to match your compliance needs</li>
             <li>Business Critical tier: backups taken from a secondary replica</li>
-            <li>Hyperscale uses storage snapshots for near-instant backup regardless of size</li>
+            <li>Hyperscale uses storage snapshots for instant backups and fast restores regardless of size</li>
           </ul>
         </div>
         <div class="diagram">
@@ -1500,7 +1500,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
           <p>PITR creates a new database reflecting the state of your data at any chosen moment inside the retention window. LTR holds monthly/yearly full backups for compliance needs.</p>
           <div class="feature-metrics">
             <div class="metric-chip"><div class="m-label">PITR Default</div><div class="m-value">7 days</div></div>
-            <div class="metric-chip"><div class="m-label">PITR Max</div><div class="m-value">35 days</div></div>
+            <div class="metric-chip"><div class="m-label">PITR Max</div><div class="m-value">35d (Basic: 7d)</div></div>
             <div class="metric-chip"><div class="m-label">LTR Max</div><div class="m-value">10 years</div></div>
           </div>
           <ul class="feature-list">
@@ -1519,7 +1519,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
               <div style="position: absolute; top: 30px; right: 0; font-size: 10px; color: var(--muted); font-weight: 600;">now</div>
               <div style="position: absolute; top: 20px; left: 60%; width: 50px; height: 50px; background: var(--grad-1); border-radius: 50%; box-shadow: 0 8px 20px rgba(0, 120, 212, 0.4); display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; animation: bob 2s ease-in-out infinite;">⏱</div>
             </div>
-            <p style="text-align: center; font-size: 13px; color: var(--muted); margin-top: 30px;">Scrub to any point inside the retention window and restore instantly.</p>
+            <p style="text-align: center; font-size: 13px; color: var(--muted); margin-top: 30px;">Choose a point inside the retention window; Azure creates a new database and restore time varies.</p>
           </div>
           <style>@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }</style>
         </div>
@@ -1571,9 +1571,9 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
       <div class="feature-showcase">
         <div class="feature-text">
           <h3>Failover Groups</h3>
-          <p>A declarative layer built on top of Active Geo-Replication. It groups one or many databases on a server and manages them as a single failover unit, with stable listener endpoints that survive failover. Your application connection strings remain constant across failovers.</p>
+          <p>A declarative layer built on Active Geo-Replication. It groups some or all user databases on a logical server into a coordinated failover unit, with stable listener endpoints that survive failover. Your application connection strings remain constant across failovers.</p>
           <div class="feature-metrics">
-            <div class="metric-chip"><div class="m-label">RTO</div><div class="m-value">&lt; 60s</div></div>
+            <div class="metric-chip"><div class="m-label">Typical RTO</div><div class="m-value">&lt; 60s</div></div>
             <div class="metric-chip"><div class="m-label">Endpoints</div><div class="m-value">Stable</div></div>
             <div class="metric-chip"><div class="m-label">Databases</div><div class="m-value">Many</div></div>
           </div>
@@ -1622,7 +1622,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
             <li>Enabled by default when backups use GRS or GZRS storage</li>
             <li>No prior replication setup required. Restore on demand</li>
             <li>Creates a new database in the target region</li>
-            <li>Higher RPO/RTO than failover groups, so consider as a last resort</li>
+            <li>Typically higher RPO/RTO than a pre-provisioned replica; use as a recovery safety net</li>
             <li>Disabled if backup redundancy is LRS or ZRS</li>
           </ul>
         </div>
@@ -1653,7 +1653,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
     <div class="section-header reveal">
       <span class="section-eyebrow">Storage Redundancy</span>
       <h2 class="section-title">Where your backups actually live</h2>
-      <p class="section-desc">The storage redundancy you choose determines how many copies of your backups exist, and whether geo-restore is an option. Switching later takes up to 48 hours to apply.</p>
+      <p class="section-desc">The storage redundancy you choose determines how many copies of your backups exist, and whether geo-restore is an option. Changes can take up to 48 hours and affect future backups only; Hyperscale redundancy is set at creation.</p>
     </div>
 
     <div class="redundancy-grid reveal">
@@ -1736,7 +1736,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
       <div class="table-row">
         <div class="label">RTO (downtime)</div>
         <div><span class="pill pill-slow">Minutes to hours</span></div>
-        <div><span class="pill pill-fast">&lt; 60 seconds</span></div>
+        <div><span class="pill pill-fast">Typically &lt; 60 seconds</span></div>
       </div>
       <div class="table-row">
         <div class="label">RPO (data loss)</div>
@@ -1763,7 +1763,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
     <div class="section-header reveal">
       <span class="section-eyebrow">Stronger Together</span>
       <h2 class="section-title">Failover Groups: Active Geo-Replication, Amplified</h2>
-      <p class="section-desc">Active Geo-Replication handles the data. Failover Groups handle everything else: stable endpoints, multi-database orchestration, and policy-driven failover decisions. Same sub-60-second RTO, far less operational friction.</p>
+      <p class="section-desc">Active Geo-Replication handles the data. Failover Groups add stable endpoints, multi-database orchestration, and policy-driven failover decisions. Customer-managed failover typically targets an RTO under 60 seconds; it is not an SLA.</p>
     </div>
 
     <div class="enhance-grid reveal">
@@ -1775,7 +1775,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
       <div class="enhance-card">
         <div class="enhance-icon">📦</div>
         <h4>Your entire application, not just one table</h4>
-        <p>Geo-Replication is configured per database. Failover Groups let you fail over an entire server's worth of databases as a single coordinated unit, keeping your application from running against a split state mid-failover.</p>
+        <p>Geo-Replication is configured per database. Failover Groups let you coordinate failover for selected or all user databases on a logical server, helping keep an application from running against a split state mid-failover.</p>
       </div>
       <div class="enhance-card">
         <div class="enhance-icon">🧭</div>
@@ -1785,7 +1785,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
       <div class="enhance-card">
         <div class="enhance-icon">🎛️</div>
         <h4>You decide when to fail over</h4>
-        <p>Customer-managed failover policy (the recommended default) means a regional incident never triggers an automatic failover without your say. When you are ready, one command moves everything. Microsoft-managed policy is available for teams that want to delegate the decision.</p>
+        <p>Customer-managed failover policy is recommended because you control when to fail over. Microsoft-managed policy is intended for widespread regional outages, has a minimum one-hour grace period, and can take additional variable time to initiate.</p>
       </div>
       <div class="enhance-card">
         <div class="enhance-icon">📐</div>
@@ -1795,7 +1795,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
       <div class="enhance-card">
         <div class="enhance-icon">⚡</div>
         <h4>All the speed, none of the complexity</h4>
-        <p>Underneath, it is still Geo-Replication doing the heavy lifting. You get the same sub-60-second RTO with asynchronous replication, but with the app-facing stability and operational structure that a production DR plan actually demands.</p>
+        <p>Underneath, Geo-Replication still does the heavy lifting. Customer-managed failover has a typical RTO under 60 seconds, with asynchronous replication and the app-facing stability a production DR plan needs.</p>
       </div>
     </div>
   </div>
@@ -1900,11 +1900,11 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
   <h3>Keep going.</h3>
   <p>This page is a starting point. Microsoft Learn has the full technical reference, including checklists, configuration walkthroughs, and troubleshooting guides.</p>
   <div class="footer-links">
-    <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/business-continuity-high-availability-disaster-recover-hadr-overview" target="_blank">BCDR Overview</a>
-    <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/automated-backups-overview" target="_blank">Automated Backups</a>
-    <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/active-geo-replication-overview" target="_blank">Active Geo-Replication</a>
-    <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/failover-group-sql-db" target="_blank">Failover Groups</a>
-    <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/long-term-retention-overview" target="_blank">Long-Term Retention</a>
+    <a href="https://learn.microsoft.com/azure/azure-sql/database/business-continuity-high-availability-disaster-recover-hadr-overview" target="_blank">BCDR Overview</a>
+    <a href="https://learn.microsoft.com/azure/azure-sql/database/automated-backups-overview" target="_blank">Automated Backups</a>
+    <a href="https://learn.microsoft.com/azure/azure-sql/database/active-geo-replication-overview" target="_blank">Active Geo-Replication</a>
+    <a href="https://learn.microsoft.com/azure/azure-sql/database/failover-group-sql-db" target="_blank">Failover Groups</a>
+    <a href="https://learn.microsoft.com/azure/azure-sql/database/long-term-retention-overview" target="_blank">Long-Term Retention</a>
   </div>
   <div class="footer-copy">
     Content adapted from official Microsoft Learn documentation. Not an official Microsoft publication. For reference only.
