@@ -12,6 +12,7 @@ on:
       - "scripts/ensure-back-button.py"
       - "scripts/ensure-meta.py"
       - "scripts/ensure-favicon.py"
+      - "scripts/stamp-accuracy-date.py"
       - "scripts/generate-manifest.py"
       - "scripts/tag-submitter.py"
       - ".github/workflows/fix-site-chrome-pr.yml"
@@ -62,6 +63,13 @@ jobs:
         run: |
           xargs -r -a changed-html.txt python3 scripts/tag-submitter.py --submitter "$ORIGINAL_SUBMITTER"
 
+      - name: Stamp validation date on changed HTML pages
+        if: steps.changed.outputs.no_html != 'true'
+        run: xargs -r -a changed-html.txt python3 scripts/stamp-accuracy-date.py
+
+      - name: Ensure visible validation date on all HTML pages
+        run: python3 scripts/stamp-accuracy-date.py
+
       - name: Ensure tracking snippet in HTML pages
         run: python3 scripts/ensure-tracking.py
 
@@ -85,6 +93,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "Site chrome already up to date on this PR."
           else
-            git commit -m "chore: ensure site chrome (tracking, back button, manifest)"
+            git commit -m "chore: ensure site chrome and validation date"
             git push origin HEAD:${{ github.head_ref }}
           fi

@@ -11,7 +11,8 @@ A single destination for infographics that help visualize and understand our pre
 
 ## Automation
 
-Site chrome (analytics, back button, meta tags, favicon, manifest) is
+Site chrome (analytics, back button, visible validation date, meta tags,
+favicon, manifest) is
 applied automatically by GitHub Actions on every PR and post-merge.
 See [docs/automated-page-updates.md](docs/automated-page-updates.md)
 for the full automation design — audit scripts, link/terminology

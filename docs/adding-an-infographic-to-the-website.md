@@ -49,7 +49,7 @@ Now you'll send your changes back to the original repository:
 4. Add a title and any helpful details in the description
 5. Click **Create pull request**
 
-Once a maintainer reviews and merges your PR, the website will automatically update and your infographic will appear on the site.
+Once a maintainer reviews and merges your PR, the website will automatically update and your infographic will appear on the site. The automation also adds a subtle visible `Valid as of` date and refreshes it whenever the page changes.
 
 ## That's It!
 

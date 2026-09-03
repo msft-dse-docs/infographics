@@ -99,6 +99,7 @@ Findings from each phase are appended below as the spike progresses.
 | `scripts/ensure-back-button.py` (existing) | Inject floating back button | `data-smec-back-button="v2"` |
 | `scripts/ensure-meta.py` | Inject description / OG / Twitter tags | `<!-- smec-meta v1 -->` |
 | `scripts/ensure-favicon.py` | Inject favicon `<link>` pointing at `/favicon.svg` | `<!-- smec-favicon v1 -->` |
+| `scripts/stamp-accuracy-date.py` | Stamp changed pages and show a subtle `Valid as of YYYY-MM-DD` label | `data-smec-validation-date="v1"` |
 | `scripts/ensure-a11y.py` | Read-only a11y report → `reports/a11y.json` | n/a |
 | `scripts/generate-manifest.py` (existing) | Regenerate `manifest.json` | n/a |
 | `scripts/apply-template-change.py` | Idempotent bulk HTML edits from a JSON spec | `<!-- smec-tmpl:<id> -->` |
@@ -126,10 +127,13 @@ Findings from each phase are appended below as the spike progresses.
 
 ### Workflows
 
-- `ensure-site-chrome.yml` (post-merge, main) — now runs tracking,
-  back button, meta, favicon, and manifest in one sequential commit.
+- `ensure-site-chrome.yml` (post-merge, main) — stamps every changed HTML
+  page with the current UTC validation date, then runs tracking, the visible
+  date label, back button, meta, favicon, and manifest in one sequential
+  commit.
 - `fix-site-chrome-pr.yml` (PR auto-fix, same-repo PRs only) — same
-  sequence, commits into the PR branch.
+  sequence, commits into the PR branch. Fork PRs are stamped by the
+  post-merge safety net, so contributors do not need to run local tooling.
 - `audit-site.yml` (PR, warn-only) — runs the three checkers
   (`check-deprecated-terms`, `ensure-a11y`, `check-links`) with
   `continue-on-error: true` and uploads `reports/*.json` as an

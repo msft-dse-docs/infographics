@@ -14,6 +14,7 @@ on:
       - "scripts/ensure-back-button.py"
       - "scripts/ensure-meta.py"
       - "scripts/ensure-favicon.py"
+      - "scripts/stamp-accuracy-date.py"
       - "scripts/generate-manifest.py"
       - ".github/workflows/ensure-site-chrome.yml"
   workflow_dispatch:
@@ -31,11 +32,38 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
+
+      - name: Collect changed HTML files
+        id: changed
+        if: github.event_name == 'push'
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git diff --name-only --diff-filter=AM "$BEFORE" "$AFTER" \
+            | grep -E '\.html$' \
+            | sort -u \
+            > changed-html.txt || true
+          echo "Changed HTML files:"
+          cat changed-html.txt || true
+          if [ ! -s changed-html.txt ]; then
+            echo "no_html=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Stamp validation date on changed HTML pages
+        if: github.event_name == 'push' && steps.changed.outputs.no_html != 'true'
+        run: xargs -r -a changed-html.txt python3 scripts/stamp-accuracy-date.py
+
+      - name: Ensure visible validation date on all HTML pages
+        run: python3 scripts/stamp-accuracy-date.py
 
       - name: Ensure tracking snippet in HTML pages
         run: python3 scripts/ensure-tracking.py
@@ -60,6 +88,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "Site chrome already up to date."
           else
-            git commit -m "chore: ensure site chrome (tracking, back button, manifest) [skip ci]"
+            git commit -m "chore: ensure site chrome and validation date [skip ci]"
             git push
           fi

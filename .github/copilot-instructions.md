@@ -10,8 +10,8 @@ catalog it reads from.
 
 ## Architecture: site chrome is automated, not hand-edited
 
-Per-page chrome (analytics, floating back button, SEO/OG meta block, favicon,
-manifest entry) is **injected by Python scripts in `scripts/`**, not by the
+Per-page chrome (analytics, floating back button, visible validation date,
+SEO/OG meta block, favicon, manifest entry) is **injected by Python scripts in `scripts/`**, not by the
 contributor. Don't hand-edit these blocks in HTML files — re-run the relevant
 script instead.
 
@@ -87,7 +87,9 @@ step — opening any `.html` file in a browser is the local preview.
   will terminate at the first `-->`. Exempted matches are still recorded
   under the report's top-level `exempted` map.
 - **Page freshness** is tracked via a `smec:last-accuracy-check` meta tag
-  stamped by `scripts/stamp-accuracy-date.py`. The weekly accuracy-review
+  and a visible `Valid as of` label owned by
+  `scripts/stamp-accuracy-date.py`. Changed HTML pages are stamped with the
+  current UTC date by the site-chrome workflows. The weekly accuracy-review
   workflow flags pages older than 28 days.
 - **Redirect stubs** (pages whose entire job is `<meta http-equiv="refresh">`)
   are intentionally excluded from every chrome script — preserve that pattern
