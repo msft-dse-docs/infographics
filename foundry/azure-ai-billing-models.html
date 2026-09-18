@@ -1106,8 +1106,8 @@
       <div class="hidden-card h2 reveal">
         <div class="hidden-tag">Fine-Tuning</div>
         <h4>Fine-Tuned Model Hosting</h4>
-        <p>Training cost (per million tokens) + hosting cost per deployment-hour + inference usage. The hosting clock runs continuously once an endpoint is deployed, regardless of traffic.</p>
-        <span class="hidden-stat hs-warning">&#x26A0; Hosting billed 24/7; delete idle fine-tune endpoints</span>
+        <p>Fine-tuning charges depend on the model, training method, and deployment type. Standard and Global Standard deployments add continuous hourly hosting to inference charges. Developer Tier has token-only inference, no hourly hosting fee, a 24-hour lifetime, and no SLA. Provisioned deployments use PTU-hour billing.</p>
+        <span class="hidden-stat hs-warning">&#x26A0; Delete idle endpoints that incur hourly hosting</span>
       </div>
 
       <div class="hidden-card h3 reveal">
@@ -1167,14 +1167,14 @@
       <div class="hidden-card h2 reveal">
         <div class="hidden-tag">AI Gateway &middot; Limits</div>
         <h4>Token Limits at the Gateway (APIM)</h4>
-        <p>The <em>llm-token-limit</em> policy in Azure API Management enforces per-app, per-consumer token and TPM quotas across shared PTU and PAYG backends &mdash; so no single app or runaway loop can drain capacity or budget.</p>
-        <span class="hidden-stat hs-warning">&#x26A0; Hard cap on runaway consumption</span>
+        <p>The <em>llm-token-limit</em> policy applies token quotas and rate limits by a configured consumer key. Concurrent requests can overshoot limits; prompt estimation is configurable and streaming counts are estimated. Counters are independent per gateway, not a global spending cap. Use application-level run budgets for tighter control.</p>
+        <span class="hidden-stat hs-warning">&#x26A0; Token guardrail, not an absolute spending cap</span>
       </div>
 
       <div class="hidden-card h5 reveal">
         <div class="hidden-tag">AI Gateway &middot; Metrics</div>
         <h4>Token Metrics &amp; Load Balancing (APIM)</h4>
-        <p>The <em>emit-token-metric</em> policy produces per-consumer token metrics for chargeback and showback, while the gateway load-balances across multiple AI endpoints and applies circuit breakers for resilience.</p>
+        <p>The <em>llm-emit-token-metric</em> policy produces per-consumer token metrics for chargeback and showback, while the gateway load-balances across multiple AI endpoints and applies circuit breakers for resilience.</p>
         <span class="hidden-stat hs-info">&#x1F4CA; Per-app cost visibility &amp; routing</span>
       </div>
 
@@ -1246,7 +1246,7 @@
 
     <div class="formula-box reveal"><span class="fkey">Total AI bill  </span> = <span class="fval">model tokens (in + out)</span>
                    + <span class="fval">Azure AI Search (index + query + ranker)</span>
-                   + <span class="fval">fine-tune (training + hosting + inference)</span>
+                   + <span class="fval">fine-tune (training + deployment-specific hosting, inference or PTUs)</span>
                    + <span class="fval">agent runtime (compute + memory + tools)</span>
                    + <span class="fval">storage + monitoring + networking</span>
 

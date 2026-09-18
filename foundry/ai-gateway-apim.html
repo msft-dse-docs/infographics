@@ -1057,7 +1057,7 @@
           </div>
           <div>
             <h3>Why architectures are more robust</h3>
-            <p class="sub">No more noisy-neighbor outages.</p>
+            <p class="sub">Reduce noisy-neighbor risk.</p>
           </div>
         </div>
         <ul class="deep-list">
@@ -1075,7 +1075,7 @@
           </li>
           <li>
             <strong>Token-aware throttling</strong>
-            <code>llm-token-limit</code> pre-computes prompt tokens and blocks at the gateway when the limit is already exceeded — no wasted backend calls, no noisy-neighbor outages.
+            <code>llm-token-limit</code> applies token limits by a configured key. Prompt estimation is configurable; streaming counts are estimated. Concurrent requests can overshoot limits, and counters are independent per gateway. Add application-level run budgets where tighter control is required.
           </li>
           <li>
             <strong>Multi-region gateway deployment</strong>
@@ -1083,10 +1083,10 @@
           </li>
           <li>
             <strong>Deployment-level token limits</strong>
-            March 2026 release — caps applied per model deployment, not just per consumer. Prevents one rogue model deployment from taking down the bucket.
+            March 2026 release — limits can target a model deployment as well as a consumer. This helps manage shared capacity, but does not guarantee isolation or a global spending ceiling.
           </li>
         </ul>
-        <div class="deep-net">One app cannot starve another. One backend going slow does not melt the system. PTU spend stays inside the bucket you paid for.</div>
+        <div class="deep-net">Combine quotas, circuit breakers, and capacity planning to reduce contention. Gateway limits are not absolute spending caps; PAYGO overflow can add charges beyond reserved PTU capacity.</div>
       </div>
 
       <!-- OBSERVABLE -->

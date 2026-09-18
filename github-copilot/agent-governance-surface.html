@@ -242,7 +242,7 @@
         <div data-label="Copilot"><span class="loc loc-gh">GitHub</span><span class="cell-note">No repo API key needed for default use.</span></div>
         <div data-label="Desktop app"><span class="loc loc-mix">Mixed</span><span class="cell-note">A Copilot plan needs no repo API key; BYOK requires credentials for the selected model provider.</span></div>
         <div data-label="GitHub-hosted"><span class="loc loc-gh">GitHub</span><span class="cell-note">No repo workflow secret for the GitHub-hosted agent path.</span></div>
-        <div data-label="Standalone"><span class="loc loc-mix">Mixed</span><span class="cell-note">Claude Action uses GitHub secrets; standalone Codex uses ChatGPT/GitHub connection settings.</span></div>
+        <div data-label="Standalone"><span class="loc loc-mix">Mixed</span><span class="cell-note">Claude Action supports GitHub secrets or workload identity federation; standalone Codex uses ChatGPT/GitHub connection settings.</span></div>
         <div data-label="Cursor"><span class="loc loc-vendor">Vendor</span><span class="cell-note">Cursor holds credentials; repo R/W via OAuth.</span></div>
       </div>
 
@@ -298,8 +298,8 @@
           Where this story gets complicated
         </h3>
         <ul>
-          <li><strong>Validate content scope per surface.</strong> GitHub's current content-exclusion matrix explicitly covers web chat, code review, and supported IDE features; it does not list cloud agent or the Copilot app.</li>
-          <li><strong>Claude Code Action can be attractive for runner control.</strong> The tradeoff is workflow and secret management per repo.</li>
+          <li><strong>Validate content scope per surface.</strong> GitHub's content-exclusion matrix includes the Copilot app for Business and Enterprise, alongside web chat, code review, and supported IDE features. Do not infer equivalent support for cloud agent or IDE agent mode; check each surface's documented limitations.</li>
+          <li><strong>Claude Code Action can be attractive for runner control.</strong> Configure workflow permissions and secret-based or federated authentication for each participating repository; shared workflows and organization-level configuration can reduce duplication.</li>
           <li><strong>“Mixed” is not automatically bad.</strong> Vendor-side usage views may be valuable; they just add another evidence surface.</li>
           <li><strong>Agent governance changes quickly.</strong> Re-check this table before reusing it after major product updates.</li>
         </ul>

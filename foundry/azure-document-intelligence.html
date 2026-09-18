@@ -615,7 +615,7 @@
         <div class="layer-num">2</div>
         <div class="layer-tag">Findability &middot; Enrich the index</div>
         <h3>Search &amp; Enrich</h3>
-        <p>Index SharePoint content and metadata with incremental freshness. Enrich at indexing time using three GA skillsets: the <strong>Content Understanding Skill</strong> for semantic chunking and rich Markdown, the <strong>GenAI Prompt Skill</strong> for LLM-powered summarization and image verbalization, and the <strong>Document Layout Skill</strong> for structure-aware parsing. Build a metadata-rich, hybrid-search-capable index.</p>
+        <p>Index SharePoint content and metadata using the preview indexer. Enrich at indexing time using the <strong>Content Understanding Skill</strong> for GA extraction and fixed-size chunking (semantic chunking and image descriptions require a preview API), the <strong>GenAI Prompt Skill</strong> for LLM-powered summarization and image verbalization, and the <strong>Document Layout Skill</strong> for structure-aware parsing. Build a metadata-rich, hybrid-search-capable index.</p>
         <div class="layer-services">Azure AI Search &middot; Content Understanding Skill (GA) &middot; GenAI Prompt Skill (GA) &middot; Document Layout Skill (GA)</div>
       </div>
 
@@ -623,7 +623,7 @@
         <div class="layer-num">3</div>
         <div class="layer-tag">Intelligence &middot; Answer with citations</div>
         <h3>Retrieve &amp; Synthesize</h3>
-        <p>Ground LLM responses in enterprise documents using <strong>Knowledge Bases</strong> &mdash; Azure AI Search&rsquo;s GA agentic retrieval framework. Knowledge Bases use an LLM to plan and execute multi-source queries and return citation-backed grounding data. Classic RAG with hybrid search and semantic ranking remains the right starting point for simpler, GA-oriented pipelines.</p>
+        <p>Ground LLM responses in enterprise documents using <strong>Knowledge Bases</strong> &mdash; Azure AI Search&rsquo;s GA agentic retrieval foundation. Extractive retrieval and core knowledge-source capabilities are GA; LLM-assisted query planning, answer synthesis, and configurable reasoning require the preview API. Classic RAG with hybrid search and semantic ranking remains the right starting point for simpler, GA-oriented pipelines.</p>
         <div class="layer-services">Knowledge Bases (GA Apr 2026) &middot; Azure OpenAI &middot; Classic RAG &middot; Foundry IQ (preview)</div>
       </div>
 
@@ -674,14 +674,14 @@
         <div class="pillar-num">04</div>
         <div class="pillar-icon">&#x1F50D;</div>
         <h4>Azure AI Search</h4>
-        <p>Enterprise search with the SharePoint Online indexer, a GA suite of enrichment skillsets &mdash; <strong>Content Understanding Skill</strong>, <strong>GenAI Prompt Skill</strong>, and <strong>Document Layout Skill</strong> (all GA April 2026 or earlier) &mdash; hybrid keyword and vector search, semantic ranking, and document-level security trimming. <strong>Knowledge Bases</strong> (GA April 2026) provide the agentic retrieval framework with LLM-assisted multi-source query planning. SharePoint ACL support for document-level permissions is in preview.</p>
+        <p>Enterprise search with the SharePoint Online indexer, a GA suite of enrichment skillsets &mdash; <strong>Content Understanding Skill</strong>, <strong>GenAI Prompt Skill</strong>, and <strong>Document Layout Skill</strong> (all GA April 2026 or earlier) &mdash; hybrid keyword and vector search, semantic ranking, and document-level security trimming. <strong>Knowledge Bases</strong> (GA April 2026) provide the agentic retrieval foundation; LLM-assisted multi-source query planning and answer synthesis require the preview API. SharePoint ACL support for document-level permissions is in preview.</p>
       </div>
 
       <div class="pillar-card reveal">
         <div class="pillar-num">05</div>
         <div class="pillar-icon">&#x1F916;</div>
         <h4>Azure OpenAI + RAG</h4>
-        <p>Two retrieval approaches. <strong>Classic RAG</strong> with hybrid search and semantic ranking is the GA starting point for controlled pipelines. <strong>Knowledge Bases</strong> (GA April 2026) &mdash; Azure AI Search&rsquo;s agentic retrieval framework &mdash; use an LLM to plan multi-source queries and synthesize citation-backed answers from search index, blob, OneLake, and web sources. Connect Knowledge Bases to Azure AI Foundry agents via <strong>Foundry IQ</strong> (preview) for end-to-end agentic document workflows.</p>
+        <p>Two retrieval approaches. <strong>Classic RAG</strong> with hybrid search and semantic ranking is the GA starting point for controlled pipelines. <strong>Knowledge Bases</strong> (GA April 2026) &mdash; Azure AI Search&rsquo;s agentic retrieval foundation &mdash; support core extractive retrieval across supported knowledge sources. LLM-assisted query planning and citation-backed answer synthesis across search index, blob, OneLake, and web sources require the preview API. Connect Knowledge Bases to Azure AI Foundry agents via <strong>Foundry IQ</strong> (preview) for end-to-end agentic document workflows.</p>
       </div>
 
       <div class="pillar-card reveal">
@@ -733,7 +733,7 @@
         <div class="wheel-item w4">
           <div class="wheel-tag">Area 04 &middot; Search</div>
           <h4>Search &amp; Dynamic Indexing</h4>
-          <p><strong>Knowledge Bases</strong> reached GA in April 2026, providing the supported agentic retrieval framework. The <strong>Content Understanding Skill</strong>, <strong>GenAI Prompt Skill</strong>, and <strong>Document Layout Skill</strong> are all GA for enrichment pipelines. Azure AI Search indexes SharePoint content with hybrid search and semantic ranking. SharePoint ACL support for document-level permissions is in preview.</p>
+          <p><strong>Knowledge Bases</strong> reached GA in April 2026, providing the supported agentic retrieval foundation. Extractive retrieval is GA; LLM-assisted query planning and answer synthesis require the preview API. The <strong>Content Understanding Skill</strong>, <strong>GenAI Prompt Skill</strong>, and <strong>Document Layout Skill</strong> are GA for enrichment pipelines. Azure AI Search indexes SharePoint content with hybrid search and semantic ranking. SharePoint ACL support for document-level permissions is in preview.</p>
           <span class="badge-native badge-azure">&#x2699; Azure configurable</span>
           <p class="wheel-caveat">On-prem connectors, ACL normalization for complex permission models, chunking strategy, embedding model selection, and ranking tuning require architecture design.</p>
         </div>
@@ -792,7 +792,7 @@
             <h4>Intelligence Built</h4>
             <div class="matrix-services">Content Understanding (Foundry) &middot; Doc Intelligence &middot; M365 Processing &middot; Azure AI Search &middot; GA Skillsets</div>
             <ul>
-              <li>Content Understanding Skill (GA): semantic chunking, cross-page tables, image descriptions</li>
+              <li>Content Understanding Skill: GA extraction and fixed-size chunking; semantic chunking and image descriptions require a preview API</li>
               <li>GenAI Prompt Skill (GA): LLM-powered summarization and image verbalization at index time</li>
               <li>Document Layout Skill (GA): structure-aware parsing for headings, tables, sections</li>
               <li>Metadata enrichment: taxonomy, entities, embeddings, security tags</li>
@@ -807,7 +807,7 @@
             <h4>Answers Delivered</h4>
             <div class="matrix-services">Knowledge Bases (GA) &middot; Azure OpenAI &middot; Classic RAG &middot; Purview Labels &middot; DLP &middot; Audit</div>
             <ul>
-              <li>Knowledge Bases (GA): LLM-assisted multi-source query planning and answer synthesis</li>
+              <li>Knowledge Bases (GA): managed agentic retrieval foundation; LLM-assisted query planning and answer synthesis require the preview API</li>
               <li>Classic RAG: hybrid search + semantic ranking for simpler, controlled pipelines</li>
               <li>Permission-aware result trimming via document-level access control</li>
               <li>Purview sensitivity label metadata in retrieve responses (preview)</li>
@@ -859,7 +859,7 @@
         <div class="principle-num">4</div>
         <div>
           <h4>Know what is GA vs. what is still preview</h4>
-          <p>Several capabilities reached GA in 2025&ndash;2026: <strong>Knowledge Bases</strong> (April 2026), <strong>Content Understanding Skill</strong>, <strong>GenAI Prompt Skill</strong>, and <strong>Document Layout Skill</strong> in Azure AI Search (April 2026 or earlier). Still in preview: SharePoint ACL document-level permissions, Purview sensitivity label metadata in retrieve responses, and some SharePoint list and page indexing scenarios. Validate each against their production requirements before committing architecturally.</p>
+          <p>Several capabilities reached GA in 2025&ndash;2026: <strong>Knowledge Bases</strong> (April 2026), <strong>Content Understanding Skill</strong>, <strong>GenAI Prompt Skill</strong>, and <strong>Document Layout Skill</strong> in Azure AI Search (April 2026 or earlier). For Knowledge Bases, extractive retrieval and core knowledge-source capabilities are GA, while LLM-assisted query planning, answer synthesis, and configurable reasoning remain preview API features. Also still in preview: SharePoint ACL document-level permissions, Purview sensitivity label metadata in retrieve responses, and some SharePoint list and page indexing scenarios. Validate each against production requirements before committing architecturally.</p>
         </div>
       </div>
 
@@ -902,13 +902,13 @@
       <div class="qa-card reveal">
         <div class="qa-q">Can Azure AI Search index SharePoint and preserve permissions?</div>
         <div class="qa-a-label">A &mdash;</div>
-        <p>Yes. The SharePoint in Microsoft 365 indexer indexes files and metadata from document libraries, incrementally picks up changes, detects deletions, and supports document-level security trimming at query time. Some newer SharePoint list and page scenarios are documented as preview under the 2026-05-01-preview REST API.</p>
+        <p>Yes, with preview capabilities and explicit permission maintenance. The SharePoint in Microsoft 365 indexer indexes files and metadata, detects content changes and deletions, and supports preview ACL-based security trimming. Inherited parent-scope permission changes require an explicit permission resync or reset of affected documents; ordinary incremental indexing is not sufficient. Propagate ACL metadata into every indexed chunk and enforce it at query time. See <a href="https://learn.microsoft.com/azure/search/search-indexer-sharepoint-access-control-lists" target="_blank" rel="noopener">SharePoint ACL indexing requirements</a>.</p>
       </div>
 
       <div class="qa-card reveal">
         <div class="qa-q">Classic RAG or Knowledge Bases &mdash; which should we use?</div>
         <div class="qa-a-label">A &mdash;</div>
-        <p><strong>Classic RAG</strong> with hybrid search and semantic ranking is the recommended starting point: simple, GA, and easy to validate retrieval quality against your documents. <strong>Knowledge Bases</strong> &mdash; the agentic retrieval framework in Azure AI Search &mdash; reached GA in April 2026. They add LLM-assisted query planning, multi-source retrieval across search index, blob, OneLake, and web sources, and configurable reasoning effort. Start with classic RAG, then evaluate Knowledge Bases for scenarios requiring multi-source access or answer synthesis workflows.</p>
+        <p><strong>Classic RAG</strong> with hybrid search and semantic ranking is the recommended starting point: simple, GA, and easy to validate retrieval quality against your documents. <strong>Knowledge Bases</strong> &mdash; the agentic retrieval foundation in Azure AI Search &mdash; reached GA in April 2026. Core extractive retrieval and supported knowledge sources are GA; LLM-assisted query planning, answer synthesis, and configurable reasoning effort require the preview API. Start with classic RAG, then evaluate Knowledge Bases for scenarios requiring multi-source access or preview answer-synthesis workflows.</p>
       </div>
 
       <div class="qa-card reveal">

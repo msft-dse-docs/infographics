@@ -789,7 +789,7 @@
           <ul class="bullet-list warn" aria-label="APIM watch-outs">
             <li><strong>Premium v2 does not support multi-region deployment</strong> — only classic Premium does (12 units/region). Do not position v2 for geo-redundant gateway scenarios.</li>
             <li>No automated migration path from classic tiers to v2; must redeploy.</li>
-            <li>Basic v2 has no private endpoint support; Standard v2 is outbound VNet integration only (gateway public-facing). Full injection requires Premium v2.</li>
+            <li>Basic v2 has no private endpoint support; Standard v2 supports outbound VNet integration and inbound Private Endpoints. Disable public network access separately for a private-only gateway. VNet injection in v2 requires Premium v2.</li>
             <li><strong>Trusted service connectivity was retired March 15, 2026.</strong> Private Link or VNet line-of-sight is now required — audit any flows still relying on the old shortcut.</li>
           </ul>
 
@@ -951,7 +951,7 @@
         <div class="card-body">
           <div class="card-section-title">Strengths</div>
           <ul class="bullet-list" aria-label="Functions strengths">
-            <li>Full language support: C#, JavaScript, TypeScript, Python, Java, PowerShell, Go</li>
+            <li>Languages: C#, JavaScript, TypeScript, Python, Java, PowerShell; native Go support is preview and Linux-only. Custom handlers provide an alternative for other runtimes.</li>
             <li>Rich trigger &amp; binding ecosystem: HTTP, Timer, Blob, Queue, Event Hubs, Cosmos DB, and more</li>
             <li>Flex Consumption: VNet-integrated serverless at consumption pricing — per-function scaling</li>
             <li>Durable Functions: stateful orchestration, fan-out/fan-in, external events, long-running workflows</li>
@@ -1299,7 +1299,7 @@
       <div class="comp-grid">
         <div class="comp-item"><strong>Auth: APIM → Functions</strong>Managed identity preferred. Function keys acceptable for dev/test only. Entra ID (Easy Auth) for production MCP tool endpoints.</div>
         <div class="comp-item"><strong>Networking Tier Matching</strong>APIM Standard v2 (outbound VNet) + Functions Flex (VNet included) gives private connectivity at sub-Premium cost. No Premium plan required for most scenarios.</div>
-        <div class="comp-item"><strong>Cold Start Mitigation</strong>Flex Consumption Always Ready instances mitigate cold starts for critical paths. Use Premium plan only when sub-50ms p99 latency is required.</div>
+        <div class="comp-item"><strong>Cold Start Mitigation</strong>Flex Consumption Always Ready instances mitigate cold starts for critical paths. Premium offers always-ready and prewarmed instances; select a plan using measured workload latency, not a guaranteed cold-start threshold.</div>
         <div class="comp-item"><strong>Agent Loop Model Access</strong>Always route Logic Apps Agent Loop model calls through APIM AI Gateway — required for token governance, monitoring, model portability, and BYOM. Direct wiring to endpoints loses visibility.</div>
         <div class="comp-item"><strong>Managed Identity Throughout</strong>Every service-to-service hop in a composition should use managed identity. Keys and secrets in connection strings are an architecture review failure point.</div>
         <div class="comp-item"><strong>Trusted Service Connectivity Retired</strong>Since March 15, 2026, APIM instances must use Private Link or VNet line-of-sight to reach Storage, Key Vault, Service Bus, Event Hubs, and other affected services. Audit existing instances for retired trusted connectivity.</div>
@@ -1632,7 +1632,7 @@
           <tr>
             <td><span class="customer-says">"We need to run custom logic on events."</span></td>
             <td><span class="lead-with">Azure Functions</span></td>
-            <td><span class="sku-note-small">Default to Flex Consumption for new serverless builds. Premium only if sub-50ms p99 latency required or always-warm non-negotiable.</span></td>
+            <td><span class="sku-note-small">Default to Flex Consumption for new serverless builds. Evaluate Premium's always-ready and prewarmed capacity against workload measurements and plan requirements.</span></td>
           </tr>
           <tr>
             <td><span class="customer-says">"We're building AI agents."</span></td>
@@ -1735,7 +1735,7 @@
             <li><strong>Logic Apps multi-agent handoff (Standard):</strong> Preview. Watch for GA alongside broader Agent Loop feature graduation.</li>
             <li><strong>Durable Task for Microsoft Agent Framework:</strong> Preview. Multi-agent orchestration with OpenAI SDK. Watch for GA alongside Agent Framework GA.</li>
             <li><strong>Durable Task Scheduler — Consumption SKU:</strong> Preview. Dedicated SKU is GA. Consumption SKU follows.</li>
-            <li><strong>APIM v2 feature parity gaps:</strong> Multi-region, backup/restore, self-hosted gateway, and multiple custom domain names remain unavailable in v2 tiers. Monitor Azure updates for roadmap items.</li>
+            <li><strong>APIM v2 feature parity gaps:</strong> Multi-region, backup/restore, and self-hosted gateway remain unavailable in v2 tiers. Multiple custom gateway domain names are supported in Premium v2, but not Basic v2 or Standard v2. Check the current feature matrix before selecting a tier.</li>
           </ul>
         </div>
       </div>
@@ -1787,7 +1787,7 @@
     </div>
 
     <div class="summary-hero-note" role="note" aria-label="Key takeaway: the v2 SKU generation">
-      <strong>The v2 SKU generation changes the cost equation.</strong> APIM Standard v2 + Logic Apps Standard + Functions Flex Consumption delivers the composed architecture with full private networking at significantly lower cost and complexity than the classic Premium stack. For most new production designs, the v2/Flex generation is the right starting point — escalating to classic Premium or Functions Premium only when multi-region (APIM), full management plane isolation (classic Premium), or sub-50ms cold-start guarantees (Functions Premium) are genuine requirements.
+      <strong>The v2 SKU generation changes the cost equation.</strong> APIM Standard v2 + Logic Apps Standard + Functions Flex Consumption supports private application traffic without requiring the classic Premium stack. Evaluate the v2/Flex generation for new production designs, and compare classic Premium for APIM multi-region or broader network isolation requirements. For Functions Premium, assess always-ready and prewarmed capacity against measured workload latency; there is no universal sub-50ms cold-start guarantee.
     </div>
   </section>
 

@@ -635,23 +635,23 @@ section{padding:80px 20px}
       <div class="glossary-card reveal">
         <div class="glossary-icon">🌐</div>
         <h3>Public</h3>
-        <p>The APIM endpoint is internet-accessible. Even when APIM has VNet integration for outbound, the gateway and developer portal endpoints stay publicly reachable. You secure it using the APIM <code>ip-filter</code> policy.</p>
+        <p>Outbound VNet integration alone leaves the gateway and developer portal publicly reachable. The APIM <code>ip-filter</code> policy restricts gateway API requests, not developer-portal requests. Configure developer-portal access controls separately.</p>
       </div>
       <div class="glossary-card reveal">
         <div class="glossary-icon">🚪</div>
         <h3>Internal (Private)</h3>
-        <p>The APIM endpoint is closed to the public internet — only reachable through your private network. A Private Endpoint uses a VNet IP, traffic flows over Private Link on the Microsoft backbone, eliminating public exposure.</p>
+        <p>A Private Endpoint gives the gateway a VNet IP and a private path over Private Link. To make gateway access private-only, explicitly disable public network access afterward. Private Link does not cover the management or developer-portal endpoints.</p>
       </div>
       <div class="glossary-card reveal">
         <div class="glossary-icon">🔌</div>
         <h3>Integration</h3>
-        <p>VNet <strong>integration</strong> means APIM connects <strong>outbound</strong> to private backends through a VNet, but the gateway itself stays public (unless you add a Private Endpoint). Both Standard v2 and Premium v2 support this.</p>
+        <p>VNet <strong>integration</strong> connects APIM <strong>outbound</strong> to private backends. The gateway stays public unless you add a Private Endpoint and disable public network access. Both Standard v2 and Premium v2 support this.</p>
         <span class="pill">Outbound only</span>
       </div>
       <div class="glossary-card reveal">
         <div class="glossary-icon">🛡️</div>
         <h3>Injection</h3>
-        <p>Full VNet <strong>injection</strong> means APIM lives inside a VNet — the gateway is reachable at a <strong>private IP only</strong>. Best for full network isolation. Only Premium v2 supports injection. Standard v2 cannot be injected.</p>
+        <p>VNet <strong>injection</strong> isolates inbound and outbound <strong>gateway</strong> traffic in a VNet, with a private gateway IP. Management and developer-portal endpoints are not injected. Among v2 tiers, only Premium v2 supports injection.</p>
         <span class="pill">Premium v2 only</span>
       </div>
     </div>
@@ -663,7 +663,7 @@ section{padding:80px 20px}
   <div class="container">
     <div class="section-head reveal">
       <span class="eyebrow">Network Architecture Progression</span>
-      <h2>From fully public to fully private</h2>
+      <h2>From public to private gateway access</h2>
       <p>Think of these as four points on a spectrum. Each step adds isolation — and complexity.</p>
     </div>
     <div class="progression">
@@ -680,12 +680,12 @@ section{padding:80px 20px}
       <div class="stage reveal">
         <div class="stage-circle">3</div>
         <h4>Inbound Private Endpoint</h4>
-        <p>Gateway becomes reachable only from your private network.</p>
+        <p>Adds private gateway access; disable public network access separately for private-only access.</p>
       </div>
       <div class="stage reveal">
         <div class="stage-circle">4</div>
         <h4>Full VNet Injection</h4>
-        <p>APIM lives entirely inside the VNet with a private IP only.</p>
+        <p>The gateway uses a private IP inside the VNet; management and developer-portal endpoints are not injected.</p>
       </div>
     </div>
   </div>
@@ -814,7 +814,7 @@ section{padding:80px 20px}
           <div class="scenario-block pros">
             <h4>✓ Pros</h4>
             <ul>
-              <li>No public inbound surface once Private Endpoint is wired up</li>
+              <li>Private-only gateway access after configuring Private Endpoint and disabling public network access</li>
               <li>Reach private backends through outbound VNet integration</li>
               <li>Cheaper than Premium v2 isolation options</li>
               <li>Public access can be disabled after Private Endpoint is created</li>
@@ -910,7 +910,7 @@ section{padding:80px 20px}
             <ul>
               <li>Higher cost than Standard v2</li>
               <li>VNet injection cannot be turned on later — only at creation (see Scenario 4)</li>
-              <li>Still public-facing unless you actively add Private Endpoint</li>
+              <li>Gateway stays public unless you add Private Endpoint and disable public network access</li>
               <li>You can't switch between injection and integration once chosen</li>
             </ul>
           </div>
@@ -960,7 +960,7 @@ section{padding:80px 20px}
           <div class="scenario-block when">
             <h4>★ When to use</h4>
             <ul>
-              <li>Compliance, regulatory, or security policy mandates no public IP at all</li>
+              <li>Security policy requires private-only gateway traffic; assess management and developer-portal access separately</li>
               <li>You need NSG enforcement on inbound traffic, not just <code>ip-filter</code></li>
               <li>APIM and backends must both stay inside the corporate network boundary</li>
               <li>You can lock the deployment model in at creation time (it's irreversible)</li>
@@ -969,7 +969,7 @@ section{padding:80px 20px}
           <div class="scenario-block pros">
             <h4>✓ Pros</h4>
             <ul>
-              <li>Fully private — no public IP exposure</li>
+              <li>Private gateway IP; management and developer-portal endpoints remain outside the injected VNet</li>
               <li>NSG rules apply for full network-level inbound control</li>
               <li>Highest level of isolation v2 offers</li>
               <li>Premium scale (up to <strong>30 units</strong>) and feature set</li>
@@ -1022,11 +1022,11 @@ section{padding:80px 20px}
               <p>From a VM inside <code>demo-vnet2</code>:</p>
               <pre>nslookup demo-apim-injected.azure-api.net
 curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
-              <p><code>nslookup</code> should return the private IP. <code>curl</code> should succeed. From outside the VNet, DNS won't resolve and the call should time out — proving full isolation.</p>
+              <p>From a connected client, <code>nslookup</code> should return the private gateway IP and <code>curl</code> should succeed. From an unconnected external client, verify that gateway requests fail; DNS behavior depends on your configuration. Test management and developer-portal access separately.</p>
             </div>
           </div>
           <div class="summary-box">
-            <strong>In one line:</strong> Maximum isolation. Full VNet injection is a one-time, irreversible decision — make it deliberately when full network isolation is mandatory.
+            <strong>In one line:</strong> Maximum gateway isolation in v2. VNet injection is a one-time, irreversible decision; management and developer-portal access still need separate controls.
           </div>
         </div>
       </div>
@@ -1050,7 +1050,7 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
         </thead>
         <tbody>
           <tr><td>Public endpoint by default</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
-          <tr><td>Internal-only mode (no public)</td><td>Workaround: Private Endpoint + disable public access</td><td>Built-in via full VNet injection</td></tr>
+          <tr><td>Private-only gateway access</td><td>Private Endpoint + disable public network access</td><td>Built-in via gateway VNet injection</td></tr>
           <tr><td>Outbound VNet integration</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
           <tr><td>Inbound Private Endpoint</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
           <tr><td>Full VNet injection</td><td><span class="cross">✕</span></td><td><span class="check">✓</span> <span class="partial">(creation time only)</span></td></tr>
@@ -1062,7 +1062,7 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
           <tr><td>Min subnet / recommended</td><td>/27 min · /24 recommended</td><td>/27 min · /24 recommended</td></tr>
           <tr><td>Max scale-out units</td><td><strong>10</strong></td><td><strong>30</strong> <span class="partial">(injection also depends on subnet size)</span></td></tr>
           <tr><td>Dedicated subnet required</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
-          <tr><td>Best for</td><td>Cost-efficient public or semi-private APIs</td><td>Full isolation, high scale, premium features</td></tr>
+          <tr><td>Best for</td><td>Cost-efficient public or private gateway APIs</td><td>Gateway isolation, high scale, premium features</td></tr>
         </tbody>
       </table>
     </div>
@@ -1113,7 +1113,7 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
       </div>
       <div class="security-item reveal">
         <h4>🚪 Private Endpoint</h4>
-        <p>Removes inbound internet exposure entirely. Available on both Standard v2 and Premium v2. Only the <strong>Gateway</strong> sub-resource is supported.</p>
+        <p>Adds private inbound gateway access on Standard v2 and Premium v2. Disable public network access separately for private-only access. Only the <strong>Gateway</strong> sub-resource is supported.</p>
       </div>
       <div class="security-item warn reveal">
         <h4>🛡️ Inbound NSG Rules</h4>
@@ -1137,7 +1137,7 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
     </div>
 
     <div class="tree reveal">
-      <div class="tree-node question">Is full network isolation mandatory?</div>
+      <div class="tree-node question">Is private gateway access mandatory?</div>
       <div class="tree-branches">
         <div class="tree-branch">
           <span class="branch-label">YES</span>
