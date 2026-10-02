@@ -12,6 +12,7 @@ on:
       - "**/*.html"
       - "scripts/ensure-tracking.py"
       - "scripts/ensure-back-button.py"
+      - "scripts/ensure-disclaimer.py"
       - "scripts/ensure-meta.py"
       - "scripts/ensure-favicon.py"
       - "scripts/stamp-accuracy-date.py"
@@ -70,6 +71,9 @@ jobs:
 
       - name: Ensure back button on HTML pages
         run: python3 scripts/ensure-back-button.py
+
+      - name: Ensure standard disclaimer on HTML pages
+        run: python3 scripts/ensure-disclaimer.py
 
       - name: Ensure SEO / social meta block on HTML pages
         run: python3 scripts/ensure-meta.py

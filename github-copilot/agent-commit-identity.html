@@ -191,6 +191,44 @@
   .smec-validation-date { right: 12px; bottom: 12px; }
 }
 </style>
+<style>/* smec-disclaimer v1 */
+.smec-disclaimer {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 18px 72px 72px !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
+  background: #0b1f33 !important;
+  color: #dbe7f3 !important;
+  text-align: center !important;
+  font: 400 13px/1.55 'Segoe UI', -apple-system, BlinkMacSystemFont,
+    sans-serif !important;
+}
+.smec-disclaimer p {
+  max-width: 1100px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  color: inherit !important;
+  font: inherit !important;
+}
+.smec-disclaimer a {
+  color: #78c7ff !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
+}
+.smec-disclaimer a:hover,
+.smec-disclaimer a:focus-visible {
+  color: #b9e3ff !important;
+}
+.smec-disclaimer a:focus-visible {
+  outline: 2px solid #fff !important;
+  outline-offset: 2px !important;
+}
+@media (max-width: 600px) {
+  .smec-disclaimer { padding: 16px 16px 68px !important; }
+}
+</style>
 </head>
 <body>
 <time class="smec-validation-date" datetime="2026-09-04" data-smec-validation-date="v1">Valid as of 2026-09-04</time>
@@ -264,7 +302,7 @@
       </div>
 
       <div class="id-card">
-        <span class="tag tag-first">GitHub app · Technical preview</span>
+        <span class="tag tag-first">GitHub app · Generally available</span>
         <h3>GitHub Copilot desktop app</h3>
         <div class="handle"><span class="dot"></span>session-dependent identity</div>
         <dl>
@@ -330,7 +368,7 @@
       </h3>
       <ul>
         <li><strong>Third-party doesn’t mean worse.</strong> GitHub-hosted Claude/Codex can keep review workflows in GitHub, and custom Apps can give teams more control.</li>
-        <li><strong>Copilot has its own constraints.</strong> A cloud-agent session works in one repository and one branch, opens at most one pull request, and has a 59-minute maximum execution time.</li>
+        <li><strong>Copilot has its own constraints.</strong> A cloud-agent session works in one repository and one branch and can open a pull request when ready. The <code>copilot-setup-steps</code> job accepts at most 59 for <code>timeout-minutes</code>; that is a setup-job limit, not a cloud-agent session limit.</li>
         <li><strong>Identity is an audit question.</strong> Before rollout, confirm the actual bot/App actor in your organization and test it against branch rules.</li>
         <li><strong>Model choice can change independently of identity.</strong> Consult GitHub's current model documentation instead of inferring commit identity from the selected model.</li>
       </ul>
@@ -360,5 +398,14 @@
   </div>
 </footer>
 
+<!-- smec-disclaimer v1 -->
+<aside class="smec-disclaimer" data-smec-disclaimer="v1" role="note"
+  aria-label="Infographic disclaimer">
+  <p>This infographic is an educational summary and is not official product
+  documentation. For current features, availability, limits, and guidance,
+  refer to <a href="https://learn.microsoft.com/" target="_blank"
+  rel="noopener">Microsoft Learn</a> and the official sources linked on this
+  page.</p>
+</aside>
 </body>
 </html>

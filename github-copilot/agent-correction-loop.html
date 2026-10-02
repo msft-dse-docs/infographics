@@ -205,6 +205,44 @@
   .smec-validation-date { right: 12px; bottom: 12px; }
 }
 </style>
+<style>/* smec-disclaimer v1 */
+.smec-disclaimer {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 18px 72px 72px !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
+  background: #0b1f33 !important;
+  color: #dbe7f3 !important;
+  text-align: center !important;
+  font: 400 13px/1.55 'Segoe UI', -apple-system, BlinkMacSystemFont,
+    sans-serif !important;
+}
+.smec-disclaimer p {
+  max-width: 1100px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  color: inherit !important;
+  font: inherit !important;
+}
+.smec-disclaimer a {
+  color: #78c7ff !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
+}
+.smec-disclaimer a:hover,
+.smec-disclaimer a:focus-visible {
+  color: #b9e3ff !important;
+}
+.smec-disclaimer a:focus-visible {
+  outline: 2px solid #fff !important;
+  outline-offset: 2px !important;
+}
+@media (max-width: 600px) {
+  .smec-disclaimer { padding: 16px 16px 68px !important; }
+}
+</style>
 </head>
 <body>
 <time class="smec-validation-date" datetime="2026-09-04" data-smec-validation-date="v1">Valid as of 2026-09-04</time>
@@ -320,7 +358,7 @@
           <div class="loop-step"><div class="n">1</div><div class="t"><strong>Comment in the PR.</strong> <code>@copilot address the null-check on line 42</code>.</div></div>
           <div class="loop-step"><div class="n">2</div><div class="t"><strong>Agent wakes on the same branch.</strong> New commit pushed, same PR.</div></div>
           <div class="loop-step"><div class="n">3</div><div class="t"><strong>Review comments resolve inline.</strong> Standard GitHub review UI.</div></div>
-          <div class="loop-step pain"><div class="n">!</div><div class="t"><strong>Watch the limits.</strong> Runs can consume Actions minutes and AI credits, and a cloud-agent session can run for at most 59 minutes.</div></div>
+          <div class="loop-step pain"><div class="n">!</div><div class="t"><strong>Watch the limits.</strong> Runs can consume Actions minutes and AI credits. The 59-minute maximum applies to the <code>copilot-setup-steps</code> job's <code>timeout-minutes</code>, not the cloud-agent session.</div></div>
         </div>
       </div>
 
@@ -355,7 +393,7 @@
       </div>
 
       <div class="loop-card">
-        <header><h3>GitHub Copilot desktop app</h3><div class="sub">Agent-native desktop surface · Technical preview</div></header>
+        <header><h3>GitHub Copilot desktop app</h3><div class="sub">Agent-native desktop surface · Generally available</div></header>
         <div class="loop-steps">
           <div class="loop-step"><div class="n">1</div><div class="t"><strong>Start from the PR in My work.</strong> Open a session to leave review comments or ask the agent to make changes.</div></div>
           <div class="loop-step"><div class="n">2</div><div class="t"><strong>Agent merge handles blockers you authorize.</strong> It can ask the workspace session to address failing checks and merge when GitHub allows.</div></div>
@@ -444,5 +482,14 @@ as the fallback and add a test for the anonymous case.
   </div>
 </footer>
 
+<!-- smec-disclaimer v1 -->
+<aside class="smec-disclaimer" data-smec-disclaimer="v1" role="note"
+  aria-label="Infographic disclaimer">
+  <p>This infographic is an educational summary and is not official product
+  documentation. For current features, availability, limits, and guidance,
+  refer to <a href="https://learn.microsoft.com/" target="_blank"
+  rel="noopener">Microsoft Learn</a> and the official sources linked on this
+  page.</p>
+</aside>
 </body>
 </html>

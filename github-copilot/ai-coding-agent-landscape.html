@@ -175,6 +175,44 @@
   .smec-validation-date { right: 12px; bottom: 12px; }
 }
 </style>
+<style>/* smec-disclaimer v1 */
+.smec-disclaimer {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 18px 72px 72px !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
+  background: #0b1f33 !important;
+  color: #dbe7f3 !important;
+  text-align: center !important;
+  font: 400 13px/1.55 'Segoe UI', -apple-system, BlinkMacSystemFont,
+    sans-serif !important;
+}
+.smec-disclaimer p {
+  max-width: 1100px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  color: inherit !important;
+  font: inherit !important;
+}
+.smec-disclaimer a {
+  color: #78c7ff !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
+}
+.smec-disclaimer a:hover,
+.smec-disclaimer a:focus-visible {
+  color: #b9e3ff !important;
+}
+.smec-disclaimer a:focus-visible {
+  outline: 2px solid #fff !important;
+  outline-offset: 2px !important;
+}
+@media (max-width: 600px) {
+  .smec-disclaimer { padding: 16px 16px 68px !important; }
+}
+</style>
 </head>
 <body>
 <time class="smec-validation-date" datetime="2026-09-04" data-smec-validation-date="v1">Valid as of 2026-09-04</time>
@@ -231,7 +269,7 @@
         <header><h3>GitHub Copilot cloud agent</h3><div class="sub">GitHub-native · Pro, Pro+, Max, Business, Enterprise</div></header>
         <div class="body">
           <div class="fit"><strong>Best fit:</strong> GitHub is the control plane, Copilot is already approved, and platform wants low-friction issue-to-PR adoption across many repos.</div>
-          <div class="not-fit"><strong>Watch-outs:</strong> Copilot cloud agent uses Actions minutes and AI credits; each session is limited to one repository, one branch, one pull request, and 59 minutes.</div>
+          <div class="not-fit"><strong>Watch-outs:</strong> Copilot cloud agent uses Actions minutes and AI credits; each session is scoped to one repository and branch, and pull request creation is optional. The 59-minute maximum applies to the setup job, not the cloud-agent session.</div>
           <ul>
             <li>Zero per-repo files required</li>
             <li>First-party GitHub agent identity</li>
@@ -284,10 +322,10 @@
       </div>
 
       <div class="tool-card">
-        <header><h3>GitHub Copilot desktop app <span style="display:inline-block;background:#dafbe1;color:#0a3622;border:1px solid #6fdd8b;padding:.05rem .4rem;border-radius:6px;font-size:.62rem;font-weight:800;letter-spacing:.06em;margin-left:.4rem;vertical-align:middle;">NEW</span></h3><div class="sub">GitHub-native · macOS/Linux/Windows · Technical preview</div></header>
+        <header><h3>GitHub Copilot desktop app <span style="display:inline-block;background:#dafbe1;color:#0a3622;border:1px solid #6fdd8b;padding:.05rem .4rem;border-radius:6px;font-size:.62rem;font-weight:800;letter-spacing:.06em;margin-left:.4rem;vertical-align:middle;">NEW</span></h3><div class="sub">GitHub-native · macOS/Linux/Windows · Generally available</div></header>
         <div class="body">
           <div class="fit"><strong>Best fit:</strong> developers who want an agent-native desktop surface for parallel sessions, isolated worktrees, pull request lifecycle management, rubber duck critique, Canvases, and multi-model choice including BYOK providers.</div>
-          <div class="not-fit"><strong>Watch-outs:</strong> technical preview; review generated changes and CI results before enabling agent merge or merging. Business/Enterprise app access has its own policy.</div>
+          <div class="not-fit"><strong>Watch-outs:</strong> review generated changes and CI results before enabling agent merge or merging. Business/Enterprise app access has its own policy.</div>
           <ul>
             <li>Agent merge, worktrees, rubber duck agent, Canvases</li>
             <li>Model selection plus bring your own provider</li>
@@ -337,5 +375,14 @@
   </div>
 </footer>
 
+<!-- smec-disclaimer v1 -->
+<aside class="smec-disclaimer" data-smec-disclaimer="v1" role="note"
+  aria-label="Infographic disclaimer">
+  <p>This infographic is an educational summary and is not official product
+  documentation. For current features, availability, limits, and guidance,
+  refer to <a href="https://learn.microsoft.com/" target="_blank"
+  rel="noopener">Microsoft Learn</a> and the official sources linked on this
+  page.</p>
+</aside>
 </body>
 </html>

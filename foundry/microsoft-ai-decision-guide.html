@@ -556,6 +556,44 @@
   .smec-validation-date { right: 12px; bottom: 12px; }
 }
 </style>
+<style>/* smec-disclaimer v1 */
+.smec-disclaimer {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 18px 72px 72px !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
+  background: #0b1f33 !important;
+  color: #dbe7f3 !important;
+  text-align: center !important;
+  font: 400 13px/1.55 'Segoe UI', -apple-system, BlinkMacSystemFont,
+    sans-serif !important;
+}
+.smec-disclaimer p {
+  max-width: 1100px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  color: inherit !important;
+  font: inherit !important;
+}
+.smec-disclaimer a {
+  color: #78c7ff !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
+}
+.smec-disclaimer a:hover,
+.smec-disclaimer a:focus-visible {
+  color: #b9e3ff !important;
+}
+.smec-disclaimer a:focus-visible {
+  outline: 2px solid #fff !important;
+  outline-offset: 2px !important;
+}
+@media (max-width: 600px) {
+  .smec-disclaimer { padding: 16px 16px 68px !important; }
+}
+</style>
 </head>
 <body>
 <time class="smec-validation-date" datetime="2026-09-04" data-smec-validation-date="v1">Valid as of 2026-09-04</time>
@@ -1392,5 +1430,14 @@ function dtReset() {
 }
 </script>
 
+<!-- smec-disclaimer v1 -->
+<aside class="smec-disclaimer" data-smec-disclaimer="v1" role="note"
+  aria-label="Infographic disclaimer">
+  <p>This infographic is an educational summary and is not official product
+  documentation. For current features, availability, limits, and guidance,
+  refer to <a href="https://learn.microsoft.com/" target="_blank"
+  rel="noopener">Microsoft Learn</a> and the official sources linked on this
+  page.</p>
+</aside>
 </body>
 </html>

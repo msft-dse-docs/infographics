@@ -610,6 +610,44 @@
   .smec-validation-date { right: 12px; bottom: 12px; }
 }
 </style>
+<style>/* smec-disclaimer v1 */
+.smec-disclaimer {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 18px 72px 72px !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
+  background: #0b1f33 !important;
+  color: #dbe7f3 !important;
+  text-align: center !important;
+  font: 400 13px/1.55 'Segoe UI', -apple-system, BlinkMacSystemFont,
+    sans-serif !important;
+}
+.smec-disclaimer p {
+  max-width: 1100px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  color: inherit !important;
+  font: inherit !important;
+}
+.smec-disclaimer a {
+  color: #78c7ff !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
+}
+.smec-disclaimer a:hover,
+.smec-disclaimer a:focus-visible {
+  color: #b9e3ff !important;
+}
+.smec-disclaimer a:focus-visible {
+  outline: 2px solid #fff !important;
+  outline-offset: 2px !important;
+}
+@media (max-width: 600px) {
+  .smec-disclaimer { padding: 16px 16px 68px !important; }
+}
+</style>
 </head>
 <body>
 <time class="smec-validation-date" datetime="2026-09-04" data-smec-validation-date="v1">Valid as of 2026-09-04</time>
@@ -805,7 +843,7 @@
       </div>
       <div class="tk-card reveal">
         <h4>A managed place to run</h4>
-        <p>Windows 365 for Agents (public preview, US only) provides Cloud PCs purpose-built for agentic workloads, managed in Intune with the same identity and security controls used for employees.</p>
+        <p>Windows 365 for Agents (generally available) provides Cloud PCs purpose-built for agentic workloads, managed in Intune with the same identity and security controls used for employees.</p>
       </div>
       <div class="tk-card reveal">
         <h4>Blast-radius context</h4>
@@ -813,7 +851,7 @@
       </div>
     </div>
     <div class="reveal" style="margin-top:1.75rem;padding:1.1rem 1.5rem;background:rgba(216,59,1,.12);border:1px solid rgba(255,139,94,.3);border-radius:14px;font-size:.9rem;color:rgba(255,255,255,.85);line-height:1.6;">
-      <strong style="color:#ff8b5e;">Read the GA line carefully.</strong> Core observability, governance, and network controls are GA. Shadow-AI control, multicloud registry sync, Windows 365 for Agents, and Defender context mapping are preview. Scope pilots to GA capability and treat preview features as roadmap, not commitments.
+      <strong style="color:#ff8b5e;">Read the GA line carefully.</strong> Core observability, governance, network controls, and Windows 365 for Agents are GA. Shadow-AI control, multicloud registry sync, and Defender context mapping are preview. Scope pilots to GA capability and treat preview features as roadmap, not commitments.
     </div>
   </div>
 </section>
@@ -1359,5 +1397,14 @@
 })();
 </script>
 
+<!-- smec-disclaimer v1 -->
+<aside class="smec-disclaimer" data-smec-disclaimer="v1" role="note"
+  aria-label="Infographic disclaimer">
+  <p>This infographic is an educational summary and is not official product
+  documentation. For current features, availability, limits, and guidance,
+  refer to <a href="https://learn.microsoft.com/" target="_blank"
+  rel="noopener">Microsoft Learn</a> and the official sources linked on this
+  page.</p>
+</aside>
 </body>
 </html>

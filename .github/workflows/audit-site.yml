@@ -12,6 +12,7 @@ on:
       - "scripts/audit-pages.py"
       - "scripts/check-links.py"
       - "scripts/check-deprecated-terms.py"
+      - "scripts/ensure-disclaimer.py"
       - "scripts/ensure-a11y.py"
       - "scripts/terminology.json"
       - ".github/workflows/audit-site.yml"
@@ -47,6 +48,10 @@ jobs:
       - name: Accessibility check
         continue-on-error: true
         run: python3 scripts/ensure-a11y.py --check
+
+      - name: Standard-disclaimer check
+        continue-on-error: true
+        run: python3 scripts/ensure-disclaimer.py --check
 
       - name: External link check
         continue-on-error: true

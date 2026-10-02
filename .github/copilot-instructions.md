@@ -10,10 +10,10 @@ catalog it reads from.
 
 ## Architecture: site chrome is automated, not hand-edited
 
-Per-page chrome (analytics, floating back button, visible validation date,
-SEO/OG meta block, favicon, manifest entry) is **injected by Python scripts in `scripts/`**, not by the
-contributor. Don't hand-edit these blocks in HTML files — re-run the relevant
-script instead.
+Per-page chrome (analytics, floating back button, standard disclaimer, visible
+validation date, SEO/OG meta block, favicon, manifest entry) is **injected by
+Python scripts in `scripts/`**, not by the contributor. Don't hand-edit these
+blocks in HTML files — re-run the relevant script instead.
 
 Every chrome script follows the same contract (see
 `docs/automated-page-updates.md`):
@@ -21,7 +21,8 @@ Every chrome script follows the same contract (see
 1. **Idempotent** — running twice is a no-op the second time.
 2. Carries a **version marker** the script greps for to detect prior injections,
    e.g. `<!-- smec-meta v1 -->`, `<!-- smec-favicon v1 -->`,
-   `data-smec-back-button="v2"`, `data-website-id=<umami-id>`,
+   `data-smec-back-button="v3"`, `data-smec-disclaimer="v1"`,
+   `data-website-id=<umami-id>`,
    `<!-- smec-tmpl:<id> -->` for bulk templating.
 3. Supports `--check` (exits non-zero if any file is missing the expected
    state, modifies nothing) — this is what CI calls.
@@ -43,6 +44,7 @@ CI artifacts.
 # Apply all site chrome locally (what post-merge CI runs)
 python3 scripts/ensure-tracking.py
 python3 scripts/ensure-back-button.py
+python3 scripts/ensure-disclaimer.py
 python3 scripts/ensure-meta.py
 python3 scripts/ensure-favicon.py
 python3 scripts/generate-manifest.py
@@ -70,8 +72,8 @@ step — opening any `.html` file in a browser is the local preview.
 - **New infographic = new HTML file** in the matching category folder, kebab-
   case filename (e.g. `sql-migration-guide.html`), fully self-contained (no
   external CSS / JS / image refs). The manifest, meta, favicon, tracking, and
-  back button are all added automatically post-merge — do not pre-populate them
-  in the PR.
+  back button, and standard disclaimer are all added automatically post-merge
+  — do not pre-populate them in the PR.
 - **Don't add `<meta name="description">`, OG tags, favicon `<link>`, the Umami
   script, or the floating back button manually.** The `ensure-*` scripts own
   those regions and will refuse to touch already-marked blocks. Hand-written

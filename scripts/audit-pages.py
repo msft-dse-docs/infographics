@@ -89,6 +89,7 @@ EOL_RE = re.compile(
 # Markers from existing chrome scripts.
 TRACKING_MARKER = 'data-website-id="9478c1a0-93c6-4c21-855a-69e50e15cbc4"'
 BACK_BUTTON_MARKER = 'data-smec-back-button="v3"'
+DISCLAIMER_MARKER = 'data-smec-disclaimer="v1"'
 
 
 def _read(path: str) -> str:
@@ -154,6 +155,7 @@ def audit_page(path: str, rel_path: str) -> dict[str, Any]:
         "chrome": {
             "has_tracking": TRACKING_MARKER in content,
             "has_back_button": BACK_BUTTON_MARKER in content,
+            "has_disclaimer": DISCLAIMER_MARKER in content,
             "has_meta_description": bool(META_DESC_RE.search(content)),
             "has_meta_charset": bool(META_CHARSET_RE.search(content)),
             "has_meta_viewport": bool(META_VIEWPORT_RE.search(content)),
@@ -210,6 +212,9 @@ def build_report() -> dict[str, Any]:
         ),
         "pages_missing_back_button": sum(
             1 for e in entries if not e["chrome"]["has_back_button"]
+        ),
+        "pages_missing_disclaimer": sum(
+            1 for e in entries if not e["chrome"]["has_disclaimer"]
         ),
         "pages_missing_meta_description": sum(
             1 for e in entries if not e["chrome"]["has_meta_description"]
@@ -269,6 +274,7 @@ def main() -> int:
     for key in (
         "pages_missing_tracking",
         "pages_missing_back_button",
+        "pages_missing_disclaimer",
         "pages_missing_meta_description",
         "pages_missing_og_tags",
         "pages_missing_favicon",

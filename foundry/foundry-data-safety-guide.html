@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Where Does My Prompt Go? — Your Guide to Data Safety in Microsoft Foundry</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--navy:#061526;--ink:#111827;--body:#374151;--muted:#4b5563;--paper:#f6f8fb;--azure:#0078d4;--azure-dk:#005A9E;--cyan:#50e6ff;--green:#107c10;--teal:#008575;--purple:#5c2d91;--gold:#7a5a00;--orange:#b73500;--red:#a40b18;--line:#dbe4ef;--shadow:0 18px 45px rgba(6,21,38,.13)}
+  html{scroll-behavior:smooth;color-scheme:light}
+  body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--paper)!important;color:var(--ink)!important;line-height:1.6;overflow-x:hidden}
+  a{color:var(--azure-dk);text-decoration:none}a:hover{text-decoration:underline}
+  .nav{position:fixed;inset:0 0 auto 0;height:58px;background:rgba(6,21,38,.94);backdrop-filter:blur(14px);z-index:20;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:1rem;padding:0 clamp(1rem,4vw,2.5rem)}
+  .brand{color:#fff;font-weight:800;font-size:.92rem;white-space:nowrap;display:flex;align-items:center;gap:.6rem}.brand-dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--azure),var(--cyan));box-shadow:0 0 14px var(--cyan)}
+  .navlinks{display:flex;gap:.25rem;overflow-x:auto;scrollbar-width:none}.navlinks::-webkit-scrollbar{display:none}.navlinks a{color:rgba(255,255,255,.78);font-size:.78rem;padding:.4rem .7rem;border-radius:7px;white-space:nowrap}.navlinks a:hover,.navlinks a.active{background:rgba(80,230,255,.16);color:var(--cyan);text-decoration:none}
+  .progress{position:fixed;top:58px;left:0;height:3px;background:linear-gradient(90deg,var(--azure),var(--cyan),#7eda7e,#ffd666,#b48cde);z-index:21;width:0}
+  .hero{min-height:100vh;background:radial-gradient(ellipse at 12% 80%,rgba(0,120,212,.26),transparent 45%),radial-gradient(ellipse at 85% 15%,rgba(80,230,255,.16),transparent 45%),linear-gradient(135deg,#04101e,#071a32 58%,#150d2e);color:#fff;display:grid;place-items:center;padding:7rem 2rem 4rem;position:relative;overflow:hidden}
+  .hero::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(ellipse at center,#000 0%,transparent 74%)}
+  .hero-inner{position:relative;z-index:1;max-width:1180px}
+  .eyebrow{display:inline-flex;gap:.55rem;align-items:center;padding:.45rem 1rem;border:1px solid rgba(80,230,255,.4);border-radius:999px;color:var(--cyan);font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;background:rgba(255,255,255,.07);margin-bottom:1.5rem}.eyebrow::before{content:'●';font-size:.5rem;color:#7eda7e}
+  h1{font-size:clamp(2.5rem,6vw,5rem);line-height:1.03;letter-spacing:-.04em;max-width:1000px;font-weight:900}.accent{background:linear-gradient(135deg,var(--cyan),#4fb3ff 50%,#7eda7e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .hero-sub{font-size:clamp(1.06rem,2vw,1.35rem);color:rgba(255,255,255,.86);max-width:840px;margin-top:1.35rem}
+  .promises{display:grid;grid-template-columns:repeat(5,1fr);gap:.9rem;margin-top:2.5rem}.promise{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:1.1rem 1rem}.promise .not{font-size:1.5rem;font-weight:900;color:#ff8b95;line-height:1}.promise p{font-size:.84rem;color:rgba(255,255,255,.9);margin-top:.4rem;line-height:1.4}.promise p strong{color:#fff}
+  .hero-note{margin-top:1.4rem;font-size:.8rem;color:rgba(255,255,255,.7)}
+  section{padding:5.5rem 2rem}.container{max-width:1180px;margin:0 auto}
+  .section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.13em;font-weight:900;color:var(--azure-dk);margin-bottom:.55rem}
+  .section-title{font-size:clamp(1.7rem,3.8vw,2.7rem);line-height:1.12;letter-spacing:-.025em;font-weight:900;margin-bottom:.85rem;color:var(--ink)}
+  .section-sub{font-size:1.08rem;color:var(--body);max-width:820px;margin-bottom:2.5rem}
+  .dark{background:var(--navy);color:#fff}.dark .section-label{color:var(--cyan)}.dark .section-title{color:#fff}.dark .section-sub{color:rgba(255,255,255,.84)}
+  .provocation{background:linear-gradient(135deg,#071a32,#0a3018);color:#fff;text-align:center;padding:4.8rem 2rem}.provocation h2{font-size:clamp(1.8rem,4vw,3.1rem);line-height:1.15;max-width:980px;margin:0 auto 1rem;font-weight:900}.provocation p{max-width:800px;margin:0 auto;color:rgba(255,255,255,.86);font-size:1.08rem}
+  .grid{display:grid;gap:1rem}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.4rem;box-shadow:0 3px 18px rgba(6,21,38,.05);transition:.25s}.card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}.card h3,.card h4{font-size:1.05rem;line-height:1.22;margin-bottom:.5rem;color:var(--ink)}.card p{font-size:.88rem;color:var(--body)}.card ul{margin-top:.6rem;padding-left:1.05rem;font-size:.85rem;color:var(--body)}.card li{margin:.28rem 0}
+  .tag{display:inline-flex;align-items:center;gap:.35rem;border-radius:999px;font-size:.66rem;font-weight:900;text-transform:uppercase;letter-spacing:.07em;padding:.25rem .55rem;margin-bottom:.75rem}
+  .t-blue{background:#e8f3fc;color:var(--azure-dk)}.t-green{background:#eaf6ea;color:var(--green)}.t-purple{background:#f2ebfa;color:var(--purple)}.t-orange{background:#fff1e8;color:var(--orange)}.t-gold{background:#fff8df;color:var(--gold)}.t-red{background:#fde7ea;color:var(--red)}.t-teal{background:#e5f5f3;color:var(--teal)}
+  .top{border-top:4px solid}.b-blue{border-top-color:var(--azure)}.b-green{border-top-color:var(--green)}.b-purple{border-top-color:var(--purple)}.b-orange{border-top-color:#d83b01}.b-gold{border-top-color:#c19a00}.b-red{border-top-color:#c50f1f}.b-teal{border-top-color:var(--teal)}
+  .journey{display:grid;grid-template-columns:repeat(6,1fr);gap:.75rem}.jstep{position:relative;background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.2rem 1rem;box-shadow:0 3px 14px rgba(6,21,38,.05)}.jstep::before{content:attr(data-n);position:absolute;top:-13px;left:14px;background:linear-gradient(135deg,var(--azure),var(--cyan));color:#061526;border-radius:999px;padding:.2rem .6rem;font-weight:900;font-size:.72rem}.jstep h4{margin-top:.3rem;font-size:.95rem;color:var(--ink)}.jstep p{font-size:.8rem;color:var(--body);margin-top:.3rem}.jstep .fact{display:block;margin-top:.6rem;font-size:.72rem;font-weight:800;color:var(--green)}
+  .cmp{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}.cmp-card{border-radius:18px;padding:1.6rem;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.07)}.cmp-card h3{color:#fff;font-size:1.15rem;margin-bottom:.35rem}.cmp-card .who{font-size:.78rem;color:var(--cyan);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.9rem}.cmp-card dl{display:grid;grid-template-columns:auto 1fr;gap:.45rem .8rem;font-size:.84rem}.cmp-card dt{color:rgba(255,255,255,.7);font-weight:700}.cmp-card dd{color:#fff}.cmp-card .note{margin-top:1rem;padding:.8rem .9rem;border-radius:10px;font-size:.8rem;line-height:1.5;background:rgba(255,255,255,.08);color:rgba(255,255,255,.92)}.cmp-card.warn{border-color:rgba(255,139,149,.5);background:linear-gradient(135deg,rgba(197,15,31,.18),rgba(255,255,255,.06))}.cmp-card.warn .who{color:#ff8b95}.cmp-card.warn .note{background:rgba(197,15,31,.22)}
+  .geo{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}.geo-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.4rem;border-left:5px solid}.geo-card h4{color:var(--ink);font-size:1.02rem}.geo-card .where{font-size:1.4rem;font-weight:900;color:var(--ink);margin:.35rem 0}.geo-card p{font-size:.85rem;color:var(--body)}
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem}.flow .card{position:relative}.flow .n{width:30px;height:30px;border-radius:50%;background:var(--navy);color:var(--cyan);display:grid;place-items:center;font-weight:900;font-size:.82rem;margin-bottom:.7rem}
+  .callout{margin-top:1.4rem;padding:1.2rem 1.5rem;border-radius:14px;background:#0a1840;color:rgba(255,255,255,.92);font-size:.92rem;line-height:1.6}.callout strong{color:var(--cyan)}.callout code{background:rgba(255,255,255,.12);padding:.1rem .4rem;border-radius:4px;font-size:.88em;color:#fff}
+  .callout-light{margin-top:1.4rem;padding:1.2rem 1.5rem;border-radius:14px;background:#fff4e8;border:1px solid #f3cfae;color:#5a2a00;font-size:.92rem;line-height:1.6}.callout-light strong{color:var(--orange)}
+  .sev{display:flex;gap:.5rem;margin-top:.8rem;flex-wrap:wrap}.sev span{font-size:.72rem;font-weight:900;padding:.3rem .6rem;border-radius:6px}.s0{background:#eaf6ea;color:var(--green)}.s2{background:#fff8df;color:var(--gold)}.s4{background:#fff1e8;color:var(--orange)}.s6{background:#fde7ea;color:var(--red)}
+  .faq{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}.q{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.3rem;display:flex;gap:1rem}.q .qm{flex:0 0 34px;width:34px;height:34px;border-radius:50%;background:var(--navy);color:var(--cyan);display:grid;place-items:center;font-weight:900}.q h4{font-size:.98rem;color:var(--ink);line-height:1.3}.q p{font-size:.86rem;color:var(--body);margin-top:.35rem}.q .ans{display:inline-block;margin-top:.5rem;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;padding:.25rem .55rem;border-radius:6px}
+  .check{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem}.chk{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:1.1rem}.chk h4{color:#fff;font-size:.92rem;display:flex;gap:.5rem;align-items:flex-start}.chk h4::before{content:'✓';color:#7eda7e;font-weight:900}.chk p{font-size:.8rem;color:rgba(255,255,255,.84);margin-top:.4rem}
+  .cta{background:linear-gradient(135deg,#061526,#102a56 60%,#24134a);color:#fff;border-radius:26px;padding:3.2rem 2.3rem;text-align:center;box-shadow:var(--shadow)}.cta h2{font-size:clamp(1.7rem,3.4vw,2.6rem);line-height:1.14;margin-bottom:.9rem}.cta p{max-width:820px;margin:0 auto 1.6rem;color:rgba(255,255,255,.86)}.btn{display:inline-flex;gap:.45rem;padding:.8rem 1.35rem;border-radius:9px;background:linear-gradient(135deg,var(--azure),var(--cyan));color:#061526;font-weight:900}.btn:hover{text-decoration:none}
+  .sources{margin-top:1.4rem;font-size:.76rem;color:rgba(255,255,255,.7);line-height:1.7;text-align:left;max-width:900px;margin-inline:auto}.sources a{color:#9af2ff}
+  .footer{padding:2rem;text-align:center;font-size:.8rem;color:var(--muted)}
+  .reveal{opacity:0;transform:translateY(22px);transition:.65s}.reveal.visible{opacity:1;transform:translateY(0)}
+  @media(max-width:1000px){.promises,.journey{grid-template-columns:repeat(3,1fr)}.g4,.g3,.cmp,.geo,.flow,.check{grid-template-columns:1fr 1fr}}
+  @media(max-width:640px){.promises,.journey,.g2,.g3,.g4,.cmp,.geo,.flow,.check,.faq{grid-template-columns:1fr}.nav{padding:0 1rem}.brand{font-size:.8rem}section{padding:4rem 1rem}.hero{padding-inline:1rem}}
+  @media print{.nav,.progress{display:none}.hero{min-height:auto}.reveal{opacity:1;transform:none}}
+</style>
+<style>/* smec-back-btn v3 */
+.smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
+  box-sizing: border-box;
+  display: inline-flex; align-items: center; justify-content: flex-start;
+  gap: 8px; height: 40px; padding: 0 16px 0 12px; border-radius: 20px;
+  background: rgba(0, 120, 212, 0.92) !important; color: #fff !important;
+  text-decoration: none !important;
+  font: 600 14px/1 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18); backdrop-filter: blur(6px);
+  opacity: 0;
+  animation: smec-back-btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  transition:
+    padding 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+  overflow: hidden; white-space: nowrap; }
+.smec-back-btn__icon { flex: 0 0 auto; display: inline-block;
+  width: 18px; height: 18px; }
+.smec-back-btn__label { display: inline-block; flex: 0 0 auto;
+  font: inherit; color: inherit; }
+.smec-back-btn__more { display: inline-block; max-width: 0; opacity: 0;
+  overflow: hidden; vertical-align: bottom;
+  font: inherit; color: inherit;
+  transition:
+    opacity 0.18s ease 0s,
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.05s; }
+
+.smec-back-btn:hover, .smec-back-btn:focus-visible {
+  background: rgba(0, 90, 158, 0.96) !important; color: #fff !important;
+  text-decoration: none !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22); }
+.smec-back-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.smec-back-btn:hover .smec-back-btn__more,
+.smec-back-btn:focus-visible .smec-back-btn__more {
+  max-width: 260px; opacity: 1;
+  transition:
+    max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0s,
+    opacity 0.25s ease 0.2s; }
+
+@keyframes smec-back-btn-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .smec-back-btn__more { max-width: 260px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smec-back-btn, .smec-back-btn__more,
+  .smec-back-btn:hover .smec-back-btn__more,
+  .smec-back-btn:focus-visible .smec-back-btn__more {
+    transition: background 0.2s ease, color 0.2s ease;
+    animation: none; opacity: 1; }
+}
+@media (max-width: 600px) { .smec-back-btn { bottom: 12px; left: 12px; } }
+</style>
+<style>/* smec-disclaimer v1 */
+.smec-disclaimer {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 18px 72px 72px !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
+  background: #0b1f33 !important;
+  color: #dbe7f3 !important;
+  text-align: center !important;
+  font: 400 13px/1.55 'Segoe UI', -apple-system, BlinkMacSystemFont,
+    sans-serif !important;
+}
+.smec-disclaimer p {
+  max-width: 1100px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  color: inherit !important;
+  font: inherit !important;
+}
+.smec-disclaimer a {
+  color: #78c7ff !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
+}
+.smec-disclaimer a:hover,
+.smec-disclaimer a:focus-visible {
+  color: #b9e3ff !important;
+}
+.smec-disclaimer a:focus-visible {
+  outline: 2px solid #fff !important;
+  outline-offset: 2px !important;
+}
+@media (max-width: 600px) {
+  .smec-disclaimer { padding: 16px 16px 68px !important; }
+}
+</style>
+</head>
+<body>
+<a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
+
+<nav class="nav"><div class="brand"><span class="brand-dot"></span> Foundry Data Safety</div><div class="navlinks"><a href="#journey">The Journey</a><a href="#who">Who Processes It</a><a href="#where">Where</a><a href="#monitoring">Abuse Monitoring</a><a href="#guardrails">Guardrails</a><a href="#control">Your Controls</a><a href="#faq">FAQ</a><a href="#checklist">Checklist</a></div></nav><div class="progress" id="progress"></div>
+
+<header class="hero" id="top"><div class="hero-inner">
+  <div class="eyebrow">Microsoft Foundry · Data Privacy &amp; Responsible AI</div>
+  <h1>Where Does<br>My Prompt Go?<br><span class="accent">A plain-language guide to data safety in Microsoft Foundry.</span></h1>
+  <p class="hero-sub">The most common question in every AI conversation is not about the model. It is about the data: who sees it, where it goes, whether it trains anything, and who is accountable. This guide answers those questions with Microsoft's documented commitments &mdash; and is honest about where the answer changes.</p>
+  <div class="promises">
+    <div class="promise"><div class="not">NOT</div><p>available to <strong>other customers</strong></p></div>
+    <div class="promise"><div class="not">NOT</div><p>available to <strong>OpenAI</strong> or other providers of Models sold by Azure</p></div>
+    <div class="promise"><div class="not">NOT</div><p>used by providers to <strong>improve their models</strong> or services</p></div>
+    <div class="promise"><div class="not">NOT</div><p>used to <strong>train any foundation model</strong> without your permission</p></div>
+    <div class="promise"><div class="not">NOT</div><p>used to improve <strong>Microsoft or third-party products</strong> without your explicit instruction</p></div>
+  </div>
+  <p class="hero-note">Five commitments that apply to your prompts, completions, embeddings and training data for Models sold by Azure. Source: <a href="https://learn.microsoft.com/en-us/legal/cognitive-services/openai/data-privacy" style="color:#9af2ff;font-weight:700">Data, privacy, and security for Azure OpenAI &amp; Models sold by Azure</a> (Microsoft Learn legal documentation), updated 18 May 2026.</p>
+</div></header>
+
+<div class="provocation"><h2>The model is stateless.<br><span class="accent">Everything that matters happens around it.</span></h2><p>No prompt or completion is stored inside the model. So the real questions are about the pipeline: the filter in front of it, the monitoring beside it, the storage you choose to turn on, the geography it runs in &mdash; and which company is legally the processor. That is what this guide maps.</p></div>
+
+<section id="journey"><div class="container">
+  <div class="reveal"><div class="section-label">Follow one request</div><h2 class="section-title">The six-step journey of a prompt.</h2><p class="section-sub">For Models sold by Azure &mdash; which includes every Azure OpenAI model &mdash; this is what happens between the moment your application sends a prompt and the moment the answer comes back.</p></div>
+  <div class="journey">
+    <div class="jstep reveal" data-n="01"><h4>Your app sends a prompt</h4><p>Over an encrypted connection to <em>your</em> Foundry resource, in <em>your</em> Azure tenant &mdash; authenticated with Entra ID or keys you control.</p><span class="fact">Your tenant, your boundary</span></div>
+    <div class="jstep reveal" data-n="02"><h4>Guardrails screen it</h4><p>Content classifiers evaluate the prompt in real time for harmful content. Prompt Shields check for injection attacks.</p><span class="fact">Stores nothing</span></div>
+    <div class="jstep reveal" data-n="03"><h4>The model generates</h4><p>Hosted in Microsoft's Azure environment. The model never talks to OpenAI's own services &mdash; not ChatGPT, not the OpenAI API.</p><span class="fact">Stateless</span></div>
+    <div class="jstep reveal" data-n="04"><h4>Guardrails screen the output</h4><p>The completion is classified synchronously and filtered against the thresholds you configured.</p><span class="fact">Stores nothing</span></div>
+    <div class="jstep reveal" data-n="05"><h4>The answer returns</h4><p>Back to your application. If you enabled stateful features (Responses API, threads, stored completions), that data is saved in your resource, in your geography.</p><span class="fact">You decide what persists</span></div>
+    <div class="jstep reveal" data-n="06"><h4>Abuse monitoring watches patterns</h4><p>Only content that is flagged, or part of a potentially abusive pattern, may be sampled for review &mdash; AI review first, humans only as necessary.</p><span class="fact">Can be modified on request</span></div>
+  </div>
+  <div class="callout reveal"><strong>In one sentence:</strong> your data is processed to serve your request and to detect abuse &mdash; and for nothing else. It is not pooled, not shared with the model's creator, and not used to train anything.</div>
+</div></section>
+
+<section id="who" class="dark"><div class="container">
+  <div class="reveal"><div class="section-label">The question that changes the answer</div><h2 class="section-title">Three kinds of models. Three different answers to "who processes my data?"</h2><p class="section-sub">Foundry's catalog has more than 10,000 models. The privacy commitments are not identical across all of them &mdash; they depend on <strong>who sells and operates the model</strong>. Once you know which category you are using, most of your questions answer themselves.</p></div>
+  <div class="cmp">
+    <div class="cmp-card reveal"><h3>Models sold by Azure</h3><div class="who">Azure OpenAI + selected top providers</div>
+      <dl><dt>Hosted by</dt><dd>Microsoft, in Azure</dd><dt>Processor</dt><dd>Microsoft</dd><dt>Provider access</dt><dd>None &mdash; not available to OpenAI or other providers</dd><dt>Training</dt><dd>Never, without your permission</dd><dt>Terms</dt><dd>Microsoft DPA &amp; Product Terms</dd><dt>SLA &amp; support</dt><dd>Microsoft</dd></dl>
+      <div class="note">The strongest posture. Includes all Azure OpenAI models plus selected models from providers such as DeepSeek, Meta, Mistral, Cohere and xAI that Microsoft hosts and operates directly.</div></div>
+    <div class="cmp-card reveal"><h3>Partner &amp; community models</h3><div class="who">Serverless API deployments</div>
+      <dl><dt>Hosted by</dt><dd>Microsoft-managed endpoint</dd><dt>Processor</dt><dd>Microsoft</dd><dt>Provider access</dt><dd>Prompts &amp; outputs are <em>not</em> shared with the model provider</dd><dt>Training</dt><dd>Not used to train Microsoft, provider or third-party models</dd><dt>Shared with publisher</dt><dd>Contact &amp; transaction details, usage volume</dd></dl>
+      <div class="note">Same core data promise &mdash; with one disclosure: as a Marketplace offer, Microsoft may share your contact information and usage volume with the publisher so they can contact you. Not your prompts.</div></div>
+    <div class="cmp-card warn reveal"><h3>Claude models</h3><div class="who">Hosted on Azure or on Anthropic &mdash; same answer</div>
+      <dl><dt>Seller &amp; operator</dt><dd>Anthropic</dd><dt>Processor</dt><dd><strong>Anthropic</strong> &mdash; independent data processor</dd><dt>Terms</dt><dd>Anthropic DPA &amp; Commercial Terms</dd><dt>Retention</dt><dd>Governed by Anthropic terms</dd><dt>Safety review</dt><dd>Anthropic Trust &amp; Safety, exceptions-only</dd><dt>Compliance</dt><dd>Anthropic Trust Center</dd></dl>
+      <div class="note"><strong>Even when "Hosted on Azure"</strong> &mdash; where inference runs on Azure GPUs &mdash; Anthropic remains the data processor and Claude is a Non-Microsoft Product. Microsoft provides the portal, infrastructure, billing and support, while Anthropic's Data Processing Addendum governs how your prompts and outputs are handled. Factor this into your data-processing agreements and vendor assessments.</div></div>
+  </div>
+  <div class="callout reveal" style="background:rgba(255,255,255,.08)"><strong>Two more cases to name:</strong> with <strong>managed compute</strong> you deploy model weights onto dedicated VMs you manage &mdash; Azure commitments apply, but not every catalog model is scanned, so use virtual networks and Azure Policy to govern what can be deployed. If you <strong>download a model</strong>, you choose where it runs and you are responsible for how data is processed.</div>
+</div></section>
+
+<section id="where"><div class="container">
+  <div class="reveal"><div class="section-label">Data residency, made simple</div><h2 class="section-title">Where is my data processed? It depends on one choice you make.</h2><p class="section-sub">The deployment type you select determines where <em>processing</em> happens. One rule holds regardless: <strong>data stored at rest always stays in the Azure geography you designate</strong> &mdash; including uploaded files, stateful data, and the abuse-monitoring store.</p></div>
+  <div class="geo">
+    <div class="geo-card reveal" style="border-left-color:var(--green)"><span class="tag t-green">Standard · Regional · Provisioned</span><h4>Geography-bound</h4><div class="where">Within your Azure geography</div><p>Prompts and responses are processed inside the geography you chose. They may move between regions within it for performance and capacity management &mdash; but never outside.</p></div>
+    <div class="geo-card reveal" style="border-left-color:var(--azure)"><span class="tag t-blue">Data Zone</span><h4>Zone-bound</h4><div class="where">EU zone · US zone · APAC</div><p>A resource in an EU member state may process anywhere in the EU; a US resource anywhere in the US. The compliance middle ground with higher capacity than regional.</p></div>
+    <div class="geo-card reveal" style="border-left-color:#c19a00"><span class="tag t-gold">Global</span><h4>Capacity-first</h4><div class="where">Any geography the model is available in</div><p>Highest quota and availability. Processing may occur in any Azure geography where the model is deployed. Data at rest still stays in your designated geography.</p></div>
+  </div>
+  <div class="callout-light reveal"><strong>Claude residency note:</strong> Claude in Foundry offers Global Standard and a <strong>US</strong> Data Zone only. There is currently no EU data zone for Claude, and the "Hosted on Anthropic" option may process data outside Azure entirely. If you have EU residency requirements, choose Models sold by Azure with a Regional or EU Data Zone deployment for those workloads. Full detail: <a href="https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/claude-models-hosting-comparison">Compare hosting options for Claude models</a>.</div>
+</div></section>
+
+<section id="monitoring" class="dark"><div class="container">
+  <div class="reveal"><div class="section-label">The question behind "does a human read my prompts?"</div><h2 class="section-title">Abuse monitoring: what it is, who sees what, and how to turn storage off.</h2><p class="section-sub">Abuse monitoring exists to detect recurring use that violates the Code of Conduct. It is narrow by design &mdash; and if you work with highly sensitive data, the storage and human-review components can be switched off.</p></div>
+  <div class="flow">
+    <div class="card reveal" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18)"><div class="n">1</div><h4 style="color:#fff">Classify</h4><p style="color:rgba(255,255,255,.86)">Classifier models detect harmful text and images in prompts and completions and assign severity levels.</p></div>
+    <div class="card reveal" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18)"><div class="n">2</div><h4 style="color:#fff">Detect patterns</h4><p style="color:rgba(255,255,255,.86)">Algorithms score frequency, severity and intentionality &mdash; recurring jailbreak attempts score higher than a one-off.</p></div>
+    <div class="card reveal" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18)"><div class="n">3</div><h4 style="color:#fff">Review</h4><p style="color:rgba(255,255,255,.86)">Flagged samples go to <strong style="color:#fff">AI review first</strong>; that review stores nothing. Human review only when confidence thresholds are not met.</p></div>
+    <div class="card reveal" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18)"><div class="n">4</div><h4 style="color:#fff">Notify &amp; act</h4><p style="color:rgba(255,255,255,.86)">Confirmed abuse triggers an email to you; except in severe or recurring cases, you get the chance to remediate before any access limitation.</p></div>
+  </div>
+  <div class="grid g2" style="margin-top:1rem">
+    <div class="card reveal" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18)"><span class="tag" style="background:rgba(80,230,255,.16);color:var(--cyan)">If a human does review</span><h4 style="color:#fff">Tight, auditable access</h4><ul style="color:rgba(255,255,255,.88)"><li>Only content already flagged or part of an abusive pattern</li><li>Authorized Microsoft employees only, via point-wise queries by request ID</li><li>Secure Access Workstations + Just-In-Time approval from team managers</li><li>For EEA deployments, reviewers are located in the EEA</li><li>Store is logically separated per Foundry resource, in your geography</li></ul></div>
+    <div class="card reveal" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18)"><span class="tag" style="background:rgba(126,218,126,.18);color:#7eda7e">Modified abuse monitoring</span><h4 style="color:#fff">For sensitive or confidential workloads</h4><ul style="color:rgba(255,255,255,.88)"><li>Apply through the Limited Access form at <a href="https://aka.ms/oai/modifiedaccess" style="color:#9af2ff;font-weight:700">aka.ms/oai/modifiedaccess</a>; some advanced models have stricter criteria</li><li>When approved: <strong style="color:#fff">no prompt/completion storage and no human review</strong></li><li>Automated review may still run at request time; severe or recurring abuse can still trigger limitations</li><li>Content filtering can stay on &mdash; it never stores data anyway</li></ul></div>
+  </div>
+  <div class="callout reveal"><strong>You can verify it yourself.</strong> Once approved, confirm storage is off in the Azure portal JSON view or via CLI: the resource capability <code>"ContentLogging": "false"</code> appears only when abuse-monitoring storage is disabled. Verifiable evidence for your compliance records &mdash; not a statement you have to take on trust.</div>
+</div></section>
+
+<section id="guardrails"><div class="container">
+  <div class="reveal"><div class="section-label">Safety that runs in the request path</div><h2 class="section-title">Guardrails and Azure AI Content Safety: real-time, configurable, store nothing.</h2><p class="section-sub">Guardrails (previously content filters) run synchronously as prompts and completions pass through. No prompt or output is stored in the classifier models, and nothing is used to train foundation models without your permission.</p></div>
+  <div class="grid g3">
+    <div class="card top b-red reveal"><span class="tag t-red">Harm categories</span><h3>Four categories, four severities</h3><p>Hate, Sexual, Violence and Self-harm are each scored on a severity scale and filtered against thresholds you configure per deployment.</p><div class="sev"><span class="s0">0 · Safe</span><span class="s2">2 · Low</span><span class="s4">4 · Medium</span><span class="s6">6 · High</span></div></div>
+    <div class="card top b-purple reveal"><span class="tag t-purple">Prompt Shields</span><h3>Defends against injection</h3><p>Scans user input and documents for jailbreak and indirect prompt-injection attacks before they reach the model &mdash; the attack surface security teams ask about first.</p></div>
+    <div class="card top b-blue reveal"><span class="tag t-blue">Protected material</span><h3>Catches known content</h3><p>Detects AI output that reproduces known text such as lyrics, articles and recipes &mdash; a direct answer to IP and copyright concerns.</p></div>
+    <div class="card top b-teal reveal"><span class="tag t-teal">Groundedness</span><h3>Checks the answer against your sources</h3><p>Detects whether a model's response is actually grounded in the material you supplied &mdash; the hallucination question, made testable.</p></div>
+    <div class="card top b-gold reveal"><span class="tag t-gold">Task adherence</span><h3>Watches agents' tool use</h3><p>Flags when an AI agent's tool call is misaligned, unintended or premature in the context of the user's request &mdash; built for the agentic era.</p></div>
+    <div class="card top b-green reveal"><span class="tag t-green">Custom categories &amp; blocklists</span><h3>Your policy, your terms</h3><p>Define your own categories, upload blocklists and tune sensitivity for your industry &mdash; from financial services to K-12 education.</p></div>
+  </div>
+  <div class="callout-light reveal"><strong>Two systems, not one:</strong> content filtering and abuse monitoring are separate. Filtering is synchronous and stateless. Abuse monitoring is the only component that may store a flagged sample &mdash; and it is the one you can apply to modify.</div>
+</div></section>
+
+<section id="control" class="dark"><div class="container">
+  <div class="reveal"><div class="section-label">Encryption, isolation and ownership</div><h2 class="section-title">What you control &mdash; and what Microsoft never claims.</h2><p class="section-sub">Foundry is an Azure service, so the controls you already rely on apply: identity, network, keys and policy. Plus clear positions on the data you upload and the content the model produces.</p></div>
+  <div class="grid g4">
+    <div class="card reveal" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18)"><h4 style="color:#fff">Encrypted at rest, always</h4><p style="color:rgba(255,255,255,.86)">AES-256 by default on anything stored. Optional customer-managed keys for double encryption. Fine-tuned models are encrypted when not deployed.</p></div>
+    <div class="card reveal" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18)"><h4 style="color:#fff">In your tenant, in your geography</h4><p style="color:rgba(255,255,255,.86)">Uploaded files, vector stores, threads and stored completions live in your Foundry resource, in the same geography as the resource.</p></div>
+    <div class="card reveal" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18)"><h4 style="color:#fff">Deletable at any time</h4><p style="color:rgba(255,255,255,.86)">Stored data and fine-tuned models can be deleted whenever you choose. Fine-tunes are available exclusively to you.</p></div>
+    <div class="card reveal" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18)"><h4 style="color:#fff">Network &amp; identity you govern</h4><p style="color:rgba(255,255,255,.86)">Entra ID, managed identity, RBAC, virtual networks and private endpoints. Azure Policy restricts which models anyone can deploy.</p></div>
+    <div class="card reveal" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18)"><h4 style="color:#fff">"On your data" never copies your data</h4><p style="color:rgba(255,255,255,.86)">Grounding data stays in the source and location you designate. The service retrieves relevant pieces at request time; no duplicate store is created.</p></div>
+    <div class="card reveal" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18)"><h4 style="color:#fff">Microsoft doesn't own your outputs</h4><p style="color:rgba(255,255,255,.86)">Microsoft's position: it does not claim ownership of your Output Content. You are responsible for third-party claims about your use &mdash; and IP rights in AI output vary by jurisdiction. Governing terms: the <a href="https://aka.ms/DPA" style="color:#9af2ff">Microsoft Products and Services DPA</a>.</p></div>
+    <div class="card reveal" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18)"><h4 style="color:#fff">Fine-tuning data stays yours</h4><p style="color:rgba(255,255,255,.86)">Training data you upload is not used to train, retrain or improve any Microsoft or non-Microsoft model, except as you direct inside the service.</p></div>
+    <div class="card reveal" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18)"><h4 style="color:#fff">Preview features: read the fine print</h4><p style="color:rgba(255,255,255,.86)">Models or features in preview may not support every commitment above &mdash; including customer-managed keys and abuse-monitoring practices. Confirm before production.</p></div>
+  </div>
+</div></section>
+
+<section id="faq"><div class="container">
+  <div class="reveal"><div class="section-label">Straight answers</div><h2 class="section-title">The eight questions everyone asks &mdash; answered.</h2><p class="section-sub">Clear enough to share with your leadership. Precise enough to share with your legal and compliance teams.</p></div>
+  <div class="faq">
+    <div class="q reveal"><div class="qm">?</div><div><h4>"Does OpenAI see our prompts?"</h4><p>No. For Models sold by Azure, prompts and completions are not available to OpenAI or any model provider, and the models never interact with OpenAI-operated services like ChatGPT or the OpenAI API.</p><span class="ans t-green">No</span></div></div>
+    <div class="q reveal"><div class="qm">?</div><div><h4>"Is our data used to train the model?"</h4><p>No &mdash; not to train, retrain or improve any base or foundation model, and not to improve Microsoft or third-party products, without your explicit permission or instruction.</p><span class="ans t-green">No</span></div></div>
+    <div class="q reveal"><div class="qm">?</div><div><h4>"Does a human ever read our prompts?"</h4><p>Only if abuse monitoring flags content as harmful or part of an abusive pattern &mdash; and only after AI review, by authorized Microsoft employees on secured workstations with JIT approval. If you are eligible, you can apply to switch storage and human review off.</p><span class="ans t-gold">Only if flagged · can be modified</span></div></div>
+    <div class="q reveal"><div class="qm">?</div><div><h4>"Where exactly is it processed?"</h4><p>In your geography for Standard and Provisioned; within the EU, US or APAC zone for Data Zone; anywhere the model is available for Global. Data at rest always stays in your designated geography.</p><span class="ans t-blue">Your deployment type decides</span></div></div>
+    <div class="q reveal"><div class="qm">?</div><div><h4>"Is Claude treated the same way?"</h4><p>No. Anthropic is the seller, operator and independent data processor for Claude in Foundry &mdash; in both hosting options. Anthropic's DPA governs retention; Anthropic Trust &amp; Safety handles exceptions review; compliance evidence comes from the Anthropic Trust Center.</p><span class="ans t-red">No &mdash; different processor</span></div></div>
+    <div class="q reveal"><div class="qm">?</div><div><h4>"What compliance certifications apply?"</h4><p>Foundry is an Azure service and inherits Azure's compliance offerings under the shared-responsibility model. For Claude and other Non-Microsoft Products, refer to the provider's own compliance documentation.</p><span class="ans t-blue">Azure compliance offerings</span></div></div>
+    <div class="q reveal"><div class="qm">?</div><div><h4>"Who owns what the model writes?"</h4><p>Microsoft does not claim ownership of your Output Content. Your IP rights in it may be limited by local law or by similar prompts producing similar outputs &mdash; so you make the determination for your scenario.</p><span class="ans t-purple">Not Microsoft</span></div></div>
+    <div class="q reveal"><div class="qm">?</div><div><h4>"Can we use outputs to train our own competing model?"</h4><p>No. Product Terms prohibit using the service or its data to create, train or improve a similar or competing product, to extract model weights, or to scrape output content.</p><span class="ans t-red">No</span></div></div>
+  </div>
+</div></section>
+
+<section id="checklist" class="dark"><div class="container">
+  <div class="reveal"><div class="section-label">Your readiness checklist</div><h2 class="section-title">Six decisions that settle your data posture.</h2><p class="section-sub">Work through them in this order and your architecture, your controls and your contract terms fall into place.</p></div>
+  <div class="check">
+    <div class="chk reveal"><h4>Which model category are we using?</h4><p>Sold by Azure, partner serverless, Claude, managed compute or downloaded &mdash; the processor and the terms change with the answer.</p></div>
+    <div class="chk reveal"><h4>Which deployment type, and does residency require it?</h4><p>Regional for strict geography, Data Zone for EU/US balance, Global for capacity. Note Claude's US-only data zone.</p></div>
+    <div class="chk reveal"><h4>Do we need modified abuse monitoring?</h4><p>For highly sensitive data, apply via Limited Access &mdash; then verify <em>ContentLogging: false</em> on the resource.</p></div>
+    <div class="chk reveal"><h4>What stateful features are we turning on?</h4><p>Responses API, threads, files, stored completions all persist data in your resource. Decide deliberately; apply CMK where supported.</p></div>
+    <div class="chk reveal"><h4>Which guardrails and thresholds fit our risk?</h4><p>Severity thresholds, Prompt Shields, protected-material and groundedness detection, custom categories &mdash; configured per deployment.</p></div>
+    <div class="chk reveal"><h4>Are any components in preview?</h4><p>Preview models and features may not honor every commitment. Confirm CMK support and monitoring practices before production.</p></div>
+  </div>
+</div></section>
+
+<section><div class="container"><div class="cta reveal">
+  <h2>Your data serves your request.<br><span class="accent">Nothing else.</span></h2>
+  <p>Not shared with other customers. Not shared with the model's creator. Not used for training. Processed where you choose, encrypted by default, deletable on demand &mdash; with one clear exception you can name: when a model is sold and operated by a partner, the partner is the processor. Know the category, know the answer.</p>
+  <a class="btn" href="#faq">Revisit the eight answers →</a>
+  <div class="sources"><strong style="color:#fff;font-size:.9rem">Go deeper: six essential documents</strong><br>
+  <strong>1 &middot; Microsoft's data commitments</strong> &mdash; <a href="https://learn.microsoft.com/en-us/legal/cognitive-services/openai/data-privacy">Data, privacy, and security for Azure OpenAI &amp; Models sold by Azure</a> (the authoritative legal page)<br>
+  <strong>2 &middot; Request modified abuse monitoring</strong> &mdash; <a href="https://aka.ms/oai/modifiedaccess">Limited Access form for modified abuse monitoring</a><br>
+  <strong>3 &middot; How monitoring works</strong> &mdash; <a href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/abuse-monitoring">Abuse monitoring for Models sold by Azure</a><br>
+  <strong>4 &middot; The contractual terms</strong> &mdash; <a href="https://aka.ms/DPA">Microsoft Products and Services Data Protection Addendum</a><br>
+  <strong>5 &middot; Partner models, incl. Claude</strong> &mdash; <a href="https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/claude-models-hosting-comparison">Claude hosting comparison</a> &middot; <a href="https://learn.microsoft.com/en-us/azure/foundry-classic/how-to/concept-data-privacy">model catalog data privacy</a><br>
+  <strong>6 &middot; Compliance evidence</strong> &mdash; <a href="https://www.microsoft.com/trust-center">Microsoft Trust Center</a> &middot; <a href="https://learn.microsoft.com/en-us/azure/compliance/">Azure compliance offerings</a><br><br>
+  Also useful: <a href="https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/deployment-types">Deployment types</a> &middot; <a href="https://learn.microsoft.com/en-us/azure/ai-services/content-safety/overview">Azure AI Content Safety</a><br>
+  Information current as of 2 October 2026. Preview status, regional availability and partner terms change frequently &mdash; always confirm against the linked documentation before making decisions.</div>
+</div></div></section>
+
+<footer class="footer">Where Does My Prompt Go? &middot; Microsoft Foundry Data Safety Guide &middot; Data privacy, residency and responsible AI, explained</footer>
+
+<script>(function(){var bar=document.getElementById('progress');var links=[].slice.call(document.querySelectorAll('.navlinks a'));var sections=[].slice.call(document.querySelectorAll('section,header,.provocation'));window.addEventListener('scroll',function(){var max=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(window.scrollY/max*100)+'%'});var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');var id=e.target.id;links.forEach(function(l){l.classList.toggle('active',!!id&&l.getAttribute('href')==='#'+id)})}})},{threshold:.15,rootMargin:'-20% 0px -55% 0px'});document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});sections.forEach(function(s){if(s.id)io.observe(s)})})();</script>
+<!-- smec-disclaimer v1 -->
+<aside class="smec-disclaimer" data-smec-disclaimer="v1" role="note"
+  aria-label="Infographic disclaimer">
+  <p>This infographic is an educational summary and is not official product
+  documentation. For current features, availability, limits, and guidance,
+  refer to <a href="https://learn.microsoft.com/" target="_blank"
+  rel="noopener">Microsoft Learn</a> and the official sources linked on this
+  page.</p>
+</aside>
+</body>
+</html>

@@ -66,7 +66,11 @@
       },
       {
         "file": "azure-document-intelligence.html",
-        "title": "AI-Powered Intelligent Document Management"
+        "title": "AI-Powered Intelligent Document Management — Microsoft Azure"
+      },
+      {
+        "file": "foundry-data-safety-guide.html",
+        "title": "Where Does My Prompt Go? — Your Guide to Data Safety in Microsoft Foundry"
       },
       {
         "file": "frontier-firm-playbook.html",

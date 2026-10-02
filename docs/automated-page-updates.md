@@ -96,7 +96,8 @@ Findings from each phase are appended below as the spike progresses.
 | `scripts/check-links.py` | HEAD/GET every external http(s) link → `reports/link-health.json` | n/a |
 | `scripts/check-deprecated-terms.py` | Scan / optionally rewrite terms from `terminology.json` | n/a |
 | `scripts/ensure-tracking.py` (existing) | Inject Umami analytics snippet | `data-website-id=...` |
-| `scripts/ensure-back-button.py` (existing) | Inject floating back button | `data-smec-back-button="v2"` |
+| `scripts/ensure-back-button.py` (existing) | Inject floating back button | `data-smec-back-button="v3"` |
+| `scripts/ensure-disclaimer.py` | Inject the educational-summary notice and Microsoft Learn link | `data-smec-disclaimer="v1"` |
 | `scripts/ensure-meta.py` | Inject description / OG / Twitter tags | `<!-- smec-meta v1 -->` |
 | `scripts/ensure-favicon.py` | Inject favicon `<link>` pointing at `/favicon.svg` | `<!-- smec-favicon v1 -->` |
 | `scripts/stamp-accuracy-date.py` | Stamp changed pages and show a subtle `Valid as of YYYY-MM-DD` label | `data-smec-validation-date="v1"` |
@@ -129,8 +130,8 @@ Findings from each phase are appended below as the spike progresses.
 
 - `ensure-site-chrome.yml` (post-merge, main) — stamps every changed HTML
   page with the current UTC validation date, then runs tracking, the visible
-  date label, back button, meta, favicon, and manifest in one sequential
-  commit.
+  date label, back button, disclaimer, meta, favicon, and manifest in one
+  sequential commit.
 - `fix-site-chrome-pr.yml` (PR auto-fix, same-repo PRs only) — same
   sequence, commits into the PR branch. Fork PRs are stamped by the
   post-merge safety net, so contributors do not need to run local tooling.

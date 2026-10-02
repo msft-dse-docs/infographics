@@ -718,6 +718,44 @@
   .smec-validation-date { right: 12px; bottom: 12px; }
 }
 </style>
+<style>/* smec-disclaimer v1 */
+.smec-disclaimer {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 18px 72px 72px !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
+  background: #0b1f33 !important;
+  color: #dbe7f3 !important;
+  text-align: center !important;
+  font: 400 13px/1.55 'Segoe UI', -apple-system, BlinkMacSystemFont,
+    sans-serif !important;
+}
+.smec-disclaimer p {
+  max-width: 1100px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  color: inherit !important;
+  font: inherit !important;
+}
+.smec-disclaimer a {
+  color: #78c7ff !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
+}
+.smec-disclaimer a:hover,
+.smec-disclaimer a:focus-visible {
+  color: #b9e3ff !important;
+}
+.smec-disclaimer a:focus-visible {
+  outline: 2px solid #fff !important;
+  outline-offset: 2px !important;
+}
+@media (max-width: 600px) {
+  .smec-disclaimer { padding: 16px 16px 68px !important; }
+}
+</style>
 </head>
 <body>
 <time class="smec-validation-date" datetime="2026-09-04" data-smec-validation-date="v1">Valid as of 2026-09-04</time>
@@ -747,7 +785,7 @@
   <div class="container">
     <div class="hero-grid">
       <div>
-        <span class="hero-eyebrow"><span class="dot"></span> Preview reference implementation</span>
+        <span class="hero-eyebrow"><span class="dot"></span> Generally available reference implementation</span>
         <h1>The runway before <span class="accent-cyan">takeoff</span>.<br>Build it once, <span class="accent-amber">fly</span> many.</h1>
         <p class="hero-sub">Enterprise AI workloads need a secure, governed foundation spanning networking, identity, observability, policy, and Foundry resources. The <strong>AI Landing Zone</strong> provides Portal, Bicep, and Terraform implementation options based on Azure Verified Modules.</p>
         <div class="hero-meta">
@@ -926,7 +964,7 @@
     </div>
 
     <div class="hero-callouts reveal">
-      <div class="cell"><div class="num">Preview</div><div class="lbl">Confirm current limitations before deployment</div></div>
+      <div class="cell"><div class="num">GA</div><div class="lbl">Generally available since November 17, 2025</div></div>
       <div class="cell"><div class="num">2</div><div class="lbl">Reference patterns: Foundry &amp; APIM Gateway</div></div>
       <div class="cell"><div class="num">AVM</div><div class="lbl">Bicep and Terraform use Azure Verified Modules</div></div>
       <div class="cell"><div class="num">8+</div><div class="lbl">Anchored use cases ready to deploy</div></div>
@@ -1194,7 +1232,6 @@
           <div class="iac-badges">
             <span class="iac-badge">Bicep</span>
             <span class="iac-badge">Terraform</span>
-            <span class="iac-badge">Terraform</span>
             <span class="iac-badge">Portal</span>
           </div>
         </div>
@@ -1353,8 +1390,8 @@
 <section class="timeline-section" id="timeline">
   <div class="container reveal">
     <span class="section-tag">The Dates That Matter</span>
-    <h2>How the preview evolved.</h2>
-    <p class="lede">The AI Landing Zone continues to evolve as an open preview reference implementation. Treat repository updates as implementation history, not product-release milestones.</p>
+    <h2>How the reference implementation evolved.</h2>
+    <p class="lede">The AI Landing Zone is a generally available, open reference implementation. Treat repository updates as implementation history, not product-release milestones.</p>
 
     <div class="timeline">
       <div class="tl-item flag">
@@ -1379,8 +1416,8 @@
       </div>
       <div class="tl-item">
         <div class="tl-date">Nov 17, 2025 · Ignite</div>
-        <h4>AI Landing Zones preview expands</h4>
-        <p>The project remains in preview. Check the repository roadmap and current documentation before making production commitments.</p>
+        <h4>AI Landing Zones reaches general availability</h4>
+        <p>The reference implementation reaches general availability. Check the repository roadmap and current documentation for implementation limitations before production use.</p>
       </div>
     </div>
 
@@ -1476,7 +1513,7 @@
   <div class="container">
     <div class="brand-mark">Azure AI Landing Zones</div>
     <p>The runway before takeoff. Build it once, fly many.</p>
-    <p class="small">Based on the official <a href="https://github.com/Azure/AI-Landing-Zones" target="_blank" rel="noopener">Azure/AI-Landing-Zones</a> preview reference implementation, the <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ai/" target="_blank" rel="noopener">Cloud Adoption Framework for AI</a>, and the <a href="https://learn.microsoft.com/en-us/azure/well-architected/ai/" target="_blank" rel="noopener">Well-Architected Framework AI workload</a> guidance. Review repository limitations, regional support, and the roadmap before production use.</p>
+    <p class="small">Based on the official, generally available <a href="https://github.com/Azure/AI-Landing-Zones" target="_blank" rel="noopener">Azure/AI-Landing-Zones</a> reference implementation, the <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ai/" target="_blank" rel="noopener">Cloud Adoption Framework for AI</a>, and the <a href="https://learn.microsoft.com/en-us/azure/well-architected/ai/" target="_blank" rel="noopener">Well-Architected Framework AI workload</a> guidance. Review repository limitations, regional support, and the roadmap before production use.</p>
   </div>
 </footer>
 
@@ -1508,5 +1545,14 @@
   sections.forEach(s => navObs.observe(s));
 </script>
 
+<!-- smec-disclaimer v1 -->
+<aside class="smec-disclaimer" data-smec-disclaimer="v1" role="note"
+  aria-label="Infographic disclaimer">
+  <p>This infographic is an educational summary and is not official product
+  documentation. For current features, availability, limits, and guidance,
+  refer to <a href="https://learn.microsoft.com/" target="_blank"
+  rel="noopener">Microsoft Learn</a> and the official sources linked on this
+  page.</p>
+</aside>
 </body>
 </html>

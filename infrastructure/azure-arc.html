@@ -1046,6 +1046,44 @@
   .smec-validation-date { right: 12px; bottom: 12px; }
 }
 </style>
+<style>/* smec-disclaimer v1 */
+.smec-disclaimer {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 18px 72px 72px !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
+  background: #0b1f33 !important;
+  color: #dbe7f3 !important;
+  text-align: center !important;
+  font: 400 13px/1.55 'Segoe UI', -apple-system, BlinkMacSystemFont,
+    sans-serif !important;
+}
+.smec-disclaimer p {
+  max-width: 1100px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  color: inherit !important;
+  font: inherit !important;
+}
+.smec-disclaimer a {
+  color: #78c7ff !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
+}
+.smec-disclaimer a:hover,
+.smec-disclaimer a:focus-visible {
+  color: #b9e3ff !important;
+}
+.smec-disclaimer a:focus-visible {
+  outline: 2px solid #fff !important;
+  outline-offset: 2px !important;
+}
+@media (max-width: 600px) {
+  .smec-disclaimer { padding: 16px 16px 68px !important; }
+}
+</style>
 </head>
 <body>
 <time class="smec-validation-date" datetime="2026-09-04" data-smec-validation-date="v1">Valid as of 2026-09-04</time>
@@ -1239,7 +1277,7 @@
                 <a href="https://learn.microsoft.com/en-us/azure/azure-arc/vmware-vsphere/overview" target="_blank" rel="noopener" class="acrylic-card cap-card reveal reveal-delay-1">
                     <span class="cap-icon">&#127970;</span>
                     <h3>VMware vSphere &amp; SCVMM</h3>
-                    <p>Use Azure interfaces for supported lifecycle and power operations on VMware vSphere and SCVMM-managed VMs at no extra Arc control-plane charge. Enabled Azure services are billed separately.</p>
+                    <p>Use Azure interfaces for supported lifecycle and power operations on VMware vSphere and SCVMM-managed VMs at no extra Arc control-plane charge. Arc-enabled SCVMM retires in September 2029, and new onboardings stop in October 2026. Enabled Azure services are billed separately.</p>
                     <span class="cap-tag free-tag">Free</span>
                 </a>
 
@@ -1253,7 +1291,7 @@
                 <a href="https://learn.microsoft.com/en-us/azure/azure-arc/servers/prepare-extended-security-updates" target="_blank" rel="noopener" class="acrylic-card cap-card reveal reveal-delay-1">
                     <span class="cap-icon">&#128737;&#65039;</span>
                     <h3>Extended Security Updates</h3>
-                    <p>Enroll eligible Windows Server 2012/2012 R2 and SQL Server 2014/2016 systems in version-specific ESU subscriptions delivered through Azure Arc. As of September 2026, Windows Server 2012 and SQL Server 2014 are in ESU year 3, while SQL Server 2016 is in ESU year 1.</p>
+                    <p>Enroll eligible Windows Server 2012/2012 R2 and 2016, plus SQL Server 2014/2016, in version-specific ESU subscriptions delivered through Azure Arc. As of September 2026, Windows Server 2012 and SQL Server 2014 are in ESU year 3, SQL Server 2016 is in ESU year 1, and Windows Server 2016 enrollment is open ahead of end of support on January 12, 2027.</p>
                     <span class="cap-tag ga">GA</span>
                 </a>
 
@@ -1261,7 +1299,7 @@
                     <span class="cap-icon">&#128640;</span>
                     <h3>Fleet Manager</h3>
                     <p>Join supported Arc-enabled Kubernetes clusters to Fleet Manager for GA workload placement. Kubernetes and node-image updates aren't supported for Arc member clusters.</p>
-                    <span class="cap-tag preview">Arc Extension Preview</span>
+                    <span class="cap-tag ga">Workload Placement GA</span>
                 </a>
 
                 <a href="https://learn.microsoft.com/en-us/azure/aks-hybrid-edge/local/hyperconverged/disconnected-operations-aks" target="_blank" rel="noopener" class="acrylic-card cap-card reveal reveal-delay-3">
@@ -1315,7 +1353,7 @@
                 </a>
 
                 <!-- Unified RBAC -->
-                <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/hybrid/arc-enabled-servers/eslz-identity-and-access-management" target="_blank" rel="noopener" class="acrylic-card bento-card bento-wide reveal reveal-delay-1">
+                <a href="https://learn.microsoft.com/en-us/azure/azure-arc/overview" target="_blank" rel="noopener" class="acrylic-card bento-card bento-wide reveal reveal-delay-1">
                     <div class="bento-card-icon">
                         <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     </div>
@@ -1465,7 +1503,8 @@
                         <li>Best Practices Assessment (BPA)</li>
                         <li>Pay-as-you-go — no upfront license</li>
                         <li>Extended Security Updates via Arc</li>
-                        <li>64-bit SQL Server 2014+ supported</li>
+                        <li>SQL Server 2012&ndash;2022 supported for pay-as-you-go</li>
+                        <li>Microsoft Purview integration</li>
                     </ul>
                 </a>
 
@@ -1484,7 +1523,6 @@
                         <li>Enterprise-grade performance &amp; scale</li>
                         <li>Advanced HA &amp; disaster recovery</li>
                         <li>In-memory OLTP &amp; columnstore</li>
-                        <li>Microsoft Purview integration</li>
                     </ul>
                 </a>
             </div>
@@ -1577,5 +1615,14 @@
         const heroSection = document.querySelector('.hero');
         if (heroSection) heroObserver.observe(heroSection);
     </script>
+<!-- smec-disclaimer v1 -->
+<aside class="smec-disclaimer" data-smec-disclaimer="v1" role="note"
+  aria-label="Infographic disclaimer">
+  <p>This infographic is an educational summary and is not official product
+  documentation. For current features, availability, limits, and guidance,
+  refer to <a href="https://learn.microsoft.com/" target="_blank"
+  rel="noopener">Microsoft Learn</a> and the official sources linked on this
+  page.</p>
+</aside>
 </body>
 </html>
