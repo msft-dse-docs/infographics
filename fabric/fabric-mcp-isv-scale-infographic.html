@@ -334,7 +334,7 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-09-04">
+<meta name="smec:last-accuracy-check" content="2026-10-23">
 <style>/* smec-back-btn v3 */
 .smec-back-btn { position: fixed; bottom: 16px; left: 16px; z-index: 9999;
   box-sizing: border-box;
@@ -444,7 +444,7 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
 </style>
 </head>
 <body>
-<time class="smec-validation-date" datetime="2026-09-04" data-smec-validation-date="v1">Valid as of 2026-09-04</time>
+<time class="smec-validation-date" datetime="2026-10-23" data-smec-validation-date="v1">Valid as of 2026-10-23</time>
 
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
 
@@ -515,7 +515,7 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
       <!-- Fabric Core MCP Server -->
       <div class="block b-core">
         <div class="bk-head"><span class="bk-ic">◎</span>
-          <div><span class="kx">The platform-control plane</span><h3>Fabric Core MCP Server<span class="flag prev">PREVIEW</span><span class="flag remote">REMOTE</span></h3></div>
+          <div><span class="kx">The platform-control plane</span><h3>Fabric Core MCP Server<span class="flag remote">REMOTE · GA</span></h3></div>
         </div>
         <p>A <strong>remote endpoint</strong> at <code>api.fabric.microsoft.com/v1/mcp/core</code> that turns prompts into Fabric REST API calls — respecting your RBAC and writing audit logs. Tools cover <strong>catalog search, workspace CRUD, item management</strong> (lakehouses, semantic models, notebooks, pipelines), <strong>permission &amp; folder</strong> management, and <strong>capacity</strong> info.</p>
         <div class="meta-row">
@@ -612,7 +612,7 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
     <h3 style="font-size:18px;font-weight:850;margin:34px 0 16px;">The layer map — which tool owns which job</h3>
     <div class="lmap">
       <div class="lrow l-model"><div class="ltool"><span class="lic">⬡</span><span class="lname">Power BI Authoring MCP server</span></div><div class="lresp">Semantic model — create &amp; update tables, columns, measures, DAX, RLS</div></div>
-      <div class="lrow l-query"><div class="ltool"><span class="lic">⌕</span><span class="lname">Remote Power BI MCP Server</span></div><div class="lresp">Data queries &amp; insights — generate and execute DAX against the model</div></div>
+      <div class="lrow l-query"><div class="ltool"><span class="lic">⌕</span><span class="lname">Fabric IQ MCP server (GA)</span></div><div class="lresp">Data queries &amp; insights — generate and execute DAX against the model</div></div>
       <div class="lrow l-report"><div class="ltool"><span class="lic">◈</span><span class="lname">Power BI Report Authoring skill</span></div><div class="lresp">Report layer (PBIR/PBIP) — pages, visuals, filters, formatting, themes</div></div>
       <div class="lrow l-items"><div class="ltool"><span class="lic">◎</span><span class="lname">Fabric Core MCP Server</span></div><div class="lresp">Workspaces, items, permissions, folders &amp; capacities across the platform</div></div>
       <div class="lrow l-rest"><div class="ltool"><span class="lic">{ }</span><span class="lname">Fabric REST APIs</span></div><div class="lresp">The foundation — item definitions, deployment pipelines, Git, CI/CD automation</div></div>
@@ -778,8 +778,8 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
       <a class="res" href="https://learn.microsoft.com/en-us/rest/api/fabric/articles/">
         <span class="ric">{ }</span><div><p class="rt">Microsoft Fabric REST API references</p><div class="ru">learn.microsoft.com/rest/api/fabric/articles</div><div class="rd">Automate item management, deployment pipelines, Git, capacities; CLI &amp; fabric-cicd.</div></div>
       </a>
-      <a class="res" href="https://learn.microsoft.com/en-us/power-bi/developer/mcp/">
-        <span class="ric">⌕</span><div><p class="rt">Power BI MCP servers documentation</p><div class="ru">learn.microsoft.com/power-bi/developer/mcp</div><div class="rd">Local &amp; remote Power BI MCP servers, tool reference, getting started.</div></div>
+      <a class="res" href="https://learn.microsoft.com/en-us/fabric/iq/connectors/fabric-iq-mcp">
+        <span class="ric">⌕</span><div><p class="rt">Fabric IQ MCP server</p><div class="ru">learn.microsoft.com/fabric/iq/connectors/fabric-iq-mcp</div><div class="rd">Generally available data-query and insight tools for Fabric IQ consumption scenarios.</div></div>
       </a>
       <a class="res" href="https://learn.microsoft.com/en-us/power-bi/guidance/develop-scalable-multitenancy-apps-with-powerbi-embedding">
         <span class="ric">⌘</span><div><p class="rt">Scalable multitenancy with Power BI embedding</p><div class="ru">learn.microsoft.com/power-bi/guidance</div><div class="rd">Service principal profiles for tens of thousands of tenants &amp; 100k+ users.</div></div>
@@ -790,8 +790,8 @@ h2.sec-title{font-size:30px; font-weight:850; letter-spacing:-.02em; line-height
 
 <footer class="foot">
   <div class="wrap">
-    <p class="disc">Capabilities reflect Microsoft Fabric &amp; Power BI documentation reviewed September 2, 2026. The local Power BI Authoring MCP server is generally available; the hosted Power BI Authoring MCP server, Fabric Core MCP Server, remote Power BI MCP Server, and Power BI authoring skills are preview capabilities and may change before general availability. The custom-MCP-server pattern is an architectural recommendation built on the open Model Context Protocol specification and Fabric REST APIs. Tenant and user figures reflect Microsoft's published Power BI embedding guidance.</p>
-    <p>ISV reference architecture &middot; Power BI Authoring MCP server &middot; Fabric Core MCP Server &middot; Skills for Fabric &middot; Fabric REST APIs</p>
+    <p class="disc">Capabilities reflect Microsoft Fabric &amp; Power BI documentation reviewed October 23, 2026. The local Power BI Authoring MCP server, Fabric Core MCP Server, and Fabric IQ MCP server are generally available; the hosted Power BI Authoring MCP server and Power BI authoring skills remain preview capabilities and may change before general availability. The custom-MCP-server pattern is an architectural recommendation built on the open Model Context Protocol specification and Fabric REST APIs. Tenant and user figures reflect Microsoft's published Power BI embedding guidance.</p>
+    <p>ISV reference architecture &middot; Power BI Authoring MCP server &middot; Fabric IQ MCP server &middot; Fabric Core MCP Server &middot; Skills for Fabric &middot; Fabric REST APIs</p>
   </div>
 </footer>
 

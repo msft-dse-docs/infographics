@@ -266,7 +266,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-09-04">
+<meta name="smec:last-accuracy-check" content="2026-10-23">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="cbattlegear">
 <style>/* smec-back-btn v3 */
@@ -378,7 +378,7 @@
 </style>
 </head>
 <body>
-<time class="smec-validation-date" datetime="2026-09-04" data-smec-validation-date="v1">Valid as of 2026-09-04</time>
+<time class="smec-validation-date" datetime="2026-10-23" data-smec-validation-date="v1">Valid as of 2026-10-23</time>
 
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
 
@@ -483,7 +483,7 @@
             <li>Select the <strong>same tables</strong> in both Prep for AI and the data agent</li>
             <li>Include <strong>dependent objects</strong> — if a measure references other measures/columns, include them all</li>
             <li>Use <tip class="tip">Semantic Link Labs<span class="tip-text">The get_measure_dependencies function helps you identify all dependencies for a measure.</span></tip> to find dependencies</li>
-            <li>Use the <strong>Power BI Modeling MCP server</strong> to auto-generate business-friendly names</li>
+            <li>Use the <strong>Power BI Authoring MCP server</strong> to auto-generate business-friendly names</li>
           </ul>
         </div>
         <div class="card">
@@ -566,7 +566,7 @@
     <div class="section-header">
       <span class="section-label label-teal">Configuration</span>
       <h2>Data Agent Configuration Best Practices</h2>
-      <p>Agent-level and data-source-level instructions control how the agent interprets queries, selects sources, and formats responses.</p>
+      <p>Agent-level and data-source-level instructions control how the agent interprets queries, selects sources, and formats responses. Support varies by source type: semantic-model-specific instructions and examples belong in Prep for AI, not data-agent data-source instructions.</p>
     </div>
 
     <div class="accordion" id="configAccordion">
@@ -657,16 +657,16 @@
       </div>
 
       <div class="acc-item">
-        <div class="acc-header"><span>9 &nbsp; Use Example Queries for Complex Logic</span><span class="chevron">&#9660;</span></div>
+        <div class="acc-header"><span>9 &nbsp; Use Examples Supported by the Source Type</span><span class="chevron">&#9660;</span></div>
         <div class="acc-body"><div class="acc-body-inner">
-          Example queries act as templates the agent generalizes from. For each user question, the agent retrieves the most relevant examples, <strong>typically the top four</strong>.<br><br>
+          For supported SQL and KQL sources, example queries act as templates the agent generalizes from. For semantic models, example queries aren't supported in data-source configuration; use <strong>Verified Answers in Prep for AI</strong>, including example DAX where appropriate.<br><br>
           Focus on queries involving:<br>
           <ul style="margin-top:8px;">
             <li>Filtering &amp; joins</li>
             <li>Aggregations</li>
             <li>Date handling</li>
           </ul><br>
-          <strong>Tip:</strong> A well-formed query is often clearer than paragraphs of text trying to explain the same logic.
+          <strong>Tip:</strong> Match the example mechanism to the source type instead of copying SQL/KQL configuration guidance into a semantic-model agent.
         </div></div>
       </div>
 
@@ -913,8 +913,8 @@ guidance (tone, formatting, routing).</code>
       <div class="check-item" data-key="c13"><div class="check-box"></div><div class="check-text">Business terms, abbreviations, and date defaults defined</div></div>
       <div class="check-item" data-key="c14"><div class="check-box"></div><div class="check-text">Report visuals have descriptive titles</div></div>
       <div class="check-item" data-key="c15"><div class="check-box"></div><div class="check-text">Agent-level instructions limited to cross-source guidance only</div></div>
-      <div class="check-item" data-key="c16"><div class="check-box"></div><div class="check-text">Data source instructions include join logic, value formats, and examples</div></div>
-      <div class="check-item" data-key="c17"><div class="check-box"></div><div class="check-text">Example queries provided for complex logic</div></div>
+      <div class="check-item" data-key="c16"><div class="check-box"></div><div class="check-text">Supported SQL/KQL source instructions include join logic, value formats, and examples</div></div>
+      <div class="check-item" data-key="c17"><div class="check-box"></div><div class="check-text">Examples match the source type: example queries where supported; Verified Answers for semantic models</div></div>
       <div class="check-item" data-key="c18"><div class="check-box"></div><div class="check-text">Generated DAX reviewed and validated during testing</div></div>
       <div class="check-item" data-key="c19"><div class="check-box"></div><div class="check-text">Stakeholders involved in validation</div></div>
       <div class="check-item" data-key="c20"><div class="check-box"></div><div class="check-text">Git integration &amp; deployment pipelines configured for ALM</div></div>
