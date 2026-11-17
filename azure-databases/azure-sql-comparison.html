@@ -542,7 +542,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-23">
+<meta name="smec:last-accuracy-check" content="2026-11-17">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="cbattlegear">
 <style>/* smec-back-btn v3 */
@@ -654,7 +654,7 @@
 </style>
 </head>
 <body>
-<time class="smec-validation-date" datetime="2026-10-23" data-smec-validation-date="v1">Valid as of 2026-10-23</time>
+<time class="smec-validation-date" datetime="2026-11-17" data-smec-validation-date="v1">Valid as of 2026-11-17</time>
 
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
 
@@ -714,7 +714,7 @@
         <ul>
           <li>Lift-and-shift migrations that need minimal application changes</li>
           <li>Workloads requiring OS-level access or custom agents</li>
-          <li>Apps using SQL Server features not yet in PaaS (CLR, linked servers to non-SQL sources, etc.)</li>
+          <li>Apps requiring OS integration or linked-server providers unavailable in PaaS; MI supports CLR with restrictions</li>
           <li>Running SSIS, SSRS, or SSAS alongside the engine</li>
         </ul>
 
@@ -759,6 +759,8 @@
           <li>Apps that need instance-scoped features: SQL Agent jobs, cross-database queries, Service Broker</li>
           <li>Organizations consolidating many databases onto one managed instance</li>
           <li>Workloads requiring VNet integration &amp; private endpoints</li>
+          <li>Next-gen GP zone redundancy is GA in supported regions; flexible memory for zone-redundant Premium-series instances is also GA (Ignite 2026)</li>
+          <li>MI link now supports multi-database SQL Server availability groups (GA); validate source versions, prerequisites, and cutover consistency</li>
         </ul>
 
         <h4 class="mi-accent">Operational Profile</h4>
@@ -802,6 +804,7 @@
           <li>SaaS products needing per-tenant database isolation</li>
           <li>Microservice architectures with one database per service</li>
           <li>Dev/test workloads benefiting from serverless auto-pause</li>
+          <li>Local development: Azure SQL Database container (preview), not a production substitute for the managed cloud service</li>
         </ul>
 
         <h4 class="db-accent">Operational Profile</h4>
@@ -834,7 +837,7 @@
         <tbody>
           <tr>
             <td>SQL Server Compatibility</td>
-            <td><span class="check">✔ Full SQL Server feature set</span></td>
+            <td><span class="check">✔ Features depend on SQL edition, version &amp; OS</span></td>
             <td><span class="check">✔ Almost all instance &amp; DB features</span></td>
             <td><span class="partial">◐ Most database-level features</span></td>
           </tr>
@@ -854,7 +857,7 @@
             <td>Cross-Database Queries</td>
             <td><span class="check">✔ Yes</span></td>
             <td><span class="check">✔ Yes</span></td>
-            <td><span class="partial">◐ Elastic Query only</span></td>
+            <td><span class="partial">◐ Elastic query (preview), not native instance-wide joins</span></td>
           </tr>
           <tr>
             <td>Linked Servers</td>
@@ -864,7 +867,7 @@
           </tr>
           <tr>
             <td>CLR / .NET Integration</td>
-            <td><span class="check">✔ Unrestricted</span></td>
+            <td><span class="check">✔ Subject to SQL security &amp; OS support</span></td>
             <td><span class="partial">◐ Yes; binary assemblies, no file access</span></td>
             <td><span class="no">✘ No</span></td>
           </tr>
@@ -889,8 +892,8 @@
           <tr>
             <td>Automated Backups</td>
             <td><span class="partial">◐ You configure</span></td>
-            <td><span class="check">✔ Built-in, up to 35 days (Basic: 7)</span></td>
-            <td><span class="check">✔ Built-in, up to 35 days</span></td>
+            <td><span class="check">✔ PITR up to 35 days; optional LTR</span></td>
+            <td><span class="check">✔ PITR up to 35 days (Basic: 7); optional LTR</span></td>
           </tr>
           <tr>
             <td>Auto-Tuning</td>
@@ -917,9 +920,9 @@
             <td><span class="check">✔ Active geo-replication &amp; failover groups</span></td>
           </tr>
           <tr>
-            <td>Max Database Size</td>
-            <td>Up to 256 TB instance storage</td>
-            <td>Up to 16 TB; 32 TB with Next-gen GP</td>
+            <td>Storage Scale (scope matters)</td>
+            <td>VM, disk &amp; SQL edition limits apply</td>
+            <td>Instance storage: up to 16 TB; 32 TB with Next-gen GP</td>
             <td>Up to 128 TB with Hyperscale</td>
           </tr>
         </tbody>
@@ -988,7 +991,7 @@
             <div class="flow-connector"></div>
             <div class="flow-branch-label no-label">STILL UNSURE?</div>
             <div class="flow-connector"></div>
-            <div class="flow-result mi-result">→ Start with Managed Instance (broadest compat, PaaS benefits)</div>
+            <div class="flow-result mi-result">→ Assess compatibility, recovery needs &amp; measured cost before choosing</div>
           </div>
         </div>
       </div>
@@ -1028,13 +1031,13 @@
       <div class="scenario-card db-border">
         <div class="sc-label">SQL Database</div>
         <h3>Multi-Tenant SaaS Product</h3>
-        <p>You're building a SaaS app with one database per customer. Serverless auto-pauses idle trial databases, keeping costs low while scaling on demand.</p>
+        <p>Use one database per customer. Consider serverless for intermittent use only when pause eligibility and resume latency fit; compare elastic pools for many intermittently active tenants. Storage costs continue while paused.</p>
       </div>
 
       <div class="scenario-card db-border">
         <div class="sc-label">SQL Database</div>
         <h3>Microservice Data Store</h3>
-        <p>Each microservice owns its database. Azure SQL Database gives each service an independent, auto-tuned database with built-in geo-replication.</p>
+        <p>Each microservice owns its database. Use Azure SQL Database for managed operations; configure and fund geo-replication separately when regional recovery is required.</p>
       </div>
 
     </div>
@@ -1062,7 +1065,7 @@
           <li>Storage (per GB provisioned)</li>
           <li>SQL license included (or AHB discount)</li>
           <li>Backup storage (included up to 100% of instance size)</li>
-          <li>No OS/infra costs</li>
+          <li>Managed infrastructure included; extra memory, IOPS, networking &amp; DR may add cost</li>
         </ul>
       </div>
       <div class="cost-card db-cost">
@@ -1071,7 +1074,7 @@
           <li>DTU-based or vCore-based tiers</li>
           <li>Serverless: pay per second of compute</li>
           <li>Provisioned or serverless compute options</li>
-          <li>Backup storage (included up to 100%)</li>
+          <li>Backup allowance varies by tier; LTR and excess storage cost extra</li>
           <li>Hyperscale: scale storage independently</li>
         </ul>
       </div>
@@ -1080,7 +1083,7 @@
 
   <!-- FOOTER -->
   <div class="footer">
-    <p>Azure SQL Decision Guide &bull; Created April 2026 &bull; Always validate against the latest <a href="https://learn.microsoft.com/azure/azure-sql/" target="_blank">Azure SQL documentation</a></p>
+    <p>Sources: <a href="https://learn.microsoft.com/azure/azure-sql/" target="_blank" rel="noopener">Azure SQL documentation</a> &bull; <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/serverless-tier-overview" target="_blank" rel="noopener">Serverless capabilities and pause limits</a> &bull; <a href="https://news.microsoft.com/events/ignite/2026/book-of-news/" target="_blank" rel="noopener">Ignite 2026 Azure SQL announcements</a>. GA MI features still require supported hardware and regions; the local SQL Database container remains preview.</p>
   </div>
 
 </div>

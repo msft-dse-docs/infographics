@@ -918,6 +918,7 @@
     display: block; margin-top: 8px;
     font-size: .86rem; opacity: .85;
   }
+  @media (max-width: 560px) { .why-grid { grid-template-columns: 1fr; } }
 
   /* =========================================================
      Steps — zero to hello world
@@ -1484,7 +1485,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-23">
+<meta name="smec:last-accuracy-check" content="2026-11-17">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="ashwinkrishnanm-sys">
 <style>/* smec-back-btn v3 */
@@ -1596,7 +1597,7 @@
 </style>
 </head>
 <body>
-<time class="smec-validation-date" datetime="2026-10-23" data-smec-validation-date="v1">Valid as of 2026-10-23</time>
+<time class="smec-validation-date" datetime="2026-11-17" data-smec-validation-date="v1">Valid as of 2026-11-17</time>
 
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
 
@@ -1724,7 +1725,7 @@
       <a href="#industries">Industries</a>
       <a href="https://azure.microsoft.com/en-us/pricing/details/communication-services/" target="_blank" rel="noopener">Pricing</a>
       <a href="#training">Training</a>
-      <a class="topbar-cta" href="https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/create-communication-resource" target="_blank" rel="noopener">Get started</a>
+      <a class="topbar-cta" href="https://learn.microsoft.com/en-us/azure/communication-services/acs-retirement-and-breaking-changes-guide" target="_blank" rel="noopener">Plan the transition</a>
     </nav>
   </div>
 </header>
@@ -1735,26 +1736,26 @@
   <div class="hero-grid"></div>
 
   <div class="hero-inner">
-    <span class="hero-eyebrow"><span class="dot"></span>The cloud behind Microsoft Teams</span>
+    <span class="hero-eyebrow"><span class="dot"></span>Ignite 2026 · Communication lifecycle decisions</span>
 
     <h1>
-      Every channel.<br/>
-      One cloud.<br/>
-      <span class="line-grad">Infinite possibility.</span>
+      Know the channel.<br/>
+      Know the deadline.<br/>
+      <span class="line-grad">Plan the transition.</span>
     </h1>
 
     <p class="lead">
-      Enterprise-grade voice, video, chat, SMS, email and Teams interoperability —
-      delivered as composable APIs on the same global network that powers Microsoft Teams.
+      Azure Communication Services spans voice, video, chat, SMS, email and Teams interoperability.
+      Standalone ACS is retiring: separate retiring channels from supported Teams-aligned calling before you design or renew.
     </p>
 
     <div style="max-width:760px;margin:24px auto 0;padding:16px 20px;border:1px solid rgba(255,159,10,.55);border-radius:14px;background:rgba(255,159,10,.12);color:#fff;line-height:1.55;">
-      <strong>Lifecycle notice:</strong> Standalone Azure Communication Services retires September 30, 2028, and new sign-ups for retiring services stop October 23, 2026. Review the <a href="https://learn.microsoft.com/en-us/azure/communication-services/acs-retirement-and-breaking-changes-guide" target="_blank" rel="noopener" style="color:#ffd18a;text-decoration:underline;">retirement and migration guidance</a> before selecting ACS for new workloads.
+      <strong>Lifecycle decision:</strong> Retiring standalone services become unavailable September 30, 2028. Onboarding/expansion restrictions began October 23, 2026, initially limiting new-customer telephony number acquisition; more restrictions can follow. Calling SDK, Call Automation, recording, captions, audio streaming and diagnostics have breaking changes and continue only in supported Teams-aligned scenarios after the deadline. <a href="https://learn.microsoft.com/en-us/azure/communication-services/acs-retirement-and-breaking-changes-guide" target="_blank" rel="noopener" style="color:#ffd18a;text-decoration:underline;">Check your exact service and migration path</a>.
     </div>
 
     <div class="hero-cta">
       <a class="btn btn-primary" href="#get-started">
-        Get started
+        Plan your transition
         <svg style="width:16px;height:16px" aria-hidden="true"><use href="#i-arrow"/></svg>
       </a>
       <a class="btn btn-ghost" href="https://learn.microsoft.com/en-us/azure/communication-services/" target="_blank" rel="noopener">
@@ -1823,7 +1824,7 @@
 
   <!-- Trust marquee -->
   <div class="trust-marquee">
-    <div class="trust-marquee-label">Enterprise-certified · trusted globally</div>
+    <div class="trust-marquee-label">Compliance considerations · verify service, geography, contract and configuration; these are not application certifications</div>
     <div class="trust-track">
       <span class="trust-item"><svg><use href="#i-shield"/></svg>HIPAA</span>
       <span class="trust-item"><svg><use href="#i-shield"/></svg>SOC 2</span>
@@ -1868,7 +1869,7 @@
       <div class="kpi-tile reveal d2">
         <span class="kpi-tag">Pricing</span>
         <div class="kpi-num">PAYG</div>
-        <div class="kpi-label">Pay-as-you-go · no per-seat licensing</div>
+        <div class="kpi-label">ACS usage meters; Teams-aligned scenarios can also require Teams/Phone licenses</div>
       </div>
       <div class="kpi-tile reveal d3">
         <span class="kpi-tag">Microsoft</span>
@@ -1884,8 +1885,8 @@
   <div class="container">
     <div class="section-head reveal">
       <span class="kicker">Overview</span>
-      <h2>One platform.<br/><span class="grad-word">Every channel.</span></h2>
-      <p>A unified, globally available cloud for real-time and asynchronous communication — built on the same infrastructure that runs Microsoft Teams.</p>
+      <h2>One inventory.<br/><span class="grad-word">Two lifecycle paths.</span></h2>
+      <p>Keep this channel map for existing workloads. Retiring email, SMS, WhatsApp, chat, Rooms, number management, Direct Routing, Job Router and UI Libraries need migration; supported Teams calling scenarios require SDK and solution changes.</p>
     </div>
 
     <div class="bento">
@@ -1902,7 +1903,7 @@
         <div>
           <div class="bento-stat">6</div>
           <h3>Composable APIs</h3>
-          <p>Pick the channels you need — voice, video, chat, SMS, email — and mix them.</p>
+          <p>Inventory voice, video, chat, SMS, email and WhatsApp separately. Availability today is not a long-term support commitment.</p>
         </div>
       </div>
       <div class="bento-cell b-light-2 reveal d2">
@@ -1910,7 +1911,7 @@
         <div>
           <div class="bento-stat">Teams</div>
           <h3>Native interop</h3>
-          <p>Join meetings, chats and calls from your own custom apps.</p>
+          <p>Supported meeting/calling interoperability continues with changes. ACS Chat, including Teams meeting interop chat, retires.</p>
         </div>
       </div>
       <div class="bento-cell b-sunrise reveal d3">
@@ -1931,8 +1932,8 @@
   <div class="container" style="position:relative;z-index:1;">
     <div class="section-head reveal">
       <span class="kicker">Business value</span>
-      <h2>Why leaders<br/>choose <span class="grad-word">ACS.</span></h2>
-      <p>Consolidate fragmented communication tooling, accelerate time-to-market and modernize customer engagement — on one enterprise-grade platform backed by Microsoft.</p>
+      <h2>Protect today's service.<br/>Choose tomorrow's <span class="grad-word">path.</span></h2>
+      <p>Existing ACS capabilities remain useful during transition. For new investment, compare supported Teams-aligned scenarios, Dynamics 365 options and communications partners by channel, licensing, data handling and migration effort.</p>
     </div>
 
     <div class="feature-stack">
@@ -1941,9 +1942,9 @@
         <div>
           <span class="f-kicker">Vendor consolidation</span>
           <h3>One Azure communication platform.</h3>
-          <p>Combine supported SMS, email, chat, calling and advanced-messaging capabilities through Azure services and SDKs.</p>
+          <p>Existing applications can compose channels during transition; do not make a new multichannel platform commitment without checking each service's retirement path.</p>
           <ul>
-            <li>Unified identity across channels</li>
+            <li>Application-owned customer mapping across channel-specific identifiers</li>
             <li>Single Microsoft commercial relationship</li>
             <li>Azure-based metering and support</li>
           </ul>
@@ -1956,8 +1957,8 @@
       <div class="feature-card feat-sunrise reveal">
         <div>
           <span class="f-kicker">Accelerated delivery</span>
-          <h3>Ship in weeks, not quarters.</h3>
-          <p>Drop-in UI Library components and prebuilt workflows let product teams deliver customer-facing communication in weeks — freeing engineering for differentiation.</p>
+          <h3>Reuse carefully. Budget for replacement.</h3>
+          <p>UI Library calling and chat components can help maintain existing apps, but Web and Mobile UI Libraries retire September 30, 2028. Teams-aligned calling does not exempt a retiring UI SDK.</p>
           <ul>
             <li>Production-ready React, iOS and Android components</li>
             <li>Quickstarts for every channel</li>
@@ -1973,10 +1974,10 @@
         <div>
           <span class="f-kicker">Usage-aligned economics</span>
           <h3>Pay only for what you use.</h3>
-          <p>Usage-based meters align cost with consumption instead of per-seat licensing; service limits and channel-specific charges still apply.</p>
+          <p>ACS usage meters do not remove phone-number, carrier, AI, network, or related service charges. Continuing Teams-aligned scenarios can require Teams and Teams Phone licensing; model both operating and migration costs.</p>
           <ul>
             <li>Per-message, per-minute, per-transaction</li>
-            <li>No seat minimums or ramp commitments</li>
+            <li>Check Teams, Phone and channel-specific licensing requirements</li>
             <li>Transparent pricing calculator</li>
           </ul>
         </div>
@@ -1991,8 +1992,8 @@
           <h3>Security baked in — not bolted on.</h3>
           <p>Encrypted communication, Azure identity controls and Azure compliance offerings can support your security design; your application remains responsible for meeting applicable requirements.</p>
           <ul>
-            <li>HIPAA, SOC 2, ISO 27001, PCI DSS, GDPR</li>
-            <li>EU Data Boundary for EU customers</li>
+            <li>Validate service-scope evidence and contractual obligations; no blanket compliance guarantee</li>
+            <li>Review EU Data Boundary scope, channel exceptions and cross-border delivery</li>
             <li>Entra ID integration for enterprise identity</li>
           </ul>
         </div>
@@ -2008,7 +2009,7 @@
           <p>Build custom apps that join Teams meetings, or build specialized clients for licensed Teams users, using the supported interoperability identity models.</p>
           <ul>
             <li>Join Teams meetings from a custom app</li>
-            <li>Use Teams meeting chat from supported ACS scenarios</li>
+            <li>Plan ACS Chat replacement even for Teams meeting chat; evaluate Microsoft Graph with applicable Teams licensing</li>
             <li>Choose external-user or Teams-user identity</li>
           </ul>
         </div>
@@ -2021,7 +2022,7 @@
         <div>
           <span class="f-kicker">Intelligent by design</span>
           <h3>AI-ready conversations.</h3>
-          <p>Use Call Automation for real-time transcription and audio streaming, then connect other AI tools when you need sentiment, summarization or intent analysis.</p>
+          <p>Call Automation supports transcription and audio streaming with separate AI tools for analysis. Plan the required SDK and supported Teams-aligned scenario changes; a standalone voice bot is not automatically supported after September 30, 2028.</p>
           <ul>
             <li>Real-time transcription through Azure AI Services</li>
             <li>Bidirectional audio streaming for external processing</li>
@@ -2042,44 +2043,44 @@
   <div class="container">
     <div class="section-head reveal">
       <span class="kicker">What's new</span>
-      <h2>Moving <span class="grad-word">forward</span>, always.</h2>
-      <p>ACS is updated continuously. A snapshot of recent and notable capabilities you can use today.</p>
+      <h2>The lifecycle facts that<br/><span class="grad-word">change the decision.</span></h2>
+      <p>Use the service-level retirement matrix, not a feature announcement, as the starting point for new architecture and renewal discussions.</p>
     </div>
 
     <div class="whats-new">
       <div class="reveal">
         <div class="timeline">
           <div class="tl-item t-blue">
-            <span class="tl-date">Available</span>
+            <span class="tl-date">Retires September 30, 2028</span>
             <h4>Advanced Messaging for WhatsApp</h4>
-            <p>Send and receive WhatsApp Business messages through a single ACS API — notifications, OTPs and two-way conversations.</p>
+            <p>Existing templates and two-way messaging need a migration path. Evaluate Dynamics 365 Contact Center or listed partners; map business-scoped WhatsApp identifiers explicitly.</p>
           </div>
           <div class="tl-item t-purple">
-            <span class="tl-date">Available</span>
+            <span class="tl-date">Retires September 30, 2028</span>
             <h4>High-volume Email scale</h4>
-            <p>ACS Email supports high-volume application-to-person email. For high-volume internal Microsoft 365 mail, evaluate Exchange Online High Volume Email separately.</p>
+            <p>ACS Email retires. High Volume Email serves internal Microsoft 365 scenarios and is not a like-for-like replacement for every external transactional/bulk sender. Evaluate recipients, limits and partner options.</p>
           </div>
           <div class="tl-item t-pink">
-            <span class="tl-date">Available</span>
+            <span class="tl-date">Breaking changes</span>
             <h4>Call Automation + Azure AI</h4>
-            <p>Call Automation supports real-time transcription and bidirectional audio streaming. Use transcripts or audio with separate AI tools for additional analysis.</p>
+            <p>Call Automation and related media services continue only with supported Teams-aligned use and updated SDKs after September 30, 2028. Verify the scenario matrix and licensing; standalone calling is not grandfathered indefinitely.</p>
           </div>
           <div class="tl-item t-orange">
-            <span class="tl-date">Platform-specific</span>
+            <span class="tl-date">Retires September 30, 2028</span>
             <h4>UI Library Composites</h4>
-            <p>Production-ready calling and chat components are available, but capabilities and preview status differ between Web, iOS and Android.</p>
+            <p>Web and Mobile UI Libraries retire, even when used with another supported service. Inventory platform dependencies and test replacement user experiences before cutover.</p>
           </div>
         </div>
       </div>
 
       <div class="reveal d2">
         <div class="why-panel">
-          <h3>Why it matters</h3>
-          <p>Communication is no longer a silo. ACS lets you unify every channel — voice, video, chat, SMS, email and Teams — behind a single identity model and one billing surface.</p>
+          <h3>One customer is not one channel identity</h3>
+          <p>ACS chat/calling user IDs, phone numbers, email addresses, Teams identities and WhatsApp business-scoped IDs are different identifiers. Your application must map them with consent, verification and lifecycle controls; ACS does not automatically unify customer identity across channels.</p>
           <div class="why-grid">
             <div class="why-cell"><div class="v">SLA</div><small>Service-specific terms</small></div>
             <div class="why-cell"><div class="v">Global</div><small>Country-specific voice/SMS availability</small></div>
-            <div class="why-cell"><div class="v">PAYG</div><small>No per-user licensing</small></div>
+            <div class="why-cell"><div class="v">PAYG</div><small>Include related Teams/Phone licensing</small></div>
             <div class="why-cell"><div class="v">Teams</div><small>Native interop</small></div>
           </div>
         </div>
@@ -2092,31 +2093,31 @@
 <section class="block" id="get-started">
   <div class="container">
     <div class="section-head reveal">
-      <span class="kicker">Get started</span>
-      <h2>From zero to<br/><span class="grad-word">"hello world"</span> in four steps.</h2>
-      <p>A consistent onboarding path whether you're adding SMS, email, calling or chat.</p>
+      <span class="kicker">Transition playbook</span>
+      <h2>Four steps to<br/><span class="grad-word">a supported future.</span></h2>
+      <p>Inventory first. Select the destination second. Prove the cutover before September 30, 2028.</p>
     </div>
 
     <div class="steps">
       <div class="step reveal">
         <div class="step-num"></div>
-        <h4>Create a resource</h4>
-        <p>Provision an Azure Communication Services resource in the Azure portal or via ARM/Bicep.</p>
+        <h4>Inventory dependencies</h4>
+        <p>List resources, channels, number ownership, SDKs, UI components, chat history, recordings and telemetry. Use Azure Advisor retirement recommendations.</p>
       </div>
       <div class="step reveal d1">
         <div class="step-num"></div>
-        <h4>Choose a channel</h4>
-        <p>Select voice, video, chat, SMS, email or advanced messaging for your scenario.</p>
+        <h4>Choose a destination</h4>
+        <p>Separate retiring channels from supported Teams-aligned calling. Check customer onboarding restrictions, feature fit, licensing, data geography and number-porting requirements.</p>
       </div>
       <div class="step reveal d2">
         <div class="step-num"></div>
-        <h4>Install the SDK</h4>
-        <p>Add the .NET, JavaScript, Java, Python, iOS, Android or PowerShell SDK to your app.</p>
+        <h4>Rebuild and rehearse</h4>
+        <p>Update affected SDKs and identity mappings; replace retiring APIs and UI components. Test consent, emergency calling where applicable, delivery and failure handling.</p>
       </div>
       <div class="step reveal d3">
         <div class="step-num"></div>
-        <h4>Authenticate &amp; send</h4>
-        <p>Issue an identity token or use a connection string, then send your first message or make your first call.</p>
+        <h4>Cut over and retain evidence</h4>
+        <p>Export required data and telemetry, validate retention and deletion obligations, then execute a tested cutover and rollback plan before retirement.</p>
       </div>
     </div>
   </div>
@@ -2128,7 +2129,7 @@
     <div class="section-head reveal">
       <span class="kicker">Communication channels</span>
       <h2>Meet your customers<br/><span class="grad-word">where they are</span>.</h2>
-      <p>Click each channel to see capabilities, common scenarios and the SDKs available.</p>
+      <p>Existing capability reference, not a new-build recommendation. Each tab includes its lifecycle decision; SDK/platform capabilities still vary.</p>
     </div>
 
     <div class="channel-wrap reveal">
@@ -2146,7 +2147,7 @@
         <div class="channel-panel active" data-panel="email">
           <div>
             <h3>Email at scale.</h3>
-            <p>Send transactional and bulk application-to-person email from an Azure-managed or verified custom domain.</p>
+            <p>Existing transactional and bulk application email capability. <strong>Retires September 30, 2028</strong>; plan sender-domain and delivery migration.</p>
             <ul>
               <li>REST API, SDKs or SMTP AUTH relay</li>
               <li>Custom domains with SPF, DKIM and ARC</li>
@@ -2165,8 +2166,8 @@
 
         <div class="channel-panel" data-panel="sms">
           <div>
-            <h3>SMS that just works.</h3>
-            <p>Send alerts, 2FA codes and reminders using number types and sender capabilities available for your country or region.</p>
+            <h3>SMS: plan sender continuity.</h3>
+            <p>Existing alerts, codes and reminders use country-specific senders. <strong>Retires September 30, 2028</strong>; onboarding restrictions have begun. Plan number/sender registration and consent migration.</p>
             <ul>
               <li>Toll-free, short-code and alphanumeric sender IDs</li>
               <li>Opt-out handling and delivery reports</li>
@@ -2186,7 +2187,7 @@
         <div class="channel-panel" data-panel="voice">
           <div>
             <h3>PSTN calling, cloud-native.</h3>
-            <p>Purchase phone numbers and make or receive PSTN calls directly from your application, or route calls through your existing SBC via Direct Routing.</p>
+            <p>ACS direct-offer number management and ACS Direct Routing <strong>retire September 30, 2028</strong>. Supported Teams Phone Extensibility paths have licensing, resource-account and connectivity requirements; do not assume ACS numbers or SBC configurations transfer automatically.</p>
             <ul>
               <li>Outbound and inbound calling from the cloud</li>
               <li>Direct Routing via your SBC — bring your carrier</li>
@@ -2206,12 +2207,12 @@
         <div class="channel-panel" data-panel="chat">
           <div>
             <h3>Persistent group chat.</h3>
-            <p>Multi-party text or HTML chat threads with message history, typing indicators and read receipts within documented limits.</p>
+            <p>Existing multi-party chat includes history and receipts within service limits. <strong>ACS Chat retires September 30, 2028, including Teams meeting interop chat.</strong> Export required history and validate replacement permissions.</p>
             <ul>
               <li>Up to 250 participants per thread</li>
               <li>Message history with edit and delete semantics</li>
               <li>Typing indicators and read receipts for threads of up to 20 participants</li>
-              <li>Pairs with Teams interop for hybrid threads</li>
+              <li>Microsoft Graph Chat migration requires applicable Teams licensing and scenario validation</li>
             </ul>
             <div class="pill-row">
               <span class="pill">.NET</span><span class="pill">Java</span><span class="pill">Python</span><span class="pill">JavaScript</span><span class="pill">iOS</span><span class="pill">Android</span>
@@ -2226,7 +2227,7 @@
         <div class="channel-panel" data-panel="video">
           <div>
             <h3>HD voice &amp; video.</h3>
-            <p>Embed high-quality 1:1 and group audio and video calls into web, iOS and Android apps using the Calling SDK or the drop-in UI Library.</p>
+            <p>Calling SDK capabilities continue with <strong>breaking changes</strong> and supported Teams-aligned use after September 30, 2028. Standalone calling and the retiring UI Libraries are not a supported long-term path.</p>
             <ul>
               <li>HD audio and video, screen share, raw media access</li>
               <li>Background blur, noise suppression, closed captions</li>
@@ -2246,10 +2247,10 @@
         <div class="channel-panel" data-panel="messaging">
           <div>
             <h3>Beyond SMS &amp; email.</h3>
-            <p>Send and receive WhatsApp Business messages through Azure Communication Services Advanced Messaging.</p>
+            <p>Existing WhatsApp Business messaging through ACS Advanced Messaging <strong>retires September 30, 2028</strong>. Compare supported Dynamics 365 and partner paths.</p>
             <ul>
               <li>WhatsApp Business: templates, media, two-way</li>
-              <li>Single identity across channels</li>
+              <li>Map WhatsApp business-scoped IDs to your customer record in application code</li>
               <li>Delivery receipts and analytics</li>
               <li>Business-scoped user IDs supported for WhatsApp usernames</li>
             </ul>
@@ -2274,7 +2275,7 @@
     <div class="section-head reveal">
       <span class="kicker">Industries</span>
       <h2>Trusted where<br/><span class="grad-word">it matters most.</span></h2>
-      <p>From telehealth visits to branch-grade financial advisory — ACS underpins mission-critical customer communication where compliance, scale and experience cannot be compromised.</p>
+      <p>For regulated workloads, a safe transition includes vendor fit, consent, data export/retention, accessibility, service geography and tested continuity — not merely replacing an SDK.</p>
     </div>
 
     <div class="industries">
@@ -2290,7 +2291,7 @@
       <div class="ind-card retail reveal d1">
         <div class="ind-icon"><svg><use href="#i-bag"/></svg></div>
         <h4>Retail &amp; consumer</h4>
-        <p>Abandoned-cart SMS, WhatsApp order updates and live video shopping — orchestrated across channels from one customer identity.</p>
+        <p>For SMS and WhatsApp transitions, preserve consent, sender registration and application-owned customer mappings; channel identities are not automatically interchangeable.</p>
         <div class="ind-stats">
           <span class="ind-stat">Omnichannel</span>
           <span class="ind-stat">WhatsApp</span>
@@ -2332,31 +2333,31 @@
       <div class="service reveal">
         <div class="s-icon"><svg><use href="#i-handshake"/></svg></div>
         <h4>Teams Interoperability</h4>
-        <p>Let your apps and users participate in Microsoft Teams calls, meetings and chats — with your own branded experience.</p>
+        <p>Supported meeting/calling interoperability continues with SDK changes. ACS Chat for Teams meeting interop retires; evaluate the separate Graph migration path.</p>
         <a class="s-link" href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/teams-interop" target="_blank" rel="noopener">Learn more</a>
       </div>
       <div class="service reveal d1">
         <div class="s-icon"><svg><use href="#i-gear"/></svg></div>
         <h4>Call Automation</h4>
-        <p>Server-side APIs for intelligent calling workflows — IVR, routing, recording, transcription and AI-driven call flows.</p>
+        <p>Server-side IVR, routing, recording and transcription. Breaking changes require supported Teams-aligned use after September 30, 2028; validate the scenario matrix.</p>
         <a class="s-link" href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/call-automation/call-automation" target="_blank" rel="noopener">Learn more</a>
       </div>
       <div class="service reveal d2">
         <div class="s-icon"><svg><use href="#i-palette"/></svg></div>
         <h4>UI Library</h4>
-        <p>Production-ready, accessible React, iOS and Android components for calling and chat — ship a polished UX fast.</p>
+        <p>React, iOS and Android calling/chat components retire September 30, 2028. Budget for UI replacement and accessibility testing even if the calling service continues.</p>
         <a class="s-link" href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/ui-library/ui-library-overview" target="_blank" rel="noopener">Learn more</a>
       </div>
       <div class="service reveal d3">
         <div class="s-icon"><svg><use href="#i-compass"/></svg></div>
         <h4>Job Router</h4>
-        <p>Route each customer interaction to the right agent using a flexible engine of queues, workers and rule-based policies.</p>
+        <p>Existing queues, workers and routing policies need replacement: Job Router retires September 30, 2028. Evaluate Dynamics 365 Contact Center or listed partners for the actual routing requirements.</p>
         <a class="s-link" href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/router/concepts" target="_blank" rel="noopener">Learn more</a>
       </div>
       <div class="service reveal d4">
         <div class="s-icon"><svg><use href="#i-diag"/></svg></div>
         <h4>Call Diagnostics</h4>
-        <p>Visual tooling in the Azure portal to debug media quality, connectivity and call setup — with per-participant telemetry.</p>
+        <p>Media quality, connectivity and setup diagnostics continue with breaking changes for supported scenarios. Include telemetry export and replacement dashboards in the transition plan.</p>
         <a class="s-link" href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/call-diagnostics" target="_blank" rel="noopener">Learn more</a>
       </div>
       <div class="service reveal d5">
@@ -2497,11 +2498,11 @@
 <!-- ============= FINAL CTA ============= -->
 <section class="cta-banner">
   <div class="container">
-    <h2 class="reveal">Ready to unify every channel?</h2>
-    <p class="reveal d1">Start with the quickstarts, review service limits, and estimate channel-specific usage charges before production.</p>
+    <h2 class="reveal">Keep the conversation. Change the dependency.</h2>
+    <p class="reveal d1">Assign a transition owner per channel, validate the supported destination, and rehearse before September 30, 2028. Existing availability is not a reason to postpone migration planning.</p>
     <div class="hero-cta reveal d2" style="justify-content:center;">
       <a class="btn btn-primary" href="https://azure.microsoft.com/en-us/pricing/details/communication-services/" target="_blank" rel="noopener">View pricing <svg style="width:14px;height:14px" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-      <a class="btn btn-ghost" href="https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/create-communication-resource" target="_blank" rel="noopener">Create a resource</a>
+      <a class="btn btn-ghost" href="https://learn.microsoft.com/en-us/azure/communication-services/acs-retirement-and-breaking-changes-guide" target="_blank" rel="noopener">Review migration paths</a>
     </div>
   </div>
 </section>
@@ -2519,7 +2520,7 @@
         </svg>
         <span style="color:#fff;">Azure Communication Services</span>
       </div>
-      <p>An interactive overview of the unified communication platform — voice, video, chat, SMS, email and Teams interoperability, delivered as composable cloud APIs.</p>
+      <p>An existing-capability and transition map: retiring standalone channels, supported Teams-aligned calling, channel-specific identities and migration decisions.</p>
     </div>
     <div>
       <h5>Explore</h5>
@@ -2545,7 +2546,7 @@
   </div>
   <div class="footer-bottom">
     <span>Based on the <a href="https://learn.microsoft.com/en-us/azure/communication-services/overview" target="_blank" rel="noopener">Azure Communication Services overview</a> · <a href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/service-limits" target="_blank" rel="noopener">service limits</a> · <a href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/privacy" target="_blank" rel="noopener">data residency and privacy</a></span>
-    <span>Accuracy reviewed · September 2026</span>
+    <span>Lifecycle guidance · Ignite 2026 edition</span>
   </div>
 </footer>
 

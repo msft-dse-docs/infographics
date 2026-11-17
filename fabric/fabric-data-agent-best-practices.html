@@ -266,7 +266,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-23">
+<meta name="smec:last-accuracy-check" content="2026-11-17">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="cbattlegear">
 <style>/* smec-back-btn v3 */
@@ -378,7 +378,7 @@
 </style>
 </head>
 <body>
-<time class="smec-validation-date" datetime="2026-10-23" data-smec-validation-date="v1">Valid as of 2026-10-23</time>
+<time class="smec-validation-date" datetime="2026-11-17" data-smec-validation-date="v1">Valid as of 2026-11-17</time>
 
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
 
@@ -443,7 +443,12 @@
     </div>
     <div class="callout">
       <strong>Key Insight:</strong>
-      <p>The DAX generation tool relies <em>solely</em> on the semantic model's metadata and Prep for AI configurations. It ignores any instructions you add at the data-agent level. Proper Prep for AI setup is essential.</p>
+      <p>For DAX generation, put model-specific guidance in <strong>Prep for AI</strong>, not data-agent instructions. Metadata, visual context, and conversation history also inform queries. Agent-level routing and response formatting still matter. A focused AI schema improves relevance; it is <strong>not an authorization boundary</strong>.</p>
+    </div>
+    <div class="callout">
+      <strong>Ignite 2026: Trusted Context Travels Further</strong>
+      <p>Fabric IQ connects OneLake, semantic models, and ontology context. Microsoft Copilot and Fabric apps integrations are GA; <strong>Excel Edit with Copilot, GitHub Copilot ontologies, and ChatGPT/Claude connectors remain preview</strong>. Reuse governed measures, but retest identity, filters, freshness, and answer quality in each client.</p>
+      <p><strong>Do not confuse agents:</strong> Fabric data agents answer business questions. Database Hub is now GA, but its SQL/PostgreSQL database agents for operational health and approved fixes are preview.</p>
     </div>
   </div>
 </section>
@@ -483,7 +488,7 @@
             <li>Select the <strong>same tables</strong> in both Prep for AI and the data agent</li>
             <li>Include <strong>dependent objects</strong> — if a measure references other measures/columns, include them all</li>
             <li>Use <tip class="tip">Semantic Link Labs<span class="tip-text">The get_measure_dependencies function helps you identify all dependencies for a measure.</span></tip> to find dependencies</li>
-            <li>Use the <strong>Power BI Authoring MCP server</strong> to auto-generate business-friendly names</li>
+            <li>Use the <strong>Power BI Authoring MCP server</strong> to propose business-friendly names; review dependencies and changes before saving</li>
           </ul>
         </div>
         <div class="card">
@@ -501,7 +506,7 @@
         <div class="card">
           <div class="card-accent" style="background:var(--success);"></div>
           <h3>✅ What It Does</h3>
-          <p>User-approved visual responses that trigger for specific questions. Stored at the <strong>semantic model level</strong>, they work across any agent using the same model.</p>
+          <p>Model-level, user-approved question and visual context. Data agents use that context to guide DAX; they <strong>do not return the Power BI visual itself</strong>. Validate results and permission behavior in every consuming experience.</p>
           <ul>
             <li>Checks for exact or semantic match <em>before</em> generating a new response</li>
             <li>Uses visual properties (columns, measures, filters) to guide DAX generation</li>
@@ -652,7 +657,7 @@
             <li>Typical <strong>value formats</strong> (abbreviations vs. full names)</li>
             <li><strong>Example values:</strong> e.g., State uses "CA", "NY", "TX"</li>
           </ul><br>
-          <strong>Remember:</strong> The agent can't see individual row values before executing — include value examples to guide filtering.
+          <strong>Remember:</strong> Include representative, nonsensitive value examples for supported SQL/KQL sources. Semantic-model advanced DAX generation on the <strong>preview runtime</strong> can use instance value indexing; do not assume all runtimes inspect values in the same way.
         </div></div>
       </div>
 
@@ -815,7 +820,7 @@ guidance (tone, formatting, routing).</code>
         <div class="wf-num" style="background:#A6529E;">7</div>
         <div class="wf-content">
           <h4>Verify &amp; Review DAX</h4>
-          <p>When testing, review the generated DAX in each response. If results are wrong, analyze the DAX to identify which configuration needs adjustment.</p>
+          <p>Review generated DAX and compare results with trusted measures. Test ambiguous dates, empty results, restricted users, and adversarial prompts. <strong>Advanced DAX generation is preview</strong>: benchmark its multi-step reasoning separately from the standard runtime.</p>
         </div>
       </div>
       <div class="wf-step">
@@ -829,7 +834,7 @@ guidance (tone, formatting, routing).</code>
         <div class="wf-num" style="background:#D13438;">9</div>
         <div class="wf-content">
           <h4>Validate, Iterate &amp; Deploy</h4>
-          <p>Use the <strong>Fabric Data Agent Python SDK</strong> for automated evaluations. Involve stakeholders. Use <strong>Git integration &amp; deployment pipelines</strong> for ALM across dev → test → prod.</p>
+          <p>Use the <strong>Fabric Data Agent Python SDK</strong> for automated evaluations. Record expected answers, identity, runtime, latency, and cost. Use supported <strong>Git integration &amp; deployment pipelines</strong> for ALM, and revalidate connections and permissions in each environment.</p>
         </div>
       </div>
     </div>
@@ -847,7 +852,7 @@ guidance (tone, formatting, routing).</code>
     <div class="pitfall-grid">
       <div class="pitfall">
         <h4>Not Using Star Schema</h4>
-        <p>Flat or denormalized tables make DAX less efficient. DAX is optimized for <strong>star schema</strong> with clear fact and dimension tables. Unpivot wide tables into normalized structures.</p>
+        <p>Prefer a <strong>star schema</strong> with clear fact grain and dimension relationships. Wide or ambiguous models can hurt performance and accuracy; unpivot only when the analytical grain requires it, not as a blanket normalization rule.</p>
       </div>
       <div class="pitfall">
         <h4>Relying on Hidden Fields</h4>
@@ -855,7 +860,7 @@ guidance (tone, formatting, routing).</code>
       </div>
       <div class="pitfall">
         <h4>Including Unnecessary Measures</h4>
-        <p>Helper measures and intermediate objects add noise. Include only measures that calculate <strong>actual business metrics</strong>.</p>
+        <p>Exclude unrelated helper measures, but retain dependencies needed by selected business metrics. Hiding or removing an object is not a substitute for RLS or OLS.</p>
       </div>
       <div class="pitfall">
         <h4>Duplicate / Overlapping Measures</h4>
@@ -901,7 +906,7 @@ guidance (tone, formatting, routing).</code>
       <div class="check-item" data-key="c1"><div class="check-box"></div><div class="check-text">Semantic model uses <strong>star schema</strong> with clear fact &amp; dimension tables</div></div>
       <div class="check-item" data-key="c2"><div class="check-box"></div><div class="check-text">All tables, columns, and measures have <strong>business-friendly names</strong></div></div>
       <div class="check-item" data-key="c3"><div class="check-box"></div><div class="check-text">Descriptions added to all objects in the AI schema</div></div>
-      <div class="check-item" data-key="c4"><div class="check-box"></div><div class="check-text">Unnecessary columns, helper measures, and duplicates <strong>excluded</strong></div></div>
+      <div class="check-item" data-key="c4"><div class="check-box"></div><div class="check-text">Unrelated columns, helper measures, and duplicates excluded; required dependencies retained</div></div>
       <div class="check-item" data-key="c5"><div class="check-box"></div><div class="check-text">Explicit DAX measures created (no reliance on implicit measures)</div></div>
       <div class="check-item" data-key="c6"><div class="check-box"></div><div class="check-text">Default summarization set correctly on numeric columns</div></div>
       <div class="check-item" data-key="c7"><div class="check-box"></div><div class="check-text"><strong>AI Data Schema</strong> configured in Prep for AI with only relevant objects</div></div>
@@ -918,6 +923,8 @@ guidance (tone, formatting, routing).</code>
       <div class="check-item" data-key="c18"><div class="check-box"></div><div class="check-text">Generated DAX reviewed and validated during testing</div></div>
       <div class="check-item" data-key="c19"><div class="check-box"></div><div class="check-text">Stakeholders involved in validation</div></div>
       <div class="check-item" data-key="c20"><div class="check-box"></div><div class="check-text">Git integration &amp; deployment pipelines configured for ALM</div></div>
+      <div class="check-item" data-key="c21"><div class="check-box"></div><div class="check-text">Restricted-user RLS/OLS and each consuming client's authentication tested</div></div>
+      <div class="check-item" data-key="c22"><div class="check-box"></div><div class="check-text">Runtime and connector preview status recorded; quality, freshness, latency, and cost baselined</div></div>
     </div>
   </div>
 </section>
@@ -925,7 +932,7 @@ guidance (tone, formatting, routing).</code>
 <!-- ═══════════════════ FOOTER ═══════════════════ -->
 <footer>
   <p>Sources: <a href="https://learn.microsoft.com/en-us/fabric/data-science/semantic-model-best-practices" target="_blank">Semantic Model Best Practices</a> &nbsp;|&nbsp; <a href="https://learn.microsoft.com/en-us/fabric/data-science/data-agent-configuration-best-practices" target="_blank">Data Agent Configuration Best Practices</a> &nbsp;|&nbsp; <a href="https://learn.microsoft.com/en-us/fabric/data-science/data-agent-example-queries" target="_blank">Data Agent Example Queries</a></p>
-  <p style="margin-top:8px;">Microsoft Fabric &bull; Data Agents &bull; Best Practice Guide</p>
+  <p style="margin-top:8px;">Announcement source: <a href="https://news.microsoft.com/events/ignite/2026/book-of-news/" target="_blank" rel="noopener">Ignite 2026 Book of News &mdash; Azure Data / Fabric IQ</a>. See <a href="https://learn.microsoft.com/en-us/fabric/data-science/semantic-model-best-practices#advanced-dax-generation-preview" target="_blank" rel="noopener">advanced DAX preview requirements</a>; instance value indexing currently depends on the Q&amp;A setting, with Q&amp;A retirement scheduled for December 2026. Recheck the documented replacement setting rather than assuming it exists.</p>
 </footer>
 
 <!-- ═══════════════════ SCRIPTS ═══════════════════ -->

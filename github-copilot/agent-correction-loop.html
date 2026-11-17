@@ -133,7 +133,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-23">
+<meta name="smec:last-accuracy-check" content="2026-11-17">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="Antonio Montez">
 <style>/* smec-back-btn v3 */
@@ -245,7 +245,7 @@
 </style>
 </head>
 <body>
-<time class="smec-validation-date" datetime="2026-10-23" data-smec-validation-date="v1">Valid as of 2026-10-23</time>
+<time class="smec-validation-date" datetime="2026-11-17" data-smec-validation-date="v1">Valid as of 2026-11-17</time>
 
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
 
@@ -256,7 +256,7 @@
   </div>
   <h1>When the agent's PR is wrong</h1>
   <p>Every async coding agent ships broken first drafts sometimes. The question is how you tell it to try again, which control plane owns the next round, and whether the review trail stays easy to reconstruct.</p>
-  <div class="hero-meta">Accurate as of September 2, 2026 · Focus: review-driven iteration, not one-shot quality</div>
+  <div class="hero-meta">Ignite 2026 review · Focus: review-driven iteration, not one-shot quality</div>
 </header>
 
 <div class="container">
@@ -378,7 +378,7 @@
           <div class="loop-step"><div class="n">1</div><div class="t"><strong>Comment with <code>@claude</code>.</strong> Workflow fires on the event.</div></div>
           <div class="loop-step"><div class="n">2</div><div class="t"><strong>Action runs in GitHub Actions.</strong> Progress is visible through the workflow run and PR comments.</div></div>
           <div class="loop-step"><div class="n">3</div><div class="t"><strong>New commit on the PR branch.</strong> Same PR, one Actions run per trigger.</div></div>
-          <div class="loop-step pain"><div class="n">!</div><div class="t"><strong>Each round has runner and model cost.</strong> You manage workflow YAML, app permissions, and Anthropic credentials.</div></div>
+          <div class="loop-step pain"><div class="n">!</div><div class="t"><strong>          Each round has runner and model cost.</strong> You manage workflow YAML, app permissions, and Anthropic credentials.</div></div>
         </div>
       </div>
 
@@ -393,7 +393,7 @@
       </div>
 
       <div class="loop-card">
-        <header><h3>GitHub Copilot desktop app</h3><div class="sub">Agent-native desktop surface · Generally available</div></header>
+        <header><h3>GitHub Copilot desktop app</h3><div class="sub">Agent-native desktop surface · Feature-specific availability</div></header>
         <div class="loop-steps">
           <div class="loop-step"><div class="n">1</div><div class="t"><strong>Start from the PR in My work.</strong> Open a session to leave review comments or ask the agent to make changes.</div></div>
           <div class="loop-step"><div class="n">2</div><div class="t"><strong>Agent merge handles blockers you authorize.</strong> It can ask the workspace session to address failing checks and merge when GitHub allows.</div></div>
@@ -459,6 +459,14 @@ as the fallback and add a test for the anonymous case.
   </div>
 </section>
 
+<section class="section-flush-top">
+  <div class="container">
+    <h2>Ignite takeaway: review early, prove the fix.</h2>
+    <p>Ignite highlights local code review in the CLI and app, secret detection, adaptive review effort, and cross-repository context. Use these to tighten the correction loop, not replace acceptance criteria. For a web change, reproduce the failing user flow, review the patch, and replay the same flow before merging. A signed-in browser may expose real customer data or actions: use an authorized test account and a safe environment.</p>
+    <p>The app also supports Azure DevOps PR review in <strong>public preview</strong>, but not cloud sessions for Azure DevOps repositories. Its permissions, policies, and activity records remain in Azure DevOps.</p>
+  </div>
+</section>
+
 <footer>
   <div class="container">
     <div>
@@ -477,6 +485,8 @@ as the fallback and add a test for the anonymous case.
         <li><a href="https://docs.github.com/en/copilot/how-tos/github-copilot-app/managing-issues-and-pull-requests">GitHub Copilot app pull request workflow</a></li>
         <li><a href="https://docs.github.com/en/copilot/how-tos/github-copilot-app/agent-sessions">GitHub Copilot app agent sessions</a></li>
         <li><a href="https://github.com/github/app">github/app repo</a></li>
+        <li><a href="https://news.microsoft.com/events/ignite/2026/book-of-news/">Ignite 2026: GitHub announcements</a></li>
+        <li><a href="https://docs.github.com/en/copilot/how-tos/github-copilot-app/manage-azure-devops-work">Azure DevOps PR workflow and limitations</a></li>
       </ul>
     </div>
   </div>

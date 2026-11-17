@@ -481,7 +481,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-23">
+<meta name="smec:last-accuracy-check" content="2026-11-17">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="sebamfor">
 <style>/* smec-back-btn v3 */
@@ -593,7 +593,7 @@
 </style>
 </head>
 <body>
-<time class="smec-validation-date" datetime="2026-10-23" data-smec-validation-date="v1">Valid as of 2026-10-23</time>
+<time class="smec-validation-date" datetime="2026-11-17" data-smec-validation-date="v1">Valid as of 2026-11-17</time>
 
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
 
@@ -639,7 +639,7 @@
       Unified Analytics Platform
     </div>
     <h1>Transform Your Data Strategy with Microsoft Fabric</h1>
-    <p>One platform to unify your analytics, data engineering, data science, and business intelligence &mdash; all built on a single foundation of trust and scale.</p>
+    <p>Connect operational data, analytics, trusted business context, and apps. Start with one decision to improve &mdash; then choose the Fabric workloads, permissions, and capacity that support it.</p>
     <div class="hero-cta">
       <a href="#ecosystem" class="btn btn-primary">Explore Capabilities &darr;</a>
       <a href="#cta" class="btn btn-outline">Get Started</a>
@@ -681,7 +681,7 @@
     <div class="section-header" data-animate>
       <div class="section-number" style="background: var(--accent-bg); color: var(--accent);">01</div>
       <h2>Unified Analytics Ecosystem</h2>
-      <p>Microsoft Fabric integrates data engineering, data science, real-time intelligence, and BI into a single, cohesive platform &mdash; eliminating data silos and unifying your entire analytics workflow.</p>
+      <p>Microsoft Fabric brings data engineering, data science, real-time intelligence, databases, and BI into a shared SaaS platform. Shared services reduce integration work; source access, data quality, and workload-specific security still need design.</p>
     </div>
 
     <!-- Hub & Spoke Diagram -->
@@ -700,7 +700,7 @@
         <div class="spoke-item" data-animate><span class="spoke-dot"></span>Data Warehouse</div>
         <div class="spoke-item" data-animate><span class="spoke-dot"></span>Data Factory</div>
         <div class="spoke-item" data-animate><span class="spoke-dot"></span>Databases</div>
-        <div class="spoke-item" data-animate><span class="spoke-dot"></span>Fabric IQ (Preview)</div>
+        <div class="spoke-item" data-animate><span class="spoke-dot"></span>Fabric IQ</div>
         <div class="spoke-item" data-animate><span class="spoke-dot"></span>Industry Solutions</div>
         <div class="spoke-item" data-animate><span class="spoke-dot"></span>OneLake Storage</div>
         <div class="spoke-item" data-animate><span class="spoke-dot"></span>Governance</div>
@@ -716,12 +716,12 @@
       <div class="feature-card theme-blue" data-animate style="--delay: 0.2s">
         <div class="feature-icon">&#x1F4CA;</div>
         <h3>Shared Data Foundation</h3>
-        <p>OneLake provides a unified logical data lake and enables shared, zero-copy access patterns across Fabric workloads without requiring data movement or duplication.</p>
+        <p>OneLake provides a unified logical data lake. Shortcuts can reference supported data without an ingestion copy; mirroring, transformations, and optional caching can still move or materialize data.</p>
       </div>
       <div class="feature-card theme-blue" data-animate style="--delay: 0.3s">
         <div class="feature-icon">&#x1F6E1;</div>
         <h3>Unified Governance</h3>
-        <p>Centralized security, compliance, and data governance applied consistently across all analytics services &mdash; from engineering to BI.</p>
+        <p>Use shared governance alongside workspace, item, engine, and source permissions. Validate each access path: a semantic model's row filters do not automatically secure direct lake or SQL access.</p>
       </div>
     </div>
   </div>
@@ -757,7 +757,7 @@
         <ul>
           <li>Single integrated platform for all workloads</li>
           <li>Shared data access and orchestration across Fabric workloads</li>
-          <li>Unified security and compliance everywhere</li>
+          <li>Shared governance with workload-specific security controls</li>
           <li>Low-code / no-code pipeline creation</li>
           <li>Managed SaaS platform with reduced infrastructure management</li>
         </ul>
@@ -789,7 +789,7 @@
     <div class="section-header" data-animate>
       <div class="section-number" style="background: var(--accent-bg); color: var(--accent);">03</div>
       <h2>Scalable Data Warehousing</h2>
-      <p>High-performance, elastic data warehousing that separates compute from storage &mdash; scale resources independently to match any workload without over-provisioning.</p>
+      <p>Data warehousing that separates compute from storage. Size Fabric capacity using measured concurrency, query patterns, and competing workloads &mdash; elasticity does not remove capacity limits or cost.</p>
     </div>
 
     <div class="features-grid" style="margin-top: 3rem;">
@@ -806,7 +806,7 @@
       <div class="feature-card theme-teal" data-animate>
         <div class="feature-icon">&#x1F504;</div>
         <h3>Cross-Database Queries</h3>
-        <p>Query across warehouses, lakehouses, and mirrored databases seamlessly &mdash; no data movement required.</p>
+        <p>Use supported cross-database queries within a workspace across warehouses and SQL analytics endpoints. Mirrored data is already a replicated copy; check endpoint permissions, supported objects, and freshness.</p>
       </div>
     </div>
   </div>
@@ -947,7 +947,7 @@
       <div class="feature-card theme-pink" data-animate>
         <div class="feature-icon">&#x1F3AF;</div>
         <h3>Direct Lake Mode</h3>
-        <p>Query data directly from OneLake without importing. Get the speed of in-memory analysis with the freshness of live data &mdash; no duplication needed.</p>
+        <p>Load required column data from OneLake into memory without a full import refresh. Freshness depends on upstream writes and model framing; fallback and security behavior depend on the Direct Lake variant and configuration.</p>
       </div>
       <div class="feature-card theme-pink" data-animate>
         <div class="feature-icon">&#x1F4AC;</div>
@@ -972,7 +972,24 @@
       <div class="feature-card theme-pink" data-animate>
         <div class="feature-icon">&#x1F512;</div>
         <h3>Row-Level Security</h3>
-        <p>Define roles and row filters on semantic models so report consumers see only the data authorized for their identity and assigned role.</p>
+        <p>Define and test row filters for semantic-model consumers. Power BI RLS applies to Viewers, not workspace Admins, Members, or Contributors; protect alternate SQL and OneLake access separately.</p>
+      </div>
+    </div>
+    <div class="features-grid" style="margin-top: 3rem;">
+      <div class="feature-card theme-pink" data-animate>
+        <div class="feature-icon">&#x1F9ED;</div>
+        <h3>Fabric IQ: Meaning Before Answers</h3>
+        <p>Combine OneLake data, Power BI metrics, and ontology context. Ignite 2026 announced generally available integrations with Microsoft Copilot and Fabric apps. Excel Edit with Copilot, GitHub Copilot ontologies, and ChatGPT/Claude connectors are explicitly <strong>preview</strong> &mdash; evaluate each integration separately.</p>
+      </div>
+      <div class="feature-card theme-pink" data-animate>
+        <div class="feature-icon">&#x1F5C3;</div>
+        <h3>Database Hub: See the Estate</h3>
+        <p><strong>Database Hub in Fabric is GA</strong> for database discovery, monitoring, and management across supported environments. SQL and PostgreSQL database agents remain <strong>preview</strong>; require least privilege, approved actions, and audit review rather than unattended trust.</p>
+      </div>
+      <div class="feature-card theme-pink" data-animate>
+        <div class="feature-icon">&#x1F680;</div>
+        <h3>From Insight to Application</h3>
+        <p><strong>Rayfin and Fabric apps are GA.</strong> Their new PostgreSQL backend, <strong>Microsoft Fabric HorizonDB, is preview</strong>, including its translytical, mirroring, and reverse-ETL scenarios. Do not confuse it with the distinct <strong>Azure HorizonDB service, now GA</strong>. Power BI Desktop data-app creation for Pro users is also preview.</p>
       </div>
     </div>
   </div>
@@ -993,6 +1010,7 @@
 <footer>
   <div class="container">
     <p>Source: <a href="https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview" target="_blank" rel="noopener">What is Microsoft Fabric?</a> &mdash; Microsoft Learn</p>
+    <p>Announcement scope: <a href="https://news.microsoft.com/events/ignite/2026/book-of-news/" target="_blank" rel="noopener">Ignite 2026 Book of News &mdash; Azure Data and Microsoft IQ</a>. GA platform announcements do not promote every connected preview feature.</p>
   </div>
 </footer>
 

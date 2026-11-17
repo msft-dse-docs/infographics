@@ -25,8 +25,9 @@ In **your fork**, open the folder that matches your infographic's topic:
 | `github-copilot/` | GitHub Copilot |
 | `avd/` | AVD |
 | `app-platform-services/` | App Platform Services |
-| `azure-openai/` | Azure OpenAI |
 | `defender-for-cloud/` | Defender for Cloud |
+| `infrastructure/` | Infrastructure |
+| `others/` | Event recaps and cross-product guides |
 
 Click on the folder name to open it.
 
@@ -50,6 +51,10 @@ Now you'll send your changes back to the original repository:
 5. Click **Create pull request**
 
 Once a maintainer reviews and merges your PR, the website will automatically update and your infographic will appear on the site. The automation also adds a subtle visible `Valid as of` date and refreshes it whenever the page changes.
+
+That date records a page update, not proof that every claim is correct. Include
+official sources, feature-specific availability, and any important licensing or
+region limits in the content. Keep past event recaps visibly historical.
 
 ## That's It!
 

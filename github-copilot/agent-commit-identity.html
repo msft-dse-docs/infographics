@@ -119,7 +119,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-23">
+<meta name="smec:last-accuracy-check" content="2026-11-17">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="toniomon96">
 <style>/* smec-back-btn v3 */
@@ -231,7 +231,7 @@
 </style>
 </head>
 <body>
-<time class="smec-validation-date" datetime="2026-10-23" data-smec-validation-date="v1">Valid as of 2026-10-23</time>
+<time class="smec-validation-date" datetime="2026-11-17" data-smec-validation-date="v1">Valid as of 2026-11-17</time>
 
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
 
@@ -242,7 +242,7 @@
   </div>
   <h1>Who authored this PR?</h1>
   <p>Agent-generated PRs have an author identity. The useful split is not just first-party vs third-party; it is whether the agent is GitHub-hosted or running through a standalone vendor integration.</p>
-  <div class="hero-meta">Accurate as of September 2, 2026 · Applies to GitHub-hosted and GitHub-connected async agents</div>
+  <div class="hero-meta">Ignite 2026 review · GitHub-hosted, desktop, and standalone agent identities</div>
 </header>
 
 <section>
@@ -302,7 +302,7 @@
       </div>
 
       <div class="id-card">
-        <span class="tag tag-first">GitHub app · Generally available</span>
+        <span class="tag tag-first">GitHub app · Feature-specific availability</span>
         <h3>GitHub Copilot desktop app</h3>
         <div class="handle"><span class="dot"></span>session-dependent identity</div>
         <dl>
@@ -376,6 +376,13 @@
   </div>
 </section>
 
+<section class="section-flush-top">
+  <div class="container">
+    <h2>Remember: model, runtime, actor.</h2>
+    <p>A model name does not tell you who committed the code. The Copilot app's Azure DevOps integration is <strong>public preview</strong>: actions appear in Azure DevOps under the signed-in user's name, and the integration has no separate app audit log. Inspect Git author and committer fields, the PR actor, and host activity records together; do not assume a dedicated bot identity or GitHub ruleset behavior transfers to another host.</p>
+  </div>
+</section>
+
 <footer>
   <div class="container">
     <div>
@@ -393,6 +400,7 @@
         <li><a href="https://developers.openai.com/codex/integrations/github">Codex GitHub integration</a></li>
         <li><a href="https://cursor.com/blog/cloud-agents">Cursor Cloud Agents</a></li>
         <li><a href="https://docs.github.com/en/copilot/concepts/copilot-surfaces/github-copilot-app">GitHub Copilot app</a></li>
+        <li><a href="https://docs.github.com/en/copilot/how-tos/github-copilot-app/manage-azure-devops-work">Azure DevOps integration: permissions and activity records</a></li>
       </ul>
     </div>
   </div>

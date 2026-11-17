@@ -51,6 +51,11 @@ Every script that modifies pages must:
 Every read-only auditing/reporting script should emit machine-readable output
 (JSON) so results can be diffed over time and surfaced as CI artifacts.
 
+Back-button destinations are computed relative to the repository root, not
+assumed to be one directory up. The v3 script repairs an incorrect marked
+destination as well as injecting missing buttons; `--check` detects both.
+This keeps root-level utilities and nested category pages linked to the library.
+
 ## Phased plan
 
 - **Phase 1 — Discovery:** `scripts/audit-pages.py` produces an inventory JSON.

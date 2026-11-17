@@ -11,7 +11,10 @@ This guide walks you through using CoWork to generate a self-contained HTML info
 
 ### 1. Upload Your Source Content
 
-The best infographics come from **grounded sources** — an existing PowerPoint, PDF, or other content you already have. Starting from real content gives CoWork accurate details to work with and avoids hallucinated information.
+The best infographics start from **grounded sources**: approved source material
+and current official product documentation. A presentation can itself be stale,
+and supplying it does not prevent hallucinations. Check consequential claims
+against the original announcement or feature documentation.
 
 1. Open CoWork and start a new session
 2. Click the **+** button in the CoWork client
@@ -39,6 +42,15 @@ CoWork will produce an HTML file with inline CSS and SVG graphics. Review it by:
 2. Opening it in your browser to verify layout and content
 3. Iterating with CoWork if anything needs adjustment (e.g., "make the comparison table wider" or "add a section on pricing")
 
+For each decision-driving claim, verify the product and feature, GA/preview or
+limited-access status, source date, and deployment prerequisites. A GA product
+can contain preview features. Attribute benchmarks, label illustrative costs,
+and avoid turning security controls or prototype outcomes into guarantees.
+
+Make the message memorable with one clear takeaway and an actionable next
+step, not unsupported superlatives. For event recaps, retain announcement-time
+labels and link to a clearly separated current-status update.
+
 ### 4. Finalise the File
 
 Before committing, make sure the file:
@@ -46,6 +58,10 @@ Before committing, make sure the file:
 - Is **fully self-contained** — all styles, scripts, and images are inline (no external dependencies)
 - Has a descriptive file name using kebab-case (e.g., `sql-2016-eol-customer-guide.html`)
 - Renders correctly at common screen widths (desktop and tablet)
+- Uses readable contrast, meaningful link text, and keyboard-accessible controls
+- Includes official source links and a clear audience, decision, and next step
+- Leaves automated metadata, analytics, favicon, back button, disclaimer, and
+  validation-date chrome to the site's scripts
 
 ## Tips
 

@@ -1,6 +1,34 @@
 # GitHub Copilot Agent Series Claim Matrix
 
-Last refreshed: 2026-04-30
+Last refreshed: 2026-11-17
+
+## Ignite 2026 follow-through
+
+The November pass retained the control-plane distinction and added two important
+boundaries. The Copilot app's Azure DevOps integration is **public preview**, uses
+Azure DevOps permissions and user-attributed records, and does not support cloud
+sessions for those repositories. Microsoft Copilot SDK 2.0 is a **GA custom-agent
+runtime**, not another hosted issue-to-PR integration or an automatic OS sandbox.
+The app's general availability across plans must not be used to imply that every
+integration or capability is GA.
+
+The series now separates these surfaces in setup, identity, correction, and
+governance guidance. Defender runtime protection for named Windows agent surfaces
+is also distinct from preview Entra Agent ID discovery, Dynamic Agent Risk, and
+Agent 365 MCP gateway governance. No vendor capability ranking is implied.
+
+Current primary evidence:
+
+- https://news.microsoft.com/events/ignite/2026/book-of-news/
+- https://docs.github.com/en/copilot/how-tos/github-copilot-app/manage-azure-devops-work
+- https://docs.github.com/en/copilot/concepts/copilot-surfaces/github-copilot-app
+- https://commandline.microsoft.com/microsoft-copilot-sdk-2-0-github/
+
+## Earlier series corrections
+
+The table below records earlier corrections; its line references are historical,
+not stable locations in the refreshed HTML. Product and billing terminology in
+the current sources takes precedence over the historical source list.
 
 This matrix records the accuracy pass behind the GitHub Copilot agent infographic series. It is intentionally narrow: claims are grounded in public product docs and should be rechecked before customer reuse after major Copilot, Claude, Codex, or Cursor releases.
 

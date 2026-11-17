@@ -4,6 +4,12 @@
 
 A single destination for infographics that help visualize and understand our presentations and Azure systems. Browse the live site to find quick-reference visuals across Microsoft's core cloud services and solutions.
 
+## Latest content review
+
+[Ignite 2026 library-wide review](docs/content-validation-2026-11-17.md):
+implemented corrections, complete page coverage, first-party sources, and
+remaining verification limits.
+
 ## How to Contribute
 
 1. [Creating HTML Infographics with CoWork](docs/creating-html-infographics-with-cowork.md)

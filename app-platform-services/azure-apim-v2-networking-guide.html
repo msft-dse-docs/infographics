@@ -517,7 +517,7 @@ section{padding:80px 20px}
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-23">
+<meta name="smec:last-accuracy-check" content="2026-11-17">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="pjbhakta-outlook">
 <style>/* smec-back-btn v3 */
@@ -629,7 +629,7 @@ section{padding:80px 20px}
 </style>
 </head>
 <body>
-<time class="smec-validation-date" datetime="2026-10-23" data-smec-validation-date="v1">Valid as of 2026-10-23</time>
+<time class="smec-validation-date" datetime="2026-11-17" data-smec-validation-date="v1">Valid as of 2026-11-17</time>
 
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
 
@@ -776,7 +776,7 @@ section{padding:80px 20px}
             <h4>✓ Pros</h4>
             <ul>
               <li>Simplest, fastest to deploy</li>
-              <li>Lowest-cost SKU in the v2 family</li>
+              <li>Lower entry cost than Premium v2; include Basic v2 when private networking isn't needed</li>
               <li><code>ip-filter</code> policy works at global, workspace, product, API, or operation scope</li>
               <li>No VNet, subnet, or NSG planning required</li>
             </ul>
@@ -785,7 +785,7 @@ section{padding:80px 20px}
             <h4>✕ Cons</h4>
             <ul>
               <li>Gateway is reachable from the internet by default</li>
-              <li>No NSG rules — only IP filter policy</li>
+              <li>No subnet-level inbound NSG control; use API authentication and gateway policies as well as IP filtering</li>
               <li>Not suitable for strict private-only requirements</li>
             </ul>
           </div>
@@ -826,7 +826,7 @@ section{padding:80px 20px}
         <div class="scenario-header std-int">
           <span class="tag">Scenario 2</span>
           <h3>Standard v2 — Internal (Private Endpoint + VNet Integration)</h3>
-          <p>Inbound Private Endpoint + outbound VNet integration. End-to-end isolation without paying for Premium injection.</p>
+          <p>Inbound Private Endpoint + outbound VNet integration. Private gateway traffic without Premium injection; management and developer-portal access remain separate.</p>
           <div class="diagram">
             <span class="node-box">🏢 Internal Apps</span>
             <span class="arrow">→</span>
@@ -846,7 +846,7 @@ section{padding:80px 20px}
               <li>APIs are for internal apps only — no public exposure</li>
               <li>Backends live in a VNet, on-prem (via ExpressRoute), or another private network</li>
               <li>You need private-IP inbound but want Standard v2 pricing</li>
-              <li>You can accept that the underlying platform is multi-tenant (vs. injection)</li>
+              <li>You need private connectivity, not an injected gateway or inbound NSG enforcement</li>
             </ul>
           </div>
           <div class="scenario-block pros">
@@ -856,7 +856,7 @@ section{padding:80px 20px}
               <li>Reach private backends through outbound VNet integration</li>
               <li>Cheaper than Premium v2 isolation options</li>
               <li>Public access can be disabled after Private Endpoint is created</li>
-              <li>End-to-end isolation between clients and backends</li>
+              <li>Private client-to-gateway and gateway-to-backend paths when routing, DNS, and backend access are configured</li>
             </ul>
           </div>
           <div class="scenario-block cons">
@@ -901,7 +901,7 @@ section{padding:80px 20px}
             </div>
           </div>
           <div class="summary-box">
-            <strong>In one line:</strong> The semi-private sweet spot — private inbound and private outbound, without paying for full injection. Great for internal-only APIs on a budget.
+            <strong>In one line:</strong> Private gateway traffic without injection — a strong candidate for internal APIs. Private networking does not replace API authentication or developer-portal controls.
           </div>
         </div>
       </div>
@@ -1001,14 +1001,14 @@ section{padding:80px 20px}
               <li>Security policy requires private-only gateway traffic; assess management and developer-portal access separately</li>
               <li>You need NSG enforcement on inbound traffic, not just <code>ip-filter</code></li>
               <li>APIM and backends must both stay inside the corporate network boundary</li>
-              <li>You can lock the deployment model in at creation time (it's irreversible)</li>
+              <li>You can choose injection at creation time; changing network modes currently requires a new instance</li>
             </ul>
           </div>
           <div class="scenario-block pros">
             <h4>✓ Pros</h4>
             <ul>
               <li>Private gateway IP; management and developer-portal endpoints remain outside the injected VNet</li>
-              <li>NSG rules apply for full network-level inbound control</li>
+              <li>NSG rules control inbound gateway traffic; portal and management endpoints need separate assessment</li>
               <li>Highest level of isolation v2 offers</li>
               <li>Premium scale (up to <strong>30 units</strong>) and feature set</li>
             </ul>
@@ -1016,7 +1016,7 @@ section{padding:80px 20px}
           <div class="scenario-block cons">
             <h4>✕ Cons</h4>
             <ul>
-              <li>Injection can <strong>only</strong> be set at creation — not switchable later</li>
+              <li>Injection is currently creation-time only; subnet settings can be updated later</li>
               <li>Cannot switch between injection ↔ integration on the same instance</li>
               <li>Highest-cost option in the v2 family</li>
               <li>Requires careful subnet planning (≥ /27 minimum, /24 recommended)</li>
@@ -1029,10 +1029,10 @@ section{padding:80px 20px}
 
           <div class="steps-section">
             <h4>Step-by-step setup (Azure portal)</h4>
-            <p class="steps-sub">Result: a Premium v2 instance with a private IP only, inside your VNet, with NSG-enforced inbound rules and a self-managed DNS record.</p>
+            <p class="steps-sub">Result: a private gateway IP inside your VNet, with NSG-enforced gateway rules and a self-managed DNS record. Management and developer-portal endpoints are not injected.</p>
             <div class="step-list">
               <div class="step"><div class="step-num-circle">1</div><div class="step-body"><strong>Create a Virtual Network and injection subnet</strong><p>Create <code>demo-vnet2</code> in the same region/subscription as your APIM, address space <code>10.1.0.0/16</code>.</p>
-              <p class="step-detail"><strong>Subnet — <code>apim-injection-subnet</code></strong>: <code>10.1.0.0/24</code> (min /27, /24 recommended). Delegate to <strong><code>Microsoft.Web/hostingEnvironments</code></strong> (different from the integration scenario).</p>
+              <p class="step-detail"><strong>Subnet — <code>apim-injection-subnet</code></strong>: <code>10.1.0.0/24</code> (min /27, /24 recommended). Delegate to <strong><code>Microsoft.ApiManagement/service</code></strong>. Premium v2 uses this for both injection and integration; Standard v2 integration uses <code>Microsoft.Web/serverFarms</code>.</p>
               <p class="step-detail">The injection subnet can only be used by <strong>one</strong> APIM instance and cannot be shared.</p></div></div>
 
               <div class="step"><div class="step-num-circle">2</div><div class="step-body"><strong>Create an NSG for the injection subnet</strong><p>Name it <code>apim-injection-nsg</code> in the same region.</p></div></div>
@@ -1064,7 +1064,7 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
             </div>
           </div>
           <div class="summary-box">
-            <strong>In one line:</strong> Maximum gateway isolation in v2. VNet injection is a one-time, irreversible decision; management and developer-portal access still need separate controls.
+            <strong>In one line:</strong> Maximum gateway isolation in v2. Select injection at creation time; network-mode switching is currently unsupported. Management and developer-portal access still need separate controls.
           </div>
         </div>
       </div>
@@ -1092,8 +1092,8 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
           <tr><td>Outbound VNet integration</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
           <tr><td>Inbound Private Endpoint</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
           <tr><td>Full VNet injection</td><td><span class="cross">✕</span></td><td><span class="check">✓</span> <span class="partial">(creation time only)</span></td></tr>
-          <tr><td>Integration subnet delegation</td><td><code>Microsoft.Web/serverFarms</code></td><td><code>Microsoft.Web/serverFarms</code></td></tr>
-          <tr><td>Injection subnet delegation</td><td>N/A</td><td><code>Microsoft.Web/hostingEnvironments</code></td></tr>
+          <tr><td>Integration subnet delegation</td><td><code>Microsoft.Web/serverFarms</code></td><td><code>Microsoft.ApiManagement/service</code></td></tr>
+          <tr><td>Injection subnet delegation</td><td>N/A</td><td><code>Microsoft.ApiManagement/service</code></td></tr>
           <tr><td>Switch injection ↔ integration</td><td>N/A</td><td><span class="cross">✕</span> <span class="partial">cannot switch</span></td></tr>
           <tr><td>Inbound NSG enforcement (integration)</td><td><span class="cross">✕</span></td><td><span class="cross">✕</span></td></tr>
           <tr><td>Inbound NSG enforcement (injection)</td><td>N/A</td><td><span class="check">✓</span></td></tr>
@@ -1147,7 +1147,7 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
     <div class="security-grid">
       <div class="security-item success reveal">
         <h4>🔐 IP Filter Policy</h4>
-        <p>Enforces allow/deny rules for public endpoints. Works on all v2 tiers and can be scoped at global, workspace, product, API, or operation level.</p>
+        <p>Enforces allow/deny rules for gateway API requests, not developer-portal or management requests. Works on all v2 tiers at supported global, workspace, product, API, or operation scopes.</p>
       </div>
       <div class="security-item reveal">
         <h4>🚪 Private Endpoint</h4>
@@ -1159,7 +1159,7 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
       </div>
       <div class="security-item danger reveal">
         <h4>🚫 Disable Public Access</h4>
-        <p>Once a Private Endpoint is created, you can turn off public network access from <strong>Deployment + infrastructure → Network</strong> for clean private-only posture.</p>
+        <p>Once a Private Endpoint is created, disable public network access from <strong>Deployment + infrastructure → Network</strong> for a private-only gateway. Test developer-portal and management access separately.</p>
       </div>
     </div>
   </div>
@@ -1214,7 +1214,7 @@ curl https://demo-apim-injected.azure-api.net/echo/resource</pre>
 <footer class="footer">
   <h3>You’ve got this 🎉</h3>
   <div class="footer-divider"></div>
-  <p>Pick the scenario that matches your security posture today, but plan for where you’ll be in 12 months — VNet injection is a creation-time-only decision, and you can’t switch between injection and integration. When in doubt, start with Standard v2 Public and evolve.</p>
+  <p>Decide the boundary before the SKU: public or private gateway, private backend, then inbound NSG needs. Injection is currently creation-time only, so don't start public if policy already requires an injected gateway. If private networking isn't needed, include Basic v2 in the cost comparison.</p>
   <div style="max-width:760px;margin:24px auto 0;padding:16px 18px;border:1px solid rgba(255,255,255,.18);border-radius:10px;background:rgba(255,255,255,.04);font-size:.92rem;line-height:1.55;text-align:left;">
     <strong style="display:block;margin-bottom:6px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;opacity:.75;">Current Microsoft Learn references</strong>
     <span style="font-size:.78rem;opacity:.7;">Review the canonical guidance for <a href="https://learn.microsoft.com/en-us/azure/api-management/v2-service-tiers-overview" style="color:#9bd1ff;">v2 service tiers</a>, <a href="https://learn.microsoft.com/en-us/azure/api-management/integrate-vnet-outbound" style="color:#9bd1ff;">outbound VNet integration</a>, <a href="https://learn.microsoft.com/en-us/azure/api-management/inject-vnet-v2" style="color:#9bd1ff;">Premium v2 VNet injection</a>, and <a href="https://learn.microsoft.com/en-us/azure/api-management/private-endpoint" style="color:#9bd1ff;">inbound private endpoints</a> before deployment.</span>

@@ -615,7 +615,7 @@
 <meta name="twitter:title" content="Azure AI Billing Models — From Consumption to Commitment">
 <meta name="twitter:description" content="Azure AI Billing Models — From Consumption to Commitment — an interactive infographic from the SME&amp;C Infographic Hub.">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-23">
+<meta name="smec:last-accuracy-check" content="2026-11-17">
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <style>/* smec-back-btn v3 */
@@ -727,7 +727,7 @@
 </style>
 </head>
 <body>
-<time class="smec-validation-date" datetime="2026-10-23" data-smec-validation-date="v1">Valid as of 2026-10-23</time>
+<time class="smec-validation-date" datetime="2026-11-17" data-smec-validation-date="v1">Valid as of 2026-11-17</time>
 
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
 
@@ -770,7 +770,7 @@
     </div>
     <div class="hero-stats">
       <div class="hero-stat"><div class="stat-num">7</div><div class="stat-label">Billing models</div></div>
-      <div class="hero-stat"><div class="stat-num">4</div><div class="stat-label">Deployment types</div></div>
+      <div class="hero-stat"><div class="stat-num">4</div><div class="stat-label">Illustrative cost profiles</div></div>
       <div class="hero-stat"><div class="stat-num">5</div><div class="stat-label">Maturity stages</div></div>
       <div class="hero-stat"><div class="stat-num">2</div><div class="stat-label">Token meters: input + output</div></div>
     </div>
@@ -809,7 +809,7 @@
         <span class="bill-badge bb2">&#x26A1; Priority Processing</span>
         <h3>Priority Processing</h3>
         <div class="bill-cost"><span class="cost-dots cost-hi">$$$$</span><span class="cost-note">Per-token &middot; highest (latency premium over Standard)</span></div>
-        <p class="bill-pays">Pay-per-token, same as Standard, but on a priority tier with lower, more consistent latency. Higher per-token cost for the performance guarantee.</p>
+        <p class="bill-pays">A request-level processing tier on supported Global Standard deployments, with a higher token rate for faster, more consistent responses. Verify model eligibility and applicable service terms; it is not a universal latency guarantee.</p>
         <div class="bill-row"><strong>Use when:</strong> Latency-sensitive, not yet ready to provision PTUs</div>
         <div class="bill-row"><strong>Forecast:</strong> Same as PAYG; apply the priority rate premium</div>
         <div class="bill-row"><strong>Watch out:</strong> Higher unit cost than Standard; validate whether PTU would be more economical</div>
@@ -887,7 +887,7 @@
     <div class="reveal">
       <span class="section-label">The Fundamental Decision</span>
       <h2 class="section-title">Pay-Per-Token vs. Provisioned Throughput</h2>
-      <p class="section-sub">Every Foundry model deployment bills one of two ways. Getting this decision right determines most of your bill &mdash; everything else is tuning.</p>
+      <p class="section-sub">For many serverless model workloads, compare token-based usage with provisioned throughput. Managed compute, partner offers and agent tools have other meters; this is not an exhaustive catalog-wide billing taxonomy.</p>
     </div>
 
     <div class="decision-grid reveal">
@@ -916,7 +916,7 @@
     </div>
 
     <div class="insight-box reveal">
-      <strong>The advanced insight:</strong> A mature production setup runs all three simultaneously &mdash; <strong>PTU</strong> for the latency-critical interactive path, <strong>Standard PAYG</strong> for spillover and development, and <strong>Batch</strong> for overnight bulk work. Each workload priced on the model that fits it, not one model for everything.
+      <strong>Combine only when justified:</strong> provisioned throughput can serve sustained interactive load, Standard PAYG can handle supported overflow and Batch can serve asynchronous work. A mixed design is an option, not a maturity requirement; compare total cost and operational complexity first.
     </div>
   </div>
 </section>
@@ -926,8 +926,8 @@
   <div class="container">
     <div class="reveal">
       <span class="section-label">Deployment Type Spectrum</span>
-      <h2 class="section-title">Four Deployment Types &mdash; Four Cost Profiles</h2>
-      <p class="section-sub">Deployment types are more than a performance choice &mdash; each carries a distinct cost structure. Choose based on your traffic pattern, latency requirement, and data-residency needs.</p>
+      <h2 class="section-title">Four Cost Profiles &mdash; Not Four Deployment SKUs</h2>
+      <p class="section-sub">Standard, Provisioned and Batch have Global, Data Zone or geography-scoped variants where supported. Priority is a request-level processing tier, not a separate deployment SKU. Developer Tier is temporary fine-tuned-model evaluation with no SLA or residency guarantee.</p>
     </div>
     <div class="spectrum-wrap reveal">
       <div class="spectrum-grid">
@@ -1158,22 +1158,22 @@
       <div class="hidden-card h4 reveal">
         <div class="hidden-tag">Observability</div>
         <h4>Monitoring &amp; Logging</h4>
-        <p>Azure Monitor ingestion, Log Analytics workspace, Application Insights, token usage logging, and cost management alerts. Every trace and metric exported has an ingestion and retention cost.</p>
+        <p>Estimate telemetry ingestion, retention, queries, export and alerting according to the selected plan, meter and included allowances. Not every metric or trace incurs the same charge. Minimize sensitive payloads and validate diagnostic coverage.</p>
         <span class="hidden-stat hs-info">&#x1F4CA; Sample aggressively for low-value traces</span>
       </div>
 
       <div class="hidden-card h5 reveal">
         <div class="hidden-tag">Networking</div>
         <h4>Networking &amp; Data Residency</h4>
-        <p>Data Zone and Regional deployments carry a premium over Global Standard for data-residency compliance. Cross-region egress charges apply when services are not co-located.</p>
+        <p>Compare the selected model's Global, Data Zone and geography-scoped rates and processing boundaries. Price does not establish compliance. Network transfer, private endpoints and egress may add separate charges.</p>
         <span class="hidden-stat hs-warning">&#x26A0; Co-locate AI Search + Foundry in same region</span>
       </div>
 
       <div class="hidden-card h6 reveal">
         <div class="hidden-tag">Infrastructure</div>
         <h4>Support &amp; Infrastructure Overhead</h4>
-        <p>Azure support plan costs, VNet integration, private endpoints, APIM gateway for multi-app PTU sharing, and managed identity overhead all contribute at production scale.</p>
-        <span class="hidden-stat hs-info">&#x1F4CA; Plan for ~5&ndash;10% infrastructure overhead</span>
+        <p>Price support, gateway capacity, private endpoints, runtime compute and other supporting services individually. Managed identities do not themselves add a usage fee; the services they access may be billable.</p>
+        <span class="hidden-stat hs-info">&#x1F4CA; Use measured line items, not a fixed overhead percentage</span>
       </div>
 
     </div>
@@ -1198,7 +1198,7 @@
       <div class="hidden-card h1 reveal">
         <div class="hidden-tag">Model Router</div>
         <h4>Microsoft Foundry Model Router</h4>
-        <p>A single deployment that routes each prompt in real time to the cheapest capable underlying model &mdash; sending simple prompts to mini / nano models and reserving frontier models for the hard ones. Deploy and call it like any Foundry model.</p>
+        <p>Routes among an eligible model pool to balance quality, cost and performance, not a guarantee of the cheapest successful model. Ignite expands the pool to the top 50 Foundry models and adds AI Gateway and Messages/Responses API support. Benchmark your task mix.</p>
         <span class="hidden-stat hs-info">&#x2193; Cuts cost on easy prompts automatically</span>
       </div>
 
@@ -1219,7 +1219,7 @@
       <div class="hidden-card h3 reveal">
         <div class="hidden-tag">Semantic Caching</div>
         <h4>Semantic Caching (APIM)</h4>
-        <p>Returns cached responses for prompts that are similar in meaning &mdash; not only identical &mdash; using an Azure Managed Redis vector store. Repeat and near-duplicate questions never reach the model, so those tokens are never billed.</p>
+        <p>A valid semantic-cache hit can avoid a generation call, while embeddings and cache infrastructure can still cost money. Isolate tenant/user authorization contexts, set freshness and TTL rules, and test similarity and cross-user leakage before reuse.</p>
         <span class="hidden-stat hs-info">&#x2193; Eliminates redundant model calls</span>
       </div>
 
@@ -1240,7 +1240,7 @@
     </div>
 
     <div class="spectrum-note reveal" style="margin-block-start:1.5rem;">
-      <strong>Layer them together:</strong> cache what repeats (semantic + prompt caching), route by complexity (model router), shrink each call (prompt engineering), then govern the remainder at the gateway (token limits + metrics). Most teams combine three or four of these before ever committing to PTU.
+      <strong>Layer them deliberately:</strong> cache only content safe to reuse, route by measured task quality, shrink unnecessary context, then apply gateway and application-level budgets. Re-evaluate the combined system before committing to capacity.
     </div>
   </div>
 </section>
@@ -1298,51 +1298,47 @@
     <div class="reveal">
       <span class="section-label" style="color:#5C2D91;">The Microsoft 365 Copilot Side of the Bill</span>
       <h2 class="section-title">Copilot Credits &amp; the Pre-Purchase Plan (P3)</h2>
-      <p class="section-sub">Foundry apps bill in tokens and PTUs. Microsoft 365 Copilot experiences &mdash; Copilot Cowork, Copilot Studio agents, Dynamics&nbsp;365, and Work IQ APIs &mdash; bill in <strong>Copilot Credits</strong>, a common, tenant-pooled currency where consumption scales with task complexity across four buckets: models, runtime, context, and tools.</p>
+      <p class="section-sub">Eligible usage-based Copilot experiences consume <strong>Copilot Credits</strong>, with consumption varying by model, runtime, context and tools. Included subscription rights differ by experience. Do not equate runtime credits, P3 commit units, Agent Prepurchase ACUs or Claude Consumption Units; reconcile each against its meter and offer.</p>
     </div>
 
     <div class="hidden-grid" style="grid-template-columns:1fr 1fr;">
       <div class="hidden-card h1 reveal">
         <div class="hidden-tag" style="color:#0078d4;">Pay-As-You-Go</div>
         <h4>Copilot Studio PAYG Meter</h4>
-        <p>Post-pay for the exact credits consumed each month &mdash; no upfront commitment. Priced at <strong>$0.01 per Copilot Credit</strong>, billed in arrears at month end. Provisioned in the Power Platform admin center.</p>
+        <p>Eligible consumption is billed in arrears through a linked Azure subscription. Confirm the current rate and setup for the experience in the Microsoft 365 or Power Platform admin center; the usage dashboard is not the final invoice.</p>
         <span class="hidden-stat hs-info">&#x2197; Flexible &middot; scales with usage &amp; seasonality</span>
       </div>
       <div class="hidden-card h2 reveal">
         <div class="hidden-tag" style="color:#5C2D91;">Prepaid Commitment &middot; P3</div>
         <h4>Copilot Credit Pre-Purchase Plan (P3)</h4>
-        <p>Buy a pool of credits upfront for a <strong>one-year term</strong>; usage auto-deducts from the balance. Tiered volume discounts from <strong>5% to 20%</strong>. Purchased in the Azure portal Reservations; auto-renews. Unused credits expire at term end.</p>
+        <p>Buy discounted <strong>commit units</strong> covering eligible retail Copilot Credit costs for one year or until exhausted. These are not runtime Copilot Credits: 100 commit units cover $100 of qualifying retail usage. Renewal is enabled by default; review scope, expiry and discount terms before purchase.</p>
         <span class="hidden-stat hs-warning">&#x26A0; All purchases final &middot; no cancel, split, or exchange</span>
       </div>
     </div>
 
     <div class="reveal" style="margin-block-start:1.5rem; background:#fff; border:1px solid #e6e0f2; border-radius:16px; padding:1.5rem 1.75rem; box-shadow:0 3px 16px rgba(0,0,0,.05);">
-      <h4 style="font-size:1rem; color:#3d1a6b; margin-block-end:.9rem; font-weight:700;">P3 Pre-Purchase Discount Tiers</h4>
+      <h4 style="font-size:1rem; color:#3d1a6b; margin-block-end:.9rem; font-weight:700;">P3 Purchase Checks — Verify the Offer, Not a Static Rate Card</h4>
       <table style="width:100%; border-collapse:collapse; font-size:.84rem;">
         <thead>
           <tr style="color:#5C2D91;">
-            <th style="padding:.45rem .75rem; border-bottom:2px solid #e6e0f2; text-align:start;">Tier</th>
-            <th style="padding:.45rem .75rem; border-bottom:2px solid #e6e0f2; text-align:start;">Copilot Credits</th>
-            <th style="padding:.45rem .75rem; border-bottom:2px solid #e6e0f2; text-align:start;">Discount</th>
+            <th style="padding:.45rem .75rem; border-bottom:2px solid #e6e0f2; text-align:start;">Check</th>
+            <th style="padding:.45rem .75rem; border-bottom:2px solid #e6e0f2; text-align:start;">What It Means</th>
+            <th style="padding:.45rem .75rem; border-bottom:2px solid #e6e0f2; text-align:start;">Action</th>
           </tr>
         </thead>
         <tbody style="color:#374151;">
-          <tr><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8;">1</td><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8;">300,000</td><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8; font-weight:700; color:#107c10;">5%</td></tr>
-          <tr><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8;">2</td><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8;">1,500,000</td><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8; font-weight:700; color:#107c10;">6%</td></tr>
-          <tr><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8;">3</td><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8;">3,000,000</td><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8; font-weight:700; color:#107c10;">7%</td></tr>
-          <tr><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8;">4</td><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8;">15,000,000</td><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8; font-weight:700; color:#107c10;">8%</td></tr>
-          <tr><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8;">5</td><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8;">30,000,000</td><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8; font-weight:700; color:#107c10;">10%</td></tr>
-          <tr><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8;">6</td><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8;">75,000,000</td><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8; font-weight:700; color:#107c10;">12%</td></tr>
-          <tr><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8;">7</td><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8;">150,000,000</td><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8; font-weight:700; color:#107c10;">14%</td></tr>
-          <tr><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8;">8</td><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8;">225,000,000</td><td style="padding:.4rem .75rem; border-bottom:1px solid #f0ecf8; font-weight:700; color:#107c10;">17%</td></tr>
-          <tr><td style="padding:.4rem .75rem;">9</td><td style="padding:.4rem .75rem;">300,000,000</td><td style="padding:.4rem .75rem; font-weight:700; color:#107c10;">20%</td></tr>
+          <tr><td style="padding:.4rem .75rem;">Unit</td><td style="padding:.4rem .75rem;">Commit units pay qualifying retail costs, not a fixed count of tasks</td><td style="padding:.4rem .75rem;">Forecast metered usage first</td></tr>
+          <tr><td style="padding:.4rem .75rem;">Discount</td><td style="padding:.4rem .75rem;">Current tiers and purchasing currency determine your price</td><td style="padding:.4rem .75rem;">Compare your agreement rate</td></tr>
+          <tr><td style="padding:.4rem .75rem;">Term</td><td style="padding:.4rem .75rem;">One year or balance exhaustion; renewal enabled by default</td><td style="padding:.4rem .75rem;">Review renewal and expiry</td></tr>
+          <tr><td style="padding:.4rem .75rem;">Scope</td><td style="padding:.4rem .75rem;">Coverage applies only to matching eligible usage</td><td style="padding:.4rem .75rem;">Verify subscriptions and services</td></tr>
+          <tr><td style="padding:.4rem .75rem;">Finality</td><td style="padding:.4rem .75rem;">No cancellation, exchange, split or merge</td><td style="padding:.4rem .75rem;">Buy against evidence, not aspiration</td></tr>
         </tbody>
       </table>
-      <p style="font-size:.75rem; color:#6b6478; margin-block-start:.9rem; line-height:1.5;"><strong>Illustrative:</strong> at the $0.01 pay-as-you-go rate, 1,500,000 credits &asymp; $15,000; a Tier&nbsp;2 plan (~$14,100) saves ~6%. The more you buy, the greater the discount &mdash; but P3 discounts don&rsquo;t stack with other discounts, and both PAYG and P3 draw down your Microsoft Azure Consumption Commitment (MACC). Validate current pricing before budgeting.</p>
+      <p style="font-size:.75rem; color:#6b6478; margin-block-start:.9rem; line-height:1.5;">Source: <a href="https://learn.microsoft.com/en-us/azure/cost-management-billing/reservations/copilot-credit-p3">Copilot Credit P3</a>. Discounts do not combine with other discounts. Confirm MACC eligibility and invoice treatment for the exact offer and agreement rather than assuming every charge qualifies.</p>
     </div>
 
     <div class="spectrum-note reveal" style="margin-block-start:1.5rem; background:#f3eefb; border:1px solid #dcd0f0; color:#3d1a6b;">
-      <strong style="color:#5C2D91;">Govern in the Microsoft 365 admin center:</strong> the Cost Management dashboard pools credits at the tenant level with a real-time Overview and per-user, per-group, per-agent Consumption analysis &mdash; plus spend policies, budgets, alerts, and hard caps. Cowork requires a Microsoft&nbsp;365 Copilot license and is billed on top; Work IQ can cut context and tool tokens up to 80%, reducing credit consumption in agentic solutions.
+      <strong style="color:#5C2D91;">Ignite 2026 FinOps:</strong> Agent 365 Cost Management adds preview controls and visibility across a growing set of usage-based AI services; forecasting and Business Analytics have Frontier availability. Do not treat these as universal GA hard caps or invoice-real-time data. Microsoft IQ adds no new SKU, but its underlying usage still costs money. <a href="https://news.microsoft.com/events/ignite/2026/book-of-news/">Book of News</a>.
     </div>
   </div>
 </section>
@@ -1432,7 +1428,7 @@
 
       <div class="control-card reveal">
         <h4>TPM Limits on Every Deployment</h4>
-        <p>Set Tokens-Per-Minute limits on each model deployment. Prevents runaway cost from bugs, prompt injection, or unexpected traffic spikes. Validate limits against SLA before go-live.</p>
+        <p>Set supported deployment token-rate limits and gateway quotas, then test concurrency and retries. Rate limits slow consumption; they do not cap a multi-step run or a month's spend. Azure budgets alert rather than stop resources by default.</p>
       </div>
 
       <div class="control-card reveal">
@@ -1447,7 +1443,7 @@
 
       <div class="control-card reveal">
         <h4>Validate Model Selection Before Scaling</h4>
-        <p>Run smaller, cheaper models on tasks that do not require frontier capability. Phi-4-mini for simple classification; GPT-4o for complex reasoning. Model routing is often the highest-ROI optimization.</p>
+        <p>Compare task-specialized, small and frontier models on your own evaluation set. Microsoft-Decision-1.1 is GA for routing, classification and verification; measure its confidence/defer behavior before using it for consequential decisions.</p>
       </div>
 
       <div class="control-card reveal">

@@ -126,7 +126,8 @@ META_REFRESH_RE = re.compile(
     r'<meta\s+http-equiv=["\']refresh["\']', re.IGNORECASE
 )
 ANCHOR_RE = re.compile(
-    r'<a\b[^>]*\bdata-smec-back-button\s*=\s*["\']v3["\']', re.IGNORECASE
+    r'<a\b[^>]*\bdata-smec-back-button\s*=\s*["\']v3["\'][^>]*>.*?</a>',
+    re.IGNORECASE | re.DOTALL,
 )
 
 SKIP_DIRS = {".git", "node_modules", ".github"}
@@ -142,9 +143,9 @@ def iter_html_files(root: str):
 
 def ensure_button(filepath: str, check_only: bool = False) -> str:
     """Return one of:
-        'added'    - button injected
-        'missing'  - button missing (check_only mode)
-        'present'  - anchor and style marker both already present
+        'added'    - button injected or repaired
+        'missing'  - button missing or outdated (check_only mode)
+        'present'  - expected anchor and style marker both already present
         'skipped'  - redirect stub or root index (not applicable)
         'nohead'   - no </head> tag
         'nobody'   - no <body> tag
@@ -158,9 +159,15 @@ def ensure_button(filepath: str, check_only: bool = False) -> str:
     if META_REFRESH_RE.search(content):
         return "skipped"
 
-    has_anchor = bool(ANCHOR_RE.search(content))
+    library_href = os.path.relpath(
+        REPO_ROOT, os.path.dirname(os.path.abspath(filepath))
+    ).replace(os.sep, "/") + "/"
+    expected_anchor = BACK_BUTTON_ANCHOR.replace('href="../"', f'href="{library_href}"', 1)
+    anchor_match = ANCHOR_RE.search(content)
+    has_anchor = anchor_match is not None
+    has_current_anchor = anchor_match is not None and anchor_match.group(0) == expected_anchor
     has_style = STYLE_MARKER in content
-    if has_anchor and has_style:
+    if has_current_anchor and has_style:
         return "present"
 
     # Strip outdated button markup before re-injecting the current version.
@@ -198,9 +205,11 @@ def ensure_button(filepath: str, check_only: bool = False) -> str:
         if not body_match:
             return "nobody"
 
-    if not has_anchor:
+    if has_anchor and not has_current_anchor:
+        new_content = ANCHOR_RE.sub(lambda match: expected_anchor, new_content)
+    elif not has_anchor:
         insert_at = body_match.end()
-        anchor_block = nl + BACK_BUTTON_ANCHOR + nl
+        anchor_block = nl + expected_anchor + nl
         new_content = (
             new_content[:insert_at] + anchor_block + new_content[insert_at:]
         )

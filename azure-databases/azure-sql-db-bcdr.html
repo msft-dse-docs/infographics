@@ -1183,7 +1183,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-23">
+<meta name="smec:last-accuracy-check" content="2026-11-17">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="cbattlegear">
 <style>/* smec-back-btn v3 */
@@ -1295,7 +1295,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
 </style>
 </head>
 <body>
-<time class="smec-validation-date" datetime="2026-10-23" data-smec-validation-date="v1">Valid as of 2026-10-23</time>
+<time class="smec-validation-date" datetime="2026-11-17" data-smec-validation-date="v1">Valid as of 2026-11-17</time>
 
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
 
@@ -1437,7 +1437,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
         <div><span class="pill pill-fast">Zero</span></div>
       </div>
       <div class="table-row">
-        <div class="label">Disaster Recovery<small>Failover groups / Active geo-replication</small></div>
+        <div class="label">Disaster Recovery<small>Customer-managed failover groups / Active geo-replication</small></div>
         <div><span class="pill pill-fast">Typically &lt; 60 seconds</span></div>
         <div><span class="pill pill-med">Potential data loss (async)</span></div>
       </div>
@@ -1447,6 +1447,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
         <div><span class="pill pill-slow">Typically minutes to hours</span></div>
       </div>
     </div>
+    <p class="section-desc" style="margin-top:20px;">These are typical database recovery characteristics, <strong>not guaranteed application RTOs or SLAs</strong>. Include detection, approval, DNS propagation, retries, reconnection, and dependent services in recovery drills.</p>
   </div>
 </section>
 
@@ -1456,7 +1457,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
     <div class="section-header reveal">
       <span class="section-eyebrow">The Toolkit</span>
       <h2 class="section-title">Built-in business continuity features</h2>
-      <p class="section-desc">Click any tab to explore how each feature works and when to use it.</p>
+      <p class="section-desc">Click any tab to explore how each feature works and when to use it. Scope: the managed Azure SQL Database cloud service. The Ignite 2026 Azure SQL Database local container is <strong>preview for development and testing</strong>, not cloud HA, managed backups, or regional DR. MI's newly GA Next-gen GP resilience features belong to a different service.</p>
     </div>
 
     <div class="feature-tabs reveal">
@@ -1481,8 +1482,8 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
           </div>
           <ul class="feature-list">
             <li>Synchronous replication: every committed write exists on a replica before it completes, designed to deliver zero committed data loss on HA failover</li>
-            <li>This RPO of zero applies only to in-region HA failover. Backup-based recovery (PITR, geo-restore) always carries a data loss window equal to the time since the last log backup</li>
-            <li>Transparent failover within the region, with no app changes required</li>
+            <li>Zero RPO here applies to in-region HA. PITR can recover an available historical point without losing earlier committed data; the latest restorable point can lag, and geo-restore adds asynchronous backup replication lag</li>
+            <li>The endpoint remains stable, but connections can break: implement transient-fault retries and reconnect safely</li>
             <li>Higher SLA than the default enterprise-class SLA</li>
             <li>Region and tier availability varies; verify current zone-redundancy support before deployment</li>
           </ul>
@@ -1514,7 +1515,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
             <li>GRS is the default; the portal's development workload preset selects LRS unless overridden</li>
             <li>Options for LRS, ZRS, GRS, GZRS to match your compliance needs</li>
             <li>Business Critical tier: backups taken from a secondary replica</li>
-            <li>Hyperscale uses storage snapshots for instant backups and fast restores regardless of size</li>
+            <li>Hyperscale uses storage snapshots; same-region restore is typically fast, while cross-region restore and application recovery still need testing</li>
           </ul>
         </div>
         <div class="diagram">
@@ -1550,16 +1551,16 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
       <div class="feature-showcase">
         <div class="feature-text">
           <h3>Point-in-Time Restore &amp; Long-Term Retention</h3>
-          <p>PITR creates a new database reflecting the state of your data at any chosen moment inside the retention window. LTR holds monthly/yearly full backups for compliance needs.</p>
+          <p>PITR creates a new database at an available restore point inside the configured retention window. LTR retains selected weekly, monthly, or yearly full backups for compliance needs.</p>
           <div class="feature-metrics">
             <div class="metric-chip"><div class="m-label">PITR Default</div><div class="m-value">7 days</div></div>
             <div class="metric-chip"><div class="m-label">PITR Max</div><div class="m-value">35d (Basic: 7d)</div></div>
             <div class="metric-chip"><div class="m-label">LTR Max</div><div class="m-value">10 years</div></div>
           </div>
           <ul class="feature-list">
-            <li>Restore to the exact point before a corrupting event</li>
+            <li>Choose an available restore point before the corrupting event; validate recovered data before redirecting the app</li>
             <li>Restore a deleted database if the logical server still exists</li>
-            <li>LTR supports immutable backups for compliance</li>
+            <li>Time-based LTR immutability is GA; configure and lock it explicitly for future backups. Legal hold for existing backups is preview. Retention alone is not immutability</li>
             <li>Restores create a new database; the original stays intact</li>
           </ul>
         </div>
@@ -1626,7 +1627,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
           <h3>Failover Groups</h3>
           <p>A declarative layer built on Active Geo-Replication. It groups some or all user databases on a logical server into a coordinated failover unit, with stable listener endpoints that survive failover. Your application connection strings remain constant across failovers.</p>
           <div class="feature-metrics">
-            <div class="metric-chip"><div class="m-label">Typical RTO</div><div class="m-value">&lt; 60s</div></div>
+            <div class="metric-chip"><div class="m-label">Customer-managed RTO (typical)</div><div class="m-value">&lt; 60s</div></div>
             <div class="metric-chip"><div class="m-label">Endpoints</div><div class="m-value">Stable</div></div>
             <div class="metric-chip"><div class="m-label">Databases</div><div class="m-value">Many</div></div>
           </div>
@@ -1669,11 +1670,11 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
           <div class="feature-metrics">
             <div class="metric-chip"><div class="m-label">RTO</div><div class="m-value">Minutes–hours</div></div>
             <div class="metric-chip"><div class="m-label">RPO</div><div class="m-value">Minutes–hours</div></div>
-            <div class="metric-chip"><div class="m-label">Setup</div><div class="m-value">None</div></div>
+            <div class="metric-chip"><div class="m-label">Prerequisite</div><div class="m-value">GRS / GZRS</div></div>
           </div>
           <ul class="feature-list">
             <li>Enabled by default when backups use GRS or GZRS storage</li>
-            <li>No prior replication setup required. Restore on demand</li>
+            <li>No live replica required. Preplan target capacity, access, networking, encryption keys, and restore permissions</li>
             <li>Creates a new database in the target region</li>
             <li>Typically higher RPO/RTO than a pre-provisioned replica; use as a recovery safety net</li>
             <li>Disabled if backup redundancy is LRS or ZRS</li>
@@ -1738,7 +1739,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
           <div class="redundancy-dot remote">R2</div>
           <div class="redundancy-dot remote">R3</div>
         </div>
-        <p>LRS locally + 3 async copies in a paired secondary region. Default for new databases. Enables geo-restore.</p>
+        <p>LRS locally + an asynchronous copy in a paired secondary region. The secondary uses local redundancy. Usually the default; check the creation preset. Enables geo-restore.</p>
       </div>
       <div class="redundancy-card recommended">
         <h4>GZRS<small>Geo-Zone-Redundant Storage</small></h4>
@@ -1750,7 +1751,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
           <div class="redundancy-dot remote">R2</div>
           <div class="redundancy-dot remote">R3</div>
         </div>
-        <p>ZRS primary + GRS paired region. Maximum durability and resilience. Microsoft's recommendation for mission-critical workloads.</p>
+        <p>ZRS in the primary region + asynchronously replicated, locally redundant storage in the paired region. Adds zonal and regional backup resilience where supported, not zero-loss regional DR.</p>
       </div>
     </div>
   </div>
@@ -1778,7 +1779,7 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
       </div>
       <div class="table-row">
         <div class="label">Prior setup required</div>
-        <div><span class="pill pill-fast">None (on by default with GRS/GZRS)</span></div>
+        <div><span class="pill pill-med">GRS/GZRS + a tested restore plan</span></div>
         <div><span class="pill pill-med">Yes, configured per database</span></div>
       </div>
       <div class="table-row">
@@ -1823,12 +1824,12 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
       <div class="enhance-card">
         <div class="enhance-icon">🔗</div>
         <h4>Connection strings that survive failover</h4>
-        <p>Geo-Replication alone changes your connection string after failover because the new primary is on a different logical server. Failover Groups layer DNS CNAME records on top, so <span class="mono">myfog.database.windows.net</span> routes to the current primary. No redeploys, no config changes, no downtime from a stale endpoint.</p>
+        <p>Use <span class="mono">myfog.database.windows.net</span> so the connection string stays stable when the primary changes. DNS and client caches still need to update; existing connections break. Test reconnect logic and retries instead of assuming uninterrupted sessions.</p>
       </div>
       <div class="enhance-card">
         <div class="enhance-icon">📦</div>
         <h4>Your entire application, not just one table</h4>
-        <p>Geo-Replication is configured per database. Failover Groups let you coordinate failover for selected or all user databases on a logical server, helping keep an application from running against a split state mid-failover.</p>
+        <p>Coordinate failover for selected or all user databases on a logical server. A group is not an atomic cross-database recovery guarantee: databases replicate independently. Validate application consistency and reconciliation after forced failover.</p>
       </div>
       <div class="enhance-card">
         <div class="enhance-icon">🧭</div>
@@ -1847,8 +1848,8 @@ footer p { font-size: 14px; margin-bottom: 20px; max-width: 600px; margin-left: 
       </div>
       <div class="enhance-card">
         <div class="enhance-icon">⚡</div>
-        <h4>All the speed, none of the complexity</h4>
-        <p>Underneath, Geo-Replication still does the heavy lifting. Customer-managed failover has a typical RTO under 60 seconds, with asynchronous replication and the app-facing stability a production DR plan needs.</p>
+        <h4>Practice the Decision, Not Just the Switch</h4>
+        <p>Customer-managed database failover typically completes in under 60 seconds, but detection and application recovery add time. Planned synchronized failover can avoid data loss; forced failover can lose transactions not yet replicated.</p>
       </div>
     </div>
   </div>
@@ -2048,9 +2049,42 @@ function buildRecommendations() {
   const wantsFG = a.fgstyle === 'group';
   const wantsIsolated = a.fgstyle === 'isolated';
 
+  if (a.region && a.region !== 'no' && a.dataloss === 'zero') {
+    recs.requirementGap = {
+      name: 'Resolve the zero-loss regional recovery requirement',
+      priority: 'core',
+      tag: 'DESIGN GAP',
+      why: 'Neither asynchronous geo-replication nor GRS/GZRS backups guarantee zero data loss in a forced regional failover. Zone redundancy covers in-region failures only. Review business acceptance, reconciliation, and architecture before approving this plan.'
+    };
+  }
+  if (a.region === 'safety' && (a.downtime === 'seconds' || a.downtime === 'minute')) {
+    recs.restoreGap = {
+      name: 'Geo-restore does not meet the selected downtime target',
+      priority: 'core',
+      tag: 'DESIGN GAP',
+      why: 'Backup-based regional recovery typically takes minutes to hours and can take longer. Evaluate a provisioned replica, target capacity, and an exercised application failover runbook.'
+    };
+  }
+  if (a.region === 'safety' && a.dataloss === 'seconds') {
+    recs.backupRpoGap = {
+      name: 'Geo-restore does not meet a seconds-level data-loss target',
+      priority: 'core',
+      tag: 'DESIGN GAP',
+      why: 'Geo-replicated backup availability can lag by minutes or hours. Evaluate asynchronous replicas and measured replication lag, with explicit business acceptance of possible forced-failover loss.'
+    };
+  }
+  if (a.downtime === 'seconds') {
+    recs.appRtoGap = {
+      name: 'Prove the seconds-level application recovery target',
+      priority: 'core',
+      tag: 'DESIGN GAP',
+      why: 'Typical database failover timings are not a seconds-level application guarantee. Include outage detection, approval, DNS, authentication, retries, and dependency recovery in timed drills.'
+    };
+  }
+
   recs.backupsPitr = {
     ...featureCatalog.backupsPitr,
-    why: 'Automated backups run for every Azure SQL Database and cover human error, accidental deletes, and corruption. PITR restores to any point in your retention window (up to 35 days).'
+    why: 'Automated backups support recovery from human error, accidental deletes, and corruption. PITR creates a new database at an available point in the retention window: up to 35 days, or 7 days for Basic. Test restore and application redirection.'
   };
 
   if (a.downtime === 'seconds' || a.downtime === 'minute' || a.dataloss === 'zero') {
@@ -2077,7 +2111,7 @@ function buildRecommendations() {
   if (a.region === 'safety') {
     recs.geoRestore = {
       ...featureCatalog.geoRestore,
-      why: 'A slower regional recovery in exchange for zero setup. Geo-Restore is enabled by default when backups use GRS or GZRS storage.'
+      why: 'Geo-restore avoids a continuously provisioned replica, but requires GRS/GZRS backups plus a tested target-region restore plan. Precheck quota, access, networking, encryption keys, and application redirection.'
     };
     if (!recs.gzrs) {
       recs.gzrs = {
@@ -2087,17 +2121,10 @@ function buildRecommendations() {
     }
   }
 
-  if (a.region === 'active' && a.dataloss === 'zero' && !recs.gzrs) {
-    recs.gzrs = {
-      ...featureCatalog.gzrs,
-      why: 'Maximum backup durability. GZRS combines zone-level resilience in the primary region with cross-region async replication.'
-    };
-  }
-
   if (a.retention === 'long') {
     recs.ltr = {
       ...featureCatalog.ltr,
-      why: 'Up to 10 years of retention for compliance, audit, or regulatory needs. Configurable monthly and yearly full backups, optionally immutable.'
+      why: 'Configure selected weekly, monthly, and yearly full backups for up to 10 years. Configure the LTR policy on the secondary too, so backups continue after promotion. Time-based immutability is GA and must be configured and locked; legal hold for existing backups is preview.'
     };
   }
 
@@ -2142,12 +2169,12 @@ function renderChecklist() {
   }
 
   const recs = buildRecommendations();
-  const order = ['zoneRedundancy', 'backupsPitr', 'failoverGroups', 'geoReplication', 'geoRestore', 'gzrs', 'ltr', 'readOnlyListener'];
+  const order = ['requirementGap', 'restoreGap', 'backupRpoGap', 'appRtoGap', 'zoneRedundancy', 'backupsPitr', 'failoverGroups', 'geoReplication', 'geoRestore', 'gzrs', 'ltr', 'readOnlyListener'];
   const items = order.filter(k => recs[k]).map(k => recs[k]);
 
   container.innerHTML = items.map(item => `
     <div class="checklist-item priority-${item.priority}">
-      <div class="checklist-check">✓</div>
+      <div class="checklist-check">${item.tag === 'DESIGN GAP' ? '!' : '✓'}</div>
       <div class="checklist-content">
         <div class="checklist-feature">${item.name}<span class="checklist-tag ${item.priority}">${item.tag}</span></div>
         <div class="checklist-why">${item.why}</div>

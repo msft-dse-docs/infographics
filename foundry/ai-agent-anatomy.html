@@ -333,7 +333,7 @@
 <meta name="twitter:title" content="The Anatomy of an AI Agent — A Field Guide, Second Edition">
 <meta name="twitter:description" content="The Anatomy of an AI Agent — A Field Guide, Second Edition — an interactive infographic from the SME&amp;C Infographic Hub.">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-23">
+<meta name="smec:last-accuracy-check" content="2026-11-17">
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <style>/* smec-validation-date v1 */
@@ -389,7 +389,7 @@
 </style>
 </head>
 <body>
-<time class="smec-validation-date" datetime="2026-10-23" data-smec-validation-date="v1">Valid as of 2026-10-23</time>
+<time class="smec-validation-date" datetime="2026-11-17" data-smec-validation-date="v1">Valid as of 2026-11-17</time>
 
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
 
@@ -415,7 +415,7 @@
     <div>
       <p class="hero-eyebrow">A field guide for builders, architects, and the Copilot-curious</p>
       <h1>An agent is <span class="accent-red">not</span> a prompt.<br>It's an <span class="accent-blue">anatomy</span>.</h1>
-      <p class="hero-subtitle">Nobody wins by picking the better model any more &mdash; they win on what they build around it. Great agents are assembled: a brain, a purpose, senses, hands, muscle memory, reflexes, an identity. Ten organs you already know. <strong>Six that arrived in the last eighteen months.</strong></p>
+      <p class="hero-subtitle">Model choice matters. So does the system around it: instructions, context, tools, identity, evaluation and cost controls. This field guide uses <strong>sixteen design concerns</strong> to help you choose the parts your workload needs &mdash; not add complexity for its own sake.</p>
       <div class="hero-meta">
         <span class="chip"><strong>16</strong> organs &mdash; 6 new</span>
         <span class="chip"><strong>1</strong> agent loop</span>
@@ -555,8 +555,8 @@
 <section class="provocation" id="anatomy">
   <div class="container reveal">
     <span class="quote-mark">"</span>
-    <h2>A model with a system prompt is a parlor trick. An agent is a system — ten parts working in concert, each one able to fail, each one able to be measured.</h2>
-    <p class="cite">— The working definition used across Microsoft Foundry, Copilot Studio, and the Microsoft Agent Framework</p>
+    <h2>An agent is a system. Evaluate the model, the tools it can use, the data it can see and the actions it can take.</h2>
+    <p class="cite">Editorial framing for this guide &mdash; not an attributed Microsoft quotation or a product definition.</p>
   </div>
 </section>
 
@@ -564,8 +564,8 @@
 <section id="shift" style="background: var(--paper-2); border-top: 1px solid var(--line);">
   <div class="container reveal">
     <span class="section-tag">The Shift</span>
-    <h2>We stopped asking which model &mdash; because the model stopped being the variable.</h2>
-    <p style="max-width: 820px; font-size: 1.05rem;">In 2023&ndash;24 the intelligence lived in the wording: whoever wrote the cleverest instruction won. In 2025&ndash;26 the intelligence lives in the architecture: whoever builds the better scaffold wins. Each stage absorbed the last &mdash; prompt engineering did not die, it became one component of something larger.</p>
+    <h2>Choose the model. Engineer the system. Measure both.</h2>
+    <p style="max-width: 820px; font-size: 1.05rem;">Prompts, context and runtime design all affect behavior. At Ignite 2026, Foundry makes the improvement loop more practical: baseline conversations, inspect recurring production failures, test candidate changes, and deploy only when results justify them.</p>
 
     <div class="arc">
       <span class="step">prompt engineering</span> &rarr;
@@ -589,7 +589,7 @@
       </div>
     </div>
     <p class="ev-quote">The model is one component; the surrounding runtime, tools, knowledge, identity, and evaluation system determine production behavior.</p>
-    <p class="ev-src">Source: Microsoft Foundry Agent Service overview and observability documentation</p>
+    <p class="ev-src">Source: <a href="https://news.microsoft.com/events/ignite/2026/book-of-news/">Ignite 2026 Book of News &mdash; continuous improvement in Foundry</a>. Multi-turn evaluation, insights and agent optimizer are GA; human annotations and Managed/Programmed Training remain preview.</p>
   </div>
 </section>
 
@@ -597,7 +597,7 @@
   <div class="container">
     <span class="section-tag">The Sixteen Organs</span>
     <h2>Every agent is built from these parts.</h2>
-    <p style="max-width: 820px; font-size: 1.05rem;">Ten organs from the original field guide &mdash; and <strong>six that did not exist at your last design review</strong>. Ship with all sixteen and your agent behaves. Skip one and it breaks, usually in the way the missing organ would have prevented.</p>
+    <p style="max-width: 820px; font-size: 1.05rem;">Sixteen concerns to review, not sixteen mandatory features. A read-only Q&amp;A agent may not need voice, browsing, durable memory or event triggers. Add autonomy only when its value exceeds the extra cost and risk.</p>
 
     <div class="components-grid">
 
@@ -803,7 +803,7 @@
         </div>
         <p class="tagline">Tracing, logging, evals, and telemetry. The difference between "it works on my demo" and "it works at scale."</p>
         <ul class="bits">
-          <li><strong>Traces</strong> — every step, tool call, token, and latency</li>
+          <li><strong>Traces</strong> — instrument steps, tools, usage and latency; minimize sensitive payloads and validate sampling coverage</li>
           <li><strong>Evals</strong> — accuracy, groundedness, safety, task success</li>
           <li><strong>Red-teaming</strong> — adversarial tests before production</li>
           <li><strong>Production monitoring</strong> — drift, cost, user satisfaction</li>
@@ -825,7 +825,7 @@
         <p class="tagline">Triggers, schedules and events replace the chat box. The agent perceives, decides and acts with nobody watching.</p>
         <ul class="bits">
           <li><strong>Copilot Studio autonomous agents</strong> &mdash; GA</li>
-          <li><strong>Foundry Routines</strong> &mdash; GA (September 24, 2026)</li>
+          <li><strong>Foundry Routines</strong> &mdash; confirm the selected trigger, runtime and regional support</li>
           <li><strong>Microsoft 365 Workflows agent</strong> &mdash; event-driven work</li>
           <li><strong>The test</strong> &mdash; does anything happen when nobody types?</li>
         </ul>
@@ -845,12 +845,12 @@
         </div>
         <p class="tagline">Computer use and browser control let an agent drive the systems that never got an API &mdash; by looking at the screen.</p>
         <ul class="bits">
-          <li><strong>Copilot Studio computer use</strong> &mdash; GA (May 2026)</li>
+          <li><strong>Copilot Studio computer use</strong> &mdash; validate target application and environment support</li>
           <li><strong>Foundry Browser Automation</strong> &mdash; Preview</li>
-          <li><strong>Windows 365 for Agents</strong> &mdash; GA, isolated sessions</li>
+          <li><strong>Windows 365 for Agents</strong> &mdash; verify current availability, session isolation and entitlements</li>
           <li><strong>Pair with</strong> &mdash; identity + approval gates, always</li>
         </ul>
-        <div class="without"><strong>Without it</strong>Your legacy estate stays invisible to every agent you build.</div>
+        <div class="without"><strong>When needed</strong>Use screen interaction only where approved APIs or deterministic automation cannot meet the requirement.</div>
       </div>
 
       <!-- 13. Spine -->
@@ -929,10 +929,10 @@
         </div>
         <p class="tagline">A closed loop that turns production runs into better instructions, new skills and a smarter model choice. The organ that compounds.</p>
         <ul class="bits">
-          <li><strong>Foundry Agent Optimizer</strong> &mdash; Preview</li>
-          <li><strong>Microsoft 365 Copilot Tuning</strong> &mdash; Preview</li>
-          <li><strong>Procedural memory</strong> &mdash; Preview; skills that rewrite themselves</li>
-          <li><strong>Feeds on</strong> &mdash; the traces Observability already collects</li>
+          <li><strong>Foundry agent optimizer</strong> &mdash; GA; proposes and tests configurations against your evaluations</li>
+          <li><strong>Multi-turn evaluation + production insights</strong> &mdash; GA; measure conversations and investigate recurring failures</li>
+          <li><strong>Human annotations; Managed and Programmed Training</strong> &mdash; preview; model support and data permissions apply</li>
+          <li><strong>Deployment gate</strong> &mdash; compare quality, safety, latency and cost; approve changes and retain rollback</li>
         </ul>
         <div class="without"><strong>Without it</strong>Your agent is exactly as good on day 300 as it was on day one.</div>
       </div>
@@ -976,7 +976,7 @@
       <div class="loop-step" style="--step-color: #a53860;">
         <div class="loop-circle">5</div>
         <h4>Remember</h4>
-        <p>Persist facts, traces, and evals. The next loop starts smarter.</p>
+        <p>Persist only approved state and evaluation evidence. Retained context is not learned model weights; test whether the next run actually improves.</p>
       </div>
     </div>
   </div>
@@ -987,7 +987,7 @@
   <div class="container reveal">
     <span class="section-tag">The Organ You Cannot Skip</span>
     <h2>Each new organ widens the blast radius.</h2>
-    <p style="max-width: 820px; font-size: 1.05rem;">Security stopped being a review gate and became an architecture decision. The reason is a specific, recognisable combination &mdash; and the six new organs hand it to your agent by default.</p>
+    <p style="max-width: 820px; font-size: 1.05rem;">Security is an architecture responsibility as well as a release gate. The combination below becomes dangerous when your permissions, tools and network paths allow all three &mdash; it is not an unavoidable default.</p>
 
     <div class="trifecta">
       <div class="tri-card">
@@ -1004,7 +1004,7 @@
       </div>
     </div>
     <div class="tri-warn">
-      <strong>The lethal trifecta.</strong> An agent with all three can be talked into exfiltrating your data. Autonomy, browsing and computer use hand it all three by default &mdash; which is why Reflex Arc and Opposable Thumbs cannot ship without Identity and Guardrails already in place.<br><br>
+      <strong>The lethal trifecta.</strong> Private data, untrusted instructions and an outbound channel can combine into an exfiltration path. Minimize privileges, isolate untrusted content, restrict egress and require approval for consequential actions. Prompt-injection detection alone is not a complete defense.<br><br>
       <span style="font-size:0.85rem;opacity:.8;">Framing: Simon Willison, 2025 &middot; Mitigations: Entra Agent ID, least-privilege tools, human approval gates, VM-isolated sessions.</span>
     </div>
 
@@ -1022,23 +1022,23 @@
 
     <div class="checklist-wrap">
       <h3>The Sixteen-Point Exam</h3>
-      <p class="sub">One checkmark per organ. No partial credit.</p>
+      <p class="sub">Record required, optional or not applicable &mdash; and evidence for each decision.</p>
       <div class="checklist-grid">
         <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Instructions</strong> — a versioned system prompt with persona, goals, constraints, and refusal rules.</div></div>
         <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Model</strong> — a deliberate choice with cost/latency tradeoffs documented, not "whatever was default."</div></div>
         <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Knowledge</strong> — grounded retrieval over a curated corpus, not the model's training data.</div></div>
         <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Tools</strong> — typed, schema-validated functions, not free-form shell or HTTP access.</div></div>
         <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Skills</strong> — named, reusable procedures for your recurring tasks, loaded on demand.</div></div>
-        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Memory</strong> — short-term plus at least one durable memory surface (user, team, or shared).</div></div>
+        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Memory</strong> — retain only necessary context; add durable memory only with a purpose, permission and deletion policy.</div></div>
         <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Guardrails</strong> — input + output + tool policy checks, with a human-in-loop for high-stakes writes.</div></div>
-        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Orchestration</strong> — a real loop (ReAct / plan-execute), not a one-shot prompt-then-respond.</div></div>
+        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Orchestration</strong> — use the simplest adequate flow; add bounded loops only when evaluation supports them.</div></div>
         <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Identity</strong> — its own Entra identity with least-privilege tool permissions.</div></div>
-        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Observability</strong> — full traces + an eval suite run on every change.</div></div>
-        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Reflex Arc</strong> — a trigger, schedule or event that starts the agent with no human prompt.</div></div>
-        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Opposable Thumbs</strong> — computer or browser use for the systems that never got an API.</div></div>
+        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Observability</strong> — useful redacted telemetry, coverage checks and change-specific evaluations.</div></div>
+        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Reflex Arc</strong> — if event-driven execution is needed, authorize and deduplicate triggers and bound work.</div></div>
+        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Opposable Thumbs</strong> — if screen interaction is needed, isolate sessions and validate targets and approvals.</div></div>
         <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Spine</strong> — checkpointing and hydration, so a run survives a crash and resumes where it stopped.</div></div>
         <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Metabolism</strong> — model routing, tool search and TTLs that budget tokens and cost deliberately.</div></div>
-        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Face</strong> — voice, streaming or generative UI, not a chat transcript as the only surface.</div></div>
+        <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Face</strong> — an accessible interface matched to users; voice, streaming and generative UI are optional.</div></div>
         <div class="check-item"><div class="check-box">✓</div><div class="txt"><strong>Learning</strong> — a closed loop that turns production traces into better instructions and skills.</div></div>
       </div>
     </div>
@@ -1050,7 +1050,7 @@
   <div class="container reveal">
     <span class="section-tag">Pathology</span>
     <h2>The six ways agents usually fail.</h2>
-    <p style="max-width: 780px;">Every failure mode maps to a missing or malformed organ. Use this list in post-mortems — the real cause is almost always one of these.</p>
+    <p style="max-width: 780px;">Common diagnostic hypotheses, not an exhaustive taxonomy. Use traces, data and reproducible tests to distinguish model, retrieval, tool, infrastructure and policy failures.</p>
 
     <div class="antipatterns">
       <div class="antipattern">
@@ -1145,7 +1145,7 @@
     <p style="max-width: 820px; margin-top: 1.5rem; font-family: var(--serif); font-size: 1.1rem; font-style: italic;">Rung four used to mean multi-agent. Now it means the agent runs without you.</p>
 
     <h3 style="font-family: var(--serif); font-size: 1.4rem; margin-top: 3rem;">The honest counter-argument</h3>
-    <p style="max-width: 820px;">Better models are already deleting parts of this scaffold &mdash; and that is fine. A 100-line agent now scores above 74% on SWE-bench Verified. Build scaffolding that is cheap to delete, and invest durably in the parts that survive a model upgrade.</p>
+    <p style="max-width: 820px;">A model upgrade can make some scaffolding unnecessary and create new failure modes elsewhere. Re-run your task and safety evaluations before removing orchestration or safeguards. A coding benchmark is not proof of your workflow's reliability.</p>
     <div class="counter-grid">
       <div class="counter-col absorb">
         <h4>Being absorbed by better models</h4>
@@ -1164,8 +1164,8 @@
 <section id="build">
   <div class="container reveal">
     <span class="section-tag">Build it with Microsoft</span>
-    <h2>All sixteen organs, already on the shelf.</h2>
-    <p style="max-width: 780px;">You don't have to assemble this from scratch. Microsoft's agent stack gives you each organ as a first-class capability — and the same loop underneath.</p>
+    <h2>Start with supported building blocks.</h2>
+    <p style="max-width: 780px;">Microsoft platforms cover many of these concerns, with different integration, hosting and availability boundaries. You still own authorization, evaluation, deployment approval and recovery for your application.</p>
 
     <div class="build-ms">
       <a class="ms-card" href="https://learn.microsoft.com/en-us/azure/foundry/" target="_blank" rel="noopener">
@@ -1177,7 +1177,7 @@
       <a class="ms-card" href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/" target="_blank" rel="noopener">
         <div class="eyebrow">For makers</div>
         <h4>Copilot Studio</h4>
-        <p>Low-code agent builder with knowledge, topics, actions, and publishing into Microsoft 365 surfaces. Work IQ brings context, memory, and personalization for free.</p>
+        <p>Low-code agent builder with knowledge, topics, actions and publishing into supported channels. Work IQ adds organizational context where integrated; licensing, Copilot Credits and feature availability depend on the experience.</p>
         <div class="arrow">Start building →</div>
       </a>
       <a class="ms-card" href="https://learn.microsoft.com/en-us/agent-framework/" target="_blank" rel="noopener">
@@ -1195,7 +1195,7 @@
   <div class="container">
     <div class="brand-mark">The Anatomy of an AI Agent</div>
     <p>A field guide for builders who want agents that survive Monday morning — not just the Friday demo.</p>
-    <p style="margin-top: 1.2rem; font-size: 0.75rem; color: rgba(253,251,247,0.4);">Microsoft product capabilities reviewed against Microsoft Learn on September 2, 2026.</p>
+    <p style="margin-top: 1.2rem; font-size: 0.75rem; color: rgba(253,251,247,0.4);">Ignite 2026 announcement refresh; this anatomy is an editorial design aid, not a Microsoft certification checklist. Confirm feature-level availability and assess your own workload.</p>
   </div>
 </footer>
 

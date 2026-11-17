@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-23">
+<meta name="smec:last-accuracy-check" content="2026-11-17">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Microsoft AI Platform Decision Guide</title>
@@ -596,7 +596,7 @@
 </style>
 </head>
 <body>
-<time class="smec-validation-date" datetime="2026-10-23" data-smec-validation-date="v1">Valid as of 2026-10-23</time>
+<time class="smec-validation-date" datetime="2026-11-17" data-smec-validation-date="v1">Valid as of 2026-11-17</time>
 
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
 
@@ -690,7 +690,7 @@
           <h4 class="copilot-a">What It Is</h4>
           <ul>
             <li>AI-powered assistant built directly into Microsoft 365 apps</li>
-            <li>Powered by GPT-5 reasoning engine, grounded in your org's Microsoft Graph data</li>
+            <li>Managed model selection, with Work IQ organizational context and Microsoft 365 data access controls</li>
             <li>Enterprise-grade security, compliance, and data protection included</li>
           </ul>
           <h4 class="copilot-a">Best For</h4>
@@ -704,14 +704,14 @@
             <li>Summarizing meetings, email threads, and PDFs in-context</li>
             <li><strong>Agent Mode</strong> in Word, Excel &amp; PowerPoint for content creation <span class="new-badge">New</span></li>
             <li><strong>Copilot Search</strong> across M365 and 3rd-party apps (ServiceNow, Jira, etc.) <span class="new-badge">New</span></li>
-            <li><strong>Copilot Notebooks</strong> for deep research with voice interactions <span class="new-badge">New</span></li>
+            <li><strong>Office in Copilot</strong> is GA; Copilot Workspaces evolves Notebooks through the Frontier program</li>
             <li>Real-time voice conversations and memory personalization</li>
           </ul>
           <h4 class="copilot-a">Operational Profile</h4>
           <div class="meter-group">
             <div class="meter-label"><span>Technical Skill Required</span><span>None</span></div>
             <div class="meter"><div class="meter-fill mf-copilot" data-width="8"></div></div>
-            <div class="meter-label"><span>Time to Value</span><span>Instant</span></div>
+            <div class="meter-label"><span>Illustrative time to value</span><span>Readiness-dependent</span></div>
             <div class="meter"><div class="meter-fill mf-copilot" data-width="98"></div></div>
             <div class="meter-label"><span>Customization</span><span>Low</span></div>
             <div class="meter"><div class="meter-fill mf-copilot" data-width="15"></div></div>
@@ -781,8 +781,8 @@
           <h4 class="openai-a">What It Is</h4>
           <ul>
             <li>Managed API access to OpenAI's frontier models with Azure's enterprise security</li>
-            <li>Your data stays private &mdash; not used to train models</li>
-            <li>Content safety filters, RBAC, VNet integration, and compliance certifications</li>
+            <li>Prompts are not used to train foundation models without your permission or instruction; stateful features and abuse monitoring can retain data</li>
+            <li>Configure content filters, RBAC and private access; verify compliance scope for the exact service, feature and region</li>
           </ul>
           <h4 class="openai-a">Best For</h4>
           <div class="tag-row">
@@ -825,7 +825,7 @@
           <h4 class="foundry-a">What It Is</h4>
           <ul>
             <li>Microsoft's unified AI development platform (rebranded from Azure AI Foundry)</li>
-            <li>More than 10,000 models from Microsoft, OpenAI, Anthropic, Meta, Mistral, and others</li>
+            <li>More than 11,000 models at Ignite 2026; deployment availability, processor and commercial terms differ by offer</li>
             <li>Built-in tools for fine-tuning, evaluation, prompt engineering, and observability</li>
           </ul>
           <h4 class="foundry-a">Best For</h4>
@@ -838,8 +838,8 @@
             <li>Model choice across Microsoft and partner catalogs, subject to regional availability and terms</li>
             <li>Model cards expose lifecycle, deployment, license, and benchmark information</li>
             <li><strong>Microsoft Agent Framework</strong> and other supported frameworks can be used for code-based agents</li>
-            <li>End-to-end lifecycle: build, test, evaluate, deploy, and monitor</li>
-            <li>Fine-tuning for models and deployment types that support it</li>
+            <li>GA multi-turn evaluation, production insights and agent optimizer; compare results and approve changes before deployment</li>
+            <li>Human annotations and Managed/Programmed Training are preview; customization is model-specific</li>
             <li>Integrated with Azure AI Search, Content Safety, and Responsible AI tools</li>
           </ul>
           <h4 class="foundry-a">Operational Profile</h4>
@@ -881,7 +881,7 @@
           <ul>
             <li><strong>Content Understanding</strong> &mdash; GA multimodal extraction, with additional capabilities in preview API versions</li>
             <li><strong>Document Intelligence v4.0</strong> &mdash; current GA API for document analysis, prebuilt models, and custom models</li>
-            <li><strong>Voice Live API</strong> for real-time, two-way AI voice agents</li>
+            <li><strong>Voice Live API</strong> GA stable API <code>2026-07-15</code>; WebRTC and smart turn detection remain preview</li>
             <li>Content Safety with multi-modal detection (text, image, AI-generated)</li>
             <li>Azure AI Search with vector, semantic, and hybrid search capabilities</li>
             <li>PII detection, language translation, and custom neural voice</li>
@@ -908,7 +908,7 @@
     <div class="reveal">
       <span class="section-label">Side-by-Side</span>
       <h2 class="section-title">Feature Comparison</h2>
-      <p class="section-sub">How the five platforms stack up across key capabilities.</p>
+      <p class="section-sub">Five entry points, not mutually exclusive products: Azure OpenAI models and Foundry Tools are part of Foundry. At <a href="https://news.microsoft.com/events/ignite/2026/book-of-news/">Ignite 2026</a>, Microsoft IQ is GA with no new SKU; underlying usage is still charged. Foundry-to-AKS is preview, not a GA deployment promise.</p>
     </div>
     <div class="cmp-wrap reveal">
       <table class="cmp-tbl">
@@ -917,7 +917,7 @@
             <th>Capability</th>
             <th>M365 Copilot</th>
             <th>Copilot Studio</th>
-            <th>Azure OpenAI <span style="display:block;font-size:.62rem;font-weight:500;text-transform:none;letter-spacing:0;color:#c19a00;">Migration to Foundry recommended</span></th>
+            <th>Azure OpenAI <span style="display:block;font-size:.62rem;font-weight:500;text-transform:none;letter-spacing:0;color:#c19a00;">Foundry model family; resource upgrade optional</span></th>
             <th>Foundry</th>
             <th>Foundry Tools</th>
           </tr>
@@ -941,10 +941,10 @@
           </tr>
           <tr>
             <td>LLM / GPT Access</td>
-            <td><span class="check">&#10004; GPT-5 built-in</span></td>
-            <td><span class="check">&#10004; GPT-5, Claude, BYOM</span></td>
+            <td><span class="check">&#10004; Managed model selection</span></td>
+            <td><span class="check">&#10004; Supported Microsoft/partner models</span></td>
             <td><span class="check">&#10004; Supported OpenAI models</span></td>
-            <td><span class="check">&#10004; 10,000+ model catalog</span></td>
+            <td><span class="check">&#10004; 11,000+ catalog entries; support varies</span></td>
             <td><span class="no">&#10006; Not primary</span></td>
           </tr>
           <tr>
@@ -952,14 +952,14 @@
             <td><span class="no">&#10006; No</span></td>
             <td><span class="no">&#10006; No</span></td>
             <td><span class="partial">&#9679; Fine-tuning</span></td>
-            <td><span class="check">&#10004; Full ML lifecycle</span></td>
+            <td><span class="partial">&#9679; Model-specific; new training paths preview</span></td>
             <td><span class="partial">&#9679; Custom training</span></td>
           </tr>
           <tr>
             <td>Voice / Realtime AI</td>
             <td><span class="check">&#10004; Voice conversations</span></td>
-            <td><span class="check">&#10004; Voice agents (GA)</span></td>
-            <td><span class="check">&#10004; Realtime-1.5 API</span></td>
+            <td><span class="partial">&#9679; Voice support depends on channel</span></td>
+            <td><span class="check">&#10004; Supported realtime/audio models</span></td>
             <td><span class="check">&#10004; Via integration</span></td>
             <td><span class="check">&#10004; Voice Live API</span></td>
           </tr>
@@ -967,7 +967,7 @@
             <td>Vision / Speech / OCR</td>
             <td><span class="partial">&#9679; Image generation</span></td>
             <td><span class="partial">&#9679; Image input</span></td>
-            <td><span class="check">&#10004; GPT-5 vision + image</span></td>
+            <td><span class="check">&#10004; Model-dependent vision/image</span></td>
             <td><span class="check">&#10004; Via integration</span></td>
             <td><span class="check">&#10004; Core strength</span></td>
           </tr>
@@ -990,17 +990,17 @@
           <tr>
             <td>Data Privacy / VNet</td>
             <td><span class="check">&#10004; M365 boundary</span></td>
-            <td><span class="check">&#10004; M365 + MIP labels</span></td>
+            <td><span class="partial">&#9679; Connector, identity and policy-specific</span></td>
             <td><span class="check">&#10004; VNet, RBAC</span></td>
-            <td><span class="check">&#10004; Full Azure security</span></td>
+            <td><span class="partial">&#9679; Model/hosting-specific terms and controls</span></td>
             <td><span class="check">&#10004; VNet, RBAC</span></td>
           </tr>
           <tr>
             <td>Model Choice</td>
-            <td>GPT-5 (managed)</td>
-            <td>GPT-5, Claude, custom</td>
+            <td>Managed; experience-dependent</td>
+            <td>Supported Microsoft/partner models</td>
             <td>OpenAI family</td>
-            <td>10,000+ models</td>
+            <td>11,000+ catalog models</td>
             <td>Task-specific models</td>
           </tr>
           <tr>
@@ -1009,14 +1009,14 @@
             <td><span class="check">&#10004; MCP + connectors</span></td>
             <td><span class="check">&#10004; On Your Data</span></td>
             <td><span class="check">&#10004; AI Search + more</span></td>
-            <td><span class="check">&#10004; Content Understanding</span></td>
+            <td><span class="partial">&#9679; Extraction + Search components</span></td>
           </tr>
           <tr>
             <td>Eval &amp; Monitoring</td>
             <td><span class="partial">&#9679; Usage analytics</span></td>
             <td><span class="check">&#10004; Agent evals (GA)</span></td>
             <td><span class="partial">&#9679; Basic metrics</span></td>
-            <td><span class="check">&#10004; Full observability</span></td>
+            <td><span class="check">&#10004; Traces, multi-turn evals, insights, optimizer</span></td>
             <td><span class="partial">&#9679; Usage metrics</span></td>
           </tr>
         </tbody>
@@ -1077,13 +1077,13 @@
       <!-- Results -->
       <div class="dt-result copilot-r dt-hidden" id="r-copilot">
         <h4>&#x2192; Microsoft 365 Copilot</h4>
-        <p>The fastest path to AI value. Powered by GPT-5, Copilot is embedded in M365 apps with Agent Mode, Copilot Search, real-time voice, and Notebooks. No setup, no code, enterprise-grade security.</p>
+        <p>Start here for work inside Microsoft 365. Validate licensing, source permissions and adoption readiness. Office in Copilot is GA; Workspaces and Autopilot are Frontier experiences, not blanket GA capabilities.</p>
         <p style="margin-top:.75rem;"><a href="https://www.microsoft.com/en-us/microsoft-365-copilot/" target="_blank" style="font-weight:600;">Explore Microsoft 365 Copilot &rarr;</a></p>
         <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
       </div>
       <div class="dt-result studio-r dt-hidden" id="r-studio">
         <h4>&#x2192; Microsoft Copilot Studio</h4>
-        <p>Build autonomous AI agents with a low-code interface. Supports GPT-5 and Claude models, voice agents, human-in-the-loop governance, agent evaluations, and 1,000+ data connectors. Deploy to Teams, web, WhatsApp, and more.</p>
+        <p>Start here for low-code agents with supported connectors, channels and models. Define approved actions, escalation and credit budgets first; model, voice and channel availability depend on configuration and region.</p>
         <p style="margin-top:.75rem;"><a href="https://www.microsoft.com/en-us/microsoft-copilot/microsoft-copilot-studio" target="_blank" style="font-weight:600;">Explore Copilot Studio &rarr;</a></p>
         <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
       </div>
@@ -1096,7 +1096,7 @@
       </div>
       <div class="dt-result foundry-r dt-hidden" id="r-foundry">
         <h4>&#x2192; Microsoft Foundry</h4>
-        <p>The unified AI development platform, formerly Azure AI Foundry. Explore more than 10,000 Microsoft and partner models, then evaluate and deploy supported models with enterprise controls.</p>
+        <p>Start here for custom agents and model choice. Explore more than 11,000 catalog models, then test supported offers against quality, safety, latency and cost requirements. Microsoft-Decision-1.1 is GA for routing, classification and verification; it is not the same thing as Foundry model router.</p>
         <p style="margin-top:.75rem;"><a href="https://azure.microsoft.com/en-us/products/ai-foundry/" target="_blank" style="font-weight:600;">Explore Microsoft Foundry &rarr;</a></p>
         <button class="dt-restart" onclick="dtReset()">&#x21bb; Start Over</button>
       </div>
@@ -1116,7 +1116,7 @@
     <div class="reveal">
       <span class="section-label">Real-World Use Cases</span>
       <h2 class="section-title">See It in Action</h2>
-      <p class="section-sub">Common scenarios mapped to the best Microsoft AI platform for each.</p>
+      <p class="section-sub">Illustrative scenarios, not verified customer deployments. Choose a starting platform, then validate data access, integration, quality and total operating cost.</p>
     </div>
     <div class="scenario-grid">
 
@@ -1147,7 +1147,7 @@
       <div class="scenario-card openai-b reveal">
         <div class="sc-label">Azure OpenAI</div>
         <h3>Real-Time Voice AI Concierge</h3>
-        <p>A hotel chain uses Realtime-1.5 and Voice Live API to deploy phone-based AI concierges that handle reservations, recommendations, and FAQs in natural two-way conversation.</p>
+        <p>A hotel could evaluate supported realtime models or Voice Live for a voice concierge, with explicit confirmation before reservations and a human handoff path.</p>
       </div>
 
       <div class="scenario-card openai-b reveal">
@@ -1171,13 +1171,13 @@
       <div class="scenario-card aiservices-b reveal">
         <div class="sc-label">Foundry Tools</div>
         <h3>Multimodal Content Understanding</h3>
-        <p>An insurance company uses Content Understanding to process claims across scanned forms, photos, audio recordings, and video &mdash; extracting structured data from any content type.</p>
+        <p>An insurer could compare Content Understanding on supported forms, photos, audio and video. Measure field accuracy and review cost; validate consequential claims decisions with business rules and human oversight.</p>
       </div>
 
       <div class="scenario-card aiservices-b reveal">
         <div class="sc-label">Foundry Tools</div>
         <h3>AI-Powered Voice Contact Center</h3>
-        <p>A global retailer uses Voice Live API for real-time two-way voice agents, with Azure Speech for translation across 100+ languages and Content Safety for compliance monitoring.</p>
+        <p>A retailer could evaluate Voice Live and supported Speech translation languages for voice service. Confirm locale and feature support, consent, accessibility and handoff; Content Safety is a control, not a compliance certification.</p>
       </div>
 
     </div>
@@ -1198,19 +1198,19 @@
         <h3><a href="https://www.microsoft.com/en-us/microsoft-365-copilot/" target="_blank" style="color:inherit;">M365 Copilot</a></h3>
         <ul class="cost-items">
           <li>Per-user/month subscription</li>
-          <li>Requires M365 E3/E5 or Business Premium</li>
-          <li>Predictable, fixed cost per seat</li>
-          <li>No additional compute charges</li>
+          <li>Requires an eligible base subscription; confirm current prerequisites</li>
+          <li>Seat cost covers included experiences</li>
+          <li>Agents and usage-based experiences can add Copilot Credit charges</li>
         </ul>
       </div>
 
       <div class="cost-card studio-c">
         <h3><a href="https://www.microsoft.com/en-us/microsoft-copilot/microsoft-copilot-studio" target="_blank" style="color:inherit;">Copilot Studio</a></h3>
         <ul class="cost-items">
-          <li>Per-tenant monthly license</li>
-          <li>Includes message capacity allotment</li>
-          <li>Pay-as-you-go for overages</li>
-          <li>Can be included in M365 license</li>
+          <li>Copilot Credit capacity packs or usage-based billing</li>
+          <li>Consumption depends on the work performed</li>
+          <li>Prepurchase options cover eligible usage; terms apply</li>
+          <li>M365 Copilot includes scoped rights, not unlimited Studio usage</li>
         </ul>
       </div>
 
@@ -1220,7 +1220,7 @@
           <li>Pay-per-token (input + output)</li>
           <li>Provisioned throughput option</li>
           <li>Pricing varies by model tier</li>
-          <li>No upfront commitment required</li>
+          <li>PAYG needs no reservation; capacity and discount commitments differ</li>
         </ul>
       </div>
 
@@ -1238,9 +1238,9 @@
         <h3><a href="https://azure.microsoft.com/en-us/products/ai-services/" target="_blank" style="color:inherit;">Foundry Tools</a></h3>
         <ul class="cost-items">
           <li>Pay-per-API-call or per-unit</li>
-          <li>Free tiers for development</li>
-          <li>Volume discounts at scale</li>
-          <li>Commitment tier pricing available</li>
+          <li>Free allowances only where the service offers them</li>
+          <li>Check meter-specific volume and agreement rates</li>
+          <li>Commitment tiers exist for selected services</li>
         </ul>
       </div>
 
@@ -1260,7 +1260,7 @@
       <div class="gs-card">
         <div class="gs-ico">&#x1F680;</div>
         <h4>Start a Pilot</h4>
-        <p>Begin with M365 Copilot for a group of power users to demonstrate quick ROI and build momentum.</p>
+        <p>Choose one measurable workflow and a representative user group. Baseline quality, cycle time and cost before judging value.</p>
       </div>
       <div class="gs-card">
         <div class="gs-ico">&#x1F9EA;</div>
@@ -1282,7 +1282,7 @@
     <div class="reveal" style="margin-top:2.5rem;">
       <div class="cta-banner">
         <h3>Ready to Transform Your Business with AI?</h3>
-        <p>Microsoft offers the broadest AI ecosystem in the industry. Whether you need turnkey productivity tools or a full custom AI platform, there's a solution for your organization.</p>
+        <p>Choose the smallest platform combination that meets the task. Confirm identity, data access, product status and the cost per successful outcome before scaling.</p>
         <a href="https://azure.microsoft.com/en-us/products/ai-foundry/" class="btn btn-primary" target="_blank">Explore Microsoft Foundry</a>
       </div>
     </div>
@@ -1291,7 +1291,7 @@
 
 <!-- FOOTER -->
 <div class="footer">
-  <p>Microsoft AI Platform Decision Guide &bull; Accuracy reviewed 2 September 2026 &bull; Always validate against the latest <a href="https://learn.microsoft.com/en-us/azure/foundry/" target="_blank">Microsoft Foundry documentation</a></p>
+  <p>Microsoft AI Platform Decision Guide &bull; Ignite 2026 feature-level refresh &bull; Validate your model, API, region, license and data path against <a href="https://learn.microsoft.com/en-us/azure/foundry/" target="_blank">Microsoft Foundry documentation</a>.</p>
   <p style="margin-top:.5rem;">Pricing and features subject to change. Visit <a href="https://azure.microsoft.com/en-us/pricing/" target="_blank">azure.microsoft.com/pricing</a> for current details.</p>
 </div>
 

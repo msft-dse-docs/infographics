@@ -239,7 +239,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-23">
+<meta name="smec:last-accuracy-check" content="2026-11-17">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="copilot-swe-agent[bot]">
 <style>/* smec-back-btn v3 */
@@ -351,7 +351,7 @@
 </style>
 </head>
 <body>
-<time class="smec-validation-date" datetime="2026-10-23" data-smec-validation-date="v1">Valid as of 2026-10-23</time>
+<time class="smec-validation-date" datetime="2026-11-17" data-smec-validation-date="v1">Valid as of 2026-11-17</time>
 
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
 
@@ -366,7 +366,7 @@
     <a href="#options">Your Options</a>
     <a href="#mi">Azure SQL MI</a>
     <a href="#costs">Cost Savings</a>
-    <a href="#stories">Customer Stories</a>
+    <a href="#stories">Pilot Outcomes</a>
     <a href="#migrate">Migration</a>
     <a href="#esu">ESU</a>
     <a href="#arc">Azure Arc</a>
@@ -380,7 +380,7 @@
 <section class="hero">
   <div class="hero-badge">Microsoft Azure &bull; SQL Server</div>
   <h1>SQL Server 2016 Has Reached<br>End of Support</h1>
-  <p>Extended Security Updates are available through <strong>July 17, 2029</strong>. Modernize or upgrade where possible, and use ESUs only as a temporary bridge.</p>
+  <p>End of support was <strong>July 14, 2026</strong>. Eligible, subscribed workloads can receive Extended Security Updates through <strong>July 17, 2029</strong>. ESUs are paid for SQL Server 2016, including on Azure VMs &mdash; not a replacement for modernization.</p>
   <div class="countdown" id="countdown">
     <div class="cd-item"><div class="cd-num" id="cd-d">--</div><div class="cd-lbl">Days</div></div>
     <div class="cd-item"><div class="cd-num" id="cd-h">--</div><div class="cd-lbl">Hours</div></div>
@@ -407,12 +407,12 @@
       <p style="margin-top:.5rem;opacity:.9;">Extended Security Updates are available through July 17, 2029</p>
     </div>
     <div class="reveal" style="transition-delay:.15s">
-      <h3 style="font-size:1.05rem;margin-bottom:1rem;">Security Updates You Will Lose</h3>
+      <h3 style="font-size:1.05rem;margin-bottom:1rem;">Support Has Ended: Know What ESUs Cover</h3>
       <table class="sev-table">
         <thead><tr><th>Rating</th><th>What It Means</th></tr></thead>
         <tbody>
-          <tr><td><span class="sev-tag sev-crit">Critical</span></td><td>Vulnerabilities that allow malware to spread without user action&mdash;including from browsing a web page or opening email.</td></tr>
-          <tr><td><span class="sev-tag sev-imp">Important</span></td><td>Vulnerabilities that could compromise the confidentiality, integrity, or availability of your data and processing resources.</td></tr>
+          <tr><td><span class="sev-tag sev-crit">Critical</span></td><td>ESUs provide MSRC-rated Critical security updates if and when released. Latest service pack and eligible licensing are required.</td></tr>
+          <tr><td><span class="sev-tag sev-imp">Limited scope</span></td><td>ESUs do not provide new features or general nonsecurity fixes. Technical support is limited to ESU-related issues; subscription alone does not establish compliance.</td></tr>
         </tbody>
       </table>
       <p style="margin-top:.75rem;font-size:.85rem;color:#777;">Find lifecycle support deadlines at <a href="https://support.microsoft.com/lifecycle" target="_blank">support.microsoft.com/lifecycle</a></p>
@@ -434,8 +434,8 @@
         <div class="opt-body"><ul>
           <li>Always up-to-date SQL instance in the cloud</li>
           <li>Enterprise-grade performance and security</li>
-          <li>Fast to migrate, with the best commercials and delivery</li>
-          <li>No end-of-support worries&mdash;ever</li>
+          <li>Assess compatibility, cutover, and total operating cost before migrating</li>
+          <li>Service-managed engine updates; application lifecycle and testing remain yours</li>
         </ul></div>
       </div>
       <div class="opt-card o2 reveal" style="transition-delay:.15s">
@@ -443,14 +443,14 @@
         <div class="opt-body"><ul>
           <li>Built-in vector capabilities for semantic search</li>
           <li>Streamlined developer workflows for modern data apps</li>
-          <li>Frictionless analytics through Microsoft Fabric</li>
+          <li>Fabric integration where supported; validate configuration and feature status</li>
           <li>Available in Azure or on-premises</li>
         </ul></div>
       </div>
       <div class="opt-card o3 reveal" style="transition-delay:.25s">
         <div class="opt-hdr"><div class="opt-num">3</div><h3>Extended Security Updates</h3></div>
         <div class="opt-body"><ul>
-          <li>Maintain protection and meet compliance needs</li>
+          <li>Receive eligible Critical security fixes while planning an exit</li>
           <li>Extend runway while planning modernization</li>
           <li>Flexible billing across on-premises and cloud</li>
           <li>Optimize costs with pay-as-you-go via Azure Arc</li>
@@ -471,26 +471,26 @@
     <div class="feat-grid">
       <div class="feat reveal"><div class="ico">&#9889;</div><h4>Optimized Performance</h4><p>Latest compute and storage technologies, tuned by ML-based optimization.</p></div>
       <div class="feat reveal" style="transition-delay:.04s"><div class="ico">&#128736;</div><h4>DBA Productivity</h4><p>Fully managed, always up-to-date. Handles time-consuming tasks for you.</p></div>
-      <div class="feat reveal" style="transition-delay:.08s"><div class="ico">&#128737;</div><h4>Advanced Security</h4><p>Multi-layered protection with built-in high availability and compliance.</p></div>
-      <div class="feat reveal" style="transition-delay:.12s"><div class="ico">&#128176;</div><h4>Best Total Cost</h4><p>Up to 93% less than the competition with built-in cost advantages.</p></div>
+      <div class="feat reveal" style="transition-delay:.08s"><div class="ico">&#128737;</div><h4>Security Controls</h4><p>Built-in HA plus configurable identity, networking, encryption, and auditing. Compliance remains a shared responsibility.</p></div>
+      <div class="feat reveal" style="transition-delay:.12s"><div class="ico">&#128176;</div><h4>Measured Total Cost</h4><p>Compare license eligibility, right-sized compute, storage, IOPS, backups, networking, and DR &mdash; not a headline discount.</p></div>
       <div class="feat reveal" style="transition-delay:.16s"><div class="ico">&#128260;</div><h4>Hybrid Flexibility</h4><p>Cloud connectivity on-prem. Migrate to Azure on your terms.</p></div>
-      <div class="feat reveal" style="transition-delay:.2s"><div class="ico">&#129302;</div><h4>Built-In AI &amp; 99.99% SLA</h4><p>AI-optimized performance with industry-leading availability.</p></div>
+      <div class="feat reveal" style="transition-delay:.2s"><div class="ico">&#129302;</div><h4>Resilience by Design</h4><p>Select supported zone redundancy and regional DR. An availability SLA is not an application recovery-time or data-loss guarantee.</p></div>
     </div>
 
     <!-- Next-Gen GP -->
     <div class="cmp-wrap reveal" style="transition-delay:.1s">
       <h3 style="font-size:1.15rem;margin-bottom:.4rem;">Next-Gen General Purpose: A Major Leap</h3>
-      <p style="font-size:.88rem;color:#555;margin-bottom:1.5rem;">Elastic SAN replaces page blobs&mdash;delivering dramatically better performance and scale for OLTP and analytical workloads.</p>
+      <p style="font-size:.88rem;color:#555;margin-bottom:1.5rem;">Elastic SAN replaces page blobs. Benchmark your workload rather than assuming a fixed speedup. Ignite 2026 announced GA zone redundancy and flexible memory for zone-redundant Premium-series instances; availability still depends on region and hardware.</p>
       <table class="cmp-tbl">
-        <thead><tr><th>Metric</th><th>GP (Current)</th><th>GP Next-Gen</th></tr></thead>
+        <thead><tr><th>Design Choice</th><th>General Purpose</th><th>Next-gen General Purpose</th></tr></thead>
         <tbody>
-          <tr><td>Avg I/O Latency</td><td>5&ndash;10 ms</td><td>3&ndash;5 ms <span class="imp">~2x faster</span></td></tr>
-          <tr><td>Max Data IOPS</td><td>30&ndash;50k</td><td>80k <span class="imp">~2x</span></td></tr>
-          <tr><td>Max Log Rate</td><td>120 MB/s</td><td>192 MB/s <span class="imp">+60%</span></td></tr>
+          <tr><td>Storage architecture</td><td>Page blobs</td><td>Elastic SAN</td></tr>
+          <tr><td>IOPS</td><td>File-size-related limits</td><td>Configurable within instance limits; extra IOPS can cost more</td></tr>
+          <tr><td>Memory</td><td>Fixed by vCore selection</td><td>Flexible on supported Premium-series hardware</td></tr>
           <tr><td>Max Storage</td><td>16 TB</td><td>32 TB <span class="imp">2x</span></td></tr>
           <tr><td>Max DBs / Instance</td><td>100</td><td>500 <span class="imp">5x density</span></td></tr>
-          <tr><td>Max vCores</td><td>80</td><td>128 <span class="imp">+60%</span></td></tr>
-          <tr><td>Max Files</td><td>280 / instance</td><td>4,096 / database <span class="imp">15x</span></td></tr>
+          <tr><td>Zone redundancy</td><td>Check current tier support</td><td>GA in supported regions (Ignite 2026)</td></tr>
+          <tr><td>Migration path</td><td>Assess engine and application compatibility</td><td>MI link multi-database availability-group support is GA</td></tr>
         </tbody>
       </table>
     </div>
@@ -502,49 +502,49 @@
   <div class="container">
     <div class="reveal">
       <span class="section-label">Cost Optimization</span>
-      <h2 class="section-title">Real Savings, Real Numbers</h2>
-      <p class="section-sub">See how Azure Hybrid Benefit and Next-Gen GP dramatically reduce your costs. Based on 96 vCores, SQL EE license.</p>
+      <h2 class="section-title">Build a Defensible Cost Case</h2>
+      <p class="section-sub">Price equivalent recovery, latency, throughput, and support requirements. The bars below identify cost components, not prices or measured savings. Use a dated regional quote and verify license eligibility before committing.</p>
     </div>
 
     <!-- AHB Impact -->
-    <div class="reveal"><h3 style="font-size:1.05rem;margin-bottom:1.25rem;">Azure Hybrid Benefit Impact (Business Critical Tier)</h3></div>
+    <div class="reveal"><h3 style="font-size:1.05rem;margin-bottom:1.25rem;">Separate Infrastructure from License Cost</h3></div>
     <div class="cost-bars reveal" style="transition-delay:.08s">
-      <div class="cb-item"><div class="cb-label">Without AHB</div><div class="cb-track"><div class="cb-fill no-ahb" data-width="100">$121,658/mo</div></div></div>
-      <div class="cb-item"><div class="cb-label">With AHB</div><div class="cb-track"><div class="cb-fill ahb" data-width="57"><span>$69,098/mo</span><span class="save-badge">Save 43%</span></div></div></div>
+      <div class="cb-item"><div class="cb-label">License included</div><div class="cb-track"><div class="cb-fill no-ahb" data-width="100">Compute + SQL</div></div></div>
+      <div class="cb-item"><div class="cb-label">Eligible AHB</div><div class="cb-track"><div class="cb-fill ahb" data-width="100">Compute + AHB</div></div></div>
     </div>
 
     <!-- BC vs Next-Gen -->
-    <div class="reveal" style="margin-top:2.5rem;"><h3 style="font-size:1.05rem;margin-bottom:1.25rem;">Business Critical vs. Next-Gen GP (Both with AHB)</h3></div>
+    <div class="reveal" style="margin-top:2.5rem;"><h3 style="font-size:1.05rem;margin-bottom:1.25rem;">Choose the Architecture Before Comparing Prices</h3></div>
     <div class="cost-bars reveal" style="transition-delay:.08s">
-      <div class="cb-item"><div class="cb-label">Business Critical</div><div class="cb-track"><div class="cb-fill ahb" data-width="100">$69,098/mo</div></div></div>
-      <div class="cb-item"><div class="cb-label">Next-Gen GP</div><div class="cb-track"><div class="cb-fill nextgen" data-width="50"><span>$34,479/mo</span><span class="save-badge">Save 50%</span></div></div></div>
+      <div class="cb-item"><div class="cb-label">Business Critical</div><div class="cb-track"><div class="cb-fill ahb" data-width="100">Test latency + HA</div></div></div>
+      <div class="cb-item"><div class="cb-label">Next-Gen GP</div><div class="cb-track"><div class="cb-fill nextgen" data-width="100">Size resources</div></div></div>
     </div>
 
     <!-- Savings levers -->
     <div class="sav-grid reveal" style="margin-top:2.5rem;">
-      <div class="sav-card"><h4>Azure Hybrid Benefit</h4><div class="amt blue">Up to 55%</div><div class="det">with existing SQL licenses</div></div>
-      <div class="sav-card"><h4>Reserved Capacity</h4><div class="amt green">Up to 33%</div><div class="det">with 1- or 3-year commitment</div></div>
-      <div class="sav-card"><h4>AHB + Reserved</h4><div class="amt blue">Up to 82%</div><div class="det">maximum combined savings</div></div>
-      <div class="sav-card"><h4>Dev/Test Pricing</h4><div class="amt green">Up to 55%</div><div class="det">with Visual Studio subscription</div></div>
-      <div class="sav-card"><h4>License-Free Standby</h4><div class="amt blue">Free</div><div class="det">secondary DR deployment</div></div>
+      <div class="sav-card"><h4>Azure Hybrid Benefit</h4><div class="amt blue">Eligibility</div><div class="det">qualifying licenses with active SA or eligible subscriptions</div></div>
+      <div class="sav-card"><h4>Reserved Capacity</h4><div class="amt green">Reserve</div><div class="det">match term and size to steady usage</div></div>
+      <div class="sav-card"><h4>AHB + Reserved</h4><div class="amt blue">Model It</div><div class="det">benefits apply to different cost components</div></div>
+      <div class="sav-card"><h4>Dev/Test Pricing</h4><div class="amt green">Dev/Test</div><div class="det">verify subscription and use restrictions</div></div>
+      <div class="sav-card"><h4>License-Free Standby</h4><div class="amt blue">License Only</div><div class="det">eligible DR-only replicas still incur infrastructure costs</div></div>
     </div>
 
     <!-- Savings Plan -->
     <div class="sp-visual reveal" style="margin-top:2rem;">
       <h3>Savings Plan for Databases</h3>
-      <p>A flexible way to save up to <strong>35%</strong> by committing to a fixed hourly spend across database services globally for 1 year. Usage within your commitment gets lower prices; anything above is billed at standard pay-as-you-go rates. No cancellation required.</p>
+      <p>A database savings plan commits a fixed hourly spend for <strong>one or three years</strong> across eligible services and regions within its scope. Microsoft advertises savings of <strong>up to 35%</strong> versus pay-as-you-go; discounts vary by meter and term. Unused hourly commitment expires, excess usage is pay-as-you-go, and <strong>purchases cannot be canceled or refunded</strong>. SQL Server VM/Arc hourly licenses can consume commitment at their normal pay-as-you-go price. <a href="https://learn.microsoft.com/en-us/azure/cost-management-billing/savings-plan/savings-plan-overview" target="_blank" rel="noopener">Check eligibility and terms</a> before buying.</p>
       <div style="display:flex;gap:2rem;flex-wrap:wrap;margin-top:1rem;">
         <div style="flex:1;min-width:200px;background:#f5f5f5;border-radius:10px;padding:1rem;text-align:center;">
-          <div style="font-size:1.6rem;font-weight:700;color:#0078d4;">Up to 35%</div>
-          <div style="font-size:.82rem;color:#555;">savings vs. pay-as-you-go</div>
+          <div style="font-size:1.6rem;font-weight:700;color:#0078d4;">Baseline</div>
+          <div style="font-size:.82rem;color:#555;">measure usage before committing</div>
         </div>
         <div style="flex:1;min-width:200px;background:#f5f5f5;border-radius:10px;padding:1rem;text-align:center;">
-          <div style="font-size:1.6rem;font-weight:700;color:#107c10;">Global</div>
-          <div style="font-size:.82rem;color:#555;">applies across regions &amp; services</div>
+          <div style="font-size:1.6rem;font-weight:700;color:#107c10;">Coverage</div>
+          <div style="font-size:.82rem;color:#555;">verify participating meters and scope</div>
         </div>
         <div style="flex:1;min-width:200px;background:#f5f5f5;border-radius:10px;padding:1rem;text-align:center;">
-          <div style="font-size:1.6rem;font-weight:700;color:#d29200;">1 Year</div>
-          <div style="font-size:.82rem;color:#555;">commitment term</div>
+          <div style="font-size:1.6rem;font-weight:700;color:#d29200;">1 or 3 Years</div>
+          <div style="font-size:.82rem;color:#555;">noncancelable spend commitment</div>
         </div>
       </div>
     </div>
@@ -555,28 +555,28 @@
 <section id="stories" style="background:#fff;">
   <div class="container">
     <div class="reveal">
-      <span class="section-label">Customer Success</span>
-      <h2 class="section-title">Real Customers, Real Results</h2>
-      <p class="section-sub">Organizations across industries have modernized to Azure SQL Managed Instance.</p>
+      <span class="section-label">Migration Evidence</span>
+      <h2 class="section-title">Make the Pilot Prove the Outcome</h2>
+      <p class="section-sub">Do not turn another customer's savings or an unattributed slide quote into your forecast. Capture a repeatable baseline and agree on acceptance criteria.</p>
     </div>
     <div class="stories">
       <div class="story reveal">
-        <h4>Komatsu</h4>
-        <div class="tag">Efficient operations</div>
-        <p style="font-size:.88rem;color:#444;margin-bottom:.75rem;">Modernized to the cloud for efficient business operations, consolidating construction and machine data into a single source of truth.</p>
-        <div class="quote">"We determined Azure SQL Managed Instance was the best choice for us in terms of scalability, cost, and performance. We've seen a 49 percent cost reduction and 25 to 30 percent performance gains."<div class="attr">&mdash; Nipun Sharma, Analytics Architect</div></div>
+        <h4>Performance</h4>
+        <div class="tag">Replay representative load</div>
+        <p style="font-size:.88rem;color:#444;margin-bottom:.75rem;">Measure peak concurrency, query latency, batch duration, and blocking against the current system.</p>
+        <div class="quote">Pass when agreed p95 latency and throughput targets hold during peak load, not only in a quiet demo.<div class="attr">Evidence: workload replay and query telemetry</div></div>
       </div>
       <div class="story reveal" style="transition-delay:.07s">
-        <h4>Trane Technologies</h4>
-        <div class="tag">Cloud scale &amp; reliability</div>
-        <p style="font-size:.88rem;color:#444;margin-bottom:.75rem;">Enabled cloud-scale reliability for data storage and high-volume transaction processing.</p>
-        <div class="quote">"Azure SQL Managed Instance was the only data store that could hold our data and process the number of transactions that we have."<div class="attr">&mdash; Minh Duong, Customer Hub Senior Manager</div></div>
+        <h4>Recovery</h4>
+        <div class="tag">Rehearse the failure</div>
+        <p style="font-size:.88rem;color:#444;margin-bottom:.75rem;">Test zone failover, backup restore, regional recovery, and application reconnection separately.</p>
+        <div class="quote">Pass when recovery time, acceptable data loss, and cross-database consistency meet the business target.<div class="attr">Evidence: timed drill and reconciliation results</div></div>
       </div>
       <div class="story reveal" style="transition-delay:.14s">
-        <h4>Costco</h4>
-        <div class="tag">IaaS to PaaS migration</div>
-        <p style="font-size:.88rem;color:#444;margin-bottom:.75rem;">Migrated from IaaS to PaaS, unlocking cost savings through automated infrastructure maintenance, upgrades, and application management.</p>
-        <div class="quote">"We're reconfiguring our environment to move from IaaS to a PaaS model, so that we can really take advantage of cost savings around infrastructure maintenance, upgrades, and app installs&mdash;all now automated."<div class="attr">&mdash; Kristina Wilson, IT Manager, Client Applications</div></div>
+        <h4>Operating Cost</h4>
+        <div class="tag">Price the complete service</div>
+        <p style="font-size:.88rem;color:#444;margin-bottom:.75rem;">Include replicas, backups, storage, networking, support, licensing, and engineering effort.</p>
+        <div class="quote">Pass when the dated regional estimate and observed consumption fit the budget with documented assumptions.<div class="attr">Evidence: pricing estimate and cost telemetry</div></div>
       </div>
     </div>
   </div>
@@ -588,13 +588,13 @@
     <div class="reveal">
       <span class="section-label">Migration &amp; Assessment</span>
       <h2 class="section-title">Where to Get Started</h2>
-      <p class="section-sub">Multiple entry points for discovering, assessing, and migrating your SQL workloads to Azure.</p>
+      <p class="section-sub"><strong>Azure Catalyst is now GA</strong> as the unified Azure/GitHub modernization experience. Its deeper execution scenarios remain preview where specified. Use discovery and assessment to choose the target, then rehearse migration and rollback.</p>
     </div>
     <div class="tools-grid">
       <div class="tool-card reveal"><div class="tool-ico">&#128270;</div><h4>Azure Arc</h4><p>Discover and assess SQL workloads at scale. Free for all editions, SQL Server 2012+.</p></div>
       <div class="tool-card reveal" style="transition-delay:.05s"><div class="tool-ico">&#128506;</div><h4>Azure Migrate</h4><p>Central hub for datacenter migration with end-to-end tracking and insights.</p></div>
       <div class="tool-card reveal" style="transition-delay:.1s"><div class="tool-ico">&#128259;</div><h4>Azure DMS</h4><p>Database Migration Service for seamless, connected migration to Azure.</p></div>
-      <div class="tool-card reveal" style="transition-delay:.15s"><div class="tool-ico">&#128187;</div><h4>SSMS 21</h4><p>New extension to assess and migrate to Azure SQL VM directly from SSMS.</p></div>
+      <div class="tool-card reveal" style="transition-delay:.15s"><div class="tool-ico">&#128187;</div><h4>MI Link</h4><p>Multi-database SQL Server availability-group support is now GA. Check supported versions, network prerequisites, and cutover consistency.</p></div>
     </div>
 
     <!-- Arc Assessment -->
@@ -605,7 +605,7 @@
         <div class="arc-feat"><strong>Enabled by Default</strong><p>Assessment runs automatically when you Arc-enable SQL Server.</p></div>
         <div class="arc-feat"><strong>Comprehensive &amp; Actionable</strong><p>Evaluate readiness for Azure SQL, identify risks with mitigation actions.</p></div>
         <div class="arc-feat"><strong>Best-Fit Recommendations</strong><p>Guidance on IaaS vs. PaaS, service tier, sizing, and migration tooling.</p></div>
-        <div class="arc-feat"><strong>Continuous Reporting</strong><p>Discovery and readiness reports are instant, automatic, and ongoing.</p></div>
+        <div class="arc-feat"><strong>Scheduled Reporting</strong><p>Migration assessment runs on a default weekly schedule. Allow collection time and validate the captured workload is representative.</p></div>
       </div>
       <div class="arc-free">Free for all customers &bull; All SQL editions &bull; SQL Server 2012+</div>
     </div>
@@ -629,7 +629,7 @@
     <div class="reveal">
       <span class="section-label">Extended Security Updates</span>
       <h2 class="section-title">ESU: A Secure Bridge While You Modernize</h2>
-      <p class="section-sub">Unified management for all end-of-support SQL workloads in the Azure Portal.</p>
+      <p class="section-sub">A time-limited subscription for eligible SQL Server 2016 Standard and Enterprise deployments. Express, Web, and Developer cannot subscribe independently; qualifying production subscriptions can cover Developer solely for dev/test under the documented terms.</p>
     </div>
     <div class="esu-grid reveal">
       <div class="esu-item"><div class="dot"></div><p><strong>Pay-as-you-go billing</strong>&mdash;no upfront commitment</p></div>
@@ -647,13 +647,12 @@
         <tbody>
           <tr><td>On-premises</td><td><span class="tag-paid">Paid</span></td><td><span class="tag-paid">Paid</span></td></tr>
           <tr><td>Multi-cloud</td><td><span class="tag-paid">Paid</span></td><td><span class="tag-paid">Paid</span></td></tr>
-          <tr><td>Azure VMs / Dedicated Host</td><td><span class="tag-free">Free</span></td><td><span class="tag-paid">Paid</span></td></tr>
-          <tr><td>Azure Local</td><td><span class="tag-free">Free</span></td><td><span class="tag-paid">Paid</span></td></tr>
-          <tr><td>Azure VMware / Nutanix</td><td><span class="tag-free">Free</span></td><td><span class="tag-paid">Paid</span></td></tr>
+          <tr><td>Eligible Azure VMs / Dedicated Host</td><td><span class="tag-free">Included if eligible</span></td><td><span class="tag-paid">Paid</span></td></tr>
+          <tr><td>Azure Local / other Azure-hosted platforms</td><td>Verify platform eligibility</td><td><span class="tag-paid">Paid; verify licensing route</span></td></tr>
         </tbody>
       </table>
       <div style="margin-top:1rem;padding:.75rem;background:#fff4ce;border-radius:8px;font-size:.85rem;">
-        <strong>Important:</strong> If you enable an Azure Arc ESU subscription after July 14, 2026, Azure bills back to the beginning of the current ESU year. Plan enrollment before a coverage gap occurs.
+        <strong>Important:</strong> SQL Server 2016 ESU billing began July 15, 2026 (UTC). Late enrollment includes bill-back under the current terms. Verify enrollment, latest service pack, patch installation, and an exit date now; paying does not install missing fixes or erase a prior coverage gap.
       </div>
     </div>
   </div>
@@ -665,27 +664,19 @@
     <div class="reveal">
       <span class="section-label">Azure Arc</span>
       <h2 class="section-title">Arc-Enabled SQL Server</h2>
-      <p class="section-sub">Extend Azure management and security to your SQL Server instances anywhere&mdash;on-premises, multi-cloud, or in Azure.</p>
+      <p class="section-sub">Extend Azure management to supported SQL Server hosts outside Azure. Arc does not upgrade the engine, turn SQL Server 2016 into PaaS, or make every newer-version feature available. Use the SQL IaaS Agent extension for supported native Azure VM scenarios.</p>
     </div>
     <div class="arc-tbl-wrap reveal">
       <table class="arc-tbl">
-        <thead><tr><th>Capability</th><th>SQL Server (standalone)</th><th>Arc-Enabled SQL Server</th><th>SQL Server on Azure VM</th></tr></thead>
+        <thead><tr><th>Capability</th><th>SQL Server 2016 Alone</th><th>Arc-Enabled Route</th><th>Azure VM Route</th></tr></thead>
         <tbody>
-          <tr><td>Pay-as-you-go billing</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
-          <tr><td>Microsoft Entra ID auth</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
-          <tr><td>Best practices assessment</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
-          <tr><td>Inventory management</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
-          <tr><td>Auto patching</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
-          <tr><td>Auto backup</td><td class="dash">&mdash;</td><td class="check">&#10003; Preview; off by default</td><td class="check">&#10003;</td></tr>
-          <tr><td>Monitoring</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
-          <tr><td>Defender for SQL Server</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
-          <tr><td>TDE with Azure Key Vault</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
-          <tr><td>HA/DR inventory management</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
-          <tr><td>License compliance management</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
-          <tr><td>Cluster-aware patching</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
-          <tr><td>Purview Premium</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
-          <tr><td>Point-in-time restore</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
-          <tr><td>Backup LTR to Azure</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+          <tr><td>ESU coverage</td><td>Not automatic</td><td>Eligible paid subscription + patching</td><td>SQL 2016 ESUs are paid</td></tr>
+          <tr><td>Microsoft Entra authentication</td><td>Not a SQL 2016 engine feature</td><td>Requires SQL Server 2022 or later</td><td>Check engine/version prerequisites</td></tr>
+          <tr><td>Inventory &amp; migration assessment</td><td>You collect and assess</td><td>Extension-based inventory and scheduled assessment</td><td>SQL IaaS extension and migration tooling</td></tr>
+          <tr><td>Backups &amp; PITR</td><td>SQL backups must be configured</td><td>Automation is feature/version-specific; restore-test it</td><td>Configure supported backup or Azure Backup protection</td></tr>
+          <tr><td>Patching</td><td>You own it</td><td>Configure supported update tooling; not automatic from enrollment</td><td>Configure supported VM update management</td></tr>
+          <tr><td>Threat protection</td><td>Not enabled by default</td><td>Defender for SQL requires enablement and applicable charges</td><td>Defender for SQL requires enablement and applicable charges</td></tr>
+          <tr><td>HA / regional DR</td><td>You design and operate it</td><td>Arc inventory is not HA or replication</td><td>Configure, fund, and test AG/FCI/backup recovery</td></tr>
         </tbody>
       </table>
     </div>
@@ -698,14 +689,14 @@
     <div class="reveal">
       <span class="section-label">Option 2: Upgrade</span>
       <h2 class="section-title">Top 5 Reasons to Upgrade to SQL Server 2025</h2>
-      <p class="section-sub">The most secure, performant, and AI-ready SQL Server ever.</p>
+      <p class="section-sub">Upgrade for a supported lifecycle and modern capabilities. Assess edition, OS, drivers, deprecated features, compatibility levels, and vendor certification; rehearse restore and rollback before production cutover.</p>
     </div>
     <div class="reasons-list">
-      <div class="reason-item reveal"><h4>Industry-Leading Security</h4><p>Fewest vulnerabilities of any major database&mdash;62 CVEs vs. 1,193 for MySQL, 198 for Oracle, 195 for PostgreSQL (NIST NVD 2016&ndash;2025).</p></div>
-      <div class="reason-item reveal" style="transition-delay:.04s"><h4>Built-In AI &amp; Vector Search</h4><p>Native vector capabilities for semantic search&mdash;no third-party tools required.</p></div>
+      <div class="reason-item reveal"><h4>Supported Security Lifecycle</h4><p>Move to a supported release, apply current updates, and validate least privilege and encryption. Cross-product CVE totals are not a comparable security benchmark.</p></div>
+      <div class="reason-item reveal" style="transition-delay:.04s"><h4>AI &amp; Vector Capabilities</h4><p>Evaluate native vector features for your workload. Feature availability and preview status vary; external embedding or model endpoints can add cost, identity, and data-handling requirements.</p></div>
       <div class="reason-item reveal" style="transition-delay:.08s"><h4>Modern Developer Workflows</h4><p>Streamlined tooling to build modern data applications faster than ever.</p></div>
-      <div class="reason-item reveal" style="transition-delay:.12s"><h4>Frictionless Analytics via Fabric</h4><p>Direct integration with Microsoft Fabric for unified analytics at any scale.</p></div>
-      <div class="reason-item reveal" style="transition-delay:.16s"><h4>Flexible Deployment</h4><p>Run in Azure or on-premises&mdash;same capabilities, your choice of environment.</p></div>
+      <div class="reason-item reveal" style="transition-delay:.12s"><h4>Analytics via Fabric</h4><p>Use supported integration paths with explicit permissions, replication monitoring, and freshness targets. Analytics copies do not replace transactional backups.</p></div>
+      <div class="reason-item reveal" style="transition-delay:.16s"><h4>Flexible Deployment</h4><p>Choose Azure or on-premises while checking edition, OS, hardware, and feature support. Deployment choices do not have identical capabilities.</p></div>
     </div>
   </div>
 </section>
@@ -740,11 +731,11 @@
       </div>
       <div class="acc-item">
         <div class="acc-hdr">What is the Savings Plan for Databases? <span class="chev">&#9660;</span></div>
-        <div class="acc-body"><div class="acc-inner">A flexible way to save up to 35% by committing to a fixed hourly dollar amount on database services for 1 year. Savings apply globally across participating services. It's ideal for dynamic workloads where usage varies. For stable workloads, Azure Reservations can save up to 55%.</div></div>
+        <div class="acc-body"><div class="acc-inner">A one- or three-year hourly spend commitment for eligible database usage. Microsoft advertises up to 35% savings, varying by meter and term. Unused hourly commitment expires, excess usage is pay-as-you-go, and purchases cannot be canceled or refunded. Compare with reservations using observed usage and a dated quote; not every cost component receives a discount.</div></div>
       </div>
       <div class="acc-item">
         <div class="acc-hdr">What is Azure Hybrid Benefit? <span class="chev">&#9660;</span></div>
-        <div class="acc-body"><div class="acc-inner">Azure Hybrid Benefit lets you use your existing on-premises SQL Server licenses with Software Assurance in Azure, saving up to 55%. Azure is the <strong>only cloud</strong> that allows you to bring your SQL license to PaaS (Managed Instance). Combine with Reserved Capacity for savings up to 82%.</div></div>
+        <div class="acc-body"><div class="acc-inner">Azure Hybrid Benefit applies qualifying SQL Server licenses with active Software Assurance or eligible subscriptions to supported Azure SQL services. Verify core conversion, allocation, and dual-use terms. Reservations reduce eligible infrastructure charges; neither makes the entire service free.</div></div>
       </div>
       <div class="acc-item">
         <div class="acc-hdr">Can I use Azure Arc for ESU if I'm not in Azure? <span class="chev">&#9660;</span></div>
@@ -752,7 +743,7 @@
       </div>
       <div class="acc-item">
         <div class="acc-hdr">What is Next-Gen General Purpose? <span class="chev">&#9660;</span></div>
-        <div class="acc-body"><div class="acc-inner">Next-Gen GP is a new Azure SQL Managed Instance tier that uses Elastic SAN instead of page blobs. It delivers 3&ndash;5x better performance for OLTP and analytical workloads, 5x better database density, 2x storage scale, and 2x improved vCore flexibility&mdash;all at the General Purpose price point.</div></div>
+        <div class="acc-body"><div class="acc-inner">Next-gen GP upgrades General Purpose storage to Elastic SAN, supporting up to 500 databases and 32 TB per instance. The baseline price is comparable to GP, but extra IOPS and memory are billed separately. Ignite 2026 announced GA zone redundancy and flexible memory for zone-redundant Premium-series instances in supported regions. Benchmark workload performance rather than assuming a fixed multiplier.</div></div>
       </div>
     </div>
   </div>
@@ -760,14 +751,14 @@
 
 <footer>
   <p><strong>Microsoft</strong> &bull; SQL Server 2016 End of Support &mdash; Customer Guide</p>
-  <p style="margin-top:.5rem;opacity:.7;">Find lifecycle support deadlines at support.microsoft.com/lifecycle</p>
+  <p style="margin-top:.5rem;opacity:.7;">Sources: <a href="https://learn.microsoft.com/en-us/sql/sql-server/end-of-support/extended-security-updates-frequently-asked-questions" target="_blank" rel="noopener">ESU eligibility, dates, and billing</a> &bull; <a href="https://learn.microsoft.com/en-us/azure/azure-sql/managed-instance/service-tiers-next-gen-general-purpose-use" target="_blank" rel="noopener">Next-gen GP architecture and charges</a> &bull; <a href="https://learn.microsoft.com/en-us/sql/sql-server/azure-arc/overview" target="_blank" rel="noopener">Arc capabilities and prerequisites</a> &bull; <a href="https://news.microsoft.com/events/ignite/2026/book-of-news/" target="_blank" rel="noopener">Ignite 2026 Azure SQL / Azure Catalyst announcements</a></p>
 </footer>
 
 <script>
 // Countdown
 (function(){
   const eol=new Date('2026-07-14T00:00:00').getTime();
-  function u(){const n=Date.now(),d=eol-n;if(d<=0){document.getElementById('cd-d').textContent='ESU';document.getElementById('cd-h').textContent='NOW';document.getElementById('cd-m').textContent='';document.getElementById('cd-s').textContent='';return;}
+  function u(){const n=Date.now(),d=eol-n;if(d<=0){document.getElementById('cd-d').textContent='14';document.getElementById('cd-h').textContent='JUL';document.getElementById('cd-m').textContent='2026';document.getElementById('cd-s').textContent='ENDED';document.querySelectorAll('.cd-lbl').forEach((el,i)=>el.textContent=['Day','Month','Year','Support'][i]);return;}
   document.getElementById('cd-d').textContent=Math.floor(d/864e5);
   document.getElementById('cd-h').textContent=Math.floor((d%864e5)/36e5);
   document.getElementById('cd-m').textContent=Math.floor((d%36e5)/6e4);
@@ -797,7 +788,7 @@ document.querySelectorAll('.acc-hdr').forEach(h=>{h.addEventListener('click',()=
 // Decision Tree
 const tree={id:'s',question:'Can your workload migrate to Azure?',choices:[
   {label:'Yes, move to Azure',next:{id:'t',question:'Do you prefer PaaS (fully managed) or IaaS (VM-based)?',choices:[
-    {label:'PaaS (Managed Instance)',next:{id:'r1',result:{type:'green',title:'Modernize to Azure SQL Managed Instance',desc:'Best long-term option. Fully managed, always up to date, with the best cost savings. Consider Next-Gen GP for even better performance at lower cost.'}}},
+    {label:'PaaS (Managed Instance)',next:{id:'r1',result:{type:'green',title:'Assess Azure SQL Managed Instance',desc:'Validate engine compatibility, vendor support, networking, and recovery targets. Benchmark Next-gen GP and price memory, IOPS, replicas, backups, and eligible license benefits before choosing.'}}},
     {label:'IaaS (Azure VMs)',next:{id:'u',question:'Can you upgrade to a newer SQL Server version on Azure VMs?',choices:[
       {label:'Yes',next:{id:'r2',result:{type:'green',title:'Upgrade to SQL Server 2025 on Azure VM',desc:'Latest features including AI and vector search. Use Azure Hybrid Benefit to maximize savings. No ESU cost needed.'}}},
       {label:'Not yet',next:{id:'r3',result:{type:'yellow',title:'Stay on SQL 2016 + Subscribe to ESU',desc:'ESU is paid on Azure VMs for SQL 2016. Subscribe via the Azure Portal. Plan a parallel pilot migration to SQL MI.'}}}
@@ -806,7 +797,7 @@ const tree={id:'s',question:'Can your workload migrate to Azure?',choices:[
   {label:'No, staying on-premises',next:{id:'v',question:'Can you upgrade to SQL Server 2025 on-premises?',choices:[
     {label:'Yes',next:{id:'r4',result:{type:'green',title:'Upgrade to SQL Server 2025 On-Premises',desc:'Built-in AI, industry-leading security, Fabric integration. No ESU needed. Use Azure Arc for ongoing management.'}}},
     {label:'Not yet',next:{id:'w',question:'How would you like to purchase ESU?',choices:[
-      {label:'Azure Arc (monthly, flexible)',next:{id:'r5',result:{type:'blue',title:'ESU via Azure Arc',desc:'Pay monthly, no upfront commitment, stop anytime. Enroll in Azure Portal. Centralized management across all servers.'}}},
+      {label:'Azure Arc (monthly, flexible)',next:{id:'r5',result:{type:'blue',title:'ESU via Azure Arc',desc:'Verify eligible edition and latest service pack, subscribe, and install available Critical fixes. Late enrollment can trigger bill-back. Track coverage and set a migration or upgrade exit date.'}}},
       {label:'Volume Licensing',next:{id:'r6',result:{type:'yellow',title:'ESU via Volume Licensing',desc:'Contact your Microsoft account team for current pricing, eligibility, and coverage terms. If coverage has lapsed, review any applicable back-billing before enrolling.'}}}
     ]}}
   ]}}

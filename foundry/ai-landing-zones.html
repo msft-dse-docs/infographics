@@ -646,7 +646,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-23">
+<meta name="smec:last-accuracy-check" content="2026-11-17">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="Harry Arce">
 <style>/* smec-back-btn v3 */
@@ -758,7 +758,7 @@
 </style>
 </head>
 <body>
-<time class="smec-validation-date" datetime="2026-10-23" data-smec-validation-date="v1">Valid as of 2026-10-23</time>
+<time class="smec-validation-date" datetime="2026-11-17" data-smec-validation-date="v1">Valid as of 2026-11-17</time>
 
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
 
@@ -785,7 +785,7 @@
   <div class="container">
     <div class="hero-grid">
       <div>
-        <span class="hero-eyebrow"><span class="dot"></span> Generally available reference implementation</span>
+        <span class="hero-eyebrow"><span class="dot"></span> Preview reference implementation · validate before production</span>
         <h1>The runway before <span class="accent-cyan">takeoff</span>.<br>Build it once, <span class="accent-amber">fly</span> many.</h1>
         <p class="hero-sub">Enterprise AI workloads need a secure, governed foundation spanning networking, identity, observability, policy, and Foundry resources. The <strong>AI Landing Zone</strong> provides Portal, Bicep, and Terraform implementation options based on Azure Verified Modules.</p>
         <div class="hero-meta">
@@ -964,8 +964,8 @@
     </div>
 
     <div class="hero-callouts reveal">
-      <div class="cell"><div class="num">GA</div><div class="lbl">Generally available since November 17, 2025</div></div>
-      <div class="cell"><div class="num">2</div><div class="lbl">Reference patterns: Foundry &amp; APIM Gateway</div></div>
+      <div class="cell"><div class="num">Preview</div><div class="lbl">Current repository roadmap status; not a compliance certification</div></div>
+      <div class="cell"><div class="num">2</div><div class="lbl">Agent Landing Zone &amp; AI Gateway Landing Zone</div></div>
       <div class="cell"><div class="num">AVM</div><div class="lbl">Bicep and Terraform use Azure Verified Modules</div></div>
       <div class="cell"><div class="num">8+</div><div class="lbl">Anchored use cases ready to deploy</div></div>
     </div>
@@ -976,8 +976,8 @@
 <section class="provocation">
   <div class="container reveal">
     <span class="quote-mark">"</span>
-    <h2>Every team that starts with a blank Azure subscription will build the same networking, identity, key-vault, and policy plumbing — slowly, inconsistently, and without an auditor's blessing. The AI Landing Zone is Microsoft's answer: a pre-paved highway, not another DIY runway.</h2>
-    <p class="cite">— Distilled from Microsoft <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/ai/" target="_blank" rel="noopener">Cloud Adoption Framework</a>, Well-Architected Framework, and the Azure/AI-Landing-Zones reference architecture</p>
+    <h2>Reuse the foundation. Verify the controls. Keep the operating responsibility.</h2>
+    <p class="cite">Editorial takeaway from the <a href="https://github.com/Azure/AI-Landing-Zones" target="_blank" rel="noopener">official reference implementation</a> and Azure architecture guidance &mdash; not a Microsoft quotation or audit assurance.</p>
   </div>
 </section>
 
@@ -985,19 +985,19 @@
 <section id="why">
   <div class="container reveal">
     <span class="section-tag">Why It Matters</span>
-    <h2>Skip the blank subscription. Skip the audit retro-fit.</h2>
-    <p class="lede">Without an AI Landing Zone, every team rebuilds the same secure foundation — and every team rebuilds it differently. Adopt the Landing Zone, and you trade months of plumbing for a one-command, audit-ready start.</p>
+    <h2>Start from a pattern, not a blank subscription.</h2>
+    <p class="lede">A reusable reference can reduce duplicated design work. It does not remove threat modeling, deployment testing, access review or compliance evidence. Pin the version, inspect the plan and validate the chosen configuration.</p>
 
     <div class="why-grid">
       <div class="why-card w1">
         <div class="why-glyph">⚡</div>
-        <h3>Days, not quarters</h3>
-        <p>Time-to-first-agent collapses from months of plumbing to a single deployable foundation. Networking, identity, observability — pre-wired and pre-decided.</p>
+        <h3>Less repeated plumbing</h3>
+        <p>Reuse networking, identity and observability patterns. Delivery time still depends on approvals, quotas, integration work and testing.</p>
       </div>
       <div class="why-card w2">
         <div class="why-glyph">🛡</div>
         <h3>Secure by default</h3>
-        <p>Private endpoints, NSGs, managed identities, RBAC, Key Vault, and Defender for Cloud are baked in — never bolted on. No retrofit, no audit anxiety.</p>
+        <p>Select private access, managed identities and least-privilege roles where supported. Confirm which security services the chosen template actually deploys or requires separately.</p>
       </div>
       <div class="why-card w3">
         <div class="why-glyph">⚙</div>
@@ -1006,8 +1006,8 @@
       </div>
       <div class="why-card w4">
         <div class="why-glyph">✓</div>
-        <h3>Verified by Microsoft</h3>
-        <p>Every component built on Azure Verified Modules — Microsoft's curated IaC standard. Provenance is the trust signal; AVM is the seal.</p>
+        <h3>Built with verified modules</h3>
+        <p>Bicep and Terraform implementations use Azure Verified Modules. Module provenance is useful evidence, not certification of your configuration or workload.</p>
       </div>
     </div>
   </div>
@@ -1018,7 +1018,7 @@
   <div class="container reveal">
     <span class="section-tag">Architecture at a Glance</span>
     <h2>Seven layers, one deployable stack.</h2>
-    <p class="lede">A clear, layered picture of what the AI Landing Zone actually deploys — from the AI workloads at the top to the IaC scaffolding at the bottom, with security, identity, and observability woven through every layer.</p>
+    <p class="lede">Seven design responsibilities, not a promise that every named service is deployed by every template. Review the current Agent and AI Gateway implementations for exact inventory, optional integrations and regional co-availability.</p>
 
     <div class="arch-wrap">
       <div class="arch-title">⬢ Azure AI Landing Zone — Reference Architecture</div>
@@ -1028,7 +1028,7 @@
         <div class="row-content">
           <div class="tile"><strong>Chat &amp; Copilots</strong><span>Foundry-grounded conversational</span></div>
           <div class="tile"><strong>AI Agents</strong><span>Foundry Agent Service</span></div>
-          <div class="tile"><strong>Agent Runtime</strong><span>Hosted agents on MXC sandboxes</span></div>
+          <div class="tile"><strong>Agent Runtime</strong><span>Agent Framework; hosted/durable integrations vary</span></div>
           <div class="tile"><strong>RAG Apps</strong><span>AI Search + Cosmos DB</span></div>
           <div class="tile"><strong>Content Processing</strong><span>Document &amp; knowledge mining</span></div>
         </div>
@@ -1065,10 +1065,10 @@
       </div>
 
       <div class="arch-row network">
-        <div class="row-label"><h4>Networking</h4><p>no public surface</p></div>
+        <div class="row-label"><h4>Networking</h4><p>explicit access design</p></div>
         <div class="row-content">
           <div class="tile"><strong>Hub-Spoke VNet</strong><span>Subnets · NSGs default-deny</span></div>
-          <div class="tile"><strong>Private Endpoints</strong><span>Every PaaS service</span></div>
+          <div class="tile"><strong>Private Endpoints</strong><span>Supported services; disable public access separately</span></div>
           <div class="tile"><strong>Private DNS Zones</strong><span>Resolution stays internal</span></div>
           <div class="tile"><strong>Bastion &amp; Jumphosts</strong><span>Operator access, no public RDP/SSH</span></div>
         </div>
@@ -1080,7 +1080,7 @@
           <div class="tile"><strong>Log Analytics</strong><span>Single workspace, all signals</span></div>
           <div class="tile"><strong>Application Insights</strong><span>App + agent traces</span></div>
           <div class="tile"><strong>OpenTelemetry</strong><span>Prompts · tools · spans</span></div>
-          <div class="tile"><strong>Azure Policy</strong><span>Continuous compliance</span></div>
+          <div class="tile"><strong>Azure Policy</strong><span>Configured policy evaluation</span></div>
         </div>
       </div>
 
@@ -1101,17 +1101,17 @@
 <section id="pillars">
   <div class="container reveal">
     <span class="section-tag">The Seven Pillars</span>
-    <h2>The design areas every AI Landing Zone gets right.</h2>
-    <p class="lede">The AI ALZ formalizes design areas straight from the <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-areas" target="_blank" rel="noopener">Cloud Adoption Framework landing zone guidance</a> and the Well-Architected Framework's AI workload pillars. Each one has been pre-decided, pre-wired, and pre-validated — so your team doesn't have to.</p>
+    <h2>Seven design areas your team must validate.</h2>
+    <p class="lede">Use the <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-areas" target="_blank" rel="noopener">Cloud Adoption Framework design areas</a> and Well-Architected AI guidance as a review checklist. The reference provides a starting point; your team owns the final architecture and evidence.</p>
 
     <div class="pillars-grid">
 
       <div class="pillar p-network">
         <div class="head">
           <div class="glyph"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 109 9 9 9 0 00-9-9zm0 16a7 7 0 117-7 7 7 0 01-7 7zm-1-11h2v3h3v2h-3v3h-2v-3H8v-2h3z"/></svg></div>
-          <div><h3>Networking</h3><p class="metaphor">no public surface area by default</p></div>
+          <div><h3>Networking</h3><p class="metaphor">verify inbound and outbound paths</p></div>
         </div>
-        <p class="tag-line">Hub-spoke VNet topology with private endpoints to every PaaS service and private DNS zones — your AI estate is invisible to the open internet.</p>
+        <p class="tag-line">Select the supported topology, private endpoints, DNS and egress controls. A private endpoint does not itself disable the service's public endpoint; test public access and tool destinations separately.</p>
         <ul>
           <li>NSGs with default-deny baseline</li>
           <li>Private endpoints for Foundry, AI Search, Storage, Key Vault, Cosmos DB</li>
@@ -1125,12 +1125,12 @@
           <div class="glyph"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a4 4 0 10-4-4 4 4 0 004 4zm0 2c-3 0-9 1.5-9 5v3h18v-3c0-3.5-6-5-9-5z"/></svg></div>
           <div><h3>Identity &amp; Access</h3><p class="metaphor">a VIN number for every agent</p></div>
         </div>
-        <p class="tag-line">Microsoft Entra ID at the core, managed identities everywhere, and Microsoft Entra Agent ID giving every AI agent a first-class, governable identity.</p>
+        <p class="tag-line">Use Entra ID, managed identities and scoped roles where supported. Register and govern agent identities through supported integrations; template deployment does not automatically identify every tool action.</p>
         <ul>
           <li>Managed identities — no shared service keys</li>
           <li>RBAC scoped least-privilege per resource</li>
           <li>Entra Agent ID for agent governance &amp; audit</li>
-          <li>Conditional Access policies enforced</li>
+          <li>Configure applicable identity policies; test workload-identity limitations</li>
         </ul>
       </div>
 
@@ -1139,7 +1139,7 @@
           <div class="glyph"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L3 6v6c0 5 3.8 9.3 9 10 5.2-.7 9-5 9-10V6l-9-4z"/></svg></div>
           <div><h3>Security</h3><p class="metaphor">baked in, not bolted on</p></div>
         </div>
-        <p class="tag-line">Defender for Cloud's AI Security Posture Management plus Content Safety, Prompt Shields, and Key Vault — runtime threats blocked before they reach your model.</p>
+        <p class="tag-line">Evaluate Defender for Cloud, Content Safety, Prompt Shields and Key Vault as defense-in-depth controls. Enable supported protections explicitly; none guarantees that every malicious instruction will be blocked.</p>
         <ul>
           <li>Defender for Cloud + AI SPM</li>
           <li>Content Safety + Prompt Shields plumbed into Foundry</li>
@@ -1151,9 +1151,9 @@
       <div class="pillar p-governance">
         <div class="head">
           <div class="glyph"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 4h18v4H3zm0 6h18v4H3zm0 6h18v4H3z"/></svg></div>
-          <div><h3>Governance &amp; Compliance</h3><p class="metaphor">audit-ready from day one</p></div>
+          <div><h3>Governance &amp; Compliance</h3><p class="metaphor">collect evidence, do not assume compliance</p></div>
         </div>
-        <p class="tag-line">Azure Policy, Microsoft Purview classification &amp; DLP for AI, and resource locks — compliance posture inherited, not retrofitted.</p>
+        <p class="tag-line">Configure Azure Policy and resource locks, then evaluate Purview integrations and licensing for the data path. Map controls to your requirements; compliance is not inherited from the template.</p>
         <ul>
           <li>Azure Policy assignments at landing-zone scope</li>
           <li>Purview for data classification &amp; AI DLP</li>
@@ -1167,7 +1167,7 @@
           <div class="glyph"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm0 4a6 6 0 11-6 6 6 6 0 016-6zm0 3a3 3 0 103 3 3 3 0 00-3-3z"/></svg></div>
           <div><h3>AI Platform Services</h3><p class="metaphor">the factory floor, pre-installed</p></div>
         </div>
-        <p class="tag-line">Microsoft Foundry account, projects, and Agent Service — wired to Azure AI Search, Cosmos DB, and Storage. Build the AI; skip the wiring.</p>
+        <p class="tag-line">Use the chosen implementation to provision supported Foundry and data-service connections. Validate identity, DNS, access and application behavior; infrastructure deployment alone is not an end-to-end agent.</p>
         <ul>
           <li>Foundry Account + Projects + Agent Service</li>
           <li>Azure AI Search for RAG retrieval</li>
@@ -1182,12 +1182,12 @@
           <div class="glyph"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg></div>
           <div><h3>Observability</h3><p class="metaphor">deployed before workloads</p></div>
         </div>
-        <p class="tag-line">Log Analytics + Application Insights stand up first — so the moment a workload lands, every prompt, tool call, and span is already being captured.</p>
+        <p class="tag-line">Deploy monitoring and instrument the application. Traces require supported SDKs, exporters and configuration; sampling, retention and sensitive-content handling remain your decisions.</p>
         <ul>
           <li>Single Log Analytics workspace, all signals</li>
-          <li>App Insights wired to every service</li>
+          <li>Configure service diagnostics and application exporters</li>
           <li>OpenTelemetry-compatible agent tracing</li>
-          <li>Cost dashboards out of the box</li>
+          <li>Validate cost attribution and alerts with real usage</li>
         </ul>
       </div>
 
@@ -1196,7 +1196,7 @@
           <div class="glyph"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h7v7H3zm11 0h7v7h-7zM3 14h7v7H3zm11 0h7v7h-7z"/></svg></div>
           <div><h3>DevOps &amp; IaC</h3><p class="metaphor">verified modules, not snowflakes</p></div>
         </div>
-        <p class="tag-line">Bicep, Terraform, and Portal deployments — all built on Azure Verified Modules. Every resource follows Microsoft's curated standard, every change is reviewed, every deployment is repeatable.</p>
+        <p class="tag-line">Bicep and Terraform implementations use Azure Verified Modules; Portal offers an infrastructure path. Pin versions, review changes and test drift and repeatability in your own pipeline.</p>
         <ul>
           <li>Bicep for ARM-native teams</li>
           <li>Terraform for multi-cloud teams</li>
@@ -1214,7 +1214,7 @@
   <div class="container reveal">
     <span class="section-tag">What Actually Ships</span>
     <h2>Inside the Azure/AI-Landing-Zones repo.</h2>
-    <p class="lede">Two reference architectures with Bicep and Terraform implementations, plus a Portal deployment for the Foundry pattern. Review the repository for current feature parity and regional support.</p>
+    <p class="lede">The current repository points to <strong>Agent Landing Zone</strong> and <strong>AI Gateway Landing Zone</strong>, with Bicep and Terraform paths and a Portal infrastructure option. Infrastructure-only deployment does not install the default agent application; use the documented full-stack path when needed.</p>
 
     <div class="repo-card">
       <div class="repo-head">
@@ -1227,8 +1227,8 @@
 
       <div class="repo-grid">
         <div class="repo-variant v1">
-          <h4><span class="vdot"></span> AI Landing Zone for Foundry</h4>
-          <p>The Foundry-centric pattern for AI Apps &amp; Agents — a turnkey foundation for teams shipping conversational AI, agents, RAG, and copilots on Microsoft Foundry.</p>
+          <h4><span class="vdot"></span> Agent Landing Zone</h4>
+          <p>Infrastructure plus optional Agent Framework application integration. Foundry Hosted and durable Container Apps execution have separate integration paths; pin the implementation version you assess.</p>
           <div class="iac-badges">
             <span class="iac-badge">Bicep</span>
             <span class="iac-badge">Terraform</span>
@@ -1236,24 +1236,25 @@
           </div>
         </div>
         <div class="repo-variant v2">
-          <h4><span class="vdot"></span> AI Landing Zone for APIM</h4>
+          <h4><span class="vdot"></span> AI Gateway Landing Zone</h4>
           <p>APIM as AI Gateway — front and centrally manage Foundry models for multi-team consumption with quotas, throttling, observability, and cost attribution.</p>
           <div class="iac-badges">
             <span class="iac-badge">Bicep</span>
+            <span class="iac-badge">Terraform</span>
           </div>
         </div>
       </div>
 
       <div class="components-grid">
         <div class="component-col req">
-          <h5>Required (always deployed)</h5>
+          <h5>Foundry-centric components (variant-dependent)</h5>
           <ul>
-            <li>AI Foundry account</li>
-            <li>AI Foundry projects</li>
+            <li>Microsoft Foundry account</li>
+            <li>Microsoft Foundry projects</li>
             <li>AI Agent Service</li>
             <li>RBAC role assignments</li>
             <li>Resource locks</li>
-            <li>AI Foundry connections</li>
+            <li>Foundry connections</li>
           </ul>
         </div>
         <div class="component-col byor">
@@ -1303,25 +1304,25 @@
       <div class="rung rung-2">
         <span class="level">Stage 2</span>
         <h3>Enterprise</h3>
-        <p class="posture">Private networking · BYOR · audit-ready</p>
+        <p class="posture">Private networking · scoped access · tested recovery</p>
         <ul>
-          <li>VNet isolation &amp; private endpoints everywhere</li>
+          <li>Private endpoints where supported; public access disabled and tested</li>
           <li>Key Vault, Cosmos DB, AI Search wired in</li>
           <li>Log Analytics + App Insights from day one</li>
           <li>Defender for Cloud + Azure Policy enforced</li>
-          <li>Entra Agent ID for every agent</li>
+          <li>Supported agent identity and ownership integrations</li>
         </ul>
       </div>
       <div class="rung rung-3">
         <span class="level">Stage 3</span>
         <h3>Regulated</h3>
-        <p class="posture">Sovereign-ready · zero-trust · audit-complete</p>
+        <p class="posture">Evidence-led · cloud-specific · independently reviewed</p>
         <ul>
           <li>APIM AI Gateway pattern for centralized control</li>
           <li>Purview labels &amp; DLP for AI in production</li>
-          <li>Customer-managed keys (CMK) end-to-end</li>
-          <li>Azure Government / Sovereign Cloud-ready</li>
-          <li>Foundry Control Plane for full audit trail</li>
+          <li>Customer-managed keys where supported; document coverage gaps</li>
+          <li>Validate Government/Sovereign service and model availability separately</li>
+          <li>Export and review audit evidence for the full application path</li>
         </ul>
       </div>
     </div>
@@ -1333,22 +1334,22 @@
   <div class="container reveal">
     <span class="section-tag">Build vs. Buy</span>
     <h2>From blank subscription to first agent.</h2>
-    <p class="lede">DIY looks cheaper on a planning slide. Then a security review hits, an audit comes due, and a second team needs the same thing. The Landing Zone trade-off is honest — and decisive.</p>
+    <p class="lede">Compare a maintained reference implementation with a custom platform using your own control, integration and operating requirements. Both require security review, application testing and ongoing ownership.</p>
 
     <div class="vs-wrap">
       <table class="vs-table">
         <thead>
           <tr>
             <th>Dimension</th>
-            <th><span class="vs-icon vs-bad">✗</span> DIY from blank subscription</th>
-            <th><span class="vs-icon vs-good">✓</span> Azure AI Landing Zone</th>
+            <th>Custom platform</th>
+            <th>Azure AI Landing Zone starting point</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>Time to first governed agent</td>
-            <td>Weeks to months of plumbing</td>
-            <td>Hours to days — clone, configure, deploy</td>
+            <td>Depends on existing platform modules and approval process</td>
+            <td>Reusable starting point; measure deployment and approval time</td>
           </tr>
           <tr>
             <td>Network design</td>
@@ -1358,27 +1359,27 @@
           <tr>
             <td>Identity for agents</td>
             <td>Roll your own service principals</td>
-            <td>Entra Agent ID-ready, governable from day one</td>
+            <td>Configure supported identities, roles and ownership</td>
           </tr>
           <tr>
             <td>IaC quality</td>
-            <td>Hand-rolled, unaudited, brittle</td>
+            <td>Your team designs, tests and maintains the modules</td>
             <td>Azure Verified Modules — Microsoft-curated</td>
           </tr>
           <tr>
             <td>Compliance posture</td>
-            <td>Audit retrofit, late surprises</td>
-            <td>Defender + Purview + Policy baked in</td>
+            <td>Your control design and evidence process</td>
+            <td>Control patterns to configure, license and verify</td>
           </tr>
           <tr>
             <td>Repeatability across teams</td>
-            <td>Snowflake per team — every workload unique</td>
+            <td>Consistency depends on your reusable modules and policy</td>
             <td>One pattern, many workloads, shared learnings</td>
           </tr>
           <tr>
             <td>Sovereign &amp; regulated readiness</td>
-            <td>Re-architect when the regulator calls</td>
-            <td>Public · Government · Sovereign Cloud-ready</td>
+            <td>Validate required cloud, region and regulatory controls</td>
+            <td>Designed/tested for Azure Public; validate other clouds separately</td>
           </tr>
         </tbody>
       </table>
@@ -1391,7 +1392,7 @@
   <div class="container reveal">
     <span class="section-tag">The Dates That Matter</span>
     <h2>How the reference implementation evolved.</h2>
-    <p class="lede">The AI Landing Zone is a generally available, open reference implementation. Treat repository updates as implementation history, not product-release milestones.</p>
+    <p class="lede">The current repository roadmap labels the implementation preview. Do not infer a production SLA from the reference architecture or from the GA status of individual Azure services.</p>
 
     <div class="timeline">
       <div class="tl-item flag">
@@ -1415,9 +1416,14 @@
         <p>The Terraform variant catches up to Bicep — multi-cloud platform teams get a first-class option.</p>
       </div>
       <div class="tl-item">
-        <div class="tl-date">Nov 17, 2025 · Ignite</div>
-        <h4>AI Landing Zones reaches general availability</h4>
-        <p>The reference implementation reaches general availability. Check the repository roadmap and current documentation for implementation limitations before production use.</p>
+        <div class="tl-date">November 2026 · Current implementation</div>
+        <h4>Preview reference, explicit regional limits</h4>
+        <p>The official README still labels the project preview and limits full deployments to supported service co-availability. It is designed and tested for Azure Public; Government and Sovereign use requires separate validation.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Ignite 2026 · Infrastructure previews</div>
+        <h4>More runtime choice, not automatic template support</h4>
+        <p>Foundry-to-AKS deployment for open-weight models and agents, Agent Grid, Agent Sandbox extension for AKS and Flex nodes are preview. Cobalt 200 VMs are GA. Confirm compatibility before adding any to your landing zone. <a href="https://news.microsoft.com/events/ignite/2026/book-of-news/" style="color:#50e6ff">Book of News</a>.</p>
       </div>
     </div>
 
@@ -1441,7 +1447,7 @@
       <div class="persona p4">
         <div class="persona-icon">RA</div>
         <h4>Regulated Architect</h4>
-        <p>Deploys the private/enterprise variant in FSI, healthcare, and public sector — across Public, Gov, and Sovereign clouds.</p>
+        <p>Assesses regulated workloads against exact controls and service availability. The repository is designed and tested for Azure Public; validate Government or Sovereign deployment separately.</p>
       </div>
     </div>
   </div>
@@ -1452,7 +1458,7 @@
   <div class="container reveal">
     <span class="section-tag" style="color:#50e6ff;border-color:#50e6ff;">Start Today</span>
     <h2>Three doors. One destination.</h2>
-    <p class="lede">Whichever path you take, you land in the same governed place — a production-grade AI foundation, built on Azure Verified Modules, ready for your first agent.</p>
+    <p class="lede">Choose an implementation, pin its version and validate a non-production deployment. Before production, close gaps in regional support, network isolation, identity, logging, recovery and application-level controls.</p>
 
     <div class="cta-grid">
       <a class="cta-card" href="https://github.com/Azure/AI-Landing-Zones" target="_blank" rel="noopener">
@@ -1513,7 +1519,7 @@
   <div class="container">
     <div class="brand-mark">Azure AI Landing Zones</div>
     <p>The runway before takeoff. Build it once, fly many.</p>
-    <p class="small">Based on the official, generally available <a href="https://github.com/Azure/AI-Landing-Zones" target="_blank" rel="noopener">Azure/AI-Landing-Zones</a> reference implementation, the <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ai/" target="_blank" rel="noopener">Cloud Adoption Framework for AI</a>, and the <a href="https://learn.microsoft.com/en-us/azure/well-architected/ai/" target="_blank" rel="noopener">Well-Architected Framework AI workload</a> guidance. Review repository limitations, regional support, and the roadmap before production use.</p>
+    <p class="small">Based on the official <a href="https://github.com/Azure/AI-Landing-Zones" target="_blank" rel="noopener">Azure/AI-Landing-Zones</a> reference implementation, currently labeled <strong>preview</strong>, plus <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ai/" target="_blank" rel="noopener">Cloud Adoption Framework for AI</a> and <a href="https://learn.microsoft.com/en-us/azure/well-architected/ai/" target="_blank" rel="noopener">Well-Architected AI guidance</a>. A reference architecture is not a workload SLA, compliance certification or guarantee of sovereign-cloud parity.</p>
   </div>
 </footer>
 

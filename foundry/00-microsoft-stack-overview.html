@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Microsoft App, AI &amp; Data Stack — A Top-to-Bottom Map</title>
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-23">
+<meta name="smec:last-accuracy-check" content="2026-11-17">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; font-size: 16px; }
@@ -585,7 +585,7 @@
 </style>
 </head>
 <body>
-<time class="smec-validation-date" datetime="2026-10-23" data-smec-validation-date="v1">Valid as of 2026-10-23</time>
+<time class="smec-validation-date" datetime="2026-11-17" data-smec-validation-date="v1">Valid as of 2026-11-17</time>
 
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
 
@@ -610,7 +610,7 @@
   <div class="container">
     <div class="hero-grid">
       <div>
-        <span class="hero-eyebrow"><span class="dot"></span> Entry-point infographic · May 2026</span>
+        <span class="hero-eyebrow"><span class="dot"></span> Entry-point infographic · Ignite 2026</span>
         <h1>One stack. Five layers. Two rails. <span class="accent">The whole Microsoft picture, top to bottom.</span></h1>
         <p class="lede">New to Microsoft's AI and data platforms and not sure where things connect? Start here. This map traces every layer from the human at the top &mdash; M365 Copilot, Dynamics 365, Power Platform, custom apps, agents, models, data, infrastructure &mdash; with Identity and Governance running end-to-end. Click any layer to dive deeper into the dedicated infographic.</p>
         <div class="hero-meta">
@@ -728,11 +728,11 @@
           <div class="role">The top of the stack &mdash; every app a person actually opens, from M365 to LOB to bespoke.</div>
           <p>Microsoft 365 Copilot is embedded directly in Word, Excel, Outlook, Teams, and PowerPoint &mdash; but the surface layer is bigger than M365. <strong>Dynamics 365</strong> brings agents into Sales, Service, and Finance. <strong>Power Platform</strong> (Power Apps, Power Automate, Power Pages) lets makers ship low-code apps that consume the same agents and models. <strong>Custom apps</strong> hosted on Azure App Service, Container Apps, or AKS round out the picture for bespoke experiences.</p>
           <ul class="examples">
-            <li>Microsoft 365 Copilot &middot; Copilot Chat &middot; Copilot Notebooks</li>
+            <li>Microsoft 365 Copilot &middot; Chat &middot; Cowork &middot; Office in Copilot (GA)</li>
             <li>Outlook &middot; Teams &middot; Word &middot; Excel &middot; PowerPoint</li>
             <li>Dynamics 365 &middot; Power Apps &middot; Power Automate &middot; Power Pages</li>
             <li>Custom apps on App Service / Container Apps / AKS</li>
-            <li>Powered by GPT-5, grounded via Microsoft Graph and Dataverse</li>
+            <li>Managed model selection; grounding and actions depend on the product and configured data access</li>
           </ul>
         </div>
         <div class="next">
@@ -749,7 +749,7 @@
         <div>
           <h3>Where work gets automated</h3>
           <div class="role">Where REST APIs become tools and processes become autonomous agents.</div>
-          <p><strong>Copilot Studio</strong> is the low-code path to autonomous agents &mdash; with human-in-the-loop controls, multi-channel deployment, and 1,000+ connectors. <strong>Foundry Agent Service</strong> (GA, Responses API) is the pro-code path. <strong>MCP</strong> (Model Context Protocol) is the wire format both speak when calling tools.</p>
+          <p><strong>Copilot Studio</strong> offers low-code agents, supported connectors and human-review controls. <strong>Foundry Agent Service</strong> supports code-first agent development. Check each runtime, API and tool's availability. <strong>MCP</strong> is a supported tool-integration protocol, not the only way either platform calls tools.</p>
           <ul class="examples">
             <li>Microsoft Copilot Studio &middot; Foundry Agent Service</li>
             <li>Agent Builder in M365 &middot; Power Platform</li>
@@ -771,12 +771,12 @@
         <div>
           <h3>Where intelligence is built</h3>
           <div class="role">The model catalog, the gateway, and the lifecycle tools that turn raw LLMs into governed services.</div>
-          <p><strong>Microsoft Foundry</strong> (formerly Azure AI Foundry) provides access to more than 10,000 models from Microsoft, OpenAI, Anthropic, Meta, Mistral, and others, with evaluation, observability, and model-specific fine-tuning options. <strong>AI Gateway in Azure API Management</strong> can add token limits, semantic caching, content safety, and resilient backend routing.</p>
+          <p><strong>Microsoft Foundry</strong> lists more than 11,000 models at Ignite 2026. Multi-turn evaluation, production insights and agent optimizer are <strong>GA</strong>; human annotations and Managed/Programmed Training remain <strong>preview</strong>. Compare changes against your baseline and approve deployment. <strong>AI Gateway in Azure API Management</strong> adds configurable controls for supported model and tool traffic.</p>
           <ul class="examples">
             <li>Microsoft Foundry &middot; Foundry Tools (Azure AI Services)</li>
             <li><!-- smec-keep-term -->Azure OpenAI Service<!-- /smec-keep-term --> (existing resources can be upgraded to Foundry)</li>
             <li>AI Gateway in APIM &middot; <code>llm-token-limit</code> &middot; semantic cache</li>
-            <li>Foundry Local (GA) for edge inference &middot; Continuous Evaluation</li>
+            <li>Foundry Local for supported on-device inference &middot; Continuous Evaluation</li>
           </ul>
         </div>
         <div class="next">
@@ -793,12 +793,12 @@
         <div>
           <h3>Where AI is grounded</h3>
           <div class="role">The fabric that holds the truth your agents need to be useful and safe.</div>
-          <p><strong>Microsoft Fabric</strong> unifies data engineering, warehousing, real-time analytics, and Power BI on a single SaaS surface backed by <strong>OneLake</strong>. The <strong>Microsoft IQ</strong> family &mdash; Foundry IQ, Fabric IQ, Work IQ, and the new <strong>Web IQ</strong> (Build 2026) &mdash; provides the retrieval, semantic-model, M365-context, and open-web layers that make grounding work without rebuilding indexes for every agent.</p>
+          <p><strong>Microsoft Fabric</strong> unifies analytics over <strong>OneLake</strong>. <strong>Microsoft IQ</strong>, now GA, combines enterprise context management &mdash; Work IQ for work context, Fabric IQ for business meaning, Foundry IQ for unstructured content, Web IQ for real-world knowledge &mdash; with continuous improvement in Foundry. It adds no new SKU or subscription; underlying services and usage are still billed.</p>
           <ul class="examples">
             <li>Microsoft Fabric &middot; OneLake (the OneDrive for data)</li>
             <li>Power BI &middot; semantic models &middot; verified answers</li>
             <li>Azure AI Search &middot; vector + semantic + hybrid retrieval</li>
-            <li>Foundry IQ &middot; Fabric IQ &middot; Work IQ &middot; Web IQ (availability varies)</li>
+            <li>Web IQ GA &middot; Foundry IQ SharePoint indexed source GA &middot; IQ graph/Retriever previews</li>
           </ul>
         </div>
         <div class="next">
@@ -813,13 +813,13 @@
         <div class="ord">1<small>Infrastructure</small></div>
         <div>
           <h3>Where it all runs</h3>
-          <div class="role">The opinionated Azure foundation every layer above depends on.</div>
+          <div class="role">An Azure foundation for your custom workloads, not the hosting substrate you deploy for Microsoft 365 SaaS.</div>
           <p>The <strong>AI Landing Zone</strong> (preview) is Microsoft's reference architecture and implementation for secure, resilient AI workloads: networking, private endpoints, identity-first access, observability, and alignment with the Cloud Adoption Framework and Well-Architected Framework.</p>
           <ul class="examples">
-            <li>Azure regions &middot; availability zones &middot; PTU capacity</li>
+            <li>Azure regions &middot; availability zones &middot; capacity planning</li>
             <li>Azure AI Landing Zone reference architecture (7 layers)</li>
             <li>VNets &middot; private endpoints &middot; ExpressRoute</li>
-            <li>Azure Monitor &middot; Log Analytics &middot; Application Insights</li>
+            <li>Foundry to AKS, Agent Grid and Agent Sandbox extension: preview</li>
           </ul>
         </div>
         <div class="next">
@@ -848,7 +848,7 @@
         <div class="rsub">Every call, every agent, every model &mdash; needs an owner.</div>
         <ul>
           <li><strong>Microsoft Entra ID</strong> &mdash; user, group, conditional access for humans across M365 and Azure.</li>
-          <li><strong>Entra Agent ID</strong> &mdash; non-human identity for agents, so every tool call is attributable.</li>
+          <li><strong>Entra Agent ID</strong> &mdash; agent identities where integrated; discovered local-agent and Autopilot extensions announced at Ignite are preview.</li>
           <li><strong>Managed identities</strong> &mdash; backend-to-backend auth without secrets.</li>
           <li><strong>OAuth 2.1 native MCP auth</strong> in APIM (aligned with MCP spec 2025-06-18).</li>
           <li><strong>Credential Manager</strong> in APIM &middot; outbound token injection with Key Vault references.</li>
@@ -864,7 +864,7 @@
           <li><strong>Microsoft Defender for Cloud</strong> &mdash; threat detection across the AI stack.</li>
           <li><strong>Azure AI Content Safety</strong> &mdash; prompt/completion moderation, AI-generated detection.</li>
           <li><strong>Responsible AI</strong> &mdash; evaluations, red-teaming, observability in Foundry.</li>
-          <li><strong>Tiered agent governance</strong> &mdash; personal / team / enterprise, right-sized to risk.</li>
+          <li><strong>Agent 365</strong> &mdash; inventory and governance; plugins/skills governance is GA, expanded gateway/MCP governance and Dynamic Agent Risk are preview.</li>
         </ul>
         <div class="learn-row">Docs: <a href="https://learn.microsoft.com/en-us/purview/" target="_blank">Microsoft Purview</a> &middot; <a href="https://learn.microsoft.com/en-us/azure/ai-services/content-safety/" target="_blank">Azure AI Content Safety</a></div>
       </div>
@@ -878,7 +878,7 @@
     <div class="reveal">
       <span class="section-tag">How the Layers Connect</span>
       <h2 class="section-title">One prompt, six steps, every layer.</h2>
-      <p class="section-sub">Concrete &gt; abstract. Below is one end-to-end journey for a single question, the way it actually moves through the stack &mdash; with the specific Microsoft service handling each hop. Follow the numbered cards to see how the five layers and two rails work together.</p>
+      <p class="section-sub">An illustrative custom integration, not Copilot Studio's default internal request path. The cards show architectural responsibilities; retrieval feeds model generation and may repeat within an agent loop.</p>
       <div class="trace-intro">
         <strong>Scenario:</strong> A regional sales manager opens Microsoft Teams and asks her custom <em>"Pipeline Health"</em> agent: <em>"Summarize my top-10 at-risk deals this quarter and draft a follow-up email to each account owner."</em>
       </div>
@@ -900,7 +900,7 @@
       <div class="trace-step t3 reveal">
         <div class="num">3</div>
         <h5>The gateway</h5>
-        <p>Every model call passes through AI Gateway in APIM &mdash; <code>llm-token-limit</code> caps spend, Content Safety screens prompts, <code>llm-emit-token-metric</code> emits per-user telemetry.</p>
+        <p>Custom model calls routed through APIM can use <code>llm-token-limit</code>, prompt moderation and <code>llm-emit-token-metric</code>. Token limits can overshoot and are per gateway, not an absolute spend cap.</p>
         <div class="meta">Layer 3 &middot; Governance rail</div>
       </div>
       <div class="trace-step t4 reveal">
@@ -912,19 +912,19 @@
       <div class="trace-step t5 reveal">
         <div class="num">5</div>
         <h5>The grounding</h5>
-        <p>RAG retrieves CRM data from a Fabric semantic model over OneLake, filtered by Purview sensitivity labels so only deals she may see come back.</p>
+        <p>A configured Fabric integration queries the governed semantic model. Enforce model/item and row-level access for the caller; sensitivity labels alone do not filter CRM rows.</p>
         <div class="meta">Layer 2 &middot; Governance rail</div>
       </div>
       <div class="trace-step t6 reveal">
         <div class="num">6</div>
         <h5>The foundation</h5>
-        <p>All of it runs on an Azure AI Landing Zone &mdash; private endpoints, managed identities, Azure Monitor capturing every span end-to-end.</p>
+        <p>Custom Azure components use the landing-zone foundation. Configure private access and telemetry explicitly; Microsoft 365 and Copilot Studio remain separately managed SaaS services.</p>
         <div class="meta">Layer 1 &middot; Identity rail</div>
       </div>
     </div>
 
     <div class="trace-net reveal">
-      One prompt touches all five layers in under a second. The Identity rail ensures every hop has an owner; the Governance rail ensures every hop has policy. That is the Microsoft stack working as designed.
+      One workflow spans multiple services and trust boundaries. Measure latency, propagate identity deliberately, test denied access, and require approval before sending the drafted emails. No layer substitutes for those checks.
     </div>
   </div>
 </section>
@@ -1054,7 +1054,7 @@
       <details class="gl" data-cat="ai">
         <summary><span class="term-cat">AI</span> PTU (Provisioned Throughput Units)</summary>
         <div class="body">
-          Reserved model capacity priced per unit per month. Predictable cost and latency &mdash; the opposite of pay-as-you-go. AI Gateway's priority-based load balancing keeps PTU saturated first and overflows to PAYGO.
+          Model-processing capacity billed per PTU-hour while deployed. Optional reservations discount matching usage; they do not guarantee deployable capacity. Priority routing can prefer provisioned backends and send overflow to separately billed PAYGO.
           <div class="where">See: <a href="ai-gateway-apim.html">AI Gateway in APIM</a> (Cost pillar)</div>
         </div>
       </details>
@@ -1062,7 +1062,7 @@
       <details class="gl" data-cat="data">
         <summary><span class="term-cat">Data</span> OneLake</summary>
         <div class="body">
-          The single logical data lake underpinning Microsoft Fabric &mdash; one copy of your data, accessed by every Fabric engine. Sometimes called "the OneDrive for data". Lives in Layer 2 (Data Platform) and grounds nearly every enterprise agent.
+          The logical data lake underpinning Microsoft Fabric, often called "the OneDrive for data." Shortcuts can reference supported external data; mirroring can replicate it. OneLake is one enterprise grounding option, not a requirement for every agent.
           <div class="where">Docs: <a href="https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview" target="_blank">OneLake overview</a></div>
         </div>
       </details>
@@ -1078,7 +1078,7 @@
       <details class="gl" data-cat="data">
         <summary><span class="term-cat">Data</span> Fabric IQ</summary>
         <div class="body">
-          The Microsoft Fabric intelligence workload for business semantics and operational context. The Fabric IQ workload and ontology item are currently in preview.
+          Business semantics and operational context over Fabric data. Copilot and Fabric apps integrations are GA; new Excel, GitHub Copilot ontology, ChatGPT and Claude capabilities remain preview. Fabric IQ MCP uses delegated-user access, not app-only service principals; the calling agent composes DAX.
           <div class="where">See: <a href="microsoft-iq-platforms-guide.html">IQ Platforms Guide</a></div>
         </div>
       </details>
@@ -1086,7 +1086,7 @@
       <details class="gl" data-cat="data">
         <summary><span class="term-cat">Data</span> Work IQ</summary>
         <div class="body">
-          The Microsoft 365 context layer for work data such as email, meetings, files, and Teams messages. The Work IQ CLI is generally available; Work IQ integrations and MCP experiences can still be preview features.
+          Work context, memory and actions for Copilot and agents. Ignite's richer context and actions are GA; event listening and expanded governance controls remain preview. Check each integration's licensing and permissions.
           <div class="where">See: <a href="microsoft-iq-platforms-guide.html">IQ Platforms Guide</a></div>
         </div>
       </details>
@@ -1094,7 +1094,7 @@
       <details class="gl" data-cat="data">
         <summary><span class="term-cat">Data</span> Web IQ</summary>
         <div class="body">
-          Microsoft's web-grounding member of the Microsoft IQ family. Access is limited, so confirm eligibility and current terms before planning a workload around it.
+          Real-world grounding within Microsoft IQ, now GA to Azure customers. Auto, Auto Advanced, Scopes, Places and Weather are GA; Commerce remains private preview.
           <div class="where">See: <a href="microsoft-iq-platforms-guide.html">IQ Platforms Guide</a> &middot; <a href="https://webiq.microsoft.ai/" target="_blank">webiq.microsoft.ai</a></div>
         </div>
       </details>
@@ -1102,7 +1102,7 @@
       <details class="gl" data-cat="platform">
         <summary><span class="term-cat">Platform</span> Microsoft Foundry</summary>
         <div class="body">
-          Microsoft's unified AI development platform (formerly Azure AI Foundry), with more than 10,000 models from Microsoft and third-party providers. It brings agents, models, tools, evaluation, observability, identity, networking, and policy under one management plane; individual capabilities and models have their own availability terms.
+          Microsoft's unified AI development platform, listing more than 11,000 models at Ignite 2026. Models, hosting options and capabilities each have their own lifecycle, residency, license and billing terms; catalog membership is not blanket GA.
           <div class="where">Docs: <a href="https://learn.microsoft.com/en-us/azure/ai-foundry/" target="_blank">Microsoft Foundry</a> &middot; <a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/" target="_blank">What’s New @ Build 2026</a></div>
         </div>
       </details>
@@ -1118,7 +1118,7 @@
       <details class="gl" data-cat="platform">
         <summary><span class="term-cat">Platform</span> Power Platform</summary>
         <div class="body">
-          Microsoft's low-code family in Layer 5 (Apps &amp; Surfaces): <strong>Power Apps</strong> (canvas and model-driven apps), <strong>Power Automate</strong> (workflow automation), and <strong>Power Pages</strong> (external-facing sites). All three share <strong>Dataverse</strong> as their data backbone and can host or consume agents built in Copilot Studio &mdash; making it the fastest path from a business idea to a working app that uses the same models, tools, and governance as everything else in the stack.
+          Microsoft's low-code family: <strong>Power Apps</strong> for apps, <strong>Power Automate</strong> for workflows and <strong>Power Pages</strong> for external sites. Dataverse underpins model-driven apps and Power Pages; canvas apps and flows can also use other supported sources. Agent integration and governance depend on the product, connector and environment.
           <div class="where">Docs: <a href="https://learn.microsoft.com/en-us/power-platform/" target="_blank">Power Platform</a></div>
         </div>
       </details>
@@ -1126,7 +1126,7 @@
       <details class="gl" data-cat="security">
         <summary><span class="term-cat">Security</span> Entra Agent ID</summary>
         <div class="body">
-          A non-human identity in Microsoft Entra ID, issued to an agent so every action it takes is attributable. Pairs with managed identities for backend access, removing API keys from the audit trail.
+          An identity for supported agents in Microsoft Entra. Configure scopes, permissions and telemetry to attribute actions; not every tool automatically propagates the end user's identity. Discovery for local agents and Autopilot extensions has preview status.
           <div class="where">Docs: <a href="https://learn.microsoft.com/en-us/entra/identity/" target="_blank">Microsoft Entra ID</a></div>
         </div>
       </details>
@@ -1134,7 +1134,7 @@
       <details class="gl" data-cat="security">
         <summary><span class="term-cat">Security</span> Content Safety</summary>
         <div class="body">
-          Azure AI Content Safety &mdash; the multi-modal moderation service for prompts, completions, images, and AI-generated content. Wired into AI Gateway as a built-in policy so every prompt is screened before reaching the model.
+          Moderation and detection capabilities for supported content types. APIM's configured LLM content-safety policy screens supported prompts; it is not automatic coverage of every request, output or tool action.
           <div class="where">Docs: <a href="https://learn.microsoft.com/en-us/azure/ai-services/content-safety/" target="_blank">Azure AI Content Safety</a></div>
         </div>
       </details>
@@ -1142,7 +1142,7 @@
       <details class="gl" data-cat="security">
         <summary><span class="term-cat">Security</span> OAuth 2.1 for MCP</summary>
         <div class="body">
-          Native authentication for APIM-hosted MCP servers, aligned with MCP spec 2025-06-18. Released to GA in the March 2026 APIM AI Gateway release. Lets every MCP tool call carry a verifiable user identity end-to-end.
+          Authentication support for APIM-hosted MCP servers. Configure token validation, audiences, consent and downstream credentials explicitly. Authenticating the inbound caller does not automatically delegate that identity through every tool and backend.
           <div class="where">See: <a href="ai-gateway-apim.html">AI Gateway in APIM</a> (Security pillar)</div>
         </div>
       </details>
@@ -1164,7 +1164,7 @@
       <a class="related-card reveal" href="frontier-firm-playbook.html">
         <div class="eyebrow">Strategy &middot; Layer 5</div>
         <h4>Frontier Firm Playbook</h4>
-        <p>Microsoft's own playbook for becoming an AI-operated, human-led enterprise. 3 stages, 4 pillars, 6 governance principles.</p>
+        <p>An operating model for human-led AI transformation: 3 stages, 5 practice pillars, 6 governance principles.</p>
         <div class="arrow">Open &rarr;</div>
       </a>
       <a class="related-card reveal" href="microsoft-ai-decision-guide.html">
@@ -1176,13 +1176,13 @@
       <a class="related-card reveal" href="ai-agent-anatomy.html">
         <div class="eyebrow">Agents &middot; Layer 4</div>
         <h4>Anatomy of an AI Agent</h4>
-        <p>The 10 "organs" inside every production agent &mdash; brain, memory, tools, observability &mdash; with the Microsoft services that fill each role.</p>
+        <p>Sixteen design concerns &mdash; models, memory, tools, observability and more. Select the required set for your workload.</p>
         <div class="arrow">Open &rarr;</div>
       </a>
       <a class="related-card reveal" href="ai-gateway-apim.html">
         <div class="eyebrow">Gateway &middot; Layer 3</div>
         <h4>AI Gateway in APIM</h4>
-        <p>14 capabilities, 5 WAF pillars. Token throttling, semantic caching, OAuth 2.1 MCP, A2A, OpenTelemetry &mdash; one front door for every model.</p>
+        <p>Gateway controls for supported model and MCP traffic: quotas, caching, identity, routing and telemetry. Test policy coverage and bypass paths.</p>
         <div class="arrow">Open &rarr;</div>
       </a>
       <a class="related-card reveal" href="microsoft-iq-platforms-guide.html">
@@ -1203,7 +1203,7 @@
 
 <footer class="page-footer">
   <div class="brand-mark">Microsoft Stack &middot; Top to Bottom</div>
-  <p>An entry-point map for the SME&amp;C Infographic Hub. Status snapshot accurate at time of writing &mdash; confirm GA / Preview state on Microsoft Learn before designing dependencies on preview features.</p>
+  <p>An entry-point map, not a deployment guarantee. <a href="https://news.microsoft.com/events/ignite/2026/book-of-news/">Ignite 2026 Book of News</a> supplies announcement status; verify model, API, region, license and data boundaries before implementation.</p>
   <p>Primary sources: <a href="https://learn.microsoft.com/en-us/azure/ai-foundry/" target="_blank">Microsoft Foundry</a> &middot; <a href="https://learn.microsoft.com/en-us/azure/api-management/genai-gateway-capabilities" target="_blank">AI Gateway capabilities</a> &middot; <a href="https://learn.microsoft.com/en-us/fabric/" target="_blank">Microsoft Fabric</a> &middot; <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/ai/" target="_blank">CAF for AI</a> &middot; <a href="https://www.microsoft.com/insidetrack/blog/becoming-a-frontier-firm-a-guide-for-deploying-ai-agents-based-on-our-experience-at-microsoft/" target="_blank">Inside Track: Frontier Firm</a></p>
 </footer>
 

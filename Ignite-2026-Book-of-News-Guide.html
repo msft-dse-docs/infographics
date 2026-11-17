@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Microsoft Ignite 2026 · Book of News, made easy</title>
+<style>
+:root{--bg:#090817;--bg2:#0F0D24;--panel:#15133A;--ink:#F5F3FF;--muted:#BDB9E0;--faint:#8E8AB8;--line:rgba(255,255,255,.11);
+--ga:#34D399;--pre:#FBBF24;--fr:#C084FC;--soon:#38BDF8;
+--grad:linear-gradient(100deg,#FF3EA5 0%,#A855F7 36%,#5B6CFF 68%,#22D3EE 100%);--radius:18px;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;text-align:start}
+[id]{scroll-margin-top:128px}
+a{color:inherit}
+.vh{position:fixed;inset-block-start:0;inset-inline-start:0;inline-size:1px;block-size:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1240px;margin-inline:auto;padding-inline:28px}
+.dot{inline-size:8px;block-size:8px;border-radius:50%;background:var(--c,#fff);display:inline-block;flex:none}
+.c-azure{--c:#3B82F6}
+.c-foundry{--c:#8B5CF6}
+.c-github{--c:#10B981}
+.c-copilot{--c:#EC4899}
+.c-edge{--c:#06B6D4}
+.c-iq{--c:#F59E0B}
+.c-security{--c:#F43F5E}
+.c-windows{--c:#818CF8}
+/* top bar */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(9,8,23,.84);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-block-end:1px solid var(--line)}
+.topbar .wrap{max-width:1480px;display:flex;align-items:center;gap:14px;min-block-size:62px;flex-wrap:wrap;padding-block:8px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;text-decoration:none;white-space:nowrap;font-size:15px}
+.brand small{display:block;font-weight:500;color:var(--faint);font-size:11.5px;letter-spacing:.02em}
+.brand svg{inline-size:28px;block-size:28px}
+.chap-nav{display:flex;gap:2px;overflow-x:auto;flex:1 1 380px;scrollbar-width:none}
+.chap-nav::-webkit-scrollbar{display:none}
+.chap-nav a{display:flex;align-items:center;gap:7px;padding:6px 10px;border-radius:999px;text-decoration:none;font-size:13.5px;color:var(--muted);white-space:nowrap}
+.chap-nav a:hover{background:rgba(255,255,255,.07);color:var(--ink)}
+.filters{display:flex;gap:4px;align-items:center;font-size:12.5px;flex-wrap:wrap}
+.filters > span{color:var(--faint);margin-inline-end:4px}
+.filters label{cursor:pointer;padding:5px 11px;border-radius:999px;border:1px solid var(--line);color:var(--muted);user-select:none}
+.filters label:hover{color:var(--ink);border-color:rgba(255,255,255,.3)}
+body:has(#f-all:checked) label[for="f-all"]{background:var(--grad);color:#fff;border-color:transparent}
+body:has(#f-biz:checked) label[for="f-biz"]{background:var(--grad);color:#fff;border-color:transparent}
+body:has(#f-biz:checked) .card:not([data-aud~="biz"]),body:has(#f-biz:checked) .idx-row:not([data-aud~="biz"]),body:has(#f-biz:checked) .sub:not(:has(.card[data-aud~="biz"])),body:has(#f-biz:checked) .chapter:not(:has(.card[data-aud~="biz"])){display:none}body:has(#f-biz:checked) .fn-biz{display:inline}
+body:has(#f-it:checked) label[for="f-it"]{background:var(--grad);color:#fff;border-color:transparent}
+body:has(#f-it:checked) .card:not([data-aud~="it"]),body:has(#f-it:checked) .idx-row:not([data-aud~="it"]),body:has(#f-it:checked) .sub:not(:has(.card[data-aud~="it"])),body:has(#f-it:checked) .chapter:not(:has(.card[data-aud~="it"])){display:none}body:has(#f-it:checked) .fn-it{display:inline}
+body:has(#f-dev:checked) label[for="f-dev"]{background:var(--grad);color:#fff;border-color:transparent}
+body:has(#f-dev:checked) .card:not([data-aud~="dev"]),body:has(#f-dev:checked) .idx-row:not([data-aud~="dev"]),body:has(#f-dev:checked) .sub:not(:has(.card[data-aud~="dev"])),body:has(#f-dev:checked) .chapter:not(:has(.card[data-aud~="dev"])){display:none}body:has(#f-dev:checked) .fn-dev{display:inline}
+body:has(#f-sec:checked) label[for="f-sec"]{background:var(--grad);color:#fff;border-color:transparent}
+body:has(#f-sec:checked) .card:not([data-aud~="sec"]),body:has(#f-sec:checked) .idx-row:not([data-aud~="sec"]),body:has(#f-sec:checked) .sub:not(:has(.card[data-aud~="sec"])),body:has(#f-sec:checked) .chapter:not(:has(.card[data-aud~="sec"])){display:none}body:has(#f-sec:checked) .fn-sec{display:inline}
+.fn{display:none}
+/* hero */
+.hero{position:relative;overflow:hidden;padding:76px 0 60px;border-block-end:1px solid var(--line);
+background:radial-gradient(900px 520px at 88% -12%,rgba(255,62,165,.34),transparent 62%),radial-gradient(820px 520px at 6% -8%,rgba(91,108,255,.38),transparent 62%),radial-gradient(760px 420px at 62% 118%,rgba(34,211,238,.22),transparent 62%),var(--bg)}
+.hero-art{position:absolute;z-index:0;inset-inline-end:-60px;inset-block-start:-30px;inline-size:520px;block-size:520px;opacity:.9;pointer-events:none}
+.hero .wrap > :not(.hero-art){position:relative;z-index:1}
+.hero .wrap{position:relative}
+.eyebrow{display:inline-flex;gap:10px;align-items:center;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05);font-size:13px;color:var(--muted)}
+.eyebrow b{color:var(--ink)}
+h1{font-size:clamp(40px,6.2vw,80px);line-height:1.0;letter-spacing:-.025em;margin:20px 0 16px;font-weight:800;max-inline-size:900px}
+.gt{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{font-size:clamp(17px,1.55vw,20px);color:var(--muted);max-inline-size:720px;margin:0}
+.hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-block-start:22px}
+.hero-chips span{padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--line);font-size:13px}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-block-start:40px}
+.kpi{background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px;backdrop-filter:blur(6px)}
+.kpi b{display:block;font-size:44px;font-weight:800;line-height:1;letter-spacing:-.02em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.kpi span{display:block;color:var(--muted);font-size:13.5px;margin-block-start:6px}
+/* sections */
+.band{padding:64px 0;border-block-end:1px solid var(--line)}
+.band.alt{background:var(--bg2)}
+.kicker{margin:0 0 6px;font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.sec-head h2{font-size:clamp(28px,3.2vw,40px);margin:0 0 8px;letter-spacing:-.015em;line-height:1.1}
+.sec-head p.sub-lede{color:var(--muted);margin:0 0 28px;max-inline-size:760px}
+.howto{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.how{display:flex;gap:14px;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:16px;padding:18px}
+.how-n{flex:none;inline-size:36px;block-size:36px;border-radius:50%;display:grid;place-items:center;font-weight:800;background:var(--grad);color:#fff}
+.how b{display:block;margin-block-end:2px}
+.how span{color:var(--muted);font-size:14.5px}
+/* glance */
+.glance{display:grid;grid-template-columns:1.35fr 1fr;gap:22px}
+.panel{background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+.panel h3{margin:0 0 4px;font-size:18px}
+.panel .cap{color:var(--faint);font-size:13px;margin:0 0 18px}
+.bar-row{display:grid;grid-template-columns:150px 1fr 34px;align-items:center;gap:12px;padding:7px 0;text-decoration:none}
+.bar-label{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.bar-row:hover .bar-label{color:var(--ink)}
+.ic-s{inline-size:18px;block-size:18px;color:var(--c)}
+.bar-track{block-size:14px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden}
+.bar-fill{display:block;block-size:100%;border-radius:999px;background:linear-gradient(90deg,var(--c),color-mix(in srgb,var(--c) 45%,#fff))}
+.bar-n{font-weight:800;text-align:end}
+.donut-wrap{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.donut{inline-size:180px;block-size:180px;border-radius:50%;position:relative;flex:none}
+.donut::after{content:"";position:absolute;inset:26px;border-radius:50%;background:#100E28}
+.donut-c{position:absolute;inset:0;display:grid;place-items:center;text-align:center;z-index:1;font-size:12.5px;color:var(--muted);line-height:1.2}
+.donut-c b{display:block;font-size:34px;color:var(--ink);line-height:1}
+.legend{list-style:none;margin:0;padding:0;display:grid;gap:10px;font-size:14px;color:var(--muted)}
+.legend b{color:var(--ink);font-size:17px;margin-inline-end:4px}
+.sw{display:inline-block;inline-size:12px;block-size:12px;border-radius:4px;margin-inline-end:8px;vertical-align:-1px}
+.sw.ga{background:var(--ga)}.sw.pre{background:var(--pre)}.sw.fr{background:var(--fr)}.sw.soon{background:var(--soon)}
+.note{color:var(--faint);font-size:12.5px;margin:16px 0 0}
+/* pillars */
+.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.pillar{position:relative;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:var(--radius);padding:22px;overflow:hidden}
+.pillar::before{content:"";position:absolute;inset-inline:0;inset-block-start:0;block-size:4px;background:var(--grad)}
+.pillar h3{margin:4px 0 4px;font-size:20px}
+.pillar p{margin:0 0 14px;color:var(--muted);font-size:14.5px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:5px 10px;border-radius:999px;font-size:12.5px;text-decoration:none;background:color-mix(in srgb,var(--c) 16%,transparent);border:1px solid color-mix(in srgb,var(--c) 40%,transparent)}
+.chip:hover{background:color-mix(in srgb,var(--c) 30%,transparent)}
+.chip-s{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);white-space:nowrap}
+/* lifecycle */
+.flow{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;counter-reset:s}
+.step{position:relative;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:var(--radius);padding:18px 16px}
+.step:not(:last-child)::after{content:"";position:absolute;inset-inline-end:-13px;inset-block-start:34px;inline-size:12px;block-size:12px;border-block-start:2px solid #A855F7;border-inline-end:2px solid #A855F7;transform:rotate(45deg);z-index:2}
+.step-n{inline-size:34px;block-size:34px;border-radius:12px;display:grid;place-items:center;font-weight:800;background:var(--grad);color:#fff;margin-block-end:10px}
+.step h3{margin:0;font-size:19px}
+.step p{margin:2px 0 12px;color:var(--muted);font-size:13.5px}
+.step .chips{flex-direction:column;align-items:flex-start}
+/* top 10 */
+.tops{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.top{display:flex;flex-direction:column;gap:8px;text-decoration:none;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 18%,transparent),rgba(255,255,255,.03));border:1px solid var(--line);border-radius:var(--radius);padding:18px;transition:transform .15s ease,border-color .15s ease}
+.top:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--c) 60%,transparent)}
+.top-n{font-size:30px;font-weight:800;line-height:1;color:var(--c)}
+.top b{font-size:16.5px;line-height:1.25}
+.top-line{color:var(--muted);font-size:13.5px;flex:1}
+.top-go{font-size:12.5px;font-weight:600;color:var(--c)}
+/* directory */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.tile{position:relative;display:flex;flex-direction:column;gap:6px;text-decoration:none;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:var(--radius);padding:20px;overflow:hidden;transition:transform .15s ease,border-color .15s ease}
+.tile::before{content:"";position:absolute;inset-inline:0;inset-block-start:0;block-size:4px;background:var(--c)}
+.tile:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--c) 60%,transparent)}
+.tile-top{display:flex;justify-content:space-between;align-items:center;margin-block-end:6px}
+.tile-icon{inline-size:44px;block-size:44px;border-radius:12px;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c) 16%,transparent)}
+.tile-icon svg{inline-size:24px;block-size:24px}
+.tile-num{font-size:28px;font-weight:800;color:rgba(255,255,255,.14)}
+.tile b{font-size:19px}
+.tile-tag{color:var(--muted);font-size:14px}
+.tile-subs{color:var(--faint);font-size:12.5px;flex:1}
+.tile-count{font-size:13px;font-weight:600;color:var(--c);margin-block-start:6px}
+.filter-strip{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:18px 0 0;padding:14px 16px;border-radius:14px;border:1px dashed rgba(255,255,255,.18);color:var(--muted);font-size:14px}
+/* chapters */
+.chapter{padding:72px 0 56px;border-block-end:1px solid var(--line);background:radial-gradient(900px 380px at 100% 0%,color-mix(in srgb,var(--c) 16%,transparent),transparent 70%)}
+.ch-head{display:flex;align-items:center;gap:20px;margin-block-end:22px;position:relative}
+.ch-num{font-size:clamp(64px,9vw,112px);font-weight:900;line-height:.8;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1.5px color-mix(in srgb,var(--c) 75%,#fff)}
+.ch-icon{inline-size:64px;block-size:64px;border-radius:18px;display:grid;place-items:center;flex:none;color:#fff;background:linear-gradient(135deg,var(--c),color-mix(in srgb,var(--c) 40%,#000))}
+.ch-icon svg{inline-size:34px;block-size:34px}
+.ch-titles h2{font-size:clamp(32px,4vw,50px);margin:0;line-height:1.05;letter-spacing:-.02em}
+.ch-tag{margin:6px 0 0;font-size:18px;color:color-mix(in srgb,var(--c) 70%,#fff);font-weight:600}
+.ch-intro-grid{display:grid;grid-template-columns:1.7fr 1fr;gap:20px;align-items:start;margin-block-end:22px}
+.ch-intro{margin:0;font-size:17px;color:var(--muted)}
+.first-step{background:color-mix(in srgb,var(--c) 14%,transparent);border:1px solid color-mix(in srgb,var(--c) 40%,transparent);border-radius:14px;padding:14px 16px;font-size:14.5px}
+.first-step b{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:color-mix(in srgb,var(--c) 65%,#fff);margin-block-end:4px}
+.ch-subnav{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-block-end:8px}
+.ch-subnav span{font-size:12.5px;color:var(--faint);margin-inline-end:4px}
+.ch-subnav a{padding:5px 12px;border-radius:999px;border:1px solid var(--line);text-decoration:none;font-size:13.5px}
+.ch-subnav a:hover{border-color:var(--c)}
+.ch-subnav small{color:var(--faint);margin-inline-start:4px}
+.also{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin:8px 0 6px;font-size:14.5px}
+.also ul{margin:6px 0 0;padding-inline-start:20px;color:var(--muted)}
+.sub{margin-block-start:30px}
+.sub-title{display:flex;align-items:baseline;gap:12px;margin:0 0 14px;font-size:20px}
+.sub-title::before{content:"";inline-size:18px;block-size:3px;border-radius:2px;background:var(--c);align-self:center}
+.sub-title small{font-size:13px;color:var(--faint);font-weight:500}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+.card{position:relative;display:flex;flex-direction:column;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid var(--line);border-radius:var(--radius);padding:20px 20px 16px;overflow:hidden}
+.card::before{content:"";position:absolute;inset-inline:0;inset-block-start:0;block-size:3px;background:linear-gradient(90deg,var(--c),transparent)}
+.card:target{border-color:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 35%,transparent)}
+.card-top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.cnum{font-size:12.5px;font-weight:800;color:var(--c);letter-spacing:.04em}
+.pills{display:inline-flex;flex-wrap:wrap;gap:5px}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;padding:2px 9px;border-radius:999px;border:1px solid;white-space:nowrap}
+.pill::before{content:"";inline-size:6px;block-size:6px;border-radius:50%;background:currentColor}
+.pill.ga{color:var(--ga);border-color:color-mix(in srgb,var(--ga) 45%,transparent);background:color-mix(in srgb,var(--ga) 12%,transparent)}
+.pill.pre{color:var(--pre);border-color:color-mix(in srgb,var(--pre) 45%,transparent);background:color-mix(in srgb,var(--pre) 12%,transparent)}
+.pill.fr{color:var(--fr);border-color:color-mix(in srgb,var(--fr) 45%,transparent);background:color-mix(in srgb,var(--fr) 12%,transparent)}
+.pill.soon{color:var(--soon);border-color:color-mix(in srgb,var(--soon) 45%,transparent);background:color-mix(in srgb,var(--soon) 12%,transparent)}
+.card h4{margin:12px 0 6px;font-size:19px;line-height:1.25}
+.tldr{margin:0 0 10px;font-size:15.5px;color:var(--ink);font-weight:500}
+.pts{margin:0 0 12px;padding-inline-start:18px;color:var(--muted);font-size:14.2px}
+.pts li{margin-block-end:6px}
+.pts li::marker{color:var(--c)}
+.why{margin:0 0 4px;font-size:14px;background:color-mix(in srgb,var(--c) 12%,transparent);border-inline-start:3px solid var(--c);padding:10px 12px;border-radius:10px}
+.why span{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:color-mix(in srgb,var(--c) 65%,#fff);margin-block-end:2px}
+.see{font-weight:600;color:color-mix(in srgb,var(--c) 70%,#fff)}
+.card-foot{margin-block-start:auto;padding-block-start:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.auds{display:flex;flex-wrap:wrap;gap:5px}
+.aud{font-size:11.5px;color:var(--faint);border:1px solid var(--line);padding:2px 8px;border-radius:6px}
+.more{font-size:13px;font-weight:600;text-decoration:none;color:color-mix(in srgb,var(--c) 70%,#fff);white-space:nowrap}
+.more:hover{text-decoration:underline}
+.ch-end{display:flex;justify-content:space-between;gap:12px;margin-block-start:34px;flex-wrap:wrap}
+.ch-end a{font-size:14px;text-decoration:none;padding:8px 14px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.ch-end a.next{color:var(--ink);border-color:color-mix(in srgb,var(--c) 50%,transparent)}
+.ch-end a:hover{background:rgba(255,255,255,.06)}
+/* index */
+.idx{inline-size:100%;border-collapse:collapse;font-size:14.5px}
+.idx th{background:var(--bg2);text-align:start;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);padding:10px 12px;border-block-end:1px solid var(--line);z-index:1}
+.idx td{padding:10px 12px;border-block-end:1px solid var(--line);vertical-align:middle}
+.idx td.n{color:var(--c);font-weight:700;inline-size:56px}
+.idx td a{text-decoration:none}
+.idx td a:hover{text-decoration:underline;color:#fff}
+.idx tr:hover td{background:rgba(255,255,255,.03)}
+/* footer */
+footer{padding:44px 0 60px;color:var(--faint);font-size:13.5px}
+footer .wrap{display:grid;gap:10px}
+footer a{color:var(--muted)}
+.legend-inline{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-block-start:10px}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}.tops{grid-template-columns:repeat(3,1fr)}.flow{grid-template-columns:repeat(3,1fr)}.step:nth-child(3n)::after{display:none}.tiles{grid-template-columns:repeat(2,1fr)}.pillars{grid-template-columns:repeat(2,1fr)}.hero-art{opacity:.35}}
+@media (max-width:820px){.glance,.ch-intro-grid,.howto{grid-template-columns:1fr}.tops{grid-template-columns:repeat(2,1fr)}.flow{grid-template-columns:repeat(2,1fr)}.step::after{display:none}.wrap{padding-inline:18px}.cards{grid-template-columns:1fr}.idx td.pills,.idx th.pills{display:none}}
+@media (max-width:560px){.kpis,.tops,.tiles,.pillars,.flow{grid-template-columns:1fr}.bar-row{grid-template-columns:110px 1fr 28px}.ch-num{display:none}.hero-art{display:none}.filters > span{display:none}}
+@media print{
+:root{--bg:#fff;--bg2:#fff;--ink:#111;--muted:#333;--faint:#555;--line:#d9d9e3}
+body{background:#fff;color:#111}
+.topbar,.hero-art,.ch-end,.filter-strip{display:none!important}
+.hero,.chapter,.band{background:#fff!important;padding:28px 0}
+.gt,.kpi b{background:none;color:#5B2BD9;-webkit-text-fill-color:#5B2BD9}
+.card,.kpi,.step,.tile,.top,.pillar,.panel,.how{break-inside:avoid;background:#fff!important;box-shadow:none}
+.chapter{break-before:page}
+.ch-icon{color:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.donut,.bar-fill,.pill,.sw,.dot,.step-n,.how-n,.why{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.donut::after{background:#fff}
+.idx th{position:static;background:#fff}
+a{text-decoration:none}
+}
+</style>
+<!-- smec-tmpl:ignite-cosmos-index-2026-11 -->
+</head>
+<body id="top">
+<input class="vh" type="radio" name="aud" id="f-all" checked><input class="vh" type="radio" name="aud" id="f-biz"><input class="vh" type="radio" name="aud" id="f-it"><input class="vh" type="radio" name="aud" id="f-dev"><input class="vh" type="radio" name="aud" id="f-sec">
+<header class="topbar"><div class="wrap">
+<a class="brand" href="#top"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF3EA5"/><stop offset=".5" stop-color="#8B5CF6"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs><path d="M16 2l3.3 9.2L28.5 16l-9.2 3.3L16 28.5l-3.3-9.2L3.5 16l9.2-4.8z" fill="url(#bg1)"/><circle cx="16" cy="16" r="3.2" fill="#090817"/></svg><span>Ignite 2026<small>Book of News · Easy guide</small></span></a>
+<nav class="chap-nav" aria-label="Chapters"><a class="c-azure" href="#ch-azure"><span class="dot"></span>Azure</a><a class="c-foundry" href="#ch-foundry"><span class="dot"></span>Foundry</a><a class="c-github" href="#ch-github"><span class="dot"></span>GitHub</a><a class="c-copilot" href="#ch-copilot"><span class="dot"></span>Copilot</a><a class="c-edge" href="#ch-edge"><span class="dot"></span>Edge</a><a class="c-iq" href="#ch-iq"><span class="dot"></span>Microsoft IQ</a><a class="c-security" href="#ch-security"><span class="dot"></span>Security</a><a class="c-windows" href="#ch-windows"><span class="dot"></span>Windows</a><a href="#index"><span class="dot" style="background:#fff"></span>Index</a></nav>
+<div class="filters" role="group" aria-label="Filter by role"><span>Show</span><label for="f-all">All</label><label for="f-biz">Business</label><label for="f-it">IT</label><label for="f-dev">Dev &amp; data</label><label for="f-sec">Security</label></div>
+</div></header>
+
+<section class="hero"><div class="wrap">
+<svg class="hero-art" viewBox="0 0 520 520" aria-hidden="true"><defs><linearGradient id="hg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF3EA5"/><stop offset=".5" stop-color="#8B5CF6"/><stop offset="1" stop-color="#22D3EE"/></linearGradient><radialGradient id="hg2" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FF3EA5" stop-opacity=".55"/><stop offset="1" stop-color="#FF3EA5" stop-opacity="0"/></radialGradient></defs>
+<circle cx="260" cy="260" r="120" fill="url(#hg2)"/>
+<g fill="none" stroke="url(#hg1)">
+<circle cx="260" cy="260" r="80" stroke-width="2" opacity=".9"/>
+<circle cx="260" cy="260" r="130" stroke-width="1.5" opacity=".6" stroke-dasharray="4 10"/>
+<circle cx="260" cy="260" r="180" stroke-width="10" opacity=".25" stroke-dasharray="180 60"/>
+<circle cx="260" cy="260" r="230" stroke-width="1.2" opacity=".35"/>
+</g>
+<path d="M260 150l20 70 70 40-70 20-20 90-20-90-70-20 70-40z" fill="url(#hg1)" opacity=".95"/>
+<g fill="#fff"><circle cx="440" cy="160" r="3"/><circle cx="110" cy="330" r="2.5"/><circle cx="380" cy="430" r="2"/><circle cx="150" cy="120" r="2"/></g>
+</svg>
+<span class="eyebrow"><b>Microsoft Ignite 2026</b> · November 17–20 · San Francisco &amp; online</span>
+<h1>The Book of News,<br><span class="gt">made easy.</span></h1>
+<p class="lede">The Ignite 2026 Book of News in plain language: 59 grouped summaries, organized by chapter and filterable by role. See what is available, what needs a pilot, and what is still ahead.</p>
+<div class="hero-chips"><span>🔥 Agents move into production</span><span>🧠 Your context is your edge</span><span>🛡️ Trust at every layer</span><span>☁️ Built from chip to agent</span></div>
+<div class="kpis"><div class="kpi"><b>59</b><span>announcements</span></div><div class="kpi"><b>8</b><span>chapters</span></div><div class="kpi"><b>38</b><span>with something generally available today</span></div><div class="kpi"><b>41</b><span>with features in preview</span></div><div class="kpi"><b>9</b><span>in the Frontier program</span></div></div>
+</div></section>
+
+<section class="band" id="how"><div class="wrap">
+<div class="sec-head"><p class="kicker">How to use this guide</p><h2>Three ways in</h2><p class="sub-lede">Skim the headlines, see how the pieces fit together, then go deeper on the chapters that matter to you.</p></div>
+<div class="howto">
+<div class="how"><span class="how-n">1</span><div><b>Start with the Top 10</b><span>The ten announcements most worth knowing, each linked to its summary.</span></div></div>
+<div class="how"><span class="how-n">2</span><div><b>Pick your chapter</b><span>Eight chapters, each with a one-paragraph overview and a suggested first step.</span></div></div>
+<div class="how"><span class="how-n">3</span><div><b>Filter by role</b><span>Use the “Show” filter in the top bar to see only Business, IT, Dev &amp; data or Security news.</span></div></div>
+</div>
+<div class="legend-inline"><span class="kicker" style="margin:0">Availability labels</span><span class="pill ga">Generally available</span><span class="pill pre">Preview</span><span class="pill fr">Frontier program</span><span class="pill soon">Coming soon</span></div>
+<p class="note">A GA badge applies only to the named GA features, not every feature in the card. Preview includes private previews; Frontier access is limited and does not guarantee access to every experiment. Confirm region, licensing, prerequisites, and rollout before committing.</p>
+</div></section>
+
+<section class="band alt" id="glance"><div class="wrap">
+<div class="sec-head"><p class="kicker">At a glance</p><h2>Where the news landed</h2><p class="sub-lede">59 announcements across 8 chapters. Azure and Security had the most news, and agents run through every chapter.</p></div>
+<div class="glance">
+<div class="panel"><h3>Announcements by chapter</h3><p class="cap">Click a bar to jump to that chapter</p><a class="bar-row c-azure" href="#ch-azure"><span class="bar-label"><svg class="ic-s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10.2a4.3 4.3 0 0 0 .6-8.55A6.2 6.2 0 0 0 5.9 9.7 4.2 4.2 0 0 0 7 18z"/></svg>Azure</span><span class="bar-track"><span class="bar-fill" style="width:100.0%"></span></span><span class="bar-n">17</span></a><a class="bar-row c-foundry" href="#ch-foundry"><span class="bar-label"><svg class="ic-s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/><path d="M3 17.5l9 5 9-5" opacity=".55"/></svg>Foundry</span><span class="bar-track"><span class="bar-fill" style="width:17.6%"></span></span><span class="bar-n">3</span></a><a class="bar-row c-github" href="#ch-github"><span class="bar-label"><svg class="ic-s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>GitHub</span><span class="bar-track"><span class="bar-fill" style="width:5.9%"></span></span><span class="bar-n">1</span></a><a class="bar-row c-copilot" href="#ch-copilot"><span class="bar-label"><svg class="ic-s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l2 5.6 5.6 2-5.6 2-2 5.6-2-5.6-5.6-2 5.6-2z"/><path d="M19 15.5l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9z"/></svg>Copilot</span><span class="bar-track"><span class="bar-fill" style="width:58.8%"></span></span><span class="bar-n">10</span></a><a class="bar-row c-edge" href="#ch-edge"><span class="bar-label"><svg class="ic-s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18"/></svg>Edge</span><span class="bar-track"><span class="bar-fill" style="width:5.9%"></span></span><span class="bar-n">1</span></a><a class="bar-row c-iq" href="#ch-iq"><span class="bar-label"><svg class="ic-s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2.6"/><circle cx="4.8" cy="5.5" r="1.9"/><circle cx="19.2" cy="5.5" r="1.9"/><circle cx="4.8" cy="18.5" r="1.9"/><circle cx="19.2" cy="18.5" r="1.9"/><path d="M6.3 6.9l3.7 3.3M17.7 6.9l-3.7 3.3M6.3 17.1l3.7-3.3M17.7 17.1l-3.7-3.3"/></svg>Microsoft IQ</span><span class="bar-track"><span class="bar-fill" style="width:41.2%"></span></span><span class="bar-n">7</span></a><a class="bar-row c-security" href="#ch-security"><span class="bar-label"><svg class="ic-s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8l8 3v6.1c0 4.6-3.4 8.4-8 9.3-4.6-.9-8-4.7-8-9.3V5.8l8-3z"/><path d="M8.8 12.2l2.2 2.2 4.3-4.4"/></svg>Security</span><span class="bar-track"><span class="bar-fill" style="width:82.4%"></span></span><span class="bar-n">14</span></a><a class="bar-row c-windows" href="#ch-windows"><span class="bar-label"><svg class="ic-s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.2"/><rect x="13" y="3" width="8" height="8" rx="1.2"/><rect x="3" y="13" width="8" height="8" rx="1.2"/><rect x="13" y="13" width="8" height="8" rx="1.2"/></svg>Windows</span><span class="bar-track"><span class="bar-fill" style="width:35.3%"></span></span><span class="bar-n">6</span></a></div>
+<div class="panel"><h3>What can I evaluate now?</h3><p class="cap">Overlapping availability tags across 59 summaries, not shares of a whole</p>
+<div class="donut-wrap">
+<ul class="legend"><li><span class="sw ga"></span><b>38</b> include generally available features</li><li><span class="sw pre"></span><b>41</b> include preview features</li><li><span class="sw fr"></span><b>9</b> are in the Frontier program</li><li><span class="sw soon"></span><b>9</b> have features coming soon</li></ul></div>
+<p class="note">Many announcements combine GA and preview features, so one announcement can count in more than one group. The Frontier program is Microsoft's early-access program for new Copilot capabilities.</p></div>
+</div></div></section>
+
+<section class="band" id="big-picture"><div class="wrap">
+<div class="sec-head"><p class="kicker">The big picture</p><h2>Build. Ground. Govern. Improve.</h2><p class="sub-lede">Our editorial lens on the Book of News: put people in control, connect agents to trusted context, and measure outcomes. Infrastructure and security make that production loop possible.</p></div>
+<div class="pillars"><div class="pillar"><h3>Human ambition</h3><p>AI that serves people</p><div class="chips"><a class="chip c-copilot" href="#ch-copilot"><span class="dot"></span>Microsoft Copilot</a><a class="chip c-edge" href="#ch-edge"><span class="dot"></span>Microsoft Edge</a><a class="chip c-github" href="#ch-github"><span class="dot"></span>GitHub</a></div></div><div class="pillar"><h3>Intelligence</h3><p>Own and grow your IQ</p><div class="chips"><a class="chip c-iq" href="#ch-iq"><span class="dot"></span>Microsoft IQ</a><a class="chip c-foundry" href="#ch-foundry"><span class="dot"></span>Microsoft Foundry</a></div></div><div class="pillar"><h3>Trust</h3><p>Visibility and control at every layer</p><div class="chips"><a class="chip c-security" href="#ch-security"><span class="dot"></span>Security</a><a class="chip c-windows" href="#ch-windows"><span class="dot"></span>Windows</a></div></div><div class="pillar"><h3>Infrastructure</h3><p>A cloud built for AI</p><div class="chips"><a class="chip c-azure" href="#ch-azure"><span class="dot"></span>Azure</a></div></div></div>
+</div></section>
+
+<section class="band alt" id="lifecycle"><div class="wrap">
+<div class="sec-head"><p class="kicker">How it fits together</p><h2>The agent lifecycle at Ignite 2026</h2><p class="sub-lede">Most of the news covers one of six stages of an agent's life. Click any product to jump to its summary.</p></div>
+<div class="flow"><div class="step"><div class="step-n">1</div><h3>Build</h3><p>Create apps &amp; agents</p><div class="chips"><a class="chip c-copilot" href="#copilot-5"><span class="dot"></span>Copilot Code</a><a class="chip c-github" href="#github-1"><span class="dot"></span>Copilot SDK 2.0</a><a class="chip c-azure" href="#azure-17"><span class="dot"></span>Fabric apps</a><a class="chip c-foundry" href="#foundry-3"><span class="dot"></span>Foundry models</a></div></div><div class="step"><div class="step-n">2</div><h3>Ground</h3><p>Give them your context</p><div class="chips"><a class="chip c-iq" href="#iq-1"><span class="dot"></span>Microsoft IQ</a><a class="chip c-iq" href="#iq-6"><span class="dot"></span>Work IQ</a><a class="chip c-iq" href="#iq-4"><span class="dot"></span>Fabric IQ</a><a class="chip c-iq" href="#iq-3"><span class="dot"></span>Foundry IQ</a><a class="chip c-iq" href="#iq-5"><span class="dot"></span>Web IQ</a></div></div><div class="step"><div class="step-n">3</div><h3>Run</h3><p>Host at scale</p><div class="chips"><a class="chip c-copilot" href="#copilot-6"><span class="dot"></span>Copilot Managed Runtime</a><a class="chip c-azure" href="#azure-5"><span class="dot"></span>Foundry on AKS</a><a class="chip c-windows" href="#windows-4"><span class="dot"></span>Windows 365 for Agents</a><a class="chip c-azure" href="#azure-3"><span class="dot"></span>Cobalt 200</a></div></div><div class="step"><div class="step-n">4</div><h3>Govern</h3><p>See cost, use &amp; risk</p><div class="chips"><a class="chip c-copilot" href="#copilot-7"><span class="dot"></span>Agent 365 FinOps</a><a class="chip c-security" href="#security-3"><span class="dot"></span>Agent 365 governance</a><a class="chip c-security" href="#security-1"><span class="dot"></span>Dynamic Agent Risk</a></div></div><div class="step"><div class="step-n">5</div><h3>Secure</h3><p>Protect every layer</p><div class="chips"><a class="chip c-security" href="#security-10"><span class="dot"></span>Entra Agent ID</a><a class="chip c-security" href="#security-7"><span class="dot"></span>Defender</a><a class="chip c-security" href="#security-14"><span class="dot"></span>Purview</a><a class="chip c-windows" href="#windows-6"><span class="dot"></span>Windows containers</a><a class="chip c-security" href="#security-13"><span class="dot"></span>Perception</a></div></div><div class="step"><div class="step-n">6</div><h3>Improve</h3><p>Learn from production</p><div class="chips"><a class="chip c-foundry" href="#foundry-1"><span class="dot"></span>Continuous improvement</a><a class="chip c-foundry" href="#foundry-2"><span class="dot"></span>Decision-1.1</a><a class="chip c-iq" href="#iq-7"><span class="dot"></span>Microsoft IQ loop</a></div></div></div>
+</div></section>
+
+<section class="band" id="headlines"><div class="wrap">
+<div class="sec-head"><p class="kicker">If you read nothing else</p><h2>Top 10 headlines</h2><p class="sub-lede">The announcements most likely to change how organizations work, build and stay secure.</p></div>
+<div class="tops">
+<a class="top c-iq" href="#iq-1"><span class="top-n">01</span><span class="chip-s"><span class="dot"></span>Microsoft IQ</span><b>Microsoft IQ is generally available</b><span class="top-line">Context management plus continuous improvement. No new IQ SKU; underlying usage is not free.</span><span class="top-go">Read the summary →</span></a>
+<a class="top c-copilot" href="#copilot-1"><span class="top-n">02</span><span class="chip-s"><span class="dot"></span>Microsoft Copilot</span><b>The new Copilot</b><span class="top-line">Office in Copilot is GA. Home is rolling out; Auto in Cowork has Frontier-specific capabilities.</span><span class="top-go">Read the summary →</span></a>
+<a class="top c-copilot" href="#copilot-2"><span class="top-n">03</span><span class="chip-s"><span class="dot"></span>Microsoft Copilot</span><b>Autopilot arrives in Frontier</b><span class="top-line">A long-running personal agent with its own identity, rolling out through limited early access.</span><span class="top-go">Read the summary →</span></a>
+<a class="top c-copilot" href="#copilot-5"><span class="top-n">04</span><span class="chip-s"><span class="dot"></span>Microsoft Copilot</span><b>Describe an app, then govern it</b><span class="top-line">Copilot Code is in Frontier, with GA planned for December 2026. Copilot Managed Runtime is GA.</span><span class="top-go">Read the summary →</span></a>
+<a class="top c-copilot" href="#copilot-7"><span class="top-n">05</span><span class="chip-s"><span class="dot"></span>Microsoft Copilot</span><b>FinOps for AI</b><span class="top-line">Preview and Frontier tools connect AI spend to business value; broader insights are still ahead.</span><span class="top-go">Read the summary →</span></a>
+<a class="top c-foundry" href="#foundry-1"><span class="top-n">06</span><span class="chip-s"><span class="dot"></span>Microsoft Foundry</span><b>Improve agents with evidence</b><span class="top-line">Foundry turns production signals into candidate improvements. Teams evaluate and choose what ships.</span><span class="top-go">Read the summary →</span></a>
+<a class="top c-security" href="#security-13"><span class="top-n">07</span><span class="chip-s"><span class="dot"></span>Security</span><b>Microsoft Perception is GA</b><span class="top-line">Security agents and playbooks, with feature-specific previews. Reported triage coverage is not a resolution rate.</span><span class="top-go">Read the summary →</span></a>
+<a class="top c-security" href="#security-7"><span class="top-n">08</span><span class="chip-s"><span class="dot"></span>Security</span><b>Runtime defense for local agents</b><span class="top-line">GA protection for named Windows agent surfaces with Defender for Endpoint P2; configure Audit or Block mode.</span><span class="top-go">Read the summary →</span></a>
+<a class="top c-azure" href="#azure-10"><span class="top-n">09</span><span class="chip-s"><span class="dot"></span>Azure</span><b>Azure HorizonDB is GA</b><span class="top-line">PostgreSQL-compatible Azure service. Fabric HorizonDB is a distinct preview offering.</span><span class="top-go">Read the summary →</span></a>
+<a class="top c-azure" href="#azure-7"><span class="top-n">10</span><span class="chip-s"><span class="dot"></span>Azure</span><b>Windows Server 2028 preview</b><span class="top-line">Evaluate the next server release; hybrid AI features have limited early access and hardware requirements.</span><span class="top-go">Read the summary →</span></a>
+</div>
+</div></section>
+
+<section class="band alt" id="chapters"><div class="wrap">
+<div class="sec-head"><p class="kicker">Explore</p><h2>Choose a chapter</h2><p class="sub-lede">The chapters follow the order of the official Book of News.</p></div>
+<div class="tiles"><a class="tile c-azure" href="#ch-azure"><span class="tile-top"><span class="tile-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10.2a4.3 4.3 0 0 0 .6-8.55A6.2 6.2 0 0 0 5.9 9.7 4.2 4.2 0 0 0 7 18z"/></svg></span><span class="tile-num">01</span></span><b>Azure</b><span class="tile-tag">Built from chip to agent</span><span class="tile-subs">Infrastructure &amp; silicon · Core platform &amp; operations · Data &amp; databases</span><span class="tile-count">17 announcements →</span></a><a class="tile c-foundry" href="#ch-foundry"><span class="tile-top"><span class="tile-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/><path d="M3 17.5l9 5 9-5" opacity=".55"/></svg></span><span class="tile-num">02</span></span><b>Microsoft Foundry</b><span class="tile-tag">Agents that keep getting better</span><span class="tile-subs">Continuous improvement · New models</span><span class="tile-count">3 announcements →</span></a><a class="tile c-github" href="#ch-github"><span class="tile-top"><span class="tile-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></span><span class="tile-num">03</span></span><b>GitHub</b><span class="tile-tag">Build agents, ship better code</span><span class="tile-subs">Build agents, ship better code</span><span class="tile-count">1 announcement →</span></a><a class="tile c-copilot" href="#ch-copilot"><span class="tile-top"><span class="tile-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l2 5.6 5.6 2-5.6 2-2 5.6-2-5.6-5.6-2 5.6-2z"/><path d="M19 15.5l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9z"/></svg></span><span class="tile-num">04</span></span><b>Microsoft Copilot</b><span class="tile-tag">The new Copilot for work</span><span class="tile-subs">The new Copilot experience · Build &amp; run apps · Business apps &amp; partners</span><span class="tile-count">10 announcements →</span></a><a class="tile c-edge" href="#ch-edge"><span class="tile-top"><span class="tile-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18"/></svg></span><span class="tile-num">05</span></span><b>Microsoft Edge</b><span class="tile-tag">The secure browser for the agent era</span><span class="tile-subs">The secure browser for the agent era</span><span class="tile-count">1 announcement →</span></a><a class="tile c-iq" href="#ch-iq"><span class="tile-top"><span class="tile-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2.6"/><circle cx="4.8" cy="5.5" r="1.9"/><circle cx="19.2" cy="5.5" r="1.9"/><circle cx="4.8" cy="18.5" r="1.9"/><circle cx="19.2" cy="18.5" r="1.9"/><path d="M6.3 6.9l3.7 3.3M17.7 6.9l-3.7 3.3M6.3 17.1l3.7-3.3M17.7 17.1l-3.7-3.3"/></svg></span><span class="tile-num">06</span></span><b>Microsoft IQ</b><span class="tile-tag">Your context is your competitive edge</span><span class="tile-subs">The platform · The IQ family</span><span class="tile-count">7 announcements →</span></a><a class="tile c-security" href="#ch-security"><span class="tile-top"><span class="tile-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8l8 3v6.1c0 4.6-3.4 8.4-8 9.3-4.6-.9-8-4.7-8-9.3V5.8l8-3z"/><path d="M8.8 12.2l2.2 2.2 4.3-4.4"/></svg></span><span class="tile-num">07</span></span><b>Security</b><span class="tile-tag">Trust at every layer</span><span class="tile-subs">Agent 365 · Codename MDASH · Defender · Entra · Intune · Perception · Purview</span><span class="tile-count">14 announcements →</span></a><a class="tile c-windows" href="#ch-windows"><span class="tile-top"><span class="tile-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.2"/><rect x="13" y="3" width="8" height="8" rx="1.2"/><rect x="3" y="13" width="8" height="8" rx="1.2"/><rect x="13" y="13" width="8" height="8" rx="1.2"/></svg></span><span class="tile-num">08</span></span><b>Windows</b><span class="tile-tag">Hybrid intelligence on a secure foundation</span><span class="tile-subs">Hybrid intelligence on a secure foundation</span><span class="tile-count">6 announcements →</span></a></div>
+<div class="filter-strip">💡 Tip: use the <b>Show</b> filter in the top bar to filter every chapter by role. <span class="fn fn-biz">Showing only announcements for <b>Business leaders</b>. Choose “All” in the top bar to see everything.</span><span class="fn fn-it">Showing only announcements for <b>IT &amp; admins</b>. Choose “All” in the top bar to see everything.</span><span class="fn fn-dev">Showing only announcements for <b>Developers &amp; data</b>. Choose “All” in the top bar to see everything.</span><span class="fn fn-sec">Showing only announcements for <b>Security</b>. Choose “All” in the top bar to see everything.</span></div>
+</div></section>
+
+<section class="chapter c-azure" id="ch-azure">
+<div class="wrap">
+<header class="ch-head">
+<div class="ch-num" aria-hidden="true">01</div>
+<div class="ch-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10.2a4.3 4.3 0 0 0 .6-8.55A6.2 6.2 0 0 0 5.9 9.7 4.2 4.2 0 0 0 7 18z"/></svg></div>
+<div class="ch-titles"><p class="kicker">Chapter 1 · 17 announcements · 11 with GA features</p>
+<h2>Azure</h2><p class="ch-tag">Built from chip to agent</p></div>
+</header>
+<div class="ch-intro-grid"><p class="ch-intro">AI is in production, and agents need the whole stack. Azure now brings silicon, infrastructure, data and operations together as one system. Cobalt 200 VMs, Azure HorizonDB, Rayfin and Fabric apps are generally available, and new previews bring Foundry models and agents to Azure Kubernetes Service.</p>
+<aside class="first-step"><b>Good first step</b><span>Running PostgreSQL or planning a migration? Look at Azure HorizonDB and Azure Catalyst first.</span></aside></div>
+<nav class="ch-subnav" aria-label="Sections in Azure"><span>In this chapter</span><a href="#azure-s1">Infrastructure &amp; silicon <small>3</small></a><a href="#azure-s2">Core platform &amp; operations <small>4</small></a><a href="#azure-s3">Data &amp; databases <small>10</small></a></nav><div class="sub" id="azure-s1"><h3 class="sub-title"><span>Infrastructure &amp; silicon</span><small>3 announcements</small></h3><div class="cards"><article class="card" id="azure-1" data-aud="it dev">
+<div class="card-top"><span class="cnum">1.1</span><span class="pills"><span class="pill ga">Generally available</span></span></div>
+<h4>Azure Chaos Studio Workspaces &amp; AKS extension</h4>
+<p class="tldr">Break things on purpose, safely, to prove your apps can recover.</p>
+<ul class="pts"><li>Workspaces organize resilience tests with reusable disruption scenarios, such as losing an availability zone or failing over a database.</li><li>A new AKS extension injects controlled faults into Kubernetes pods and needs fewer permissions to run.</li></ul>
+<p class="why"><span>Why it matters</span>You find the weak spots in a controlled test instead of during a real outage.</p>
+<div class="card-foot"><span class="auds"><span class="aud">IT &amp; admins</span><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/chaosstudio/workspaces-ga" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="azure-2" data-aud="sec it dev">
+<div class="card-top"><span class="cnum">1.2</span><span class="pills"><span class="pill pre">Preview</span></span></div>
+<h4>Expanded Azure confidential computing</h4>
+<p class="tldr">Protects sensitive data while it is being processed, as well as when it is stored or moving.</p>
+<ul class="pts"><li>VR72 multi-GPU confidential computing opens a path to protect large models that span more than one GPU.</li><li>Azure Confidential Enclaves and AKS Kata CoCo containers shrink what you have to trust to a small, verified environment.</li><li>Azure Confidential Clean Room lets several parties analyze shared data without exposing each other&#x27;s raw data.</li></ul>
+<p class="why"><span>Why it matters</span>Lets you use data for AI and partner work that was once too sensitive to touch.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Security</span><span class="aud">IT &amp; admins</span><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/acc-ignite2026" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="azure-3" data-aud="it dev">
+<div class="card-top"><span class="cnum">1.3</span><span class="pills"><span class="pill ga">Generally available</span></span></div>
+<h4>Azure Cobalt 200 virtual machines</h4>
+<p class="tldr">Microsoft&#x27;s own Arm-based CPU is now generally available and tuned for the CPU-heavy work agents do.</p>
+<ul class="pts"><li>Up to 50% better CPU performance than Cobalt 100.</li><li>Coming to 24 Azure regions by the end of the year, with a consistent-speed or boost mode for each VM.</li><li>New VM types: Mpsv4 for large in-memory databases and Lpsv5 with up to 23 TB of built-in storage.</li></ul>
+<p class="why"><span>Why it matters</span>Agents do much of their work on general-purpose CPUs, outside the model. Faster CPUs finish tasks sooner and get more done per machine.</p>
+<div class="card-foot"><span class="auds"><span class="aud">IT &amp; admins</span><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/Cobalt200VMs-GA" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article></div></div><div class="sub" id="azure-s2"><h3 class="sub-title"><span>Core platform &amp; operations</span><small>4 announcements</small></h3><div class="cards"><article class="card" id="azure-4" data-aud="it">
+<div class="card-top"><span class="cnum">1.4</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>Agentic cloud operations</h4>
+<p class="tldr">AI agents help investigate, optimize and run your Azure estate, and people stay in control.</p>
+<ul class="pts"><li>GA: natural-language planning and deployment in Azure Monitor, plus health models that turn telemetry into a health graph ranked by business impact.</li><li>Preview: Azure Copilot spaces and custom skills. Azure SRE Agent adds customer-managed keys, Entra Agent ID and Agent 365 governance, cross-agent teamwork, Teams integration and multicloud investigations.</li><li>Private preview: Azure Workload Center extends agentic operations to Oracle and SAP.</li></ul>
+<p class="why"><span>Why it matters</span>Takes operations agents out of the experiment stage and into complex production environments.</p>
+<div class="card-foot"><span class="auds"><span class="aud">IT &amp; admins</span></span><a class="more" href="https://aka.ms/ignite2026/agenticops" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="azure-5" data-aud="dev it">
+<div class="card-top"><span class="cnum">1.5</span><span class="pills"><span class="pill pre">Preview</span></span></div>
+<h4>AI infrastructure foundation: Foundry on AKS, Agent Grid &amp; more</h4>
+<p class="tldr">Run Foundry models and agents on your own Kubernetes clusters, with security built in.</p>
+<ul class="pts"><li>Deploy open-weight models and agents from Foundry to your own AKS clusters, and choose GPUs and regions by cost, latency and data residency.</li><li>Agent Grid applies central policy to agents, models and tools. Agent Sandbox for AKS isolates code that agents write, at the VM level.</li><li>Flex nodes extend the same AKS clusters to your own servers outside Azure. The stack stays open with vLLM, Ray and Kubernetes.</li></ul>
+<p class="why"><span>Why it matters</span>You get Foundry&#x27;s simplicity with Kubernetes&#x27; control, and one developer workflow from experiment to production.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Developers &amp; data</span><span class="aud">IT &amp; admins</span></span><a class="more" href="https://azure.microsoft.com/en-us/blog/microsoft-ignite-2026-whats-new-in-azure-the-platform-purpose-built-for-ai/" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="azure-6" data-aud="it dev">
+<div class="card-top"><span class="cnum">1.6</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>Azure Catalyst</h4>
+<p class="tldr">A single, agent-led experience for modernizing infrastructure, apps and data across Azure and GitHub.</p>
+<ul class="pts"><li>The Azure Catalyst agent (formerly the Azure Copilot migration agent) is GA. Previews add richer estate insights, AI app discovery, modernization strategy and cost comparisons.</li><li>GitHub Copilot modernization: agent governance rulebooks and bring-your-own-model in the CLI and IDEs are GA.</li><li>Preview: combined app and database modernization, and BizTalk to Azure Logic Apps migration.</li></ul>
+<p class="why"><span>Why it matters</span>Reduces manual migration work and frees business logic in older apps for new AI experiences.</p>
+<div class="card-foot"><span class="auds"><span class="aud">IT &amp; admins</span><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/modernization-ignite26" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="azure-7" data-aud="it">
+<div class="card-top"><span class="cnum">1.7</span><span class="pills"><span class="pill pre">Preview</span></span></div>
+<h4>Windows Server 2028</h4>
+<p class="tldr">The next Windows Server. It&#x27;s more secure by default and can run AI close to your data.</p>
+<ul class="pts"><li>Security: hardened Server Core, a new security baseline, Trusted Launch for VMs, post-quantum cryptography and automated certificate management.</li><li>Performance and management: NVMe over Fabrics and boot from ReFS. Manage it with Intune, Azure Arc, Windows Admin Center and vMode.</li><li>Hybrid intelligence: Windows ML, Foundry Local, vLLM and Llama.cpp, Microsoft Execution Containers, Agent 365 integration, and support for AMD MI350P and NVIDIA GB300.</li></ul>
+<p class="why"><span>Why it matters</span>Run AI on infrastructure you control while staying connected to Azure. The preview is open through the Windows Server Insider Program, and the AI features are in early access.</p>
+<div class="card-foot"><span class="auds"><span class="aud">IT &amp; admins</span></span><a class="more" href="https://aka.ms/WindowsServer2028Announcement" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article></div></div><div class="sub" id="azure-s3"><h3 class="sub-title"><span>Data &amp; databases</span><small>10 announcements</small></h3><div class="cards"><article class="card" id="azure-8" data-aud="dev">
+<div class="card-top"><span class="cnum">1.8</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>Azure Cosmos DB: developer, retrieval &amp; backup updates</h4>
+<p class="tldr">Better search relevance, easier app design and stronger data protection.</p>
+<ul class="pts"><li>GA: Cosmos DB Shell in VS Code and the Azure portal (with MCP), a native Rust SDK, the semantic reranker and FuzzyBM25 relevance scores.</li><li>GA: Azure Backup for Cosmos DB adds a separate, vault-based layer of protection.</li><li>Preview: an AI-assisted data modeler in the VS Code extension helps you choose partition keys and design containers.</li></ul>
+<p class="why"><span>Why it matters</span>AI apps retrieve better results, and production data gets enterprise-grade backup.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/ignite26/cosmosdb" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="azure-9" data-aud="dev it">
+<div class="card-top"><span class="cnum">1.9</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>Azure DocumentDB</h4>
+<p class="tldr">Run MongoDB-compatible workloads wherever your data needs to live.</p>
+<ul class="pts"><li>GA: a VS Code extension and near-instant cluster provisioning for M10 to M30.</li><li>Preview: DocumentDB enabled by Azure Arc (hybrid and multicloud) and DocumentDB on Azure Local, for sovereignty requirements.</li><li>Preview: role-based access you can scope to individual databases and collections.</li></ul>
+<p class="why"><span>Why it matters</span>Adds deployment choices for residency needs. Validate the preview's supported regions, controls, and regulatory requirements; placement alone does not establish compliance.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Developers &amp; data</span><span class="aud">IT &amp; admins</span></span><a class="more" href="https://aka.ms/ignite26/documentdb" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="azure-10" data-aud="dev">
+<div class="card-top"><span class="cnum">1.10</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>Azure HorizonDB</h4>
+<p class="tldr">A fully managed, PostgreSQL-compatible database for mission-critical apps, now generally available.</p>
+<ul class="pts"><li>Built-in vector search and AI, Entra ID sign-in, private endpoints, customer-managed keys and multi-zone replication.</li><li>Preview: built-in AI model management, plus AI Functions and AI Pipelines that call models directly from SQL.</li><li>The PostgreSQL extension for VS Code is GA. Mirroring HorizonDB into Fabric is in preview.</li></ul>
+<p class="why"><span>Why it matters</span>Build intelligent apps on the transactional data you already rely on.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/ignite26/horizondb" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="azure-11" data-aud="dev">
+<div class="card-top"><span class="cnum">1.11</span><span class="pills"><span class="pill pre">Preview</span></span></div>
+<h4>Azure Managed Redis: Redis 8 &amp; agent kit</h4>
+<p class="tldr">One Redis version for JSON, search, time-series and vector data, plus an AI helper that reviews your configuration.</p>
+<ul class="pts"><li>Redis 8 supports recommendations, reuse of responses to similar AI requests, and memory for agents.</li><li>The agent kit reviews how your app uses Redis and suggests fixes for reliability, networking and performance.</li></ul>
+<p class="why"><span>Why it matters</span>Faster AI apps with fewer configuration surprises.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/ignite26/AMR" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="azure-12" data-aud="dev it">
+<div class="card-top"><span class="cnum">1.12</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>Azure SQL</h4>
+<p class="tldr">Easier SQL Server modernization, stronger resilience and free local development.</p>
+<ul class="pts"><li>GA: Next-gen General Purpose zone redundancy in supported regions. Flexible memory applies to zone-redundant instances on Premium-series hardware.</li><li>GA: Managed Instance link supports supported Always On availability groups with multiple databases, replicating in near real time for low-downtime migration and disaster recovery.</li><li>Preview: an Azure SQL Database container runs the engine locally for free, with no subscription or credit card. Cloud database and model usage remain separately chargeable.</li></ul>
+<p class="why"><span>Why it matters</span>Lowers migration risk and lets developers build and test anywhere.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Developers &amp; data</span><span class="aud">IT &amp; admins</span></span><a class="more" href="https://aka.ms/ignite26/mssql" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="azure-13" data-aud="it dev">
+<div class="card-top"><span class="cnum">1.13</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>Database Hub in Fabric + database agents</h4>
+<p class="tldr">One place to manage supported database estates, with preview AI agents that explain issues and help fix them.</p>
+<ul class="pts"><li>GA: discover, monitor and manage databases across Azure, Fabric, on-premises environments and other clouds.</li><li>Preview: SQL and PostgreSQL database agents spot issues, explain why they matter, and recommend fixes or carry out approved actions.</li><li>Agents work within your existing permissions and approval rules, in Database Hub and in the PostgreSQL extension for VS Code.</li></ul>
+<p class="why"><span>Why it matters</span>Database teams can get ahead of problems instead of reacting to them.</p>
+<div class="card-foot"><span class="auds"><span class="aud">IT &amp; admins</span><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/ignite26/databases" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="azure-14" data-aud="dev">
+<div class="card-top"><span class="cnum">1.14</span><span class="pills"><span class="pill pre">Preview</span></span></div>
+<h4>Microsoft Fabric HorizonDB</h4>
+<p class="tldr">Serverless PostgreSQL inside Microsoft Fabric, built for apps and agents.</p>
+<ul class="pts"><li>Databases are ready in seconds, scale automatically and pause when idle, which suits the short-lived databases agents create.</li><li>Acts as a managed backend for Fabric apps, with data APIs, authentication, storage and hosting.</li><li>One query can combine live data with OneLake analytics. Mirroring and reverse ETL are included.</li></ul>
+<p class="why"><span>Why it matters</span>Brings operational apps, analytics and AI together in one place.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/AAncdv4" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="azure-15" data-aud="dev it">
+<div class="card-top"><span class="cnum">1.15</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>PostgreSQL on Azure</h4>
+<p class="tldr">Simpler migrations and more choice for performance, security and resilience.</p>
+<ul class="pts"><li>Preview: Azure Database Migration Service can move Oracle to PostgreSQL, and Azure Database for PostgreSQL to HorizonDB.</li><li>GA: Cobalt 200 (Arm64) compute, AMD v6 confidential compute, immutable point-in-time restore, and conversion to zone-redundant high availability.</li><li>Preview: Burstable v2 compute and snapshot-based Azure Backup for larger databases.</li></ul>
+<p class="why"><span>Why it matters</span>Gives you a Microsoft-supported path off Oracle and a stronger home for regulated PostgreSQL workloads.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Developers &amp; data</span><span class="aud">IT &amp; admins</span></span><a class="more" href="https://aka.ms/Ignite26/Postgres_on_Azure" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="azure-16" data-aud="biz dev">
+<div class="card-top"><span class="cnum">1.16</span><span class="pills"><span class="pill pre">Preview</span></span></div>
+<h4>Power BI custom data apps</h4>
+<p class="tldr">Turn a Power BI report into an app where people can take action, not just view data.</p>
+<ul class="pts"><li>Power BI Pro customers start from a trusted semantic model and describe the app they want in plain language, in Power BI Desktop.</li><li>Users can enter information, update records and write changes back to the source data.</li><li>Includes Fabric Database capabilities for apps that need both analytics and transactions.</li></ul>
+<p class="why"><span>Why it matters</span>Prototype planning, approvals, tracking, and data collection in Power BI. Confirm preview eligibility and underlying backend charges before production use.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Business leaders</span><span class="aud">Developers &amp; data</span></span><a class="more" href="https://community.fabric.microsoft.com/blog/fbc_fabricupdatesblogs/microsoft-fabric-is-fueling-frontier-transformation/5422989" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="azure-17" data-aud="dev biz">
+<div class="card-top"><span class="cnum">1.17</span><span class="pills"><span class="pill ga">Generally available</span></span></div>
+<h4>Rayfin and Fabric apps</h4>
+<p class="tldr">Build complete, governed business apps on trusted enterprise data. Now generally available.</p>
+<ul class="pts"><li>Microsoft reports more than 100,000 apps built with Rayfin since preview.</li><li>Choose Microsoft SQL database or the separately previewed Fabric HorizonDB backend; reuse supported semantic models, warehouses, lakehouses, and access controls.</li><li>Govern apps centrally in the OneLake Governance hub. Fabric apps also connect with Copilot through Copilot Managed Runtime and with Power BI.</li></ul>
+<p class="why"><span>Why it matters</span>Reduces backend assembly work. You still own app authorization, data access, operational readiness, and the suitability of any preview dependency.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Developers &amp; data</span><span class="aud">Business leaders</span></span><a class="more" href="https://aka.ms/FabricApps-Ignite26" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article></div></div>
+<div class="ch-end"><a href="#top" class="backtop">↑ Back to top</a><a href="#ch-foundry" class="next">Next: Microsoft Foundry →</a></div>
+</div></section><section class="chapter c-foundry" id="ch-foundry">
+<div class="wrap">
+<header class="ch-head">
+<div class="ch-num" aria-hidden="true">02</div>
+<div class="ch-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/><path d="M3 17.5l9 5 9-5" opacity=".55"/></svg></div>
+<div class="ch-titles"><p class="kicker">Chapter 2 · 3 announcements · 3 with GA features</p>
+<h2>Microsoft Foundry</h2><p class="ch-tag">Agents that keep getting better</p></div>
+</header>
+<div class="ch-intro-grid"><p class="ch-intro">Foundry now uses live production signals to suggest and test improvements to every layer of an AI system: an agent&#x27;s setup, its evaluations and even the model behind it. New Microsoft AI (MAI) and partner models expand the choice.</p>
+<aside class="first-step"><b>Good first step</b><span>Define what a good result looks like for one agent, run multi-turn evaluations, then let agent optimizer propose improvements.</span></aside></div>
+<nav class="ch-subnav" aria-label="Sections in Microsoft Foundry"><span>In this chapter</span><a href="#foundry-s1">Continuous improvement <small>1</small></a><a href="#foundry-s2">New models <small>2</small></a></nav><div class="sub" id="foundry-s1"><h3 class="sub-title"><span>Continuous improvement</span><small>1 announcement</small></h3><div class="cards"><article class="card" id="foundry-1" data-aud="dev">
+<div class="card-top"><span class="cnum">2.1</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>Continuous improvement in Foundry</h4>
+<p class="tldr">A learning loop that turns what happens in production into better agents.</p>
+<ul class="pts"><li>GA: multi-turn evaluation of whole conversations, and an insights feature that groups recurring failures such as hallucinations and token spikes.</li><li>GA: agent optimizer proposes changes and tests them against your evaluations. You choose what ships.</li><li>Preview: human annotation for golden datasets, Managed Training, and Programmed Training (fine-tuning and reinforcement learning on open-weight models).</li></ul>
+<p class="why"><span>Why it matters</span>Each improvement you deploy becomes the new baseline. You can raise quality or cut cost and still catch regressions.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/miq-ignitelaunchblog" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article></div></div><div class="sub" id="foundry-s2"><h3 class="sub-title"><span>New models</span><small>2 announcements</small></h3><div class="cards"><article class="card" id="foundry-2" data-aud="dev">
+<div class="card-top"><span class="cnum">2.2</span><span class="pills"><span class="pill ga">Generally available</span></span></div>
+<h4>Microsoft-Decision-1.1</h4>
+<p class="tldr">A fast, low-cost model built for decisions such as routing, classification, prioritization and verification.</p>
+<ul class="pts"><li>Picks from the actions you allow and returns calibrated confidence scores, so your app can hold back when it&#x27;s unsure.</li><li>Scores 68 on the Artificial Analysis Decision Index v2.1 (6 points higher than v1) and runs more than twice as fast at the same price. It now accepts images.</li><li>Available in Foundry, OpenRouter and Vercel. It already routes requests in Copilot and powers Auto in Cowork.</li></ul>
+<p class="why"><span>Why it matters</span>Can handle uncertain routing and classification while reserving larger models for complex reasoning. Keep deterministic policy and authorization checks outside model decisions.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/decision-model-ga" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="foundry-3" data-aud="dev">
+<div class="card-top"><span class="cnum">2.3</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>New models in Foundry: code, images, security &amp; routing</h4>
+<p class="tldr">More first-party MAI models and over 11,000 options, so you can match the right model to each task.</p>
+<ul class="pts"><li>Code: MAI-Code-2 and MAI-Code-2-Flash are GA in GitHub (Flash is in private preview in Foundry). Images: MAI-Image-2.7 and 2.7-Flash are in preview.</li><li>Security: MAI-Cyber-2-Flash is in preview inside Codename MDASH. Routing: the model router now covers the top 50 Foundry models and works with AI Gateway.</li><li>Preview: video models from fal (Kling, LTX, MiniMax) and Baseten on Foundry for fast open-model inference.</li></ul>
+<p class="why"><span>Why it matters</span>Tune each workload for quality, cost and speed without managing models by hand.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/foundrymodelsignite2026" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article></div></div>
+<div class="ch-end"><a href="#top" class="backtop">↑ Back to top</a><a href="#ch-github" class="next">Next: GitHub →</a></div>
+</div></section><section class="chapter c-github" id="ch-github">
+<div class="wrap">
+<header class="ch-head">
+<div class="ch-num" aria-hidden="true">03</div>
+<div class="ch-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></div>
+<div class="ch-titles"><p class="kicker">Chapter 3 · 1 announcement · 1 with GA features</p>
+<h2>GitHub</h2><p class="ch-tag">Build agents, ship better code</p></div>
+</header>
+<div class="ch-intro-grid"><p class="ch-intro">New Copilot capabilities help developers build agents, work across tools and ship better code. The main announcement is Microsoft Copilot SDK 2.0, a production-proven harness for secure agents that scale.</p>
+<aside class="first-step"><b>Good first step</b><span>If you&#x27;re embedding agents in your own product, evaluate Copilot SDK 2.0 for multi-tenant scale.</span></aside></div>
+<div class="also"><b>Also highlighted in this chapter</b><ul><li>GitHub Copilot app: takes Azure DevOps repos from clone to merge and runs tests in a real, signed-in browser.</li><li>Copilot code review: local reviews in the CLI and app, secret detection, review effort that adapts to the change, context from other repositories, and repository insights.</li></ul></div><div class="sub" id="github-s1"><h3 class="sub-title"><span>GitHub</span><small>1 announcement</small></h3><div class="cards"><article class="card" id="github-1" data-aud="dev">
+<div class="card-top"><span class="cnum">3.1</span><span class="pills"><span class="pill ga">Generally available</span></span></div>
+<h4>Microsoft Copilot SDK 2.0</h4>
+<p class="tldr">The production-proven Copilot agent harness, now available for your own apps.</p>
+<ul class="pts"><li>Rebuilt on a native Rust runtime, so you can embed agents directly in your applications.</li><li>Built for multi-tenant, high-scale apps that need enterprise-grade security.</li><li>Uses the same harness that runs in production across Microsoft and GitHub, in six programming languages.</li></ul>
+<p class="why"><span>Why it matters</span>Ship agents at scale without building the plumbing yourself.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/copilot-sdk/blog-2.0" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article></div></div>
+<div class="ch-end"><a href="#top" class="backtop">↑ Back to top</a><a href="#ch-copilot" class="next">Next: Microsoft Copilot →</a></div>
+</div></section><section class="chapter c-copilot" id="ch-copilot">
+<div class="wrap">
+<header class="ch-head">
+<div class="ch-num" aria-hidden="true">04</div>
+<div class="ch-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l2 5.6 5.6 2-5.6 2-2 5.6-2-5.6-5.6-2 5.6-2z"/><path d="M19 15.5l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9z"/></svg></div>
+<div class="ch-titles"><p class="kicker">Chapter 4 · 10 announcements · 5 with GA features</p>
+<h2>Microsoft Copilot</h2><p class="ch-tag">The new Copilot for work</p></div>
+</header>
+<div class="ch-intro-grid"><p class="ch-intro">The new Copilot brings everything together: Home as the starting point for Chat and Cowork, Auto to pick the right model and effort, Word, Excel and PowerPoint inside Copilot, Code for building apps, Autopilot as a persistent personal agent, and Copilot Managed Runtime to host what you build.</p>
+<aside class="first-step"><b>Good first step</b><span>Confirm Frontier eligibility with your admin, then choose one available experience for a bounded pilot. Today is beginning a private-preview rollout, not broadly available to every Frontier customer.</span></aside></div>
+<nav class="ch-subnav" aria-label="Sections in Microsoft Copilot"><span>In this chapter</span><a href="#copilot-s1">The new Copilot experience <small>4</small></a><a href="#copilot-s2">Build &amp; run apps <small>3</small></a><a href="#copilot-s3">Business apps &amp; partners <small>3</small></a></nav><div class="sub" id="copilot-s1"><h3 class="sub-title"><span>The new Copilot experience</span><small>4 announcements</small></h3><div class="cards"><article class="card" id="copilot-1" data-aud="biz">
+<div class="card-top"><span class="cnum">4.1</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span><span class="pill fr">Frontier program</span></span></div>
+<h4>Home, Auto &amp; Office in Copilot</h4>
+<p class="tldr">One place to chat, delegate and create, with Word, Excel and PowerPoint built in.</p>
+<ul class="pts"><li>Home brings Chat and Cowork together and is rolling out worldwide. Auto suggests moving a complex task to Cowork and brings your context along (GA).</li><li>Office in Copilot is GA: the full Word, Excel and PowerPoint inside the Copilot app. Files save to OneDrive with your permissions, sensitivity labels and compliance controls.</li><li>Frontier: Auto in Cowork uses Decision-1.1 to choose how much effort each part of a task needs. Cowork suggests tasks and can call your company&#x27;s declarative agents (private preview).</li></ul>
+<p class="why"><span>Why it matters</span>Go from a question to a finished document without switching apps or losing context.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Business leaders</span></span><a class="more" href="https://aka.ms/MicrosoftIgnite26Blog" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="copilot-2" data-aud="biz it">
+<div class="card-top"><span class="cnum">4.2</span><span class="pills"><span class="pill fr">Frontier program</span></span></div>
+<h4>Autopilot</h4>
+<p class="tldr">A long-running personal agent that keeps work moving without needing a new prompt at every step.</p>
+<ul class="pts"><li>Lives in your tenant with its own identity, memory and tools. It follows up on threads, runs recurring work and continues projects.</li><li>Colleagues can @mention your Autopilot in Teams channels and group chats.</li><li>Every action is tied to its own agent ID, safety-checked and visible to admins.</li></ul>
+<p class="why"><span>Why it matters</span>Hand off the recurring follow-up work that fills your week. It&#x27;s rolling out through the Frontier program.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Business leaders</span><span class="aud">IT &amp; admins</span></span><a class="more" href="https://aka.ms/MicrosoftIgnite26Blog" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="copilot-3" data-aud="biz">
+<div class="card-top"><span class="cnum">4.3</span><span class="pills"><span class="pill fr">Frontier program</span></span></div>
+<h4>Copilot Workspaces</h4>
+<p class="tldr">A shared space where a team, its work and Copilot come together.</p>
+<ul class="pts"><li>Workspaces is the evolution of Copilot Notebooks, available through Frontier. Work IQ suggests relevant workspaces to get started.</li><li>Copilot shows what changed, what&#x27;s still open and what needs action, so everyone catches up quickly.</li><li>Coming soon: bring your Autopilot into a workspace so people and agents work side by side.</li></ul>
+<p class="why"><span>Why it matters</span>The team works from the same context, so shared work keeps moving.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Business leaders</span></span><a class="more" href="https://aka.ms/MicrosoftIgnite26Blog" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="copilot-4" data-aud="biz">
+<div class="card-top"><span class="cnum">4.4</span><span class="pills"><span class="pill pre">Preview</span><span class="pill fr">Frontier program</span></span></div>
+<h4>Today</h4>
+<p class="tldr">A personal daily view of what matters, with next steps already prepared.</p>
+<ul class="pts"><li>Pulls from email, calendar, chats and meetings, in the Copilot app and Outlook.</li><li>Today Brief is a morning briefing included with a Microsoft 365 Copilot license.</li><li>Today Feed refreshes through the day (uses Copilot credits) and drafts emails, messages and schedule changes for you to approve.</li></ul>
+<p class="why"><span>Why it matters</span>Prepares priorities and next steps for review. Private-preview rollout through Frontier is beginning; availability is limited.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Business leaders</span></span><a class="more" href="https://aka.ms/MicrosoftIgnite26Blog" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article></div></div><div class="sub" id="copilot-s2"><h3 class="sub-title"><span>Build &amp; run apps</span><small>3 announcements</small></h3><div class="cards"><article class="card" id="copilot-5" data-aud="biz it">
+<div class="card-top"><span class="cnum">4.5</span><span class="pills"><span class="pill fr">Frontier program</span><span class="pill soon">Coming soon</span></span></div>
+<h4>Copilot Code</h4>
+<p class="tldr">Anyone can build a dashboard, tracker or app by describing it.</p>
+<ul class="pts"><li>Uses the same agentic technology as GitHub Copilot. Cloud projects run in a secure sandbox inside your tenant.</li><li>Share apps internally and use them on iOS and Android. A local sandbox on Windows limits what Code can read, write and reach (macOS is coming soon).</li><li>Publish through Copilot Managed Runtime. Apps are visible and managed in the Microsoft 365 admin center.</li></ul>
+<p class="why"><span>Why it matters</span>Employees can build their own apps while IT keeps governance. Available now in Frontier, with general availability planned for December.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Business leaders</span><span class="aud">IT &amp; admins</span></span><a class="more" href="https://aka.ms/MicrosoftIgnite26Blog" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="copilot-6" data-aud="it dev">
+<div class="card-top"><span class="cnum">4.6</span><span class="pills"><span class="pill ga">Generally available</span></span></div>
+<h4>Copilot Managed Runtime</h4>
+<p class="tldr">One governed place to host and run the apps people build with AI.</p>
+<ul class="pts"><li>Hosts apps built in Copilot Code, Cowork or Copilot Studio, or with compatible third-party tools.</li><li>New: an optional Microsoft Fabric data backend with database, storage and data APIs ready to use.</li><li>New: Agents and Workflows. Build Copilot Studio agents locally, edit them in any dev tool, publish from the CLI and keep versions in GitHub.</li></ul>
+<p class="why"><span>Why it matters</span>Gives every AI-built app the same hosting, identity and governance.</p>
+<div class="card-foot"><span class="auds"><span class="aud">IT &amp; admins</span><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/CopilotManagedRuntime-Ignite-Blog" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="copilot-7" data-aud="biz it">
+<div class="card-top"><span class="cnum">4.7</span><span class="pills"><span class="pill pre">Preview</span><span class="pill fr">Frontier program</span><span class="pill soon">Coming soon</span></span></div>
+<h4>Agent 365: FinOps for AI &amp; Business Analytics</h4>
+<p class="tldr">See what AI costs, what it delivers and where to invest next.</p>
+<ul class="pts"><li>Agent 365 Cost Management in the Microsoft admin center covers Cowork, Code, GitHub Copilot CLI, Copilot Studio, Managed Runtime, Autopilot and Work IQ APIs. It includes spending policies, limits, alerts and Fabric-based chargeback (preview).</li><li>Agent 365 Business Analytics (Frontier) measures value through success rate, user satisfaction and assisted hours, and forecasts cost scenarios.</li><li>December: value insights across Microsoft and non-Microsoft agents, and the ability to delegate to business leaders.</li></ul>
+<p class="why"><span>Why it matters</span>Both IT and business leaders can see AI spending and its return in one place.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Business leaders</span><span class="aud">IT &amp; admins</span></span><a class="more" href="https://aka.ms/a365analytics" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article></div></div><div class="sub" id="copilot-s3"><h3 class="sub-title"><span>Business apps &amp; partners</span><small>3 announcements</small></h3><div class="cards"><article class="card" id="copilot-8" data-aud="biz">
+<div class="card-top"><span class="cnum">4.8</span><span class="pills"><span class="pill ga">Generally available</span></span></div>
+<h4>Dynamics 365 Sales &amp; ERP plugins</h4>
+<p class="tldr">Complete sales, finance and operations tasks inside Copilot.</p>
+<ul class="pts"><li>Sales plugin: account plans, meeting prep, pipeline priorities and deal insights against the quarterly forecast. It can also build and refresh customer-ready PowerPoint decks.</li><li>ERP apps plugin: finance and operations skills in Cowork and Excel, such as purchase requisitions, requests for quotes and purchase orders.</li></ul>
+<p class="why"><span>Why it matters</span>Sellers and finance teams switch between apps less often.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Business leaders</span></span><a class="more" href="https://aka.ms/A365AnalyticsLearn" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="copilot-9" data-aud="biz it">
+<div class="card-top"><span class="cnum">4.9</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill soon">Coming soon</span></span></div>
+<h4>Dynamics 365 Activate for ERP migration</h4>
+<p class="tldr">Agent-assisted migration from SAP ECC, and from Salesforce, to Dynamics 365.</p>
+<ul class="pts"><li>Migration from Salesforce to Dynamics 365 CRM is GA.</li><li>Rolling out over the coming weeks: SAP ECC discovery, requirements analysis, configuration and data migration.</li><li>Project teams review and approve every recommendation. The approach is built on Microsoft&#x27;s Success by Design method.</li></ul>
+<p class="why"><span>Why it matters</span>Offers a structured path as SAP ECC approaches the end of mainstream maintenance.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Business leaders</span><span class="aud">IT &amp; admins</span></span><a class="more" href="https://aka.ms/D365Ignite2026" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="copilot-10" data-aud="biz">
+<div class="card-top"><span class="cnum">4.10</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>Salesforce in Copilot, Teams &amp; Fabric</h4>
+<p class="tldr">Salesforce customer data and actions inside the Microsoft tools people use every day.</p>
+<ul class="pts"><li>Salesforce in Copilot (preview): more than 38 prebuilt sales skills through secure Salesforce MCP access, with added context from Work IQ.</li><li>Sales Cloud in Teams (pilot): pipeline, quota progress, deal alerts and briefings inside Teams.</li><li>Data Federation (GA): query Fabric OneLake data from Salesforce Data 360 without copying it.</li></ul>
+<p class="why"><span>Why it matters</span>Sales work can use company data without moving that data out of Fabric.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Business leaders</span></span><a class="more" href="https://aka.ms/AA1457n5" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article></div></div>
+<div class="ch-end"><a href="#top" class="backtop">↑ Back to top</a><a href="#ch-edge" class="next">Next: Microsoft Edge →</a></div>
+</div></section><section class="chapter c-edge" id="ch-edge">
+<div class="wrap">
+<header class="ch-head">
+<div class="ch-num" aria-hidden="true">05</div>
+<div class="ch-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18"/></svg></div>
+<div class="ch-titles"><p class="kicker">Chapter 5 · 1 announcement · 1 with GA features</p>
+<h2>Microsoft Edge</h2><p class="ch-tag">The secure browser for the agent era</p></div>
+</header>
+<div class="ch-intro-grid"><p class="ch-intro">About 85% of work happens in the browser, so it&#x27;s a key endpoint to manage and secure. Edge for Business, now the most-used enterprise browser by Microsoft&#x27;s measure, adds agentic browsing built for enterprise governance and stronger baseline security.</p>
+<aside class="first-step"><b>Good first step</b><span>Check extension safety (GA) to see the risk level of the extensions in your organization today.</span></aside></div>
+<div class="sub" id="edge-s1"><h3 class="sub-title"><span>Edge for Business</span><small>1 announcement</small></h3><div class="cards"><article class="card" id="edge-1" data-aud="it sec">
+<div class="card-top"><span class="cnum">5.1</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>Edge for Business: governed AI workflows &amp; stronger security</h4>
+<p class="tldr">Agentic browsing built for enterprise governance.</p>
+<ul class="pts"><li>Skills recorder (preview): record a browser workflow once and turn it into a reusable Copilot Cowork skill.</li><li>Managed agent browsing (preview): agents work in their own clearly marked Edge window, each with its own Entra agent identity.</li><li>Security: extension risk scores (GA), plus extension leak control, a native Sentinel connector and VPN-free Global Secure Access (all in preview).</li></ul>
+<p class="why"><span>Why it matters</span>Both people and agents stay governed in the place where most work happens.</p>
+<div class="card-foot"><span class="auds"><span class="aud">IT &amp; admins</span><span class="aud">Security</span></span><a class="more" href="https://aka.ms/EdgeIgnite26" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article></div></div>
+<div class="ch-end"><a href="#top" class="backtop">↑ Back to top</a><a href="#ch-iq" class="next">Next: Microsoft IQ →</a></div>
+</div></section><section class="chapter c-iq" id="ch-iq">
+<div class="wrap">
+<header class="ch-head">
+<div class="ch-num" aria-hidden="true">06</div>
+<div class="ch-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2.6"/><circle cx="4.8" cy="5.5" r="1.9"/><circle cx="19.2" cy="5.5" r="1.9"/><circle cx="4.8" cy="18.5" r="1.9"/><circle cx="19.2" cy="18.5" r="1.9"/><path d="M6.3 6.9l3.7 3.3M17.7 6.9l-3.7 3.3M6.3 17.1l3.7-3.3M17.7 17.1l-3.7-3.3"/></svg></div>
+<div class="ch-titles"><p class="kicker">Chapter 6 · 7 announcements · 7 with GA features</p>
+<h2>Microsoft IQ</h2><p class="ch-tag">Your context is your competitive edge</p></div>
+</header>
+<div class="ch-intro-grid"><p class="ch-intro">Microsoft IQ is now a full enterprise context management platform. It captures your organization&#x27;s data, knowledge and proven ways of working and reuses them in every app and agent through Work IQ, Fabric IQ, Foundry IQ and Web IQ, with business plugins and continuous improvement.</p>
+<aside class="first-step"><b>Good first step</b><span>Map which context sources (Work, Fabric, Foundry or Web IQ) your top three agent scenarios really need.</span></aside></div>
+<nav class="ch-subnav" aria-label="Sections in Microsoft IQ"><span>In this chapter</span><a href="#iq-s1">The platform <small>2</small></a><a href="#iq-s2">The IQ family <small>5</small></a></nav><div class="sub" id="iq-s1"><h3 class="sub-title"><span>The platform</span><small>2 announcements</small></h3><div class="cards"><article class="card" id="iq-1" data-aud="biz dev">
+<div class="card-top"><span class="cnum">6.1</span><span class="pills"><span class="pill ga">Generally available</span></span></div>
+<h4>Microsoft IQ platform</h4>
+<p class="tldr">Capture your organization&#x27;s intelligence once and reuse it in every app and agent.</p>
+<ul class="pts"><li>Enterprise context management connects agents to Work IQ, Fabric IQ, Foundry IQ and Web IQ, plus reusable plugins, skills, tools and agents.</li><li>Continuous improvement in Foundry connects evaluations and production insights to agent optimization and model training; individual training capabilities remain preview.</li><li>No new Microsoft IQ SKU or subscription. Underlying products, usage, and Agent 365 governance retain their own licensing and charges.</li></ul>
+<p class="why"><span>Why it matters</span>Everyone has access to the same frontier models. What sets you apart is your own context.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Business leaders</span><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/miq-ignitelaunchblog" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="iq-2" data-aud="biz dev">
+<div class="card-top"><span class="cnum">6.2</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill fr">Frontier program</span></span></div>
+<h4>Enterprise context management &amp; business plugins</h4>
+<p class="tldr">Package your experts&#x27; know-how so every agent applies it the same way.</p>
+<ul class="pts"><li>Context capabilities are GA across Copilot, GitHub Copilot, Foundry and any agent harness through MCP.</li><li>Reusable building blocks (plugins, skills, tools and agents) are GA in Copilot and through Microsoft IQ APIs.</li><li>Business plugins (Frontier) are curated by domain experts, pass guidance down through your organization&#x27;s structure, and are governed with sensitivity labels and change auditing.</li></ul>
+<p class="why"><span>Why it matters</span>Better results and lower token costs as you scale.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Business leaders</span><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/miq-ignitelaunchblog" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article></div></div><div class="sub" id="iq-s2"><h3 class="sub-title"><span>The IQ family</span><small>5 announcements</small></h3><div class="cards"><article class="card" id="iq-3" data-aud="dev">
+<div class="card-top"><span class="cnum">6.3</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>Foundry IQ</h4>
+<p class="tldr">Put unstructured content to work for search apps and agents.</p>
+<ul class="pts"><li>Preview: knowledge graphs that link people, products and topics across documents, for example from a regulation to suppliers to the products affected.</li><li>Preview: the Microsoft-Retriever-1 retrieval model, and a Foundry IQ resource in every new Foundry project.</li><li>GA: a SharePoint indexed knowledge source that respects source permissions.</li></ul>
+<p class="why"><span>Why it matters</span>Answers stay grounded and cited, and can follow links between your documents.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/miq-ignitelaunchblog" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="iq-4" data-aud="biz dev">
+<div class="card-top"><span class="cnum">6.4</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>Fabric IQ</h4>
+<p class="tldr">Trusted business metrics, so every AI assistant gives the same numbers.</p>
+<ul class="pts"><li>GA: Fabric IQ in Microsoft Copilot and Fabric apps, and Power BI semantic models in Copilot.</li><li>Preview: Fabric IQ in Excel, with live PivotTables connected to Fabric, and ontologies in GitHub Copilot.</li><li>Preview: Fabric IQ connectors for ChatGPT and Claude.</li></ul>
+<p class="why"><span>Why it matters</span>The revenue figure an assistant gives you matches the one in your quarterly business review.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Business leaders</span><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/miq-ignitelaunchblog" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="iq-5" data-aud="dev">
+<div class="card-top"><span class="cnum">6.5</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>Web IQ</h4>
+<p class="tldr">Up-to-date knowledge from the web for agents, now GA for all Azure customers at a lower price.</p>
+<ul class="pts"><li>GA: Auto mode covers web, images, video, news, places and weather in one call. Auto Advanced handles harder questions, and Scopes let you include or exclude sites.</li><li>GA: Places (207.5 million real-world locations and businesses), Weather, and health-aware ranking that puts credible medical sources first.</li><li>Private preview: Web IQ Commerce, with structured data on more than 40 billion product listings.</li></ul>
+<p class="why"><span>Why it matters</span>Agents can know more than their model and your data, and you control the sources.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/webiqnews" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="iq-6" data-aud="biz it dev">
+<div class="card-top"><span class="cnum">6.6</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span><span class="pill soon">Coming soon</span></span></div>
+<h4>Work IQ</h4>
+<p class="tldr">Richer work context, more ways to act and stronger controls for Copilot and agents.</p>
+<ul class="pts"><li>GA: permission-aware retrieval and memory across Microsoft 365 and business apps. Agents can create and edit content and run longer workflows.</li><li>Preview: a listen capability lets agents respond to events, plus finer-grained policies and human approval options.</li><li>Expanding to third-party AI platforms, with OpenAI and Anthropic integrations planned.</li></ul>
+<p class="why"><span>Why it matters</span>Agents understand your work, act on it and stay within enterprise controls.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Business leaders</span><span class="aud">IT &amp; admins</span><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/miq-ignitelaunchblog" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="iq-7" data-aud="dev">
+<div class="card-top"><span class="cnum">6.7</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>Continuous improvement in Microsoft IQ</h4>
+<p class="tldr">One path from automated agent tuning to fully custom model training.</p>
+<ul class="pts"><li>Define success, measure quality, speed and cost for each successful outcome, and approve every change before it&#x27;s deployed.</li><li>Agent Optimizer ranks improved configurations. Managed Training and Programmed Training (preview) improve the model itself.</li><li>What works becomes reusable across agents through enterprise context management.</li></ul>
+<p class="why"><span>Why it matters</span>Apps and agents keep improving after they reach production.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/miq-ignitelaunchblog" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article></div></div>
+<div class="ch-end"><a href="#top" class="backtop">↑ Back to top</a><a href="#ch-security" class="next">Next: Security →</a></div>
+</div></section><section class="chapter c-security" id="ch-security">
+<div class="wrap">
+<header class="ch-head">
+<div class="ch-num" aria-hidden="true">07</div>
+<div class="ch-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8l8 3v6.1c0 4.6-3.4 8.4-8 9.3-4.6-.9-8-4.7-8-9.3V5.8l8-3z"/><path d="M8.8 12.2l2.2 2.2 4.3-4.4"/></svg></div>
+<div class="ch-titles"><p class="kicker">Chapter 7 · 14 announcements · 6 with GA features</p>
+<h2>Security</h2><p class="ch-tag">Trust at every layer</p></div>
+</header>
+<div class="ch-intro-grid"><p class="ch-intro">As agents move from answering questions to taking action, security is the foundation of trust. Microsoft Perception is now generally available, and Agent 365, Entra, Intune, Defender and Purview add new ways to see and control agents, their identities, tools, access and data.</p>
+<aside class="first-step"><b>Good first step</b><span>Take inventory of your agents in Agent 365, then turn on Defender runtime protection for local AI coding agents.</span></aside></div>
+<nav class="ch-subnav" aria-label="Sections in Security"><span>In this chapter</span><a href="#security-s1">Agent 365 <small>4</small></a><a href="#security-s2">Codename MDASH <small>1</small></a><a href="#security-s3">Defender <small>4</small></a><a href="#security-s4">Entra <small>2</small></a><a href="#security-s5">Intune <small>1</small></a><a href="#security-s6">Perception <small>1</small></a><a href="#security-s7">Purview <small>1</small></a></nav><div class="sub" id="security-s1"><h3 class="sub-title"><span>Agent 365</span><small>4 announcements</small></h3><div class="cards"><article class="card" id="security-1" data-aud="sec">
+<div class="card-top"><span class="cnum">7.1</span><span class="pills"><span class="pill pre">Preview</span></span></div>
+<h4>Dynamic Agent Risk</h4>
+<p class="tldr">A preview assessment that correlates supported agent signals into low, medium, or high risk.</p>
+<ul class="pts"><li>Combines identity, access, data, endpoint, cloud and network signals with security posture and potential impact (blast radius).</li><li>Updates as agents act, are targeted or receive new code or models. Visible across the admin center, Defender, Entra, Intune and Purview.</li><li>Signals from partners Check Point, Cyera, Darktrace and Zenity come in through Sentinel.</li></ul>
+<p class="why"><span>Why it matters</span>Helps correlate agent risk across tools. Coverage depends on available signals, supported agents, and configured integrations.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Security</span></span><a class="more" href="https://aka.ms/secureAIannounce" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="security-2" data-aud="it">
+<div class="card-top"><span class="cnum">7.2</span><span class="pills"><span class="pill ga">Generally available</span></span></div>
+<h4>Agent insights by default for Microsoft agents</h4>
+<p class="tldr">Basic usage insights for Microsoft agents, with no Agent 365 license needed.</p>
+<ul class="pts"><li>See the agent overview, active users, sessions, exception rate and run time in the Microsoft admin center.</li><li>Viva Insights drops the Agent 365 license requirement for agent insights. At least 50 Copilot licenses are still required.</li><li>Full management, security and governance still require an Agent 365 or ME7 license.</li></ul>
+<p class="why"><span>Why it matters</span>Gives you a baseline view so you can decide where more governance is needed.</p>
+<div class="card-foot"><span class="auds"><span class="aud">IT &amp; admins</span></span><a class="more" href="https://news.microsoft.com/events/ignite/2026/book-of-news/" target="_blank" rel="noopener">Official Book of News ↗</a></div>
+</article><article class="card" id="security-3" data-aud="it sec">
+<div class="card-top"><span class="cnum">7.3</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span><span class="pill soon">Coming soon</span></span></div>
+<h4>Agent 365 governance for agents &amp; tools</h4>
+<p class="tldr">Find the agents that need attention and govern their tools, plugins and MCP servers.</p>
+<ul class="pts"><li>GA: manage which plugins and skills are available in Copilot and Cowork, centrally from the Microsoft 365 admin center.</li><li>Preview: task classification in Agent Map, MCP server governance (Azure AI Gateway and LiteLLM), and controls for local and shadow agents.</li><li>An action center for inactive and ownerless agents enters private preview in December.</li></ul>
+<p class="why"><span>Why it matters</span>Keeps your agent estate organized and under control as it grows.</p>
+<div class="card-foot"><span class="auds"><span class="aud">IT &amp; admins</span><span class="aud">Security</span></span><a class="more" href="https://news.microsoft.com/events/ignite/2026/book-of-news/" target="_blank" rel="noopener">Official Book of News ↗</a></div>
+</article><article class="card" id="security-4" data-aud="biz">
+<div class="card-top"><span class="cnum">7.4</span><span class="pills"><span class="pill fr">Frontier program</span></span></div>
+<h4>Agent 365 business value</h4>
+<p class="tldr">Reporting on cost and results across Microsoft and third-party agents.</p>
+<ul class="pts"><li>Agent 365 Business Analytics is available in Frontier preview. Microsoft-service insights require at least one Microsoft 365 Copilot license in the tenant; non-Microsoft-service insights require Agent 365 licensing.</li><li>The Book of News also schedules expanded cross-agent value insights and delegation for December 2026. Do not treat every announced reporting capability as available today.</li></ul>
+<p class="why"><span>Why it matters</span>Puts AI investment in terms of business impact. <a class="see" href="#copilot-7">See Agent 365: FinOps for AI &amp; Business Analytics →</a></p>
+<div class="card-foot"><span class="auds"><span class="aud">Business leaders</span></span><a class="more" href="https://aka.ms/a365analytics" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article></div></div><div class="sub" id="security-s2"><h3 class="sub-title"><span>Codename MDASH</span><small>1 announcement</small></h3><div class="cards"><article class="card" id="security-5" data-aud="sec dev">
+<div class="card-top"><span class="cnum">7.5</span><span class="pills"><span class="pill pre">Preview</span></span></div>
+<h4>Codename MDASH: agentic code security</h4>
+<p class="tldr">A code-security system that uses more than 100 AI agents to find vulnerabilities.</p>
+<ul class="pts"><li>Map the attack surface, scan code, validate through agent debate, and deduplicate; reproduce findings with triggering inputs where possible, not in every case.</li><li>New: quality improvements, repository sharding for large codebases, and scan progress visibility. Preview access is limited to eligible organizations.</li><li>Supports more of the MAI Cyber model family; MAI-Cyber-2 use is planned after evaluation is complete.</li></ul>
+<p class="why"><span>Why it matters</span>Security and engineering teams work from confirmed findings instead of noise.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Security</span><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/perceptionignite" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article></div></div><div class="sub" id="security-s3"><h3 class="sub-title"><span>Defender</span><small>4 announcements</small></h3><div class="cards"><article class="card" id="security-6" data-aud="sec">
+<div class="card-top"><span class="cnum">7.6</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>Integrated SOC &amp; vulnerability shielding</h4>
+<p class="tldr">SIEM and threat protection become one foundation for the agentic security operations center.</p>
+<ul class="pts"><li>Core Integrated Security Operations Center capabilities are GA. Full SIEM capabilities and 90 days of included Defender data retention are in preview.</li><li>Vulnerability shielding (preview) automatically applies targeted, temporary controls to vulnerable systems during an active attack.</li></ul>
+<p class="why"><span>Why it matters</span>Gives defenders time to patch while attackers are blocked.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Security</span></span><a class="more" href="https://news.microsoft.com/events/ignite/2026/book-of-news/" target="_blank" rel="noopener">Official Book of News ↗</a></div>
+</article><article class="card" id="security-7" data-aud="sec it">
+<div class="card-top"><span class="cnum">7.7</span><span class="pills"><span class="pill ga">Generally available</span></span></div>
+<h4>Runtime protection for local AI agents</h4>
+<p class="tldr">Helps detect and block malicious instructions on supported Windows AI agent surfaces.</p>
+<ul class="pts"><li>Agent-native protection for Claude Code, the GitHub Copilot CLI and app, Claude Desktop (Code) and the VS Code extensions.</li><li>Network-based protection for Open Claw, Ollama Desktop and the ChatGPT desktop apps.</li><li>Choose Audit or Block mode in Defender or Intune. Available to Defender for Endpoint P2 customers.</li></ul>
+<p class="why"><span>Why it matters</span>Adds runtime defense, not a guarantee against prompt injection. Audit mode observes; Block mode enforces configured protection. Keep least-privilege tools and review sensitive actions.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Security</span><span class="aud">IT &amp; admins</span></span><a class="more" href="https://news.microsoft.com/events/ignite/2026/book-of-news/" target="_blank" rel="noopener">Official Book of News ↗</a></div>
+</article><article class="card" id="security-8" data-aud="sec">
+<div class="card-top"><span class="cnum">7.8</span><span class="pills"><span class="pill pre">Preview</span></span></div>
+<h4>Zero-day &amp; emerging threat intelligence</h4>
+<p class="tldr">Spot the most urgent threats sooner and understand them faster.</p>
+<ul class="pts"><li>Clear labels, a zero-day widget and a latest-threats view, filtered by industry and region.</li><li>Email alerts for new research on zero-day and emerging threats.</li><li>Start the &#x27;Protect against a threat&#x27; playbook in Perception directly from an article.</li></ul>
+<p class="why"><span>Why it matters</span>One clear, timely picture replaces scattered reports.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Security</span></span><a class="more" href="https://news.microsoft.com/events/ignite/2026/book-of-news/" target="_blank" rel="noopener">Official Book of News ↗</a></div>
+</article><article class="card" id="security-9" data-aud="it sec">
+<div class="card-top"><span class="cnum">7.9</span><span class="pills"><span class="pill soon">Coming soon</span></span></div>
+<h4>On-premises security initiative</h4>
+<p class="tldr">Reduce risk on Exchange Server, SharePoint Server and Skype for Business Server.</p>
+<ul class="pts"><li>Guidance is coming to Secure Now. On-Premises Baseline Security Mode builds Microsoft&#x27;s recommended settings into supported servers.</li><li>The focus is on faster security updates, safer configurations and temporary protections until permanent fixes ship.</li><li>Some protections are available today. More will roll out over time.</li></ul>
+<p class="why"><span>Why it matters</span>Helps you shrink your on-premises footprint and harden what has to stay.</p>
+<div class="card-foot"><span class="auds"><span class="aud">IT &amp; admins</span><span class="aud">Security</span></span><a class="more" href="https://aka.ms/OnpremSecInitiativeBlog" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article></div></div><div class="sub" id="security-s4"><h3 class="sub-title"><span>Entra</span><small>2 announcements</small></h3><div class="cards"><article class="card" id="security-10" data-aud="sec it">
+<div class="card-top"><span class="cnum">7.10</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>Microsoft Entra for the agentic era</h4>
+<p class="tldr">Identity and access controls for every interaction, by people and by agents.</p>
+<ul class="pts"><li>Preview: Agent IDs are assigned automatically to discovered local agents (GitHub Copilot CLI, Claude Code) and to Autopilot agents.</li><li>GA: Microsoft MCP Server for Enterprise, and agentic traffic acquisition in Global Secure Access.</li><li>Preview: MCP Firewall, Conditional Access policy plans, high-assurance credentials, Entra Backup and Recovery Premium, cross-tenant configuration management, and Privileged Identity Management upgrades.</li></ul>
+<p class="why"><span>Why it matters</span>Separates what agents do from what people do and secures what agents can reach.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Security</span><span class="aud">IT &amp; admins</span></span><a class="more" href="https://aka.ms/ignite/entra" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="security-11" data-aud="sec it">
+<div class="card-top"><span class="cnum">7.11</span><span class="pills"><span class="pill soon">Coming soon</span></span></div>
+<h4>AI Readiness Initiatives</h4>
+<p class="tldr">Structured, measurable plans to close security gaps, with agents doing much of the work.</p>
+<ul class="pts"><li>Initiatives cover patching and vulnerability management, phishing-resistant passkeys for admins, and agent discovery and governance.</li><li>Progress is measured on live tenant data and aligned with Secure Now priorities.</li><li>Arrives in Perception as a preview in January.</li></ul>
+<p class="why"><span>Why it matters</span>Gives you evidence that your exposure is actually going down.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Security</span><span class="aud">IT &amp; admins</span></span><a class="more" href="https://aka.ms/exposurenewsignite" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article></div></div><div class="sub" id="security-s5"><h3 class="sub-title"><span>Intune</span><small>1 announcement</small></h3><div class="cards"><article class="card" id="security-12" data-aud="it sec">
+<div class="card-top"><span class="cnum">7.12</span><span class="pills"><span class="pill pre">Preview</span></span></div>
+<h4>Intune governance for local AI agents</h4>
+<p class="tldr">Find AI agents on managed devices and block unapproved ones from company data.</p>
+<ul class="pts"><li>Use Agent 365 to find agents running on devices, and mark devices with unapproved agents as noncompliant.</li><li>Conditional Access blocks those devices. Approved agents get boundaries through Microsoft Execution Containers.</li><li>Global Secure Access extends control to how local agents reach internet, SaaS and private resources.</li></ul>
+<p class="why"><span>Why it matters</span>Adopt AI agents without choosing between innovation and control.</p>
+<div class="card-foot"><span class="auds"><span class="aud">IT &amp; admins</span><span class="aud">Security</span></span><a class="more" href="https://news.microsoft.com/events/ignite/2026/book-of-news/" target="_blank" rel="noopener">Official Book of News ↗</a></div>
+</article></div></div><div class="sub" id="security-s6"><h3 class="sub-title"><span>Perception</span><small>1 announcement</small></h3><div class="cards"><article class="card" id="security-13" data-aud="sec">
+<div class="card-top"><span class="cnum">7.13</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>Microsoft Perception</h4>
+<p class="tldr">Specialized AI security agents and playbooks that find, defend and fix. Now generally available.</p>
+<ul class="pts"><li>Red, blue, and green team agents. Microsoft reports Triage Agent coverage of about 80% of alerts in a typical Defender queue; that is not an accuracy or autonomous-resolution rate.</li><li>Broader AWS, Salesforce, and Okta support varies by agent. An emerging-threat playbook recommends and tests KQL detections.</li><li>Preview: authorized web app testing and Reduce exposure risk. IT retains patch deployment control; the secure-AI-agent playbooks are private preview.</li></ul>
+<p class="why"><span>Why it matters</span>Helps defenders keep up with attacks that move at AI speed, with approvals, audit logs and a cost calculator built in.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Security</span></span><a class="more" href="https://aka.ms/perceptionignite" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article></div></div><div class="sub" id="security-s7"><h3 class="sub-title"><span>Purview</span><small>1 announcement</small></h3><div class="cards"><article class="card" id="security-14" data-aud="sec it">
+<div class="card-top"><span class="cnum">7.14</span><span class="pills"><span class="pill pre">Preview</span></span></div>
+<h4>Purview for Copilot &amp; agents</h4>
+<p class="tldr">Know what&#x27;s sensitive and keep it out of the wrong AI conversations.</p>
+<ul class="pts"><li>More precise automatic classification and labeling that stays up to date.</li><li>Data loss prevention for Copilot blocks it from referencing sensitive files even when they aren&#x27;t labeled, and now covers attachments, linked files and text in prompts.</li><li>Data security for agents running on Windows devices, applied to one agent or a group of agents.</li></ul>
+<p class="why"><span>Why it matters</span>Speeds up your Copilot rollout because sensitive data stays protected.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Security</span><span class="aud">IT &amp; admins</span></span><a class="more" href="https://aka.ms/SecureData/Blog" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article></div></div>
+<div class="ch-end"><a href="#top" class="backtop">↑ Back to top</a><a href="#ch-windows" class="next">Next: Windows →</a></div>
+</div></section><section class="chapter c-windows" id="ch-windows">
+<div class="wrap">
+<header class="ch-head">
+<div class="ch-num" aria-hidden="true">08</div>
+<div class="ch-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.2"/><rect x="13" y="3" width="8" height="8" rx="1.2"/><rect x="3" y="13" width="8" height="8" rx="1.2"/><rect x="13" y="13" width="8" height="8" rx="1.2"/></svg></div>
+<div class="ch-titles"><p class="kicker">Chapter 8 · 6 announcements · 4 with GA features</p>
+<h2>Windows</h2><p class="ch-tag">Hybrid intelligence on a secure foundation</p></div>
+</header>
+<div class="ch-intro-grid"><p class="ch-intro">Organizations want clear rules for what agents can do and more choice about where AI runs. New process container controls isolate agents on Windows devices. Hybrid intelligence comes to Windows, Windows 365 Cloud PCs and Windows Server, and Copilot on Windows gets help from on-device context.</p>
+<aside class="first-step"><b>Good first step</b><span>Work with your security vendor to adopt the Windows Endpoint Security Platform (GA) and pilot agent containment in preview.</span></aside></div>
+<div class="sub" id="windows-s1"><h3 class="sub-title"><span>Windows</span><small>6 announcements</small></h3><div class="cards"><article class="card" id="windows-1" data-aud="biz it">
+<div class="card-top"><span class="cnum">8.1</span><span class="pills"><span class="pill pre">Preview</span></span></div>
+<h4>Copilot on Windows: files, diagnostics &amp; Search</h4>
+<p class="tldr">Ask Copilot in plain language to tidy your files or troubleshoot your PC.</p>
+<ul class="pts"><li>Local file management: find, organize, move, copy or rename files by describing what you want.</li><li>Local PC diagnostics: Copilot reads Windows diagnostic information to explain problems and suggest next steps.</li><li>Copilot in the new Windows Search on the taskbar. Users opt in, and IT can manage it by policy.</li></ul>
+<p class="why"><span>Why it matters</span>Everyday help that understands what&#x27;s on the device.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Business leaders</span><span class="aud">IT &amp; admins</span></span><a class="more" href="https://aka.ms/WindowsAtIgnite2026" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="windows-2" data-aud="it">
+<div class="card-top"><span class="cnum">8.2</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span><span class="pill soon">Coming soon</span></span></div>
+<h4>Windows 365 updates</h4>
+<p class="tldr">Smoother Cloud PCs and an AI assistant for admins.</p>
+<ul class="pts"><li>GA for Windows 365: Direct Stream improvements and context-based clipboard, drive, printer, and USB redirection controls. Do not infer the same availability for Azure Virtual Desktop.</li><li>Preview: a Windows 365 admin assistant in Intune, and Windows MAM protection for the Windows App on unmanaged Windows devices accessing Cloud PCs.</li><li>Planned preview in early 2027, in select regions: with NVIDIA, up to two 4K streams at 60 fps on GPU Cloud PCs.</li></ul>
+<p class="why"><span>Why it matters</span>Evaluate a better streaming experience against your real network, device, and workload requirements; performance is not guaranteed on every connection.</p>
+<div class="card-foot"><span class="auds"><span class="aud">IT &amp; admins</span></span><a class="more" href="https://aka.ms/W365Ignite26Blog" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="windows-3" data-aud="it sec">
+<div class="card-top"><span class="cnum">8.3</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>Windows &amp; Intune security and management</h4>
+<p class="tldr">A more resilient Windows foundation that IT controls end to end.</p>
+<ul class="pts"><li>GA: the Windows Endpoint Security Platform gives approved security products a safer, more reliable way to protect devices.</li><li>Private preview: Windows baseline protection, automatic updates for all Windows apps, Intune and Autopatch for Windows Server 2028, experience controls and OS reliability reporting.</li><li>Preview: declarative device management. You define the outcome, and Windows keeps devices that way.</li></ul>
+<p class="why"><span>Why it matters</span>Devices, apps and agents stay secure, up to date and under IT control.</p>
+<div class="card-foot"><span class="auds"><span class="aud">IT &amp; admins</span><span class="aud">Security</span></span><a class="more" href="https://aka.ms/WindowsAtIgnite2026" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="windows-4" data-aud="it dev">
+<div class="card-top"><span class="cnum">8.4</span><span class="pills"><span class="pill pre">Preview</span><span class="pill fr">Frontier program</span><span class="pill soon">Coming soon</span></span></div>
+<h4>Windows 365 for Agents</h4>
+<p class="tldr">Secure, managed Cloud PCs where AI agents do computer-based work.</p>
+<ul class="pts"><li>Now eligible for Copilot Credits, so AI billing and cost management are unified.</li><li>Available as a computer-use tool in Copilot Studio (Standard harness). The Microsoft Copilot harness preview comes in December, and Foundry access through MCP comes early next year.</li><li>Preview: agent identities for on-premises apps, and persistent Cloud PCs (Frontier) for always-on agents.</li></ul>
+<p class="why"><span>Why it matters</span>Lets you automate older apps that have no APIs, securely and at scale.</p>
+<div class="card-foot"><span class="auds"><span class="aud">IT &amp; admins</span><span class="aud">Developers &amp; data</span></span><a class="more" href="https://aka.ms/W365Ignite26Blog" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="windows-5" data-aud="dev it">
+<div class="card-top"><span class="cnum">8.5</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>Local &amp; hybrid AI on Windows</h4>
+<p class="tldr">Run AI where it makes the most sense: on a PC, a Cloud PC or a server.</p>
+<ul class="pts"><li>GA: Windows 365 Cloud PCs with up to 32 vCPUs and GPUs can run the latest local AI models through Foundry Local.</li><li>Private preview: Windows Server 2025 with AVD Hybrid for multi-user AI development environments that you manage.</li></ul>
+<p class="why"><span>Why it matters</span>AI development with predictable costs and control over your data.</p>
+<div class="card-foot"><span class="auds"><span class="aud">Developers &amp; data</span><span class="aud">IT &amp; admins</span></span><a class="more" href="https://aka.ms/WindowsAtIgnite2026" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article><article class="card" id="windows-6" data-aud="it sec">
+<div class="card-top"><span class="cnum">8.6</span><span class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></span></div>
+<h4>Agent isolation controls in Windows</h4>
+<p class="tldr">Preview process container controls let IT define protected workspaces for supported agents and apps.</p>
+<ul class="pts"><li>Process containers control what an agent can talk to (COM and IPC), which networks it can reach and how it proves its identity.</li><li>Learning and permissive mode (GA) lets admins watch how an agent normally behaves before they enforce restrictions.</li></ul>
+<p class="why"><span>Why it matters</span>Lowers the risk that an agent reaches the wrong data or affects the rest of the device.</p>
+<div class="card-foot"><span class="auds"><span class="aud">IT &amp; admins</span><span class="aud">Security</span></span><a class="more" href="https://aka.ms/WindowsAtIgnite2026" target="_blank" rel="noopener">Learn more ↗</a></div>
+</article></div></div>
+<div class="ch-end"><a href="#top" class="backtop">↑ Back to top</a><a href="#index" class="next">Full index →</a></div>
+</div></section>
+
+<section class="band alt" id="index"><div class="wrap">
+<div class="sec-head"><p class="kicker">Quick find</p><h2>Every announcement in one list</h2><p class="sub-lede">All 59 announcements in Book of News order. Click a name to jump to its summary.</p></div>
+<table class="idx"><thead><tr><th>#</th><th>Announcement</th><th>Chapter</th><th class="pills">Availability</th></tr></thead><tbody><tr class="idx-row c-azure" data-aud="it dev"><td class="n">1.1</td><td><a href="#azure-1">Azure Chaos Studio Workspaces &amp; AKS extension</a></td><td><span class="chip-s"><span class="dot"></span>Azure</span></td><td class="pills"><span class="pill ga">Generally available</span></td></tr><tr class="idx-row c-azure" data-aud="sec it dev"><td class="n">1.2</td><td><a href="#azure-2">Expanded Azure confidential computing</a></td><td><span class="chip-s"><span class="dot"></span>Azure</span></td><td class="pills"><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-azure" data-aud="it dev"><td class="n">1.3</td><td><a href="#azure-3">Azure Cobalt 200 virtual machines</a></td><td><span class="chip-s"><span class="dot"></span>Azure</span></td><td class="pills"><span class="pill ga">Generally available</span></td></tr><tr class="idx-row c-azure" data-aud="it"><td class="n">1.4</td><td><a href="#azure-4">Agentic cloud operations</a></td><td><span class="chip-s"><span class="dot"></span>Azure</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-azure" data-aud="dev it"><td class="n">1.5</td><td><a href="#azure-5">AI infrastructure foundation: Foundry on AKS, Agent Grid &amp; more</a></td><td><span class="chip-s"><span class="dot"></span>Azure</span></td><td class="pills"><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-azure" data-aud="it dev"><td class="n">1.6</td><td><a href="#azure-6">Azure Catalyst</a></td><td><span class="chip-s"><span class="dot"></span>Azure</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-azure" data-aud="it"><td class="n">1.7</td><td><a href="#azure-7">Windows Server 2028</a></td><td><span class="chip-s"><span class="dot"></span>Azure</span></td><td class="pills"><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-azure" data-aud="dev"><td class="n">1.8</td><td><a href="#azure-8">Azure Cosmos DB: developer, retrieval &amp; backup updates</a></td><td><span class="chip-s"><span class="dot"></span>Azure</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-azure" data-aud="dev it"><td class="n">1.9</td><td><a href="#azure-9">Azure DocumentDB</a></td><td><span class="chip-s"><span class="dot"></span>Azure</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-azure" data-aud="dev"><td class="n">1.10</td><td><a href="#azure-10">Azure HorizonDB</a></td><td><span class="chip-s"><span class="dot"></span>Azure</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-azure" data-aud="dev"><td class="n">1.11</td><td><a href="#azure-11">Azure Managed Redis: Redis 8 &amp; agent kit</a></td><td><span class="chip-s"><span class="dot"></span>Azure</span></td><td class="pills"><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-azure" data-aud="dev it"><td class="n">1.12</td><td><a href="#azure-12">Azure SQL</a></td><td><span class="chip-s"><span class="dot"></span>Azure</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-azure" data-aud="it dev"><td class="n">1.13</td><td><a href="#azure-13">Database Hub in Fabric + database agents</a></td><td><span class="chip-s"><span class="dot"></span>Azure</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-azure" data-aud="dev"><td class="n">1.14</td><td><a href="#azure-14">Microsoft Fabric HorizonDB</a></td><td><span class="chip-s"><span class="dot"></span>Azure</span></td><td class="pills"><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-azure" data-aud="dev it"><td class="n">1.15</td><td><a href="#azure-15">PostgreSQL on Azure</a></td><td><span class="chip-s"><span class="dot"></span>Azure</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-azure" data-aud="biz dev"><td class="n">1.16</td><td><a href="#azure-16">Power BI custom data apps</a></td><td><span class="chip-s"><span class="dot"></span>Azure</span></td><td class="pills"><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-azure" data-aud="dev biz"><td class="n">1.17</td><td><a href="#azure-17">Rayfin and Fabric apps</a></td><td><span class="chip-s"><span class="dot"></span>Azure</span></td><td class="pills"><span class="pill ga">Generally available</span></td></tr><tr class="idx-row c-foundry" data-aud="dev"><td class="n">2.1</td><td><a href="#foundry-1">Continuous improvement in Foundry</a></td><td><span class="chip-s"><span class="dot"></span>Foundry</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-foundry" data-aud="dev"><td class="n">2.2</td><td><a href="#foundry-2">Microsoft-Decision-1.1</a></td><td><span class="chip-s"><span class="dot"></span>Foundry</span></td><td class="pills"><span class="pill ga">Generally available</span></td></tr><tr class="idx-row c-foundry" data-aud="dev"><td class="n">2.3</td><td><a href="#foundry-3">New models in Foundry: code, images, security &amp; routing</a></td><td><span class="chip-s"><span class="dot"></span>Foundry</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-github" data-aud="dev"><td class="n">3.1</td><td><a href="#github-1">Microsoft Copilot SDK 2.0</a></td><td><span class="chip-s"><span class="dot"></span>GitHub</span></td><td class="pills"><span class="pill ga">Generally available</span></td></tr><tr class="idx-row c-copilot" data-aud="biz"><td class="n">4.1</td><td><a href="#copilot-1">Home, Auto &amp; Office in Copilot</a></td><td><span class="chip-s"><span class="dot"></span>Copilot</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span><span class="pill fr">Frontier program</span></td></tr><tr class="idx-row c-copilot" data-aud="biz it"><td class="n">4.2</td><td><a href="#copilot-2">Autopilot</a></td><td><span class="chip-s"><span class="dot"></span>Copilot</span></td><td class="pills"><span class="pill fr">Frontier program</span></td></tr><tr class="idx-row c-copilot" data-aud="biz"><td class="n">4.3</td><td><a href="#copilot-3">Copilot Workspaces</a></td><td><span class="chip-s"><span class="dot"></span>Copilot</span></td><td class="pills"><span class="pill fr">Frontier program</span></td></tr><tr class="idx-row c-copilot" data-aud="biz"><td class="n">4.4</td><td><a href="#copilot-4">Today</a></td><td><span class="chip-s"><span class="dot"></span>Copilot</span></td><td class="pills"><span class="pill pre">Preview</span><span class="pill fr">Frontier program</span></td></tr><tr class="idx-row c-copilot" data-aud="biz it"><td class="n">4.5</td><td><a href="#copilot-5">Copilot Code</a></td><td><span class="chip-s"><span class="dot"></span>Copilot</span></td><td class="pills"><span class="pill fr">Frontier program</span><span class="pill soon">Coming soon</span></td></tr><tr class="idx-row c-copilot" data-aud="it dev"><td class="n">4.6</td><td><a href="#copilot-6">Copilot Managed Runtime</a></td><td><span class="chip-s"><span class="dot"></span>Copilot</span></td><td class="pills"><span class="pill ga">Generally available</span></td></tr><tr class="idx-row c-copilot" data-aud="biz it"><td class="n">4.7</td><td><a href="#copilot-7">Agent 365: FinOps for AI &amp; Business Analytics</a></td><td><span class="chip-s"><span class="dot"></span>Copilot</span></td><td class="pills"><span class="pill pre">Preview</span><span class="pill fr">Frontier program</span><span class="pill soon">Coming soon</span></td></tr><tr class="idx-row c-copilot" data-aud="biz"><td class="n">4.8</td><td><a href="#copilot-8">Dynamics 365 Sales &amp; ERP plugins</a></td><td><span class="chip-s"><span class="dot"></span>Copilot</span></td><td class="pills"><span class="pill ga">Generally available</span></td></tr><tr class="idx-row c-copilot" data-aud="biz it"><td class="n">4.9</td><td><a href="#copilot-9">Dynamics 365 Activate for ERP migration</a></td><td><span class="chip-s"><span class="dot"></span>Copilot</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill soon">Coming soon</span></td></tr><tr class="idx-row c-copilot" data-aud="biz"><td class="n">4.10</td><td><a href="#copilot-10">Salesforce in Copilot, Teams &amp; Fabric</a></td><td><span class="chip-s"><span class="dot"></span>Copilot</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-edge" data-aud="it sec"><td class="n">5.1</td><td><a href="#edge-1">Edge for Business: governed AI workflows &amp; stronger security</a></td><td><span class="chip-s"><span class="dot"></span>Edge</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-iq" data-aud="biz dev"><td class="n">6.1</td><td><a href="#iq-1">Microsoft IQ platform</a></td><td><span class="chip-s"><span class="dot"></span>Microsoft IQ</span></td><td class="pills"><span class="pill ga">Generally available</span></td></tr><tr class="idx-row c-iq" data-aud="biz dev"><td class="n">6.2</td><td><a href="#iq-2">Enterprise context management &amp; business plugins</a></td><td><span class="chip-s"><span class="dot"></span>Microsoft IQ</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill fr">Frontier program</span></td></tr><tr class="idx-row c-iq" data-aud="dev"><td class="n">6.3</td><td><a href="#iq-3">Foundry IQ</a></td><td><span class="chip-s"><span class="dot"></span>Microsoft IQ</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-iq" data-aud="biz dev"><td class="n">6.4</td><td><a href="#iq-4">Fabric IQ</a></td><td><span class="chip-s"><span class="dot"></span>Microsoft IQ</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-iq" data-aud="dev"><td class="n">6.5</td><td><a href="#iq-5">Web IQ</a></td><td><span class="chip-s"><span class="dot"></span>Microsoft IQ</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-iq" data-aud="biz it dev"><td class="n">6.6</td><td><a href="#iq-6">Work IQ</a></td><td><span class="chip-s"><span class="dot"></span>Microsoft IQ</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span><span class="pill soon">Coming soon</span></td></tr><tr class="idx-row c-iq" data-aud="dev"><td class="n">6.7</td><td><a href="#iq-7">Continuous improvement in Microsoft IQ</a></td><td><span class="chip-s"><span class="dot"></span>Microsoft IQ</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-security" data-aud="sec"><td class="n">7.1</td><td><a href="#security-1">Dynamic Agent Risk</a></td><td><span class="chip-s"><span class="dot"></span>Security</span></td><td class="pills"><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-security" data-aud="it"><td class="n">7.2</td><td><a href="#security-2">Agent insights by default for Microsoft agents</a></td><td><span class="chip-s"><span class="dot"></span>Security</span></td><td class="pills"><span class="pill ga">Generally available</span></td></tr><tr class="idx-row c-security" data-aud="it sec"><td class="n">7.3</td><td><a href="#security-3">Agent 365 governance for agents &amp; tools</a></td><td><span class="chip-s"><span class="dot"></span>Security</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span><span class="pill soon">Coming soon</span></td></tr><tr class="idx-row c-security" data-aud="biz"><td class="n">7.4</td><td><a href="#security-4">Agent 365 business value</a></td><td><span class="chip-s"><span class="dot"></span>Security</span></td><td class="pills"><span class="pill fr">Frontier program</span></td></tr><tr class="idx-row c-security" data-aud="sec dev"><td class="n">7.5</td><td><a href="#security-5">Codename MDASH: agentic code security</a></td><td><span class="chip-s"><span class="dot"></span>Security</span></td><td class="pills"><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-security" data-aud="sec"><td class="n">7.6</td><td><a href="#security-6">Integrated SOC &amp; vulnerability shielding</a></td><td><span class="chip-s"><span class="dot"></span>Security</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-security" data-aud="sec it"><td class="n">7.7</td><td><a href="#security-7">Runtime protection for local AI agents</a></td><td><span class="chip-s"><span class="dot"></span>Security</span></td><td class="pills"><span class="pill ga">Generally available</span></td></tr><tr class="idx-row c-security" data-aud="sec"><td class="n">7.8</td><td><a href="#security-8">Zero-day &amp; emerging threat intelligence</a></td><td><span class="chip-s"><span class="dot"></span>Security</span></td><td class="pills"><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-security" data-aud="it sec"><td class="n">7.9</td><td><a href="#security-9">On-premises security initiative</a></td><td><span class="chip-s"><span class="dot"></span>Security</span></td><td class="pills"><span class="pill soon">Coming soon</span></td></tr><tr class="idx-row c-security" data-aud="sec it"><td class="n">7.10</td><td><a href="#security-10">Microsoft Entra for the agentic era</a></td><td><span class="chip-s"><span class="dot"></span>Security</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-security" data-aud="sec it"><td class="n">7.11</td><td><a href="#security-11">AI Readiness Initiatives</a></td><td><span class="chip-s"><span class="dot"></span>Security</span></td><td class="pills"><span class="pill soon">Coming soon</span></td></tr><tr class="idx-row c-security" data-aud="it sec"><td class="n">7.12</td><td><a href="#security-12">Intune governance for local AI agents</a></td><td><span class="chip-s"><span class="dot"></span>Security</span></td><td class="pills"><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-security" data-aud="sec"><td class="n">7.13</td><td><a href="#security-13">Microsoft Perception</a></td><td><span class="chip-s"><span class="dot"></span>Security</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-security" data-aud="sec it"><td class="n">7.14</td><td><a href="#security-14">Purview for Copilot &amp; agents</a></td><td><span class="chip-s"><span class="dot"></span>Security</span></td><td class="pills"><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-windows" data-aud="biz it"><td class="n">8.1</td><td><a href="#windows-1">Copilot on Windows: files, diagnostics &amp; Search</a></td><td><span class="chip-s"><span class="dot"></span>Windows</span></td><td class="pills"><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-windows" data-aud="it"><td class="n">8.2</td><td><a href="#windows-2">Windows 365 updates</a></td><td><span class="chip-s"><span class="dot"></span>Windows</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span><span class="pill soon">Coming soon</span></td></tr><tr class="idx-row c-windows" data-aud="it sec"><td class="n">8.3</td><td><a href="#windows-3">Windows &amp; Intune security and management</a></td><td><span class="chip-s"><span class="dot"></span>Windows</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-windows" data-aud="it dev"><td class="n">8.4</td><td><a href="#windows-4">Windows 365 for Agents</a></td><td><span class="chip-s"><span class="dot"></span>Windows</span></td><td class="pills"><span class="pill pre">Preview</span><span class="pill fr">Frontier program</span><span class="pill soon">Coming soon</span></td></tr><tr class="idx-row c-windows" data-aud="dev it"><td class="n">8.5</td><td><a href="#windows-5">Local &amp; hybrid AI on Windows</a></td><td><span class="chip-s"><span class="dot"></span>Windows</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr><tr class="idx-row c-windows" data-aud="it sec"><td class="n">8.6</td><td><a href="#windows-6">Agent isolation controls in Windows</a></td><td><span class="chip-s"><span class="dot"></span>Windows</span></td><td class="pills"><span class="pill ga">Generally available</span><span class="pill pre">Preview</span></td></tr></tbody></table>
+<div class="ch-end"><a href="#top" class="backtop">↑ Back to top</a></div>
+</div></section>
+
+<footer><div class="wrap">
+<div><b style="color:var(--ink)">Source:</b> summarized from the official <a href="https://news.microsoft.com/events/ignite/2026/book-of-news/" target="_blank" rel="noopener">Microsoft Ignite 2026 Book of News</a> (published November 17, 2026). “Learn more” links go to the official announcement for each item.</div>
+<div>Availability labels reflect the Book of News on the day it was published. Preview, Frontier program and “coming soon” features can change. Check the official Book of News and product documentation before making plans.</div>
+</div></footer>
+</body>
+</html>

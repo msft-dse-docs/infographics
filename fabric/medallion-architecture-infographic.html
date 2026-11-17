@@ -926,6 +926,7 @@
     section { padding: 3rem 1.2rem; }
     .layer-summary { margin-left: 0; }
     .details-inner { margin-left: 0; }
+    .flow-arrow-label { max-width: calc(50vw - 3rem); white-space: normal; }
     .pattern-pros { grid-template-columns: 1fr; }
     .diagram-flow { flex-direction: column; }
     .diagram-arrow { transform: rotate(90deg); }
@@ -944,7 +945,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-23">
+<meta name="smec:last-accuracy-check" content="2026-11-17">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="cbattlegear">
 <style>/* smec-back-btn v3 */
@@ -1056,7 +1057,7 @@
 </style>
 </head>
 <body>
-<time class="smec-validation-date" datetime="2026-10-23" data-smec-validation-date="v1">Valid as of 2026-10-23</time>
+<time class="smec-validation-date" datetime="2026-11-17" data-smec-validation-date="v1">Valid as of 2026-11-17</time>
 
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
 
@@ -1102,14 +1103,14 @@
           <span>&#9878;</span>
         </div>
         <h3>ACID Compliance</h3>
-        <p>Built on Delta Lake, every transaction guarantees Atomicity, Consistency, Isolation, and Durability — preventing data corruption at scale.</p>
+        <p>Delta tables support Atomicity, Consistency, Isolation, and Durability. Table transactions do not make a whole multi-layer pipeline atomic or protect against valid-but-wrong data writes.</p>
       </div>
       <div class="concept-card">
         <div class="concept-icon" style="background:rgba(212,175,55,0.12);">
           <span>&#10070;</span>
         </div>
         <h3>Separation of Concerns</h3>
-        <p>Each layer lives in its own lakehouse or workspace. Data engineers own Bronze/Silver; analysts and BI teams own Gold.</p>
+        <p>Separate layers into lakehouses or warehouses; separate workspaces add governance control. Assign explicit owners for ingestion, quality, business definitions, and recovery.</p>
       </div>
     </div>
   </div>
@@ -1173,7 +1174,7 @@
                   <li>Retain source data according to recovery and compliance requirements</li>
                   <li>Use ingestion-date folders where they improve manageability</li>
                   <li>Add audit columns (_ingestion_ts)</li>
-                  <li>Use shortcuts instead of copying</li>
+                  <li>Use shortcuts when source retention, access, and availability meet Bronze requirements</li>
                   <li>Handle schema evolution</li>
                 </ul>
               </div>
@@ -1438,7 +1439,7 @@
       <div class="tool-tile">
         <span class="tool-emoji">&#128279;</span>
         <h4>Shortcuts</h4>
-        <p>Zero-copy references to ADLS Gen2, S3, and Google Cloud Storage sources.</p>
+        <p>References to supported external data without an ingestion copy. Optional caching can create local copies; a shortcut is not a backup.</p>
       </div>
       <div class="tool-tile">
         <span class="tool-emoji">&#128200;</span>
@@ -1474,7 +1475,7 @@
   <div class="reveal">
     <span class="section-label">New in Fabric</span>
     <h2 class="section-title">Materialized Lake Views</h2>
-    <p class="section-subtitle" style="margin-left:auto;margin-right:auto;">Replace complex pipeline orchestration with declarative SQL definitions that Fabric refreshes automatically.</p>
+    <p class="section-subtitle" style="margin-left:auto;margin-right:auto;">Use declarative SQL and managed refresh orchestration for supported transformations. Schedule refresh and monitor completion; auto-dependency management does not mean continuously fresh data.</p>
 
     <div class="mlv-card">
       <h3>Simplify Your Medallion Pipelines</h3>
@@ -1482,7 +1483,7 @@
       <div class="mlv-benefits">
         <div class="mlv-benefit">
           <h4>Declarative SQL</h4>
-          <p>Define transforms as SQL statements — no pipeline plumbing required.</p>
+          <p>Define supported transforms as SQL. Retain ingestion, error-handling, and external-dependency orchestration where needed.</p>
         </div>
         <div class="mlv-benefit">
           <h4>Auto Dependencies</h4>
@@ -1494,7 +1495,7 @@
         </div>
         <div class="mlv-benefit">
           <h4>Smart Refresh</h4>
-          <p>Incremental, full, or no-refresh — the system decides what's optimal.</p>
+          <p>Incremental, full, or skipped refresh depends on supported query patterns. Incremental refresh requires source Delta Change Data Feed; without it, expect full or skipped refresh.</p>
         </div>
         <div class="mlv-benefit">
           <h4>Lineage Tracking</h4>
@@ -1502,7 +1503,7 @@
         </div>
         <div class="mlv-benefit">
           <h4>Less Code</h4>
-          <p>Dramatically reduce the amount of ETL orchestration code to maintain.</p>
+          <p>Reduce supported transformation code. PySpark authoring is preview and currently full-refresh only; measure refresh cost and keep operational monitoring.</p>
         </div>
       </div>
     </div>
@@ -1527,15 +1528,15 @@
       </div>
       <div class="security-item">
         <h4><span style="color:#FF9800">&#9679;</span> Row-Level Security</h4>
-        <p>Filter data dynamically by user role — each user sees only what they should.</p>
+        <p>Apply RLS in the serving engine and test restricted identities. Semantic-model RLS does not secure direct SQL or OneLake access and does not filter elevated workspace roles.</p>
       </div>
       <div class="security-item">
         <h4><span style="color:#9C27B0">&#9679;</span> Object-Level Security</h4>
-        <p>Restrict access to sensitive columns (e.g., PII, salary data) from unauthorized eyes.</p>
+        <p>Use supported engine-level object or column controls for sensitive data. Test alternate endpoints and raw-file access rather than assuming one policy covers every engine.</p>
       </div>
       <div class="security-item">
         <h4><span style="color:#00BCD4">&#9679;</span> Data Lineage</h4>
-        <p>Track every transformation from source to Bronze to Silver to Gold with full visibility.</p>
+        <p>Track supported lineage from source to consumption; document external transformations and unsupported edges explicitly.</p>
       </div>
       <div class="security-item">
         <h4><span style="color:#F44336">&#9679;</span> Sensitivity Labels</h4>
@@ -1577,13 +1578,13 @@
         <div class="practice-number">03</div>
         <div class="practice-icon">&#128279;</div>
         <h3>Shortcuts Over Copies</h3>
-        <p>When source data is in ADLS Gen2, S3, or Google Cloud, create shortcuts in the Bronze layer instead of copying data across.</p>
+        <p>Prefer shortcuts for supported sources when a live reference fits. A source change or deletion changes what Bronze can read; copy or snapshot when replay, immutability, or independent retention is required. Review connection identity, source permissions, egress, and cache costs.</p>
       </div>
       <div class="practice-card">
         <div class="practice-number">04</div>
         <div class="practice-icon">&#128336;</div>
         <h3>Manage History Retention</h3>
-        <p>Use VACUUM to remove unreferenced files older than the retention threshold. The default is seven days; choose retention from recovery, audit, and time-travel requirements before shortening it.</p>
+        <p>VACUUM removes unreferenced data files beyond the retention threshold (normally seven days). Log-history retention is separate. Time travel needs both logs and files, so test recovery before cleanup; neither time travel nor a shortcut replaces a recovery plan.</p>
       </div>
       <div class="practice-card">
         <div class="practice-number">05</div>
@@ -1606,8 +1607,9 @@
   <div class="reveal">
     <div class="mesh-callout">
       <span class="section-label" style="margin-bottom:1rem;">Advanced Pattern</span>
-      <h3>Scale with Data Mesh</h3>
-      <p style="margin-top:0.75rem;">For massive, decentralized organizations, implement medallion architecture within Fabric Domains — mapping to your business areas (Marketing, Sales, HR). Each domain gets its own Bronze &rarr; Silver &rarr; Gold pipeline with federated governance.</p>
+      <h3>Gold Is Now Context for Apps and Agents</h3>
+      <p style="margin-top:0.75rem;">Keep Bronze &rarr; Silver &rarr; Gold quality contracts even when the consumer is an agent. Ignite 2026 brought GA Fabric IQ integrations with Microsoft Copilot and Fabric apps, reusing semantic metrics and operational context. Excel Edit, GitHub Copilot ontologies, and ChatGPT/Claude connectors remain preview. Publish certified measures with grain, freshness, and access expectations &mdash; not just tables.</p>
+      <p style="margin-top:0.75rem;"><strong>Operational data is not automatically copy-free:</strong> Microsoft Fabric HorizonDB is a preview PostgreSQL offering with translytical, mirroring, and reverse-ETL scenarios. Mirroring copies tables into Fabric; reverse ETL writes enriched data back. It is distinct from GA Azure HorizonDB. Neither replaces data-quality layers or recovery design. Use domains for federated ownership, not as security boundaries.</p>
     </div>
   </div>
 </section>
@@ -1652,8 +1654,8 @@
           <button class="quiz-option" data-idx="1" onclick="checkAnswer(this)">A Data Pipeline</button>
           <button class="quiz-option" data-idx="2" onclick="checkAnswer(this)">A Dataflow Gen2</button>
         </div>
-        <div class="quiz-explanation correct-explain">Correct! Shortcuts provide zero-copy references to data in ADLS Gen2, S3, and Google Cloud.</div>
-        <div class="quiz-explanation wrong-explain">Not quite. Shortcuts are preferred because they reference data without copying it, saving storage and latency.</div>
+        <div class="quiz-explanation correct-explain">Correct! A shortcut references supported source data without a separate ingestion copy. Optional caching and source retention still matter.</div>
+        <div class="quiz-explanation wrong-explain">Not quite. A shortcut is the reference-based option. Use a copy or snapshot instead if Bronze needs independent retention or replay.</div>
       </div>
 
       <!-- Q4 -->
@@ -1664,7 +1666,7 @@
           <button class="quiz-option" data-idx="1" onclick="checkAnswer(this)">Liquid Clustering</button>
           <button class="quiz-option" data-idx="2" onclick="checkAnswer(this)">Bucketing</button>
         </div>
-        <div class="quiz-explanation correct-explain">Correct! Liquid Clustering optimizes query performance in Silver and Gold layers better than traditional partitioning.</div>
+        <div class="quiz-explanation correct-explain">Correct! Microsoft recommends Liquid Clustering for Silver and Gold. Validate runtime and reader compatibility, then benchmark your workload; it is not a universal performance guarantee.</div>
         <div class="quiz-explanation wrong-explain">Not quite. Liquid Clustering is Fabric's recommended approach for optimizing query performance in Silver and Gold layers.</div>
       </div>
 
@@ -1694,7 +1696,7 @@
   <p>
     Based on <a href="https://learn.microsoft.com/fabric/onelake/onelake-medallion-lakehouse-architecture" target="_blank" rel="noopener">Implement Medallion Lakehouse Architecture in Fabric</a> &mdash; Microsoft Learn
   </p>
-  <p style="margin-top:0.5rem; font-size:0.78rem;">Interactive learning infographic &middot; April 2026</p>
+  <p style="margin-top:0.5rem; font-size:0.78rem;">Announcement context: <a href="https://news.microsoft.com/events/ignite/2026/book-of-news/" target="_blank" rel="noopener">Ignite 2026 Book of News &mdash; Azure Data / Fabric IQ</a>. See <a href="https://learn.microsoft.com/fabric/onelake/onelake-shortcuts" target="_blank" rel="noopener">shortcut behavior and security</a>.</p>
 </footer>
 
 <script>

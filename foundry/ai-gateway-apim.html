@@ -566,7 +566,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-23">
+<meta name="smec:last-accuracy-check" content="2026-11-17">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="Harry Arce">
 <style>/* smec-back-btn v3 */
@@ -678,7 +678,7 @@
 </style>
 </head>
 <body>
-<time class="smec-validation-date" datetime="2026-10-23" data-smec-validation-date="v1">Valid as of 2026-10-23</time>
+<time class="smec-validation-date" datetime="2026-11-17" data-smec-validation-date="v1">Valid as of 2026-11-17</time>
 
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
 
@@ -873,7 +873,7 @@
             </g>
           </g>
         </svg>
-        <p class="gw-caption">AI Gateway sits between every AI client and every AI backend — applying the same governance to LLMs, agents, and MCP tools.</p>
+        <p class="gw-caption">Route supported model, agent and MCP traffic through AI Gateway to apply configured policies. Bypass paths remain outside that boundary; policy support differs by API type and tier.</p>
       </div>
     </div>
 
@@ -907,7 +907,7 @@
   <div class="container">
     <span class="quote-mark">"</span>
     <h2>Your APIs are becoming tools.<br>Your users are becoming agents.<br>Your platform needs to adapt.</h2>
-    <p class="cite">— <a href="https://techcommunity.microsoft.com/blog/integrationsonazureblog/whats-new-in-azure-api-management-at-microsoft-build-2026/4524683" target="_blank">Microsoft, "What's new in Azure API Management at Microsoft Build 2026"</a></p>
+    <p class="cite">Editorial takeaway — see <a href="https://techcommunity.microsoft.com/blog/integrationsonazureblog/whats-new-in-azure-api-management-at-microsoft-build-2026/4524683" target="_blank">Microsoft's Build 2026 API Management update</a>.</p>
   </div>
 </section>
 
@@ -924,7 +924,7 @@
       <div class="why-card w1 reveal">
         <div class="why-glyph">¢</div>
         <h3>Tokens are the new bill</h3>
-        <p>Per-minute and per-quota caps on tokens — not requests. <code>llm-token-limit</code> pre-estimates prompt tokens so a runaway agent is blocked at the gateway, not at the model bill.</p>
+        <p><code>llm-token-limit</code> applies token-rate and quota controls with optional prompt estimation. Concurrent calls may overshoot; streaming counts are estimates and counters are per gateway. Add application-level run budgets for tighter control.</p>
       </div>
       <div class="why-card w2 reveal">
         <div class="why-glyph">!</div>
@@ -934,12 +934,12 @@
       <div class="why-card w3 reveal">
         <div class="why-glyph">∞</div>
         <h3>PTU first, PAYGO when needed</h3>
-        <p>Priority-based load balancing keeps PTU saturated and overflows to PAYGO. Circuit breakers honor each backend's <code>Retry-After</code>, so traffic resumes the second capacity is ready.</p>
+        <p>Configured backend priorities can prefer provisioned capacity and overflow to PAYGO, which adds usage charges. Circuit breakers can honor <code>Retry-After</code>; this does not guarantee utilization or instant recovery.</p>
       </div>
       <div class="why-card w4 reveal">
         <div class="why-glyph">◇</div>
         <h3>Agents need a registry</h3>
-        <p>MCP turns every API into a tool. Without a registry, agents can't discover them; without a gateway, you can't govern them. AI Gateway + API Center give you both.</p>
+        <p>Expose selected API operations as MCP tools, then inventory and govern their use. API Center supports discovery; AI Gateway enforces configured runtime policies. Neither removes the need for tool-level authorization.</p>
       </div>
     </div>
   </div>
@@ -950,7 +950,7 @@
   <div class="container">
     <div class="reveal">
       <span class="section-tag">The Capabilities</span>
-      <h2>AI gateway capabilities, organized as 5 pillars.</h2>
+      <h2>Five architecture pillars + an agent-and-tool lens.</h2>
       <p class="lede">This guide groups API Management capabilities under familiar Well-Architected concerns. Policy names below follow Microsoft Learn; availability can vary by API Management tier, API type, and region.</p>
     </div>
 
@@ -971,7 +971,7 @@
           <li><strong>Managed identity</strong> to Foundry / Azure OpenAI — eliminates API keys</li>
           <li><strong>OAuth 2.0 / Entra ID</strong> via Credential Manager (inbound + outbound) — see <a href="https://learn.microsoft.com/en-us/azure/api-management/genai-gateway-capabilities" target="_blank" style="color:var(--accent);">APIM AI gateway capabilities</a></li>
           <li><strong>MCP authentication and authorization</strong> — validate incoming JWTs and configure key-based or OAuth access as appropriate (<a href="https://learn.microsoft.com/en-us/azure/api-management/secure-mcp-servers" target="_blank" style="color:var(--accent);">secure MCP servers</a>)</li>
-          <li><strong>Private connectivity</strong> via APIM private endpoints &amp; VNets</li>
+          <li><strong>Private connectivity</strong> where supported; separately disable unwanted public access and validate inbound and outbound paths</li>
         </ul>
       </div>
 
@@ -1011,7 +1011,7 @@
           <li>Backed by <strong>Azure Managed Redis</strong> or RediSearch-compatible cache</li>
           <li><strong>Vector proximity</strong> via Embeddings API — reuses prior completions</li>
           <li><strong>Model routing</strong> — direct latency-sensitive traffic to closer regions</li>
-          <li><strong>PTU prioritization</strong> — keep premium capacity saturated first</li>
+          <li><strong>PTU prioritization</strong> — prefer eligible provisioned backends; utilization still depends on traffic</li>
         </ul>
       </div>
 
@@ -1028,7 +1028,7 @@
         </div>
         <ul>
           <li><strong>Token metrics</strong> — <code>llm-emit-token-metric</code> with custom dimensions</li>
-          <li><strong>Prompt + completion logging</strong> to Application Insights</li>
+          <li><strong>Optional prompt + completion logging</strong> — minimize content, redact sensitive fields and set access and retention controls</li>
           <li><strong>Built-in token-consumption dashboard</strong> in APIM</li>
           <li><strong>OpenTelemetry GenAI semantic conventions</strong> for agent APIs <span class="pv">2026</span></li>
           <li><strong>MCP runtime telemetry</strong> — latency, outcome, error details <span class="pv">2026</span></li>
@@ -1049,8 +1049,8 @@
         <ul>
           <li><strong>FinOps framework</strong> samples in the AI Gateway repo</li>
           <li><strong>Per-consumer token quotas</strong> — chargeback by subscription, IP, user</li>
-          <li><strong>Semantic cache</strong> cuts tokens billed for repeated questions</li>
-          <li><strong>Priority-based load balancing</strong> keeps paid PTU saturated</li>
+          <li><strong>Semantic cache</strong> can avoid model calls; embeddings and cache infrastructure still cost money</li>
+          <li><strong>Priority-based load balancing</strong> prefers paid PTU before configured overflow</li>
           <li><strong>Backend pool</strong> across Foundry / AOAI / OpenAI-compatible</li>
         </ul>
       </div>
@@ -1105,11 +1105,11 @@
           </li>
           <li>
             <strong>PTU + PAYGO mixing</strong>
-            Microsoft explicitly calls out priority modes that prefer PTU instances and overflow to PAYGO — your reserved capacity stays saturated, spillover lands on demand-priced.
+            Prefer provisioned instances through backend priorities and overflow to PAYGO when configured. Benchmark throughput and set a separate overflow budget; routing cannot guarantee saturation.
           </li>
           <li>
             <strong>Circuit breakers with dynamic trip duration</strong>
-            APIM applies the value from the backend's <code>Retry-After</code> header — traffic resumes the moment the backend says it's ready, no fixed cooldowns wasting PTU.
+            Configure circuit breakers to honor a backend's <code>Retry-After</code>. Test cooldown, retry and failover behavior; a readiness estimate is not a recovery guarantee.
           </li>
           <li>
             <strong>Token-aware throttling</strong>
@@ -1135,17 +1135,17 @@
           </div>
           <div>
             <h3>Why architectures are more observable</h3>
-            <p class="sub">Every prompt, completion, and token has an owner.</p>
+            <p class="sub">Attribute routed usage without indiscriminate content capture.</p>
           </div>
         </div>
         <ul class="deep-list">
           <li>
             <strong><code>llm-emit-token-metric</code></strong>
-            Emits token consumption to Azure Monitor with <em>custom dimensions</em> — Microsoft's docs show Client IP, API ID, and User-ID-from-header. Slice token spend by consumer, model, operation, or any policy expression.
+            Emit token usage with bounded custom dimensions. Derive chargeback identity from validated authentication claims, not an untrusted caller-supplied user header; reconcile estimates against billing.
           </li>
           <li>
             <strong>Prompt + completion logging</strong>
-            Diagnostic settings stream prompts and completions to Application Insights for billing, auditing, and troubleshooting.
+            Explicitly configured diagnostics can capture supported prompt and completion content. Prefer usage metadata; assess consent, secrets, sampling, retention and access before enabling payload logging. Telemetry is not the final invoice.
           </li>
           <li>
             <strong>Built-in token-consumption dashboard</strong>
@@ -1157,14 +1157,14 @@
           </li>
           <li>
             <strong>MCP runtime telemetry</strong>
-            Tool-invocation latency, request outcomes, and error details for every MCP call — observe agent-tool traffic the same way you observe REST APIs.
+            Collect supported tool latency, outcomes and errors for routed traffic when diagnostics are configured. Validate coverage and sampling; avoid recording sensitive tool arguments unnecessarily.
           </li>
           <li>
             <strong>Managed identity to backends</strong>
-            Removes secret-rotation noise from the audit trail — every backend call traces to a workload identity, not a vault entry.
+            Use managed identity with supported backends to avoid shared API keys. Grant least privilege and correlate workload identity separately from end-user identity; delegation is not automatic.
           </li>
         </ul>
-        <div class="deep-net">Every prompt, completion, and token has an owner, a metric, and a dashboard.</div>
+        <div class="deep-net">Measure coverage, not just dashboards: test identity attribution, redaction, missing spans and bypass paths.</div>
       </div>
     </div>
   </div>
@@ -1176,14 +1176,14 @@
     <div class="reveal">
       <span class="section-tag">AI Gateway + API Center</span>
       <h2>A registry for the agent era.</h2>
-      <p class="lede">AI Gateway is the runtime control plane. <strong>Azure API Center</strong> is the organizational catalog. Together they give every developer a self-service way to find, govern, and call MCP tools — and every platform team one place to apply policy, identity, and rate limits to AI traffic.</p>
+      <p class="lede">Use AI Gateway for routed runtime controls and <strong>Azure API Center</strong> for an organizational catalog. Register approved tools, restrict direct access and enforce authorization inside each tool; catalog presence is not a security approval.</p>
     </div>
 
     <div class="mcp-pair">
       <div class="mcp-pane apim reveal">
         <div class="role-lbl">Runtime</div>
         <h4>Azure API Management — AI Gateway</h4>
-        <p>Hosts and fronts MCP servers. Applies policy, identity, rate-limit, content safety, and logging to every tool call.</p>
+        <p>Hosts or fronts supported MCP servers with applicable identity, rate and diagnostic policies. LLM content-safety policies do not automatically inspect arbitrary tool arguments, actions or results.</p>
         <ul>
           <li>Expose any APIM-managed REST API as an MCP server at <code>/mcp</code></li>
           <li>Front existing MCP servers (Logic Apps, Functions, LangChain, custom) via pass-through</li>
@@ -1224,7 +1224,7 @@
       <div class="flow-step reveal">
         <div class="num">2</div>
         <h5>Govern</h5>
-        <p>Apply OAuth 2.1, Entra ID, rate-limit-by-key, and Credential Manager to every tool call. Same APIM policies you already use for REST.</p>
+        <p>Configure supported MCP authentication, authorization, credentials and rate limits. Check MCP-specific policy restrictions rather than assuming every REST policy applies unchanged.</p>
       </div>
       <div class="flow-step reveal">
         <div class="num">3</div>
@@ -1289,7 +1289,7 @@
       <div class="tl-item preview reveal">
         <div class="tl-date">Nov 18, 2025 · Preview</div>
         <h4>AI Gateway in Microsoft Foundry</h4>
-        <p>AI Gateway can now be created and associated directly inside Foundry to govern models, agents, and tools — without leaving Foundry. <em>"More than 1,200 enterprise customers use AI Gateway."</em></p>
+        <p>The historical launch introduced an API Management-backed gateway association inside Foundry. Confirm current integration and policy scope before making it a production dependency.</p>
       </div>
       <div class="tl-item ga reveal">
         <div class="tl-date">March 2026 · Release</div>
@@ -1384,7 +1384,7 @@
   <div class="container">
     <div class="brand-mark">AI Gateway · Azure API Management</div>
     <p>One front door for every model. One control plane for the agent era.</p>
-    <p>Reviewed September 2, 2026. Confirm tier, region, and preview support on Microsoft Learn before designing dependencies.</p>
+    <p>Ignite 2026 adds Foundry model-router support for AI Gateway. Agent 365 MCP governance through AI Gateway and LiteLLM is <strong>preview</strong>; it is distinct from gateway-native policies. Agent Grid is also preview, not a drop-in replacement for this boundary. <a href="https://news.microsoft.com/events/ignite/2026/book-of-news/">Book of News</a>.</p>
     <div class="sources-line">
       <strong style="color: rgba(255,255,255,0.75);">Primary sources:</strong><br>
       <a href="https://learn.microsoft.com/en-us/azure/api-management/genai-gateway-capabilities" target="_blank">AI gateway capabilities</a> ·
@@ -1399,7 +1399,7 @@
       <a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/" target="_blank">What’s New in Foundry @ Build 2026</a> ·
       <a href="https://webiq.microsoft.ai/" target="_blank">Web IQ</a>
     </div>
-    <p class="small">Designed brief — for customer-facing infographic use. All claims trace to the primary Microsoft sources above.</p>
+    <p class="small">Deployment check: test bypass prevention, identity, quota overshoot and failover. For semantic caching, isolate tenant/user authorization contexts, set freshness and TTL rules, and test cross-user leakage before enabling reuse.</p>
   </div>
 </footer>
 

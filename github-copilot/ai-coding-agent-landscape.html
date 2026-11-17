@@ -103,7 +103,7 @@
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-23">
+<meta name="smec:last-accuracy-check" content="2026-11-17">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="Antonio Montez">
 <style>/* smec-back-btn v3 */
@@ -215,7 +215,7 @@
 </style>
 </head>
 <body>
-<time class="smec-validation-date" datetime="2026-10-23" data-smec-validation-date="v1">Valid as of 2026-10-23</time>
+<time class="smec-validation-date" datetime="2026-11-17" data-smec-validation-date="v1">Valid as of 2026-11-17</time>
 
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
 
@@ -226,7 +226,7 @@
   </div>
   <h1>Which AI coding agent fits which team?</h1>
   <p>Not a ranking. A decision tree for choosing the control plane first: GitHub-native web or desktop app, GitHub-hosted third-party, standalone vendor workflow, or Cursor’s cloud surface.</p>
-  <div class="hero-meta">Accurate as of September 2, 2026 · Async GitHub-connected agents, not local IDE copilots</div>
+  <div class="hero-meta">Ignite 2026 review · Choose the code host, then the runtime, then the model</div>
 </header>
 
 <section>
@@ -237,7 +237,7 @@
 
     <div class="tree">
       <div class="tree-q">Q1 · Is GitHub.com your primary code host?</div>
-      <div class="tree-row"><div class="ans">No</div><div class="out">Stop here for this series. The GitHub-hosted agents and GitHub Actions patterns assume GitHub repos. Your shortlist is local IDE/CLI agents or a vendor cloud agent that supports your code host.</div></div>
+      <div class="tree-row"><div class="ans">No</div><div class="out">For <strong>Azure DevOps</strong>, evaluate the Copilot app integration in public preview: clone, code, review, and complete PRs under Azure DevOps permissions. Cloud sessions are not supported for those repositories. For other hosts, verify support in your chosen IDE/CLI or vendor integration. The GitHub-hosted agent and Actions paths below still require GitHub repositories.</div></div>
       <div class="tree-row"><div class="ans">Yes</div><div class="out">Continue to Q2.</div></div>
     </div>
 
@@ -322,7 +322,7 @@
       </div>
 
       <div class="tool-card">
-        <header><h3>GitHub Copilot desktop app <span style="display:inline-block;background:#dafbe1;color:#0a3622;border:1px solid #6fdd8b;padding:.05rem .4rem;border-radius:6px;font-size:.62rem;font-weight:800;letter-spacing:.06em;margin-left:.4rem;vertical-align:middle;">NEW</span></h3><div class="sub">GitHub-native · macOS/Linux/Windows · Generally available</div></header>
+        <header><h3>GitHub Copilot desktop app</h3><div class="sub">macOS/Linux/Windows · Feature-specific availability</div></header>
         <div class="body">
           <div class="fit"><strong>Best fit:</strong> developers who want an agent-native desktop surface for parallel sessions, isolated worktrees, pull request lifecycle management, rubber duck critique, Canvases, and multi-model choice including BYOK providers.</div>
           <div class="not-fit"><strong>Watch-outs:</strong> review generated changes and CI results before enabling agent merge or merging. Business/Enterprise app access has its own policy.</div>
@@ -351,6 +351,13 @@
   </div>
 </section>
 
+<section class="section-flush-top">
+  <div class="container">
+    <h2>Need an agent inside your product?</h2>
+    <p>That is not the same decision as choosing a coding assistant. <strong>Microsoft Copilot SDK 2.0 is GA</strong> at Ignite: a Rust-based harness, six language SDKs, and session-scoped tools and credentials for custom applications. Choose and operate the hosting architecture yourself; use an isolated sandbox when agents execute untrusted code. Judge a pilot by accepted outcomes, total cost, and review effort, not a model leaderboard alone.</p>
+  </div>
+</section>
+
 <footer>
   <div class="container">
     <div>
@@ -370,6 +377,8 @@
         <li><a href="https://cursor.com/blog/cloud-agents">Cursor Cloud Agents</a></li>
         <li><a href="https://cursor.com/pricing">Cursor pricing and plans</a></li>
         <li><a href="https://github.com/github/app">github/app repo</a></li>
+        <li><a href="https://docs.github.com/en/copilot/how-tos/github-copilot-app/manage-azure-devops-work">Azure DevOps integration: public preview</a></li>
+        <li><a href="https://aka.ms/copilot-sdk/blog-2.0">Microsoft Copilot SDK 2.0 architecture</a></li>
       </ul>
     </div>
   </div>

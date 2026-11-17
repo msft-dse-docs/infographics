@@ -591,7 +591,7 @@ footer a:hover{text-decoration:underline}
 @media (max-width:768px){
   .persona-card{grid-template-columns:1fr}
   .persona-visual{padding:24px}
-  .together-layout{grid-template-columns:1fr}
+  .together-layout{grid-template-columns:1fr;overflow-x:clip}
   .hybrid-grid{grid-template-columns:1fr}
   .compare-table{font-size:13px}
   .compare-table thead th,.compare-table tbody td{padding:10px 12px}
@@ -615,7 +615,7 @@ footer a:hover{text-decoration:underline}
 <!-- smec-favicon v1 -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- smec-accuracy v1 -->
-<meta name="smec:last-accuracy-check" content="2026-10-23">
+<meta name="smec:last-accuracy-check" content="2026-11-17">
 <!-- smec-submitter v1 -->
 <meta name="smec:submitter" content="cbattlegear">
 <style>/* smec-back-btn v3 */
@@ -727,7 +727,7 @@ footer a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
-<time class="smec-validation-date" datetime="2026-10-23" data-smec-validation-date="v1">Valid as of 2026-10-23</time>
+<time class="smec-validation-date" datetime="2026-11-17" data-smec-validation-date="v1">Valid as of 2026-11-17</time>
 
 <a href="../" class="smec-back-btn" data-smec-back-button="v3" aria-label="Back to SME&amp;C Infographics"><svg class="smec-back-btn__icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg><span class="smec-back-btn__label">Back<span class="smec-back-btn__more">&nbsp;to SME&amp;C Infographics</span></span></a>
 
@@ -822,7 +822,7 @@ footer a:hover{text-decoration:underline}
     <div class="reveal" style="text-align:center">
       <div class="section-label">At a Glance</div>
       <div class="section-title" style="text-align:center">Windows 365 vs. Azure Virtual Desktop</div>
-      <div class="section-subtitle" style="margin:0 auto 24px;text-align:center">One identity plane. One endpoint management plane. One security perimeter.</div>
+      <div class="section-subtitle" style="margin:0 auto 24px;text-align:center">Shared identity foundations. Different operating models. Validate controls per platform.</div>
       <div class="compare-header">
         <span class="compare-badge w365">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8M12 17v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
@@ -841,11 +841,11 @@ footer a:hover{text-decoration:underline}
         </thead>
         <tbody>
           <tr><td>Model</td><td>SaaS — Microsoft-managed</td><td>PaaS — customer-managed on Azure</td></tr>
-          <tr><td>Session</td><td>1:1 dedicated, persistent</td><td>Pooled multi-session or personal</td></tr>
-          <tr><td>Pricing</td><td>Fixed per-user / month</td><td>Consumption (compute + storage + network) + eligible Windows/Microsoft 365 licensing</td></tr>
+          <tr><td>Session</td><td>Enterprise: dedicated, persistent; Flex: Dedicated or nonpersistent Shared mode</td><td>Pooled multi-session or personal</td></tr>
+          <tr><td>Pricing</td><td>Subscription per user or Flex concurrency license; check prerequisites and add-ons</td><td>Consumption (compute + storage + network) + eligible licensing; Windows Server hosts require applicable RDS rights</td></tr>
           <tr><td>Management</td><td>Microsoft Intune admin center</td><td>Azure Resource Manager plus session-host management through Intune or Group Policy</td></tr>
           <tr><td>Scale</td><td>License and provisioning-policy based</td><td>Power-management autoscale (GA); dynamic autoscale (preview) for eligible pooled host pools with session host configuration (not available in Azure Government)</td></tr>
-          <tr><td>GPU / Large SKUs</td><td>Preconfigured GPU Cloud PC sizes</td><td>Full Azure VM catalog incl. GPU</td></tr>
+          <tr><td>GPU / Large SKUs</td><td>Preconfigured GPU Cloud PCs and configurations up to 32 vCPU; check availability</td><td>Supported Azure VM sizes, including GPU; validate OS, driver, region, and quota</td></tr>
           <tr><td>Best Fit</td><td>Predictable persona, lean IT</td><td>Variable usage, specialized workloads, scale</td></tr>
         </tbody>
       </table>
@@ -859,7 +859,7 @@ footer a:hover{text-decoration:underline}
     <div class="reveal">
       <div class="section-label">Positioning</div>
       <div class="section-title">Better together, not either-or</div>
-      <div class="section-subtitle">Most mature customers run both. Match the tool to the persona — don't standardize on a single delivery model.</div>
+      <div class="section-subtitle">Use one or both according to workload evidence. A hybrid portfolio is an option, not a maturity requirement.</div>
     </div>
     <div class="together-layout">
       <div class="together-col reveal-left">
@@ -875,10 +875,10 @@ footer a:hover{text-decoration:underline}
       <div class="together-col reveal-right">
         <h3><span class="dot avd-dot"></span> AVD wins when&hellip;</h3>
         <ul class="together-list avd-list">
-          <li><span class="check">&#10003;</span> Usage is variable — autoscale drives real savings</li>
-          <li><span class="check">&#10003;</span> Specific GPU VM SKUs or &gt;16 vCPU are required (imaging, analytics, dev)</li>
+          <li><span class="check">&#10003;</span> Variable usage makes tested autoscale and host-density economics attractive</li>
+          <li><span class="check">&#10003;</span> Required GPU, memory, or compute profiles aren't available in the Cloud PC catalog</li>
           <li><span class="check">&#10003;</span> Custom golden images or complex app layering is needed</li>
-          <li><span class="check">&#10003;</span> Multi-session density lowers $/user for light workloads</li>
+          <li><span class="check">&#10003;</span> Tested multi-session density can lower cost per user without harming clinical app performance</li>
           <li><span class="check">&#10003;</span> Azure maturity is already in place (landing zone, ExpressRoute)</li>
         </ul>
       </div>
@@ -1136,7 +1136,7 @@ footer a:hover{text-decoration:underline}
     <div class="arch-panel" id="arch-c">
       <div class="arch-diagram reveal visible">
         <div class="arch-title">The Hybrid Model — W365 + AVD Under One Identity</div>
-        <div class="arch-desc">Best of both worlds: route each persona to the right delivery model, unified by a single security and identity plane.</div>
+        <div class="arch-desc">Route each persona to the right delivery model using shared identity foundations, with separately verified security controls, licensing, and recovery plans.</div>
         <div class="hybrid-grid">
           <div class="hybrid-col" style="background:linear-gradient(135deg,#E0F7FA,#B2EBF2)">
             <h4 style="color:#00695C">AVD Pooled</h4>
@@ -1155,7 +1155,7 @@ footer a:hover{text-decoration:underline}
           </div>
         </div>
         <div class="hybrid-bar">
-          <div class="bar-title">Shared Identity &amp; Security Plane</div>
+          <div class="bar-title">Shared Identity &amp; Configured Security Services</div>
           <div class="bar-items">
             <span>Entra ID</span><span>Intune</span><span>Defender</span><span>Conditional Access</span><span>Purview DLP</span><span>Customer compliance controls</span>
           </div>
@@ -1213,9 +1213,9 @@ footer a:hover{text-decoration:underline}
       <!-- Q4 -->
       <div class="decision-step" id="step-3">
         <h3>4. GPU or high compute needed?</h3>
-        <p>Does the workload need custom GPU VM profiles or more than 16 vCPU?</p>
+        <p>Does the workload need GPU, memory, or compute sizing beyond the standard Cloud PC fit? Windows 365 now includes configurations up to 32 vCPU and GPU options.</p>
         <div class="decision-btns">
-          <button class="decision-btn" onclick="answerQ(3,'yes')"><div class="btn-label">Yes</div><div class="btn-desc">Custom GPU or &gt;16 vCPU required</div></button>
+          <button class="decision-btn" onclick="answerQ(3,'yes')"><div class="btn-label">Yes</div><div class="btn-desc">Specialized compute comparison needed</div></button>
           <button class="decision-btn" onclick="answerQ(3,'no')"><div class="btn-label">No</div><div class="btn-desc">Standard compute is fine</div></button>
         </div>
       </div>
@@ -1246,7 +1246,7 @@ footer a:hover{text-decoration:underline}
       <div class="message-card">
         <div class="message-icon">&#128274;</div>
         <div class="message-body">
-          <h3>One Security Perimeter</h3>
+          <h3>Shared Identity, Explicit Controls</h3>
           <p>Entra ID, Conditional Access, Defender, and Purview can support both platforms, but available controls and configuration differ. Restrict clipboard, drive, printer, and device redirection where PHI must remain in the hosted environment.</p>
         </div>
       </div>
@@ -1261,7 +1261,7 @@ footer a:hover{text-decoration:underline}
         <div class="message-icon">&#9989;</div>
         <div class="message-body">
           <h3>Clinical-App Readiness</h3>
-          <p>AVD is a reference-architecture option for major EHR and claims platforms. Walk your app owners through vendor validation.</p>
+          <p>No platform-wide EHR certification is implied. Confirm vendor support for the exact OS, multi-session mode, plug-ins, peripherals, and latency, then test clinical workflows with app owners.</p>
         </div>
       </div>
       <div class="message-card">
@@ -1282,12 +1282,22 @@ footer a:hover{text-decoration:underline}
         <div class="message-icon">&#127961;&#65039;</div>
         <div class="message-body">
           <h3>BCP &amp; Resilience</h3>
-          <p>Cloud desktops give instant remote-work continuity during weather events, facility issues, or regional disruptions — critical for 24/7 healthcare.</p>
+          <p>Remote access is not a recovery plan. Test identity, network, profile storage, app dependencies, capacity, and regional failover against clinical RTO/RPO targets. Check disaster-recovery eligibility per Windows 365 edition; Flex does not support cross-region disaster recovery.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<div class="container">
+  <div class="message-card reveal">
+    <div class="message-body">
+      <h3>Ignite 2026: don't copy a Cloud PC headline into an AVD design</h3>
+      <p>Windows 365 Direct Stream enhancements and context-based redirections are GA for the announced Cloud PC scenarios; that does not establish AVD feature parity. NVIDIA streaming enhancements are planned for preview in early 2027 in select regions. Windows Server 2025 with AVD Hybrid is a <strong>private preview</strong> for multi-user AI development, not a generally available clinical desktop deployment. Windows Server 2028 is separately in preview; neither announcement certifies EHR, peripheral, or AVD OS compatibility.</p>
+      <p><a href="https://news.microsoft.com/events/ignite/2026/book-of-news/" target="_blank" rel="noopener">Ignite 2026 Book of News — Windows</a> · <a href="https://learn.microsoft.com/en-us/windows-365/enterprise/introduction-windows-365-flex" target="_blank" rel="noopener">Windows 365 Flex modes and limitations</a> · <a href="https://learn.microsoft.com/en-us/azure/virtual-desktop/overview" target="_blank" rel="noopener">AVD overview and requirements</a></p>
+    </div>
+  </div>
+</div>
 
 <footer>
   <p>Windows 365 + Azure Virtual Desktop &middot; Healthcare VDI Strategy &middot; Microsoft &copy; 2026</p>
@@ -1385,13 +1395,13 @@ function showResult() {
   let rec, cls, desc;
 
   if (gpu === 'yes') {
-    rec = 'AVD Personal or Windows 365 GPU';
+    rec = 'Compare AVD and Windows 365 Compute';
     cls = 'result-avd';
-    desc = 'GPU workloads can use either platform: Windows 365 offers GPU Cloud PCs, while AVD gives the broadest Azure GPU VM catalog and hardware-profile control. Use workload testing to choose the fit.';
+    desc = 'Windows 365 offers GPU Cloud PCs and configurations up to 32 vCPU. AVD offers supported Azure GPU and high-compute VM sizes with more hardware-profile control. Compare the exact app, driver, region, quota, and cost before selecting either.';
   } else if (persist === 'no' && admin === 'no') {
     rec = 'AVD Pooled (Multi-Session)';
     cls = 'result-avd';
-    desc = 'Stateless users without admin needs get the lowest cost per user on high-density pooled hosts. FSLogix handles profile roaming.';
+    desc = 'Pooled hosts are a candidate for users without dedicated-desktop or admin needs. Test concurrency, clinical app isolation, peripherals, and FSLogix profile behavior. Compare total operations and licensing cost with Windows 365 Flex Shared mode; neither is universally cheapest.';
   } else if (predict === 'yes' && lean === 'yes') {
     rec = 'Windows 365 Enterprise';
     cls = 'result-w365';
@@ -1399,7 +1409,7 @@ function showResult() {
   } else if (predict === 'no' && lean === 'no') {
     rec = 'AVD Personal';
     cls = 'result-avd';
-    desc = 'Variable usage with Azure maturity makes AVD personal the best fit. Autoscale optimizes costs, and you get full control over golden images and app layering.';
+    desc = 'AVD personal is a candidate when persistence and variable usage coexist with Azure operations skills. Test autoscale against sign-in experience and idle capacity, and include images, profiles, licensing, and support in the cost model.';
   } else if (lean === 'yes') {
     rec = 'Windows 365 or Partner-Managed AVD';
     cls = 'result-w365';
