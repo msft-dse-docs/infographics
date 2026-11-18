@@ -455,6 +455,7 @@
   .lic-card.work-b { border-color: var(--work); }
   .lic-card.fabric-b { border-color: var(--fabric); }
   .lic-card.foundry-b { border-color: var(--foundry); }
+  .lic-card.web-b { border-color: var(--web); }
   .lic-card h4 { font-size: .95rem; color: #002050; margin-bottom: .5rem; }
   .lic-card p { font-size: .84rem; color: #555; line-height: 1.55; }
   .lic-card .lic-price {
@@ -464,6 +465,7 @@
   .work-b .lic-price { background: var(--work-light); color: var(--work); }
   .fabric-b .lic-price { background: var(--fabric-light); color: var(--fabric-dark); }
   .foundry-b .lic-price { background: var(--foundry-light); color: var(--foundry); }
+  .web-b .lic-price { background: var(--web-light); color: var(--web-dark); }
 
   /* ── RESOURCE LINKS SECTION ── */
   .res-grid {
@@ -932,10 +934,12 @@
           </div>
           <ul>
             <li><strong>Managed knowledge layer</strong> in Microsoft Foundry &mdash; reusable endpoints over supported knowledge sources, not every enterprise API</li>
-            <li>Built on Azure AI Search, extends it with <strong>agentic retrieval</strong>, query planning, and ranking</li>
+            <li><strong>Azure AI Search is now Foundry IQ.</strong> The service remains unchanged: existing resources, indexes, indexers, endpoints, REST APIs, SDKs, RBAC roles and billing meters continue to work without a code migration.</li>
+            <li>Foundry IQ provides direct indexing and query APIs alongside higher-level knowledge bases, knowledge sources, <strong>agentic retrieval</strong>, query planning and ranking.</li>
             <li>Concepts: <strong>Knowledge Bases</strong> and <strong>Knowledge Sources</strong>, including supported Azure, SharePoint, OneLake, and web sources</li>
-            <li>Reasoning options: <strong>minimal</strong>, <strong>low</strong>, <strong>medium</strong>, <strong>auto</strong>. LLM reasoning is preview; <code>auto</code> requires <code>2026-08-01-preview</code> or a documented successor.</li>
-            <li>Ignite: SharePoint indexed knowledge source <strong>GA</strong>; knowledge graphs, Microsoft-Retriever-1 and a usage-based serverless IQ resource in new Foundry projects <strong>preview</strong></li>
+            <li>Reasoning options: <strong>minimal</strong>, <strong>low</strong>, <strong>medium</strong>, <strong>auto</strong>. Query planning and answer synthesis at low/medium effort are GA; <code>auto</code> requires a supported preview API.</li>
+            <li>Ignite GA: Serverless, stable REST APIs, SharePoint/File/Azure SQL knowledge sources, agentic retrieval planning and answer synthesis, document-level permissions, semantic chunking and AI image descriptions.</li>
+            <li>Preview: knowledge graphs, Microsoft Retriever 1, Foundry Managed Knowledge, knowledge-base tools, GPT-6 and OpenAI-compatible model profiles, async file ingestion, and Foundry IQ skills for GitHub Copilot CLI.</li>
           </ul>
         </div>
         <div class="iq-col">
@@ -945,6 +949,7 @@
             <li>An optional, supported <strong>query-planning model</strong> decomposes questions; minimal retrieval does not use LLM planning</li>
             <li>Sub-queries fan out across the knowledge sources configured for the knowledge base</li>
             <li>Results are ranked, deduplicated, and consolidated with citations</li>
+            <li>Private ingestion, permission refresh and ACL filtering vary by source and service tier. Serverless does not support private indexer execution or outbound shared private links.</li>
             <li>User-level access requires a supporting source and explicitly configured permission synchronization. Test revocation and every indexed chunk; Purview enforcement is not universal.</li>
           </ul>
         </div>
@@ -989,16 +994,19 @@
             <li>Live web grounding optimized for <strong>agent search patterns</strong> &mdash; not human browsing behavior</li>
             <li>Work IQ supplies work context, Fabric IQ business meaning, Foundry IQ unstructured content, and <strong>Web IQ external knowledge</strong>; none is the parent of the others</li>
             <li>Built on the Bing index, surfaced for agents rather than for search-results pages</li>
-            <li><strong>GA to all Azure customers</strong>: Auto, Auto Advanced, Scopes, Places, Weather and health-aware ranking. Commerce remains private preview.</li>
+            <li><strong>GA to all Azure customers</strong>: Auto, Auto Advanced, Places, Weather and health-aware ranking. Commerce remains private preview.</li>
+            <li>Scopes are available for Web and News requests. With Auto, they filter only Web and News evidence; other answer types can still appear outside the named scope.</li>
+            <li>Bring your own licensed content is supported, and Web IQ is available through REST, MCP and official SDKs.</li>
           </ul>
         </div>
         <div class="iq-col">
           <h4>How it works</h4>
           <ul>
             <li>Agent issues a retrieval call for external, current information</li>
-            <li>Web IQ returns results shaped for machine reasoning &mdash; structured, citable, and de-duplicated</li>
+            <li>Web IQ returns evidence shaped for machine reasoning &mdash; structured, citable, and de-duplicated. It does not generate the final answer; your agent or model does.</li>
             <li>Retrieval patterns are tuned for the multi-hop, iterative way agents search, rather than a single ranked page list</li>
-            <li>Use Scopes to include/exclude approved web locations; keep public-web retrieval separate from confidential enterprise queries</li>
+            <li>Use Scopes to include/exclude approved Web and News locations. For Auto, restrict the response to Web/News evidence when unscoped Places or Weather results are unacceptable.</li>
+            <li>For new Foundry agents, the recommended general web-search tool is powered by Web IQ. Grounding with Bing Search remains a separate GA compatibility option, while domain-restricted custom search still uses Grounding with Bing Custom Search.</li>
           </ul>
         </div>
         <div class="iq-col">
@@ -1013,7 +1021,9 @@
       </div>
       <div class="iq-links">
         <span class="iq-links-label">Learn:</span>
-        <a href="https://azure.microsoft.com/en-us/products/ai-foundry/" target="_blank" class="iq-link-btn">Microsoft Foundry &rarr;</a>
+        <a href="https://learn.microsoft.com/en-us/web-iq/overview" target="_blank" class="iq-link-btn">Web IQ Overview &rarr;</a>
+        <a href="https://learn.microsoft.com/en-us/web-iq/guides/create-scopes" target="_blank" class="iq-link-btn">Scopes Guide &rarr;</a>
+        <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/web-overview" target="_blank" class="iq-link-btn">Foundry Web Grounding &rarr;</a>
       </div>
     </div>
 
@@ -1093,15 +1103,15 @@
             <td>Licensing</td>
             <td>Depends on the Work IQ experience; review current prerequisites</td>
             <td>Consumes Microsoft Fabric capacity; preview requirements apply</td>
-            <td>Underlying Azure AI Search and model usage</td>
-            <td>Underlying web-grounding usage; verify current offer</td>
+            <td>Foundry IQ (Azure AI Search) and model usage</td>
+            <td>Consumption-based Web IQ usage; paid Azure subscription required and Azure credits do not apply</td>
           </tr>
           <tr>
             <td>Status</td>
             <td><span class="preview-inline">Context/actions GA; listen and new controls preview</span></td>
             <td><span class="preview-inline">Copilot/Fabric apps GA; new Excel, GitHub, ChatGPT/Claude features preview</span></td>
-            <td><span class="preview-inline">SharePoint indexed source GA; graph/Retriever/new-project resource preview</span></td>
-            <td><span class="preview-inline">GA to Azure customers; Commerce private preview</span></td>
+            <td><span class="preview-inline">Serverless and core retrieval GA; graph, Retriever 1, managed knowledge and newer model/tool features preview</span></td>
+            <td><span class="preview-inline">Auto, Auto Advanced, Places, Weather and health-aware ranking GA; Commerce private preview; Scopes differ in Auto</span></td>
           </tr>
         </tbody>
       </table>
@@ -1266,8 +1276,13 @@
       </div>
       <div class="lic-card foundry-b">
         <h4>Foundry IQ</h4>
-        <p>Costs can include the underlying <strong>Azure AI Search</strong> service and supported model usage for agentic retrieval. Use the current pricing guidance for estimates.</p>
-        <span class="lic-price">Azure AI Search + model usage</span>
+        <p>Foundry IQ uses the existing <strong>Foundry IQ (Azure AI Search)</strong> service meters and supported model usage for agentic retrieval. Serverless adds consumption-based compute and indexed-storage pricing; confirm current regional and SKU support.</p>
+        <span class="lic-price">Search service + model usage</span>
+      </div>
+      <div class="lic-card web-b">
+        <h4>Web IQ</h4>
+        <p>Consumption-based Web IQ usage requires a paid Azure subscription. Azure credits do not work for Web IQ. Zero Query Logging is available to eligible Azure managed customers in regulated industries; verify eligibility and terms.</p>
+        <span class="lic-price"><a href="https://azure.microsoft.com/en-us/pricing/calculator/?service=web-iq">Check current Web IQ pricing</a></span>
       </div>
     </div>
   </div>
@@ -1307,6 +1322,7 @@
         <h4><span class="res-dot"></span> Foundry IQ Resources</h4>
         <ul class="res-list">
           <li><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-foundry-iq" target="_blank">What is Foundry IQ (Microsoft Learn)</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/azure/search/whats-new" target="_blank">What's New in Foundry IQ (Azure AI Search)</a></li>
           <li><a href="https://azure.microsoft.com/en-us/products/ai-foundry/iq/" target="_blank">Foundry IQ Product Page</a></li>
           <li><a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/foundry-iq-unlocking-ubiquitous-knowledge-for-agents/4470812" target="_blank">Foundry IQ Launch Blog</a></li>
           <li><a href="https://azure.microsoft.com/en-us/products/ai-foundry/" target="_blank">Microsoft Foundry Platform</a></li>

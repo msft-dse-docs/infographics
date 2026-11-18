@@ -653,15 +653,15 @@
         <div class="layer-num">2</div>
         <div class="layer-tag">Findability &middot; Enrich the index</div>
         <h3>Search &amp; Enrich</h3>
-        <p>Index SharePoint content and metadata using the preview indexer. Enrich at indexing time using the <strong>Content Understanding Skill</strong> for GA extraction and fixed-size chunking (semantic chunking and image descriptions require a preview API), the <strong>GenAI Prompt Skill</strong> for LLM-powered summarization and image verbalization, and the <strong>Document Layout Skill</strong> for structure-aware parsing. Build a metadata-rich, hybrid-search-capable index.</p>
-        <div class="layer-services">Azure AI Search &middot; Content Understanding Skill (GA) &middot; GenAI Prompt Skill (GA) &middot; Document Layout Skill (GA)</div>
+        <p>Index SharePoint content and metadata with the GA SharePoint indexer. Enrich at indexing time using the <strong>Content Understanding Skill</strong> for extraction, semantic chunking and AI-generated image descriptions, plus the <strong>GenAI Prompt Skill</strong> for LLM-powered summarization and image verbalization and the <strong>Document Layout Skill</strong> for structure-aware parsing. Build a metadata-rich, hybrid-search-capable index.</p>
+        <div class="layer-services">Foundry IQ (Azure AI Search) &middot; Content Understanding Skill (GA) &middot; GenAI Prompt Skill (GA) &middot; Document Layout Skill (GA)</div>
       </div>
 
       <div class="layer-card l3 reveal">
         <div class="layer-num">3</div>
         <div class="layer-tag">Intelligence &middot; Answer with citations</div>
         <h3>Retrieve &amp; Synthesize</h3>
-        <p>Ground LLM responses in enterprise documents using <strong>Knowledge Bases</strong> &mdash; Azure AI Search&rsquo;s GA agentic retrieval foundation. Extractive retrieval and core knowledge-source capabilities are GA; LLM-assisted query planning, answer synthesis, and configurable reasoning require the preview API. Classic RAG with hybrid search and semantic ranking remains the right starting point for simpler, GA-oriented pipelines.</p>
+        <p>Ground LLM responses in enterprise documents using <strong>Knowledge Bases</strong> &mdash; Foundry IQ&rsquo;s GA agentic retrieval foundation. Extractive retrieval, core knowledge-source capabilities, and low/medium query planning and answer synthesis are GA. The <code>auto</code> reasoning effort remains preview. Classic RAG with hybrid search and semantic ranking remains the right starting point for simpler pipelines.</p>
         <div class="layer-services">Knowledge Bases &middot; Azure OpenAI &middot; Classic RAG &middot; Foundry IQ: feature-specific GA / preview</div>
       </div>
 
@@ -711,15 +711,15 @@
       <div class="pillar-card reveal">
         <div class="pillar-num">04</div>
         <div class="pillar-icon">&#x1F50D;</div>
-        <h4>Azure AI Search</h4>
-        <p>Enterprise search with the SharePoint Online indexer, a GA suite of enrichment skillsets &mdash; <strong>Content Understanding Skill</strong>, <strong>GenAI Prompt Skill</strong>, and <strong>Document Layout Skill</strong> (all GA April 2026 or earlier) &mdash; hybrid keyword and vector search, semantic ranking, and document-level security trimming. <strong>Knowledge Bases</strong> (GA April 2026) provide the agentic retrieval foundation; LLM-assisted multi-source query planning and answer synthesis require the preview API. SharePoint ACL support for document-level permissions is in preview.</p>
+        <h4>Foundry IQ (Azure AI Search)</h4>
+        <p>Enterprise search with the GA SharePoint Online indexer, a GA suite of enrichment skillsets &mdash; <strong>Content Understanding Skill</strong>, <strong>GenAI Prompt Skill</strong>, and <strong>Document Layout Skill</strong> &mdash; hybrid keyword and vector search, semantic ranking, and supported document-level security trimming. <strong>Knowledge Bases</strong> provide the agentic retrieval foundation; low/medium multi-source query planning and answer synthesis are GA, while <code>auto</code> and newer model profiles use preview APIs. SharePoint document-level permissions are GA on documented ingestion paths, with source-specific limitations.</p>
       </div>
 
       <div class="pillar-card reveal">
         <div class="pillar-num">05</div>
         <div class="pillar-icon">&#x1F916;</div>
         <h4>Azure OpenAI + RAG</h4>
-        <p><strong>Classic RAG</strong> offers a controlled hybrid-search baseline; <strong>Knowledge Bases</strong> add managed retrieval across supported sources. At Ignite 2026, the <strong>SharePoint indexed knowledge source in Foundry IQ is GA</strong>. Knowledge graphs, Microsoft-Retriever-1 and the new-project serverless knowledge resource remain preview. LLM query planning and answer synthesis also require the relevant preview API: choose feature-level status, not a blanket Foundry IQ label.</p>
+        <p><strong>Classic RAG</strong> offers a controlled hybrid-search baseline; <strong>Knowledge Bases</strong> add managed retrieval across supported sources. At Ignite 2026, the <strong>SharePoint indexed knowledge source and Serverless are GA</strong>. Low/medium query planning and answer synthesis use the stable API. Knowledge graphs, Microsoft Retriever 1, Foundry Managed Knowledge, <code>auto</code> reasoning and newer model profiles remain preview: choose feature-level status, not a blanket Foundry IQ label.</p>
       </div>
 
       <div class="pillar-card reveal">
@@ -771,7 +771,7 @@
         <div class="wheel-item w4">
           <div class="wheel-tag">Area 04 &middot; Search</div>
           <h4>Search &amp; Dynamic Indexing</h4>
-          <p><strong>Knowledge Bases</strong> reached GA in April 2026, providing the supported agentic retrieval foundation. Extractive retrieval is GA; LLM-assisted query planning and answer synthesis require the preview API. The <strong>Content Understanding Skill</strong>, <strong>GenAI Prompt Skill</strong>, and <strong>Document Layout Skill</strong> are GA for enrichment pipelines. Azure AI Search indexes SharePoint content with hybrid search and semantic ranking. SharePoint ACL support for document-level permissions is in preview.</p>
+          <p><strong>Knowledge Bases</strong> reached GA in April 2026, providing the supported agentic retrieval foundation. Extractive retrieval is GA; query planning and answer synthesis at low and medium effort use the stable API, while <code>auto</code> remains preview. The <strong>Content Understanding Skill</strong>, <strong>GenAI Prompt Skill</strong>, and <strong>Document Layout Skill</strong> are GA for enrichment pipelines. <strong>Foundry IQ (formerly Azure AI Search)</strong> indexes SharePoint content with hybrid search, semantic ranking, and GA document-level permission support on documented ingestion paths; source-specific limitations still apply.</p>
           <span class="badge-native badge-azure">&#x2699; Azure configurable</span>
           <p class="wheel-caveat">On-prem connectors, ACL normalization for complex permission models, chunking strategy, embedding model selection, and ranking tuning require architecture design.</p>
         </div>
@@ -779,7 +779,7 @@
         <div class="wheel-item w5">
           <div class="wheel-tag">Area 05 &middot; AI Retrieval</div>
           <h4>LLM Retrieval &amp; Summarization</h4>
-          <p>Azure AI Search supports classic RAG and agentic retrieval with Azure OpenAI. Grounded, citation-aware answers from enterprise documents with permission-aware access controls at query time.</p>
+          <p>Foundry IQ supports classic RAG and agentic retrieval with supported models. It returns grounded, citation-aware answers from enterprise documents with permission-aware access controls at query time when the selected source, ingestion path and query identity support them.</p>
           <span class="badge-native badge-design">&#x25C6; Architecture design required</span>
           <p class="wheel-caveat">Prompt orchestration, citation policy, answer evaluation, grounding strategy, model selection, and agent UX require implementation decisions.</p>
         </div>
@@ -830,7 +830,7 @@
             <h4>Intelligence Built</h4>
             <div class="matrix-services">Content Understanding (Foundry) &middot; Doc Intelligence &middot; M365 Processing &middot; Azure AI Search &middot; GA Skillsets</div>
             <ul>
-              <li>Content Understanding Skill: GA extraction and fixed-size chunking; semantic chunking and image descriptions require a preview API</li>
+              <li>Content Understanding Skill: GA extraction, semantic chunking and AI-generated image descriptions</li>
               <li>GenAI Prompt Skill (GA): LLM-powered summarization and image verbalization at index time</li>
               <li>Document Layout Skill (GA): structure-aware parsing for headings, tables, sections</li>
               <li>Metadata enrichment: taxonomy, entities, embeddings, security tags</li>
@@ -845,7 +845,7 @@
             <h4>Answers Delivered</h4>
             <div class="matrix-services">Knowledge Bases (GA) &middot; Azure OpenAI &middot; Classic RAG &middot; Purview Labels &middot; DLP &middot; Audit</div>
             <ul>
-              <li>Knowledge Bases (GA): managed agentic retrieval foundation; LLM-assisted query planning and answer synthesis require the preview API</li>
+              <li>Knowledge Bases (GA): managed agentic retrieval foundation; low/medium query planning and answer synthesis use the stable API, while <code>auto</code> remains preview</li>
               <li>Classic RAG: hybrid search + semantic ranking for simpler, controlled pipelines</li>
               <li>Permission-aware result trimming via document-level access control</li>
               <li>Purview sensitivity label metadata in retrieve responses (preview)</li>
@@ -897,7 +897,7 @@
         <div class="principle-num">4</div>
         <div>
           <h4>Know what is GA vs. what is still preview</h4>
-          <p>Use GA core retrieval and enrichment as the baseline, including GA Content Understanding Skill extraction and fixed-size chunking. Its semantic chunking and image descriptions require a preview API. Ignite makes the <strong>Foundry IQ SharePoint indexed knowledge source GA</strong>, not every standalone SharePoint indexer, ACL or label integration. Knowledge graphs, Microsoft-Retriever-1, new-project knowledge resources, LLM retrieval reasoning and answer synthesis retain their specific preview dependencies.</p>
+          <p>Use GA core retrieval and enrichment as the baseline, including Content Understanding Skill extraction, semantic chunking and AI-generated image descriptions. Ignite makes the <strong>Foundry IQ SharePoint indexer and indexed knowledge source GA</strong>, but source-specific ACL, label, network and region limits still apply. Knowledge graphs, Microsoft Retriever 1, Foundry Managed Knowledge and <code>auto</code> retrieval reasoning retain their preview dependencies; low/medium planning and answer synthesis use the stable API.</p>
         </div>
       </div>
 
@@ -940,13 +940,13 @@
       <div class="qa-card reveal">
         <div class="qa-q">Can Azure AI Search index SharePoint and preserve permissions?</div>
         <div class="qa-a-label">A &mdash;</div>
-        <p>Yes, but distinguish the GA Foundry IQ SharePoint indexed knowledge source from the standalone Search indexer and its documented preview ACL features. Permissions are not automatic for every source: configure supported synchronization and query-time enforcement. In the standalone indexer, inherited parent-scope ACL changes require explicit permission resync or reset; incremental content indexing is insufficient. Propagate ACLs into every chunk and test revocation. See <a href="https://learn.microsoft.com/azure/search/search-indexer-sharepoint-access-control-lists" target="_blank" rel="noopener">SharePoint ACL indexing requirements</a>.</p>
+        <p>Yes. Foundry IQ offers GA SharePoint indexer and indexed-knowledge-source paths with documented ACL ingestion and filtering. Permissions are not automatic for every source: configure supported synchronization and query-time enforcement. Some inherited parent-scope ACL changes require explicit permission resync or reset; incremental content indexing can be insufficient. Propagate ACLs into every chunk and test revocation. See <a href="https://learn.microsoft.com/azure/search/search-indexer-sharepoint-access-control-lists" target="_blank" rel="noopener">SharePoint ACL indexing requirements</a>.</p>
       </div>
 
       <div class="qa-card reveal">
         <div class="qa-q">Classic RAG or Knowledge Bases &mdash; which should we use?</div>
         <div class="qa-a-label">A &mdash;</div>
-        <p><strong>Classic RAG</strong> with hybrid search and semantic ranking is the recommended starting point: simple, GA, and easy to validate retrieval quality against your documents. <strong>Knowledge Bases</strong> &mdash; the agentic retrieval foundation in Azure AI Search &mdash; reached GA in April 2026. Core extractive retrieval and supported knowledge sources are GA; LLM-assisted query planning, answer synthesis, and configurable reasoning effort require the preview API. Start with classic RAG, then evaluate Knowledge Bases for scenarios requiring multi-source access or preview answer-synthesis workflows.</p>
+        <p><strong>Classic RAG</strong> with hybrid search and semantic ranking is the recommended starting point: simple, GA, and easy to validate retrieval quality against your documents. <strong>Knowledge Bases</strong> &mdash; the agentic retrieval foundation in Foundry IQ &mdash; reached GA in April 2026. Core extractive retrieval, supported knowledge sources, and low/medium query planning and answer synthesis are GA. The <code>auto</code> effort and newer knowledge-base model profiles remain preview. Start with classic RAG, then evaluate Knowledge Bases for multi-source scenarios that benefit from managed orchestration.</p>
       </div>
 
       <div class="qa-card reveal">
